@@ -1,228 +1,395 @@
-/* ===== כללי ===== */
-
-body {
-  margin: 0;
-  padding: 0;
-  background: #0b1f3a;
-  font-family: Arial, sans-serif;
-}
-
 * {
   box-sizing: border-box;
 }
 
-.app {
+body {
+  margin: 0;
   direction: rtl;
-  min-height: 100vh;
-  background: #0b1f3a;
-  color: white;
-  text-align: center;
-  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #06162e;
+  color: #ffffff;
 }
 
-/* ===== תפריט ===== */
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #06162e, #0b2a55);
+}
 
-.navbar {
+/* Header */
+.siteHeader {
+  background: linear-gradient(90deg, #06162e, #123b73);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+  padding-bottom: 25px;
+}
+
+.topBar {
+  background: #02152d;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.contactInfo {
+  display: flex;
+  gap: 12px;
+}
+
+.phoneBtn,
+.whatsappBtn {
+  text-decoration: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.phoneBtn { background: #2563eb; }
+.whatsappBtn { background: #16a34a; }
+
+.menu {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 25px;
+  padding: 18px 20px;
+  background: rgba(6, 22, 46, 0.95);
 }
 
-.navbar a {
+.menu a {
+  color: white;
   text-decoration: none;
-  background: white;
-  color: #0b1f3a;
-  padding: 12px 18px;
-  border-radius: 12px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  font-size: 18px;
   font-weight: bold;
+  min-width: 105px;
+  text-align: center;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.25);
   transition: 0.2s;
 }
 
-.navbar a:hover {
-  background: #4fc3f7;
+.menu a:hover {
+  transform: translateY(-3px) scale(1.04);
+  filter: brightness(1.15);
 }
 
-/* ===== כותרות ===== */
+.homeBtn { background: #2563eb; }
+.servicesBtn { background: #16a34a; }
+.dashboardBtn { background: #f97316; }
+.adminBtn { background: #7e22ce; }
+.shopBtn { background: #dc2626; }
+.loginBtn { background: #0891b2; }
+.aboutBtn { background: #ca8a04; }
+.contactBtn { background: #db2777; }
 
-.top h1 {
+/* Logo */
+.brandHero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  padding: 25px 20px 5px;
+  text-align: right;
+}
+
+.brandLogo {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #38bdf8;
+  background: white;
+}
+
+.brandHero h1 {
   margin: 0;
-  font-size: 54px;
+  font-size: 52px;
+  color: #ffffff;
 }
 
-.top h2 {
-  margin-top: 10px;
-  color: #4fc3f7;
+.brandHero p {
+  margin: 6px 0 0;
+  color: #dbeafe;
+  font-size: 20px;
 }
 
-.top p {
+/* Banner */
+.heroBanner {
+  width: 92%;
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 45px;
+  border-radius: 25px;
+  text-align: center;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+
+.heroBanner h2 {
+  font-size: 42px;
+  margin-bottom: 15px;
   color: white;
 }
 
-/* ===== חיפוש ===== */
+.heroBanner p {
+  font-size: 22px;
+  color: #dbeafe;
+  margin-bottom: 25px;
+}
 
+.heroBanner button {
+  background: #f97316;
+  color: white;
+  border: none;
+  padding: 16px 34px;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.heroBanner button:hover {
+  background: #ea580c;
+  transform: scale(1.05);
+}
+
+/* Search */
 .searchBox {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 25px 0;
+  margin: 25px auto;
+  padding: 0 20px;
 }
 
 .searchBox input {
-  width: 350px;
-  max-width: 90%;
-  padding: 14px;
-  font-size: 17px;
-  border: none;
-  border-radius: 12px;
+  width: 520px;
+  max-width: 100%;
+  padding: 16px 18px;
+  font-size: 20px;
+  border-radius: 16px;
+  border: 3px solid #38bdf8;
+  outline: none;
 }
 
-/* ===== קטגוריות ===== */
-
+/* Categories */
 .categoryBox {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin: 20px auto 30px;
+  padding: 0 20px;
 }
 
 .categoryBox button {
-  background: white;
-  color: #0b1f3a;
   border: none;
-  border-radius: 20px;
-  padding: 10px 18px;
-  cursor: pointer;
+  border-radius: 14px;
+  padding: 13px 22px;
+  font-size: 18px;
   font-weight: bold;
+  cursor: pointer;
+  background: #e5e7eb;
+  color: #0f172a;
 }
 
 .activeCategory {
-  background: #4fc3f7 !important;
+  background: #38bdf8 !important;
+  color: #06162e !important;
 }
 
-/* ===== כרטיסים ===== */
-
+/* Cards */
 .grid {
-  max-width: 1200px;
-  margin: auto;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
 }
 
 .card {
   border: none;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #1565c0, #00acc1);
+  border-radius: 22px;
+  padding: 28px 20px;
+  min-height: 185px;
+  background: linear-gradient(135deg, #1d4ed8, #0891b2);
   color: white;
-  min-height: 160px;
   cursor: pointer;
-  padding: 20px;
+  box-shadow: 0 7px 18px rgba(0,0,0,0.3);
   transition: 0.2s;
 }
 
 .card:hover {
-  transform: scale(1.03);
+  transform: translateY(-5px);
+  filter: brightness(1.1);
 }
 
 .card h3 {
-  margin-top: 12px;
+  font-size: 25px;
+  margin: 14px 0 8px;
+}
+
+.card p {
+  font-size: 18px;
+  color: #e0f2fe;
 }
 
 .card small {
-  color: #ffffcc;
-}
-
-/* ===== טפסים ===== */
-
-.loginBox {
-  max-width: 800px;
-  margin: 25px auto;
-  background: white;
-  color: #0b1f3a;
-  border-radius: 18px;
-  padding: 25px;
-}
-
-.loginBox input {
-  width: 95%;
-  margin: 8px 0;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
   font-size: 16px;
+  color: #fef9c3;
+}
+
+/* Forms */
+.loginBox {
+  width: 94%;
+  max-width: 850px;
+  margin: 35px auto;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 32px;
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.loginBox h2,
+.loginBox h3 {
+  text-align: center;
+  color: #123b73;
+  margin-top: 0;
+}
+
+.loginBox input,
+.loginBox textarea,
+.loginBox select {
+  width: 100%;
+  padding: 15px;
+  margin: 9px 0;
+  font-size: 18px;
+  border-radius: 12px;
+  border: 2px solid #cbd5e1;
 }
 
 .loginBox button {
-  margin: 8px;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  background: #1976d2;
+  background: #2563eb;
   color: white;
+  border: none;
+  padding: 14px 24px;
+  margin: 8px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-/* ===== שירותים בניהול ===== */
+.loginBox button:hover {
+  background: #1d4ed8;
+}
 
+/* Admin */
 .adminService {
-  background: #eef6ff;
-  color: #0b1f3a;
-  margin-top: 12px;
-  padding: 15px;
-  border-radius: 12px;
+  background: #eff6ff;
+  color: #0f172a;
+  padding: 18px;
+  margin: 14px 0;
+  border-radius: 16px;
   text-align: right;
+  border-right: 6px solid #38bdf8;
 }
 
-.adminService button {
-  margin-left: 8px;
+.adminService strong {
+  font-size: 20px;
 }
 
-/* ===== Dashboard ===== */
+.adminService small {
+  font-size: 16px;
+}
 
+/* Dashboard */
 .dashboardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
   margin-top: 25px;
 }
 
 .dashboardCard {
-  background: linear-gradient(135deg, #ffffff, #d9f3ff);
-  color: #0b1f3a;
-  padding: 25px;
-  border-radius: 16px;
-  font-size: 20px;
+  background: linear-gradient(135deg, #dbeafe, #bae6fd);
+  color: #0f172a;
+  padding: 26px;
+  border-radius: 18px;
+  font-size: 21px;
   font-weight: bold;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  text-align: center;
 }
 
-/* ===== מובייל ===== */
+img {
+  max-width: 100%;
+}
 
+/* Mobile */
 @media (max-width: 768px) {
-
-  .top h1 {
-    font-size: 38px;
+  .topBar {
+    justify-content: center;
   }
 
-  .top h2 {
-    font-size: 22px;
+  .contactInfo {
+    flex-direction: column;
+    width: 100%;
   }
 
-  .searchBox input {
-    width: 95%;
+  .phoneBtn,
+  .whatsappBtn {
+    text-align: center;
+  }
+
+  .menu a {
+    width: 100%;
+    font-size: 21px;
+    padding: 17px;
+  }
+
+  .brandHero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .brandLogo {
+    width: 115px;
+    height: 115px;
+  }
+
+  .brandHero h1 {
+    font-size: 42px;
+  }
+
+  .brandHero p {
+    font-size: 17px;
+  }
+
+  .heroBanner {
+    padding: 28px 18px;
+  }
+
+  .heroBanner h2 {
+    font-size: 30px;
+  }
+
+  .heroBanner p {
+    font-size: 18px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
   }
 
   .loginBox {
-    width: 96%;
-    padding: 18px;
-  }
-
-  .navbar {
-    flex-direction: column;
-    align-items: center;
+    padding: 22px;
   }
 }

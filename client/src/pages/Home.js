@@ -21,35 +21,58 @@ function Home() {
 
   return (
     <div>
-      <header className="top">
-        <h1>ALONPC</h1>
-        <h2>מרכז שירותים לאנשים עם מוגבלויות</h2>
-        <p>ברוכים הבאים למרכז השירותים של ALONPC</p>
-      </header>
+
+      <section className="heroBanner">
+
+        <h2>💻 ברוכים הבאים ל־ALON PC</h2>
+
+        <p>
+          מחשבים • מדפסות • רשתות • תמיכה מרחוק • חנות מחשבים • שירותי נגישות
+        </p>
+
+        <button onClick={() => navigate("/services")}>
+          🚀 לכל השירותים
+        </button>
+
+      </section>
 
       <div className="searchBox">
+
         <input
           type="text"
-          placeholder="חפש שירות..."
+          placeholder="🔍 חפש שירות..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+
       </div>
 
       <main className="grid">
+
         {filteredServices.map((service) => (
+
           <button
-            className="card"
             key={service._id}
+            className="card"
             onClick={() => navigate(`/service/${service._id}`)}
           >
-            <div style={{ fontSize: "42px" }}>{service.icon}</div>
+
+            <div style={{ fontSize: "46px" }}>
+              {service.icon}
+            </div>
+
             <h3>{service.name}</h3>
+
             <p>{service.category}</p>
-            <small>ℹ️ פרטים נוספים</small>
+
+            <small>לחץ לצפייה בפרטים</small>
+
           </button>
+
         ))}
+
       </main>
+
     </div>
   );
 }
