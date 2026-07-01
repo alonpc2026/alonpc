@@ -15,7 +15,9 @@ function Home() {
   }, []);
 
   const filteredServices = services.filter((service) => {
-    const text = `${service.name} ${service.category}`.toLowerCase();
+    const text =
+      `${service.name} ${service.category} ${service.description || ""}`.toLowerCase();
+
     return text.includes(search.toLowerCase());
   });
 
@@ -23,52 +25,85 @@ function Home() {
     <div>
 
       <section className="heroBanner">
-
         <h2>💻 ברוכים הבאים ל־ALON PC</h2>
 
         <p>
-          מחשבים • מדפסות • רשתות • תמיכה מרחוק • חנות מחשבים • שירותי נגישות
+          מחשבים • מדפסות • תמיכה מרחוק • ציוד נגישות • חנות אלון
         </p>
 
         <button onClick={() => navigate("/services")}>
           🚀 לכל השירותים
         </button>
-
       </section>
 
       <div className="searchBox">
-
         <input
           type="text"
           placeholder="🔍 חפש שירות..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-
       </div>
 
       <main className="grid">
 
-        {filteredServices.map((service) => (
+        {filteredServices.length === 0 && (
+          <h3 style={{ textAlign: "center", width: "100%" }}>
+            לא נמצאו שירותים
+          </h3>
+        )}
 
+        {filteredServices.map((service) => (
           <button
-            key={service._id}
             className="card"
+            key={service._id}
             onClick={() => navigate(`/service/${service._id}`)}
           >
-
-            <div style={{ fontSize: "46px" }}>
-              {service.icon}
-            </div>
+            {service.imageUrl ? (
+              <img
+                src={service.imageUrl}
+                alt={service.name}
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  background: "#ffffff",
+                  marginBottom: "12px",
+                }}
+              />
+            ) : (
+              <div style={{ fontSize: "50px" }}>
+                {service.icon}
+              </div>
+            )}
 
             <h3>{service.name}</h3>
 
             <p>{service.category}</p>
 
-            <small>לחץ לצפייה בפרטים</small>
+            {service.description && (
+              <small
+                style={{
+                  display: "block",
+                  marginTop: "8px",
+                  color: "#f1f5f9",
+                }}
+              >
+                {service.description}
+              </small>
+            )}
+
+            <div
+              style={{
+                marginTop: "15px",
+                fontWeight: "bold",
+              }}
+            >
+              ℹ️ לחץ לצפייה בפרטים
+            </div>
 
           </button>
-
         ))}
 
       </main>

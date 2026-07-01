@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 function Admin() {
   const [services, setServices] = useState([]);
   const [editId, setEditId] = useState(null);
+  const [message, setMessage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -17,15 +19,7 @@ function Admin() {
     imageUrl: "",
   });
 
-  const [message, setMessage] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
-
-  const loadServices = () => {
-    fetch("http://localhost:3001/api/services")
-      .then((res) => res.json())
-      .then((data) => setServices(data))
-      .catch(() => setMessage("שגיאה בטעינת שירותים ❌"));
-  };
 
   useEffect(() => {
     loadServices();
@@ -40,12 +34,44 @@ function Admin() {
     );
   }
 
+  const loadServices = () => {
+    fetch("http://localhost:3001/api/services")
+      .then((res) => res.json())
+      .then((data) => setServices(data))
+      .catch(() => setMessage("שגיאה בטעינת שירותים ❌"));
+  };
+
   const updateForm = (field, value) => {
     setForm({ ...form, [field]: value });
   };
 
+  const uploadImage = async () => {
+    if (!selectedImage) {
+      setMessage("בחר תמונה קודם ❌");
+      return;
+    }
+
+    const imageData = new FormData();
+    imageData.append("image", selectedImage);
+
+    const response = await fetch("http://localhost:3001/api/upload", {
+      method: "POST",
+      body: imageData,
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      updateForm("imageUrl", data.imageUrl);
+      setMessage("התמונה הועלתה בהצלחה ✅");
+    } else {
+      setMessage("שגיאה בהעלאת תמונה ❌");
+    }
+  };
+
   const clearForm = () => {
     setEditId(null);
+    setSelectedImage(null);
     setForm({
       name: "",
       category: "",
@@ -123,7 +149,31 @@ function Admin() {
       <input placeholder="אימייל" value={form.email} onChange={(e) => updateForm("email", e.target.value)} />
       <input placeholder="כתובת" value={form.address} onChange={(e) => updateForm("address", e.target.value)} />
       <input placeholder="שעות פעילות" value={form.hours} onChange={(e) => updateForm("hours", e.target.value)} />
-      <input placeholder="קישור לתמונה / לוגו" value={form.imageUrl} onChange={(e) => updateForm("imageUrl", e.target.value)} />
+
+      <hr />
+
+      <h3>העלאת תמונה / לוגו</h3>
+
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setSelectedImage(e.target.files[0])}
+      />
+
+      <button onClick={uploadImage}>⬆️ העלה תמונה</button>
+
+      {form.imageUrl && (
+        <div>
+          <p>תצוגה מקדימה:</p>
+          <img
+            src={form.imageUrl}
+            alt="תמונה"
+            style={{ maxWidth: "180px", borderRadius: "14px" }}
+          />
+        </div>
+      )}
+
+      <hr />
 
       <button onClick={saveService}>
         {editId ? "💾 שמור עריכה" : "➕ הוסף שירות"}
@@ -139,11 +189,19 @@ function Admin() {
 
       {services.map((service) => (
         <div className="adminService" key={service._id}>
-          <strong>{service.icon} {service.name}</strong>
+          <strong>
+            {service.icon} {service.name}
+          </strong>
           <br />
           <small>{service.category}</small>
           <br />
-          {service.phone && <small>📞 {service.phone}</small>}
+          {service.imageUrl && (
+            <img
+              src={service.imageUrl}
+              alt={service.name}
+              style={{ maxWidth: "80px", marginTop: "8px" }}
+            />
+          )}
           <br />
           <button onClick={() => startEdit(service)}>✏️ ערוך</button>
           <button onClick={() => deleteService(service._id)}>🗑️ מחק</button>

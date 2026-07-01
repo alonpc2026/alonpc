@@ -21,27 +21,33 @@ function Services() {
   ];
 
   const filteredServices = services.filter((service) => {
-    const matchSearch = `${service.name} ${service.category}`
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const text =
+      `${service.name} ${service.category} ${service.description || ""}`.toLowerCase();
+
+    const matchSearch = text.includes(search.toLowerCase());
 
     const matchCategory =
-      selectedCategory === "הכול" || service.category === selectedCategory;
+      selectedCategory === "הכול" ||
+      service.category === selectedCategory;
 
     return matchSearch && matchCategory;
   });
 
   return (
     <div>
-      <header className="top">
-        <h1>ALONPC</h1>
-        <h2>כל השירותים</h2>
-      </header>
+
+      <section className="heroBanner">
+        <h2>🛎️ כל השירותים</h2>
+
+        <p>
+          חפש שירות, מוסד או ארגון בלחיצה אחת
+        </p>
+      </section>
 
       <div className="searchBox">
         <input
           type="text"
-          placeholder="חפש שירות..."
+          placeholder="🔍 חפש שירות..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -51,7 +57,11 @@ function Services() {
         {categories.map((category) => (
           <button
             key={category}
-            className={selectedCategory === category ? "activeCategory" : ""}
+            className={
+              selectedCategory === category
+                ? "activeCategory"
+                : ""
+            }
             onClick={() => setSelectedCategory(category)}
           >
             {category}
@@ -60,19 +70,52 @@ function Services() {
       </div>
 
       <main className="grid">
+
+        {filteredServices.length === 0 && (
+          <h3 style={{ textAlign: "center", color: "white" }}>
+            לא נמצאו שירותים
+          </h3>
+        )}
+
         {filteredServices.map((service) => (
           <button
             className="card"
             key={service._id}
-            onClick={() => navigate(`/service/${service._id}`)}
+            onClick={() =>
+              navigate(`/service/${service._id}`)
+            }
           >
-            <div style={{ fontSize: "42px" }}>{service.icon}</div>
+
+            {service.imageUrl ? (
+              <img
+                src={service.imageUrl}
+                alt={service.name}
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  background: "#fff",
+                  marginBottom: "12px",
+                }}
+              />
+            ) : (
+              <div style={{ fontSize: "48px" }}>
+                {service.icon}
+              </div>
+            )}
+
             <h3>{service.name}</h3>
+
             <p>{service.category}</p>
-            <small>ℹ️ פרטים נוספים</small>
+
+            <small>ℹ️ לחץ לצפייה בפרטים</small>
+
           </button>
         ))}
+
       </main>
+
     </div>
   );
 }
