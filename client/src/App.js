@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import AdminShop from "./pages/AdminShop";
 import Shop from "./pages/Shop";
+import ServiceBooking from "./pages/ServiceBooking";
 import Login from "./pages/Login";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/shop" element={<AdminShop />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/booking" element={<ServiceBooking />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

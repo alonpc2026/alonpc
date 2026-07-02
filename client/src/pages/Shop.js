@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Shop() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("הכול");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3001/api/products")
@@ -33,7 +36,11 @@ function Shop() {
     <div>
       <section className="heroBanner">
         <h2>🛒 חנות ALON PC</h2>
-        <p>מחשבים • מדפסות • ציוד היקפי • ציוד נגישות</p>
+        <p>מחשבים • מדפסות • ציוד היקפי • ציוד נגישות • הזמנת שירות</p>
+
+        <button onClick={() => navigate("/booking")}>
+          📅 הזמנת שירות / תיאום ביקור
+        </button>
       </section>
 
       <div className="searchBox">
