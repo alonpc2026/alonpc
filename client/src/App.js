@@ -8,6 +8,7 @@ import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import AdminShop from "./pages/AdminShop";
 import Shop from "./pages/Shop";
 import Login from "./pages/Login";
 import About from "./pages/About";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/service/:id" element={<ServiceDetails />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/shop" element={<AdminShop />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />

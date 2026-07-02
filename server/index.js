@@ -9,17 +9,18 @@ const connectDB = require("./config/db");
 const serviceRoutes = require("./routes/serviceRoutes");
 const authRoutes = require("./routes/authRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
-// התחברות למסד הנתונים
+// חיבור למסד הנתונים
 connectDB();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// תיקיית תמונות
+// הצגת קבצים שהועלו
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // דף ראשי
@@ -27,10 +28,11 @@ app.get("/", (req, res) => {
   res.send("ברוכים הבאים לשרת ALONPC");
 });
 
-// API Routes
+// Routes
 app.use("/api/services", serviceRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/products", productRoutes);
 
 // בדיקת שרת
 app.get("/api/health", (req, res) => {
