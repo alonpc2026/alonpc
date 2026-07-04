@@ -393,3 +393,91 @@ img {
     padding: 22px;
   }
 }
+/* ===========================
+   Admin Login Modal
+=========================== */
+
+.languageSelect {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.adminBtn {
+  background: #7e22ce;
+  color: white;
+  border: none;
+  cursor: pointer;
+  min-width: 65px;
+}
+
+.adminBtn:hover {
+  background: #6b21a8;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.adminModal {
+  background: white;
+  color: #0f172a;
+  width: 95%;
+  max-width: 420px;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0,0,0,.45);
+}
+
+.adminModal h2 {
+  margin-top: 0;
+  color: #123b73;
+}
+
+.adminModal input {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 2px solid #cbd5e1;
+}
+
+.adminModal button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+}
+
+.adminModal button:hover {
+  background: #1d4ed8;
+}
+
+.logoutBtn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  background: #b91c1c;
+}

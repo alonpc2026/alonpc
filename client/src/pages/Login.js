@@ -1,39 +1,37 @@
 import { useState } from "react";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const loginUser = async () => {
-    const response = await fetch("http://localhost:3001/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  const loginUser = () => {
+    if (username === "korkusal" && password === "631892") {
+      const adminUser = {
+        name: "Alon Admin",
+        email: "korkusal",
+        role: "admin",
+      };
 
-    const data = await response.json();
+      localStorage.setItem("user", JSON.stringify(adminUser));
+      setMessage("התחברת כמנהל בהצלחה ✅");
 
-    if (response.ok) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setMessage("התחברת בהצלחה ✅");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 500);
     } else {
-      setMessage(data.message || "שגיאה בהתחברות ❌");
+      setMessage("שם משתמש או סיסמה שגויים ❌");
     }
   };
 
   return (
     <section className="loginBox">
-      <h3>כניסת מנויים / מנהל</h3>
+      <h2>🔐 כניסת מנהל</h2>
 
       <input
-        type="email"
-        placeholder="אימייל"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        placeholder="שם משתמש"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
 
       <input

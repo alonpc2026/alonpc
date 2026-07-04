@@ -20,28 +20,71 @@ function ServiceBooking() {
     });
   };
 
-  const sendBooking = () => {
+  const sendBooking = async () => {
     if (!form.name || !form.phone || !form.serviceType) {
-      setMessage("נא למלא שם, טלפון וסוג שירות ❌");
+      setMessage("נא למלא שם, טלפון וסוג שירות");
       return;
     }
 
-    const text = `
-הזמנת שירות חדשה מ־ALON PC
-שם: ${form.name}
-טלפון: ${form.phone}
-כתובת: ${form.address}
-סוג שירות: ${form.serviceType}
-תאריך רצוי: ${form.preferredDate}
-שעה רצויה: ${form.preferredTime}
-פירוט: ${form.details}
+    try {
+      // שמירה במסד הנתונים
+      const response = await fetch("http://localhost:3001/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        throw new Error("שמירת ההזמנה נכשלה");
+      }
+
+      // יצירת הודעת WhatsApp
+      const text = `
+📅 הזמנת שירות חדשה
+
+👤 שם: ${form.name}
+
+📞 טלפון: ${form.phone}
+
+📍 כתובת: ${form.address}
+
+🛠️ סוג שירות: ${form.serviceType}
+
+📅 תאריך רצוי: ${form.preferredDate}
+
+🕒 שעה רצויה: ${form.preferredTime}
+
+📝 פירוט:
+${form.details}
 `;
 
-    const whatsappUrl =
-      "https://wa.me/972521234567?text=" + encodeURIComponent(text);
+      // החלף למספר ה-WhatsApp שלך
+      const whatsappNumber = "972545521809";
 
-    window.open(whatsappUrl, "_blank");
-    setMessage("הבקשה נפתחה לשליחה ב־WhatsApp ✅");
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`,
+        "_blank"
+      );
+
+      setMessage("✅ ההזמנה נשמרה ונשלחה ל-WhatsApp");
+
+      // ניקוי הטופס
+      setForm({
+        name: "",
+        phone: "",
+        address: "",
+        serviceType: "",
+        preferredDate: "",
+        preferredTime: "",
+        details: "",
+      });
+
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ שגיאה בשמירת ההזמנה");
+    }
   };
 
   return (
@@ -61,7 +104,7 @@ function ServiceBooking() {
       />
 
       <input
-        placeholder="כתובת לביקור"
+        placeholder="כתובת"
         value={form.address}
         onChange={(e) => updateField("address", e.target.value)}
       />
@@ -72,11 +115,12 @@ function ServiceBooking() {
       >
         <option value="">בחר סוג שירות</option>
         <option value="תיקון מחשב">תיקון מחשב</option>
-        <option value="התקנת תוכנה">התקנת תוכנה</option>
+        <option value="מחשב נייד">מחשב נייד</option>
         <option value="מדפסת">מדפסת</option>
-        <option value="אינטרנט ורשת">אינטרנט ורשת</option>
-        <option value="סטרימר / טלוויזיה">סטרימר / טלוויזיה</option>
-        <option value="תמיכה מרחוק">תמיכה מרחוק</option>
+        <option value="רשת ואינטרנט">רשת ואינטרנט</option>
+        <option value="סטרימר">סטרימר</option>
+        <option value="התקנת תוכנה">התקנת תוכנה</option>
+        <option value="שירות בבית הלקוח">שירות בבית הלקוח</option>
         <option value="אחר">אחר</option>
       </select>
 
@@ -93,14 +137,21 @@ function ServiceBooking() {
       />
 
       <textarea
-        placeholder="פירוט התקלה / מה צריך לעשות"
+        rows="5"
+        placeholder="פירוט התקלה או הבקשה"
         value={form.details}
         onChange={(e) => updateField("details", e.target.value)}
       />
 
-      <button onClick={sendBooking}>🟢 שלח הזמנה ב־WhatsApp</button>
+      <button onClick={sendBooking}>
+        📅 שלח הזמנת שירות
+      </button>
 
-      <p>{message}</p>
+      {message && (
+        <p style={{ marginTop: "20px", fontWeight: "bold" }}>
+          {message}
+        </p>
+      )}
     </section>
   );
 }

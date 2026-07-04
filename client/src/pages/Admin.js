@@ -1,44 +1,70 @@
 import { useEffect, useState } from "react";
 
-function AdminShop() {
-  const [products, setProducts] = useState([]);
+function Admin() {
+  const [services, setServices] = useState([]);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [form, setForm] = useState({
     name: "",
     category: "",
-    brand: "",
-    model: "",
-    price: "",
-    stock: "",
+    icon: "",
+    link: "",
     description: "",
+    phone: "",
+    email: "",
+    address: "",
+    hours: "",
     imageUrl: "",
-    warranty: "",
-    sku: "",
-    active: true,
-    featured: false,
   });
 
   useEffect(() => {
-    loadProducts();
+    loadServices();
   }, []);
 
-  const loadProducts = () => {
-    fetch("http://localhost:3001/api/products")
+  if (!user || user.role !== "admin") {
+    return (
+      <section className="loginBox">
+        <h2>אין הרשאה</h2>
+        <p>רק מנהל מחובר יכול להוסיף או לערוך שירותים.</p>
+      </section>
+    );
+  }
+
+  const loadServices = () => {
+    fetch("http://localhost:3001/api/services")
       .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch(() => setMessage("שגיאה בטעינת מוצרים ❌"));
+      .then((data) => setServices(data))
+      .catch(() => setMessage("שגיאה בטעינת שירותים"));
   };
 
   const updateForm = (field, value) => {
     setForm({ ...form, [field]: value });
   };
 
+  const clearForm = () => {
+    setEditId(null);
+    setSelectedImage(null);
+    setForm({
+      name: "",
+      category: "",
+      icon: "",
+      link: "",
+      description: "",
+      phone: "",
+      email: "",
+      address: "",
+      hours: "",
+      imageUrl: "",
+    });
+  };
+
   const uploadImage = async () => {
     if (!selectedImage) {
-      setMessage("בחר תמונה קודם ❌");
+      setMessage("בחר תמונה קודם");
       return;
     }
 
@@ -54,129 +80,159 @@ function AdminShop() {
 
     if (response.ok) {
       updateForm("imageUrl", data.imageUrl);
-      setMessage("התמונה הועלתה בהצלחה ✅");
+      setMessage("התמונה הועלתה בהצלחה");
     } else {
-      setMessage("שגיאה בהעלאת תמונה ❌");
+      setMessage("שגיאה בהעלאת תמונה");
     }
   };
 
-  const clearForm = () => {
-    setEditId(null);
-    setSelectedImage(null);
-    setForm({
-      name: "",
-      category: "",
-      brand: "",
-      model: "",
-      price: "",
-      stock: "",
-      description: "",
-      imageUrl: "",
-      warranty: "",
-      sku: "",
-      active: true,
-      featured: false,
-    });
-  };
+  const saveService = async () => {
+    if (!form.name || !form.category) {
+      setMessage("נא למלא שם שירות וקטגוריה");
+      return;
+    }
 
-  const saveProduct = async () => {
     const url = editId
-      ? `http://localhost:3001/api/products/${editId}`
-      : "http://localhost:3001/api/products";
+      ? `http://localhost:3001/api/services/${editId}`
+      : "http://localhost:3001/api/services";
 
     const method = editId ? "PUT" : "POST";
 
     const response = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        price: Number(form.price),
-        stock: Number(form.stock),
-      }),
+      body: JSON.stringify(form),
     });
 
     if (response.ok) {
-      setMessage(editId ? "המוצר עודכן בהצלחה ✅" : "המוצר נוסף בהצלחה ✅");
+      setMessage(editId ? "השירות עודכן בהצלחה" : "השירות נוסף בהצלחה");
       clearForm();
-      loadProducts();
+      loadServices();
     } else {
-      setMessage("שגיאה בשמירת מוצר ❌");
+      setMessage("שגיאה בשמירת שירות");
     }
   };
 
-  const startEdit = (product) => {
-    setEditId(product._id);
+  const startEdit = (service) => {
+    setEditId(service._id);
     setForm({
-      name: product.name || "",
-      category: product.category || "",
-      brand: product.brand || "",
-      model: product.model || "",
-      price: product.price || "",
-      stock: product.stock || "",
-      description: product.description || "",
-      imageUrl: product.imageUrl || "",
-      warranty: product.warranty || "",
-      sku: product.sku || "",
-      active: product.active ?? true,
-      featured: product.featured ?? false,
+      name: service.name || "",
+      category: service.category || "",
+      icon: service.icon || "",
+      link: service.link || "",
+      description: service.description || "",
+      phone: service.phone || "",
+      email: service.email || "",
+      address: service.address || "",
+      hours: service.hours || "",
+      imageUrl: service.imageUrl || "",
     });
-    setMessage("מצב עריכה פעיל ✏️");
+    setMessage("מצב עריכה פעיל");
   };
 
-  const deleteProduct = async (id) => {
-    const response = await fetch(`http://localhost:3001/api/products/${id}`, {
+  const deleteService = async (id) => {
+    if (!window.confirm("למחוק שירות?")) return;
+
+    const response = await fetch(`http://localhost:3001/api/services/${id}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
-      setMessage("המוצר נמחק בהצלחה 🗑️");
-      loadProducts();
+      setMessage("השירות נמחק");
+      loadServices();
     }
   };
 
   return (
     <section className="loginBox">
-      <h3>🛒 ניהול חנות אלון</h3>
+      <h2>📋 ניהול שירותים</h2>
 
-      <input placeholder="שם מוצר" value={form.name} onChange={(e) => updateForm("name", e.target.value)} />
-      <input placeholder="קטגוריה" value={form.category} onChange={(e) => updateForm("category", e.target.value)} />
-      <input placeholder="מותג" value={form.brand} onChange={(e) => updateForm("brand", e.target.value)} />
-      <input placeholder="דגם" value={form.model} onChange={(e) => updateForm("model", e.target.value)} />
-      <input type="number" placeholder="מחיר" value={form.price} onChange={(e) => updateForm("price", e.target.value)} />
-      <input type="number" placeholder="מלאי" value={form.stock} onChange={(e) => updateForm("stock", e.target.value)} />
-      <input placeholder="אחריות" value={form.warranty} onChange={(e) => updateForm("warranty", e.target.value)} />
-      <input placeholder="מק״ט" value={form.sku} onChange={(e) => updateForm("sku", e.target.value)} />
-      <textarea placeholder="תיאור מוצר" value={form.description} onChange={(e) => updateForm("description", e.target.value)} />
+      <input
+        placeholder="שם השירות"
+        value={form.name}
+        onChange={(e) => updateForm("name", e.target.value)}
+      />
 
-      <label>
-        <input
-          type="checkbox"
-          checked={form.featured}
-          onChange={(e) => updateForm("featured", e.target.checked)}
-        />
-        ⭐ מוצר מומלץ
-      </label>
+      <input
+        placeholder="קטגוריה"
+        value={form.category}
+        onChange={(e) => updateForm("category", e.target.value)}
+      />
+
+      <input
+        placeholder="אייקון לדוגמה: ♿ 🏥 💻"
+        value={form.icon}
+        onChange={(e) => updateForm("icon", e.target.value)}
+      />
+
+      <input
+        placeholder="קישור לאתר"
+        value={form.link}
+        onChange={(e) => updateForm("link", e.target.value)}
+      />
+
+      <input
+        placeholder="תיאור קצר"
+        value={form.description}
+        onChange={(e) => updateForm("description", e.target.value)}
+      />
+
+      <input
+        placeholder="טלפון"
+        value={form.phone}
+        onChange={(e) => updateForm("phone", e.target.value)}
+      />
+
+      <input
+        placeholder="אימייל"
+        value={form.email}
+        onChange={(e) => updateForm("email", e.target.value)}
+      />
+
+      <input
+        placeholder="כתובת"
+        value={form.address}
+        onChange={(e) => updateForm("address", e.target.value)}
+      />
+
+      <input
+        placeholder="שעות פעילות"
+        value={form.hours}
+        onChange={(e) => updateForm("hours", e.target.value)}
+      />
 
       <hr />
 
-      <h3>העלאת תמונת מוצר</h3>
+      <h3>🖼️ תמונת שירות / לוגו</h3>
 
-      <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setSelectedImage(e.target.files[0])}
+      />
 
       <button onClick={uploadImage}>⬆️ העלה תמונה</button>
 
       {form.imageUrl && (
         <div>
           <p>תצוגה מקדימה:</p>
-          <img src={form.imageUrl} alt="מוצר" style={{ maxWidth: "180px", borderRadius: "14px" }} />
+          <img
+            src={form.imageUrl}
+            alt="preview"
+            style={{
+              width: "150px",
+              height: "150px",
+              objectFit: "cover",
+              borderRadius: "16px",
+            }}
+          />
         </div>
       )}
 
       <hr />
 
-      <button onClick={saveProduct}>
-        {editId ? "💾 שמור עריכה" : "➕ הוסף מוצר"}
+      <button onClick={saveService}>
+        {editId ? "💾 שמור עריכה" : "➕ הוסף שירות"}
       </button>
 
       {editId && <button onClick={clearForm}>❌ ביטול עריכה</button>}
@@ -185,25 +241,37 @@ function AdminShop() {
 
       <hr />
 
-      <h3>מוצרים קיימים</h3>
+      <h2>שירותים קיימים</h2>
 
-      {products.map((product) => (
-        <div className="adminService" key={product._id}>
-          {product.imageUrl && (
-            <img src={product.imageUrl} alt={product.name} style={{ maxWidth: "90px", marginBottom: "8px" }} />
+      {services.map((service) => (
+        <div className="adminService" key={service._id}>
+          {service.imageUrl ? (
+            <img
+              src={service.imageUrl}
+              alt={service.name}
+              style={{
+                width: "90px",
+                height: "90px",
+                objectFit: "cover",
+                borderRadius: "12px",
+              }}
+            />
+          ) : (
+            <div style={{ fontSize: "40px" }}>{service.icon}</div>
           )}
 
-          <strong>{product.name}</strong>
-          <br />
-          <small>{product.category} | ₪{product.price} | מלאי: {product.stock}</small>
-          <br />
+          <h3>{service.name}</h3>
+          <p>{service.category}</p>
 
-          <button onClick={() => startEdit(product)}>✏️ ערוך</button>
-          <button onClick={() => deleteProduct(product._id)}>🗑️ מחק</button>
+          {service.phone && <p>📞 {service.phone}</p>}
+          {service.address && <p>📍 {service.address}</p>}
+
+          <button onClick={() => startEdit(service)}>✏️ ערוך</button>
+          <button onClick={() => deleteService(service._id)}>🗑️ מחק</button>
         </div>
       ))}
     </section>
   );
 }
 
-export default AdminShop;
+export default Admin;

@@ -5,7 +5,6 @@ function Shop() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("הכול");
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,21 +14,14 @@ function Shop() {
       .catch((err) => console.error(err));
   }, []);
 
-  const categories = [
-    "הכול",
-    ...new Set(products.map((product) => product.category)),
-  ];
+  const categories = ["הכול", ...new Set(products.map((p) => p.category))];
 
   const filteredProducts = products.filter((product) => {
     const text = `${product.name} ${product.category} ${product.brand || ""} ${product.description || ""}`.toLowerCase();
-
-    const matchSearch = text.includes(search.toLowerCase());
-
-    const matchCategory =
-      selectedCategory === "הכול" ||
-      product.category === selectedCategory;
-
-    return matchSearch && matchCategory;
+    return (
+      text.includes(search.toLowerCase()) &&
+      (selectedCategory === "הכול" || product.category === selectedCategory)
+    );
   });
 
   return (
@@ -39,7 +31,7 @@ function Shop() {
         <p>מחשבים • מדפסות • ציוד היקפי • ציוד נגישות • הזמנת שירות</p>
 
         <button onClick={() => navigate("/booking")}>
-          📅 הזמנת שירות / תיאום ביקור
+          📅 הזמן שירות עכשיו
         </button>
       </section>
 
@@ -74,33 +66,17 @@ function Shop() {
         {filteredProducts.map((product) => (
           <div className="card" key={product._id}>
             {product.imageUrl ? (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  objectFit: "cover",
-                  borderRadius: "16px",
-                  background: "white",
-                }}
-              />
+              <img src={product.imageUrl} alt={product.name} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "16px", background: "white" }} />
             ) : (
               <div style={{ fontSize: "50px" }}>🛒</div>
             )}
 
             <h3>{product.name}</h3>
             <p>{product.category}</p>
-
             {product.brand && <p>🏷️ {product.brand}</p>}
-
             <h2>₪{product.price}</h2>
-
             <small>מלאי: {product.stock}</small>
-
-            {product.description && (
-              <p style={{ fontSize: "15px" }}>{product.description}</p>
-            )}
+            {product.description && <p style={{ fontSize: "15px" }}>{product.description}</p>}
 
             <button>🛒 הוסף לעגלה</button>
           </div>
