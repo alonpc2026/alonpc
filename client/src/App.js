@@ -24,6 +24,10 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminPermissions from "./pages/AdminPermissions";
 import AdminGallery from "./pages/AdminGallery";
 import AdminSecondHand from "./pages/AdminSecondHand";
+import AdminDocuments from "./pages/AdminDocuments";
+import AdminUploads from "./pages/AdminUploads";
+import AdminSettings from "./pages/AdminSettings";
+import AdminStatistics from "./pages/AdminStatistics";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -35,6 +39,8 @@ function App() {
         <Navbar />
 
         <Routes>
+
+          {/* אתר */}
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/service/:id" element={<ServiceDetails />} />
@@ -45,19 +51,64 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
 
+          {/* פורטל ניהול */}
           <Route path="/dashboard" element={<Dashboard />} />
 
+          {/* שירותים */}
           <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/service-categories" element={<AdminServiceCategories />} />
+          <Route
+            path="/admin/service-categories"
+            element={<AdminServiceCategories />}
+          />
+
+          {/* חנות */}
           <Route path="/admin/shop" element={<AdminShop />} />
-          <Route path="/admin/product-categories" element={<AdminProductCategories />} />
+          <Route
+            path="/admin/product-categories"
+            element={<AdminProductCategories />}
+          />
           <Route path="/admin/brands" element={<AdminBrands />} />
           <Route path="/admin/offers" element={<AdminOffers />} />
+          <Route
+            path="/admin/second-hand"
+            element={<AdminSecondHand />}
+          />
+
+          {/* משתמשים */}
           <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/permissions" element={<AdminPermissions />} />
+          <Route
+            path="/admin/permissions"
+            element={<AdminPermissions />}
+          />
+
+          {/* מדיה */}
           <Route path="/admin/gallery" element={<AdminGallery />} />
-          <Route path="/admin/second-hand" element={<AdminSecondHand />} />
-          <Route path="/admin/bookings" element={<AdminBookings />} />
+          <Route
+            path="/admin/documents"
+            element={<AdminDocuments />}
+          />
+          <Route
+            path="/admin/uploads"
+            element={<AdminUploads />}
+          />
+
+          {/* מערכת */}
+          <Route
+            path="/admin/settings"
+            element={<AdminSettings />}
+          />
+
+          <Route
+            path="/admin/statistics"
+            element={<AdminStatistics />}
+          />
+
+          {/* הזמנות */}
+          <Route
+            path="/admin/bookings"
+            element={<AdminBookings />}
+          />
+
         </Routes>
       </div>
     </BrowserRouter>

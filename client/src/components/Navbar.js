@@ -13,6 +13,7 @@ function Navbar() {
       home: "בית",
       services: "שירותים",
       shop: "חנות",
+      secondHand: "יד שנייה",
       about: "אודות",
       contact: "צור קשר",
       adminTitle: "כניסת מנהל",
@@ -26,6 +27,7 @@ function Navbar() {
       home: "Home",
       services: "Services",
       shop: "Shop",
+      secondHand: "Second Hand",
       about: "About",
       contact: "Contact",
       adminTitle: "Admin Login",
@@ -39,6 +41,7 @@ function Navbar() {
       home: "Главная",
       services: "Услуги",
       shop: "Магазин",
+      secondHand: "Б/у",
       about: "О нас",
       contact: "Контакты",
       adminTitle: "Вход администратора",
@@ -52,6 +55,7 @@ function Navbar() {
       home: "الرئيسية",
       services: "الخدمات",
       shop: "المتجر",
+      secondHand: "مستعمل",
       about: "من نحن",
       contact: "اتصل بنا",
       adminTitle: "دخول المدير",
@@ -65,6 +69,7 @@ function Navbar() {
       home: "መነሻ",
       services: "አገልግሎቶች",
       shop: "ሱቅ",
+      secondHand: "ሁለተኛ እጅ",
       about: "ስለ እኛ",
       contact: "አግኙን",
       adminTitle: "የአስተዳዳሪ መግቢያ",
@@ -85,7 +90,7 @@ function Navbar() {
   }, [lang]);
 
   const loginAdmin = () => {
-    if (username === "korkusal" && password === "631892") {
+    if (username.trim() === "korkusal" && password === "631892") {
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -144,6 +149,7 @@ function Navbar() {
         <Link className="homeBtn" to="/">🏠 {n.home}</Link>
         <Link className="servicesBtn" to="/services">🛎️ {n.services}</Link>
         <Link className="shopBtn" to="/shop">🛍️ {n.shop}</Link>
+        <Link className="secondHandBtn" to="/second-hand">♻️ {n.secondHand}</Link>
         <Link className="aboutBtn" to="/about">ℹ️ {n.about}</Link>
         <Link className="contactBtn" to="/contact">✉️ {n.contact}</Link>
 
