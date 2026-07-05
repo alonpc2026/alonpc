@@ -25,7 +25,7 @@ function Dashboard() {
     <section className="loginBox">
       <h2>⚙️ פורטל ניהול ALON PC</h2>
 
-      <p>ברוך הבא {user.name || "מנהל"}</p>
+      <p>ברוך הבא {user.name || "Alon Admin"}</p>
 
       <div className="dashboardGrid">
 
@@ -43,14 +43,7 @@ function Dashboard() {
           🛒 ניהול חנות
         </Link>
 
-        <Link to="/admin/shop" className="dashboardCard">
-          📦 ניהול מוצרים
-        </Link>
-
-        <Link
-          to="/admin/product-categories"
-          className="dashboardCard"
-        >
+        <Link to="/admin/product-categories" className="dashboardCard">
           🗂️ קטגוריות מוצרים
         </Link>
 
@@ -60,6 +53,11 @@ function Dashboard() {
 
         <Link to="/admin/offers" className="dashboardCard">
           💰 מבצעים
+        </Link>
+
+        {/* יד שנייה */}
+        <Link to="/admin/second-hand" className="dashboardCard">
+          ♻️ ניהול יד שנייה
         </Link>
 
         {/* הזמנות */}
