@@ -1,38 +1,35 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 function Shop() {
+  const API = "http://localhost:3001/api/products";
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("הכול");
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error(err));
+    loadProducts();
   }, []);
 
-  const categories = ["הכול", ...new Set(products.map((p) => p.category))];
+  const loadProducts = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      setProducts(data);
+    } catch {
+      setMessage("לא ניתן לטעון מוצרים כרגע");
+    }
+  };
 
   const filteredProducts = products.filter((product) => {
-    const text = `${product.name} ${product.category} ${product.brand || ""} ${product.description || ""}`.toLowerCase();
-    return (
-      text.includes(search.toLowerCase()) &&
-      (selectedCategory === "הכול" || product.category === selectedCategory)
-    );
+    const text = ${product.name} ${product.category} ${product.brand} ${product.description || ""}.toLowerCase();
+    return text.includes(search.toLowerCase());
   });
 
   return (
     <div>
       <section className="heroBanner">
-        <h2>🛒 חנות ALON PC</h2>
-        <p>מחשבים • מדפסות • ציוד היקפי • ציוד נגישות • הזמנת שירות</p>
-
-        <button onClick={() => navigate("/booking")}>
-          📅 הזמן שירות עכשיו
-        </button>
+        <h2>🛍️ חנות אלון</h2>
+        <p>מחשבים • מדפסות • ציוד היקפי • תוכנות • סטרימרים</p>
       </section>
 
       <div className="searchBox">
@@ -44,41 +41,25 @@ function Shop() {
         />
       </div>
 
-      <div className="categoryBox">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={selectedCategory === category ? "activeCategory" : ""}
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+      {message && <p style={{ textAlign: "center", color: "white" }}>{message}</p>}
 
       <main className="grid">
-        {filteredProducts.length === 0 && (
-          <h3 style={{ color: "white", textAlign: "center" }}>
-            עדיין אין מוצרים בחנות
-          </h3>
-        )}
-
         {filteredProducts.map((product) => (
           <div className="card" key={product._id}>
-            {product.imageUrl ? (
-              <img src={product.imageUrl} alt={product.name} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "16px", background: "white" }} />
-            ) : (
-              <div style={{ fontSize: "50px" }}>🛒</div>
-            )}
-
             <h3>{product.name}</h3>
             <p>{product.category}</p>
-            {product.brand && <p>🏷️ {product.brand}</p>}
+            <p>{product.brand}</p>
             <h2>₪{product.price}</h2>
-            <small>מלאי: {product.stock}</small>
-            {product.description && <p style={{ fontSize: "15px" }}>{product.description}</p>}
 
-            <button>🛒 הוסף לעגלה</button>
+            <a
+              href={`https://wa.me/972545221809?text=${encodeURIComponent(
+                שלום אלון, אני מתעניין במוצר: ${product.name}
+              )}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <button>💬 WhatsApp</button>
+            </a>
           </div>
         ))}
       </main>

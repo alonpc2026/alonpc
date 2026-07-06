@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 function AdminShop() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const API = "http://localhost:3001/api/products";
+
   const [products, setProducts] = useState([]);
+  const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
@@ -9,242 +13,160 @@ function AdminShop() {
     category: "",
     brand: "",
     price: "",
-    stock: "",
-    description: "",
+    oldPrice: "",
     imageUrl: "",
+    description: "",
+    stock: "",
+    condition: "חדש",
   });
-
-  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     loadProducts();
   }, []);
 
+  if (!user || user.role !== "admin") {
+    return (
+      <section className="loginBox">
+        <h2>🔐 אין הרשאה</h2>
+        <p>רק מנהל מחובר יכול לנהל חנות.</p>
+      </section>
+    );
+  }
+
   const loadProducts = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/products");
+      const res = await fetch(API);
       const data = await res.json();
       setProducts(data);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setMessage("❌ שגיאה בטעינת מוצרים מהשרת");
     }
   };
 
   const updateField = (field, value) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setForm({ ...form, [field]: value });
   };
 
-  const uploadImage = async () => {
-    if (!selectedImage) {
-      setMessage("בחר תמונה");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", selectedImage);
-
-    try {
-      const res = await fetch("http://localhost:3001/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setForm((prev) => ({
-          ...prev,
-          imageUrl: data.imageUrl,
-        }));
-
-        setMessage("התמונה הועלתה בהצלחה");
-      } else {
-        setMessage("שגיאה בהעלאת התמונה");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("שגיאת שרת");
-    }
+  const clearForm = () => {
+    setEditId(null);
+    setForm({
+      name: "",
+      category: "",
+      brand: "",
+      price: "",
+      oldPrice: "",
+      imageUrl: "",
+      description: "",
+      stock: "",
+      condition: "חדש",
+    });
   };
 
   const saveProduct = async () => {
+    if (!form.name || !form.category || !form.price) {
+      setMessage("נא למלא שם מוצר, קטגוריה ומחיר");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:3001/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          price: Number(form.price),
-          stock: Number(form.stock),
-        }),
+      const res = await fetch(editId ? `${API}/${editId}` : API, {
+        method: editId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
 
-      if (res.ok) {
-        setMessage("המוצר נוסף בהצלחה");
+      if (!res.ok) throw new Error();
 
-        setForm({
-          name: "",
-          category: "",
-          brand: "",
-          price: "",
-          stock: "",
-          description: "",
-          imageUrl: "",
-        });
-
-        setSelectedImage(null);
-
-        loadProducts();
-      } else {
-        setMessage("שגיאה בשמירת המוצר");
-      }
-    } catch (err) {
-      console.error(err);
+      setMessage(editId ? "✅ המוצר עודכן" : "✅ המוצר נוסף");
+      clearForm();
+      loadProducts();
+    } catch {
+      setMessage("❌ שגיאה בשמירת מוצר");
     }
+  };
+
+  const startEdit = (product) => {
+    setEditId(product._id);
+    setForm({
+      name: product.name || "",
+      category: product.category || "",
+      brand: product.brand || "",
+      price: product.price || "",
+      oldPrice: product.oldPrice || "",
+      imageUrl: product.imageUrl || "",
+      description: product.description || "",
+      stock: product.stock || "",
+      condition: product.condition || "חדש",
+    });
   };
 
   const deleteProduct = async (id) => {
     if (!window.confirm("למחוק מוצר?")) return;
 
-    await fetch(`http://localhost:3001/api/products/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
 
-    loadProducts();
+      setMessage("🗑️ המוצר נמחק");
+      loadProducts();
+    } catch {
+      setMessage("❌ שגיאה במחיקת מוצר");
+    }
   };
 
   return (
     <section className="loginBox">
+      <h2>🛒 ניהול חנות MongoDB</h2>
 
-      <h2>🛒 ניהול חנות ALON PC</h2>
+      <input placeholder="שם מוצר" value={form.name} onChange={(e) => updateField("name", e.target.value)} />
+      <input placeholder="קטגוריה" value={form.category} onChange={(e) => updateField("category", e.target.value)} />
+      <input placeholder="מותג" value={form.brand} onChange={(e) => updateField("brand", e.target.value)} />
+      <input type="number" placeholder="מחיר" value={form.price} onChange={(e) => updateField("price", e.target.value)} />
+      <input type="number" placeholder="מחיר לפני מבצע" value={form.oldPrice} onChange={(e) => updateField("oldPrice", e.target.value)} />
+      <input placeholder="קישור לתמונה" value={form.imageUrl} onChange={(e) => updateField("imageUrl", e.target.value)} />
+      <input placeholder="מלאי" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} />
 
-      <input
-        placeholder="שם מוצר"
-        value={form.name}
-        onChange={(e) => updateField("name", e.target.value)}
-      />
+      <select value={form.condition} onChange={(e) => updateField("condition", e.target.value)}>
+        <option value="חדש">חדש</option>
+        <option value="כמו חדש">כמו חדש</option>
+        <option value="יד שנייה">יד שנייה</option>
+        <option value="דורש תיקון">דורש תיקון</option>
+      </select>
 
-      <input
-        placeholder="קטגוריה"
-        value={form.category}
-        onChange={(e) => updateField("category", e.target.value)}
-      />
-
-      <input
-        placeholder="מותג"
-        value={form.brand}
-        onChange={(e) => updateField("brand", e.target.value)}
-      />
-
-      <input
-        type="number"
-        placeholder="מחיר"
-        value={form.price}
-        onChange={(e) => updateField("price", e.target.value)}
-      />
-
-      <input
-        type="number"
-        placeholder="מלאי"
-        value={form.stock}
-        onChange={(e) => updateField("stock", e.target.value)}
-      />
-
-      <textarea
-        placeholder="תיאור"
-        value={form.description}
-        onChange={(e) => updateField("description", e.target.value)}
-      />
-
-      <hr />
-
-      <h3>🖼️ תמונת מוצר</h3>
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setSelectedImage(e.target.files[0])}
-      />
-
-      <button onClick={uploadImage}>
-        ⬆️ העלה תמונה
-      </button>
-
-      {form.imageUrl && (
-        <div style={{ marginTop: 15 }}>
-          <img
-            src={form.imageUrl}
-            alt="preview"
-            style={{
-              width: 150,
-              borderRadius: 12,
-            }}
-          />
-        </div>
-      )}
-
-      <br />
+      <textarea placeholder="תיאור מוצר" value={form.description} onChange={(e) => updateField("description", e.target.value)} />
 
       <button onClick={saveProduct}>
-        💾 שמור מוצר
+        {editId ? "💾 שמור עריכה" : "➕ הוסף מוצר"}
       </button>
+
+      {editId && <button onClick={clearForm}>❌ ביטול עריכה</button>}
 
       <p>{message}</p>
 
       <hr />
 
-      <h2>📦 רשימת מוצרים</h2>
+      <h2>מוצרים קיימים</h2>
 
-      {products.length === 0 && (
-        <p>עדיין אין מוצרים.</p>
-      )}
+      {products.length === 0 && <p>אין מוצרים עדיין.</p>}
 
       {products.map((product) => (
-        <div
-          key={product._id}
-          className="adminService"
-        >
+        <div className="adminService" key={product._id}>
           {product.imageUrl && (
             <img
               src={product.imageUrl}
               alt={product.name}
-              style={{
-                width: 90,
-                height: 90,
-                objectFit: "cover",
-                borderRadius: 10,
-              }}
+              style={{ width: 90, height: 90, objectFit: "cover", borderRadius: 10 }}
             />
           )}
 
           <h3>{product.name}</h3>
+          <p>קטגוריה: {product.category}</p>
+          <p>מותג: {product.brand}</p>
+          <p>מחיר: ₪{product.price}</p>
+          <p>מצב: {product.condition}</p>
 
-          <p>
-            <strong>קטגוריה:</strong> {product.category}
-          </p>
-
-          <p>
-            <strong>מותג:</strong> {product.brand}
-          </p>
-
-          <p>
-            <strong>מחיר:</strong> ₪{product.price}
-          </p>
-
-          <p>
-            <strong>מלאי:</strong> {product.stock}
-          </p>
-
-          <button
-            onClick={() => deleteProduct(product._id)}
-          >
-            🗑️ מחק
-          </button>
+          <button onClick={() => startEdit(product)}>✏️ ערוך</button>
+          <button onClick={() => deleteProduct(product._id)}>🗑️ מחק</button>
         </div>
       ))}
     </section>

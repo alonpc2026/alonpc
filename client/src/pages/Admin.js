@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
 function Admin() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [services, setServices] = useState([]);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const user = JSON.parse(localStorage.getItem("user"));
 
   const [form, setForm] = useState({
     name: "",
@@ -21,6 +20,8 @@ function Admin() {
     imageUrl: "",
   });
 
+  const API = "http://localhost:3001/api/services";
+
   useEffect(() => {
     loadServices();
   }, []);
@@ -28,17 +29,20 @@ function Admin() {
   if (!user || user.role !== "admin") {
     return (
       <section className="loginBox">
-        <h2>אין הרשאה</h2>
-        <p>רק מנהל מחובר יכול להוסיף או לערוך שירותים.</p>
+        <h2>🔐 אין הרשאה</h2>
+        <p>רק מנהל מחובר יכול לנהל שירותים.</p>
       </section>
     );
   }
 
-  const loadServices = () => {
-    fetch("http://localhost:3001/api/services")
-      .then((res) => res.json())
-      .then((data) => setServices(data))
-      .catch(() => setMessage("שגיאה בטעינת שירותים"));
+  const loadServices = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      setServices(data);
+    } catch (error) {
+      setMessage("❌ שגיאה בטעינת שירותים מהשרת");
+    }
   };
 
   const updateForm = (field, value) => {
@@ -47,7 +51,6 @@ function Admin() {
 
   const clearForm = () => {
     setEditId(null);
-    setSelectedImage(null);
     setForm({
       name: "",
       category: "",
@@ -62,59 +65,36 @@ function Admin() {
     });
   };
 
-  const uploadImage = async () => {
-    if (!selectedImage) {
-      setMessage("בחר תמונה קודם");
-      return;
-    }
-
-    const imageData = new FormData();
-    imageData.append("image", selectedImage);
-
-    const response = await fetch("http://localhost:3001/api/upload", {
-      method: "POST",
-      body: imageData,
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      updateForm("imageUrl", data.imageUrl);
-      setMessage("התמונה הועלתה בהצלחה");
-    } else {
-      setMessage("שגיאה בהעלאת תמונה");
-    }
-  };
-
   const saveService = async () => {
     if (!form.name || !form.category) {
       setMessage("נא למלא שם שירות וקטגוריה");
       return;
     }
 
-    const url = editId
-      ? `http://localhost:3001/api/services/${editId}`
-      : "http://localhost:3001/api/services";
+    try {
+      const res = await fetch(editId ? `${API}/${editId}` : API, {
+        method: editId ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
 
-    const method = editId ? "PUT" : "POST";
+      if (!res.ok) {
+        throw new Error("save failed");
+      }
 
-    const response = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-
-    if (response.ok) {
-      setMessage(editId ? "השירות עודכן בהצלחה" : "השירות נוסף בהצלחה");
+      setMessage(editId ? "✅ השירות עודכן ב־MongoDB" : "✅ השירות נוסף ל־MongoDB");
       clearForm();
       loadServices();
-    } else {
-      setMessage("שגיאה בשמירת שירות");
+    } catch (error) {
+      setMessage("❌ שגיאה בשמירת שירות");
     }
   };
 
   const startEdit = (service) => {
     setEditId(service._id);
+
     setForm({
       name: service.name || "",
       category: service.category || "",
@@ -127,25 +107,32 @@ function Admin() {
       hours: service.hours || "",
       imageUrl: service.imageUrl || "",
     });
-    setMessage("מצב עריכה פעיל");
+
+    setMessage("✏️ מצב עריכה פעיל");
   };
 
   const deleteService = async (id) => {
     if (!window.confirm("למחוק שירות?")) return;
 
-    const response = await fetch(`http://localhost:3001/api/services/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+      });
 
-    if (response.ok) {
-      setMessage("השירות נמחק");
+      if (!res.ok) {
+        throw new Error("delete failed");
+      }
+
+      setMessage("🗑️ השירות נמחק מ־MongoDB");
       loadServices();
+    } catch (error) {
+      setMessage("❌ שגיאה במחיקת שירות");
     }
   };
 
   return (
     <section className="loginBox">
-      <h2>📋 ניהול שירותים</h2>
+      <h2>📋 ניהול שירותים MongoDB</h2>
 
       <input
         placeholder="שם השירות"
@@ -160,7 +147,7 @@ function Admin() {
       />
 
       <input
-        placeholder="אייקון לדוגמה: ♿ 🏥 💻"
+        placeholder="אייקון לדוגמה: 🦷 🏥 💻 ♿"
         value={form.icon}
         onChange={(e) => updateForm("icon", e.target.value)}
       />
@@ -201,35 +188,11 @@ function Admin() {
         onChange={(e) => updateForm("hours", e.target.value)}
       />
 
-      <hr />
-
-      <h3>🖼️ תמונת שירות / לוגו</h3>
-
       <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setSelectedImage(e.target.files[0])}
+        placeholder="קישור לתמונה / לוגו"
+        value={form.imageUrl}
+        onChange={(e) => updateForm("imageUrl", e.target.value)}
       />
-
-      <button onClick={uploadImage}>⬆️ העלה תמונה</button>
-
-      {form.imageUrl && (
-        <div>
-          <p>תצוגה מקדימה:</p>
-          <img
-            src={form.imageUrl}
-            alt="preview"
-            style={{
-              width: "150px",
-              height: "150px",
-              objectFit: "cover",
-              borderRadius: "16px",
-            }}
-          />
-        </div>
-      )}
-
-      <hr />
 
       <button onClick={saveService}>
         {editId ? "💾 שמור עריכה" : "➕ הוסף שירות"}
@@ -243,6 +206,8 @@ function Admin() {
 
       <h2>שירותים קיימים</h2>
 
+      {services.length === 0 && <p>אין שירותים עדיין.</p>}
+
       {services.map((service) => (
         <div className="adminService" key={service._id}>
           {service.imageUrl ? (
@@ -250,21 +215,19 @@ function Admin() {
               src={service.imageUrl}
               alt={service.name}
               style={{
-                width: "90px",
-                height: "90px",
+                width: 90,
+                height: 90,
                 objectFit: "cover",
-                borderRadius: "12px",
+                borderRadius: 10,
               }}
             />
           ) : (
-            <div style={{ fontSize: "40px" }}>{service.icon}</div>
+            <div style={{ fontSize: 38 }}>{service.icon}</div>
           )}
 
           <h3>{service.name}</h3>
           <p>{service.category}</p>
-
-          {service.phone && <p>📞 {service.phone}</p>}
-          {service.address && <p>📍 {service.address}</p>}
+          <p>{service.description}</p>
 
           <button onClick={() => startEdit(service)}>✏️ ערוך</button>
           <button onClick={() => deleteService(service._id)}>🗑️ מחק</button>

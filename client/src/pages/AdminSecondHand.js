@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 function AdminSecondHand() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const API = "http://localhost:3001/api/second-hand";
 
   const [items, setItems] = useState([]);
+  const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
-  const [editIndex, setEditIndex] = useState(-1);
 
   const [form, setForm] = useState({
     name: "",
@@ -18,8 +19,7 @@ function AdminSecondHand() {
   });
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("secondHandItems")) || [];
-    setItems(saved);
+    loadItems();
   }, []);
 
   if (!user || user.role !== "admin") {
@@ -31,17 +31,22 @@ function AdminSecondHand() {
     );
   }
 
+  const loadItems = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      setItems(data);
+    } catch {
+      setMessage("❌ שגיאה בטעינת מוצרי יד שנייה");
+    }
+  };
+
   const updateField = (field, value) => {
     setForm({ ...form, [field]: value });
   };
 
-  const saveItems = (list) => {
-    localStorage.setItem("secondHandItems", JSON.stringify(list));
-    setItems(list);
-  };
-
   const clearForm = () => {
-    setEditIndex(-1);
+    setEditId(null);
     setForm({
       name: "",
       category: "",
@@ -53,41 +58,59 @@ function AdminSecondHand() {
     });
   };
 
-  const saveItem = () => {
+  const saveItem = async () => {
     if (!form.name || !form.price) {
       setMessage("נא למלא שם מוצר ומחיר");
       return;
     }
 
-    if (editIndex >= 0) {
-      const list = [...items];
-      list[editIndex] = form;
-      saveItems(list);
-      setMessage("✅ המוצר עודכן");
-    } else {
-      saveItems([...items, form]);
-      setMessage("✅ מוצר יד שנייה נוסף");
+    try {
+      const res = await fetch(editId ? `${API}/${editId}` : API, {
+        method: editId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error();
+
+      setMessage(editId ? "✅ מוצר יד שנייה עודכן" : "✅ מוצר יד שנייה נוסף");
+      clearForm();
+      loadItems();
+    } catch {
+      setMessage("❌ שגיאה בשמירת מוצר יד שנייה");
     }
-
-    clearForm();
   };
 
-  const editItem = (index) => {
-    setEditIndex(index);
-    setForm(items[index]);
+  const startEdit = (item) => {
+    setEditId(item._id);
+    setForm({
+      name: item.name || "",
+      category: item.category || "",
+      brand: item.brand || "",
+      condition: item.condition || "",
+      price: item.price || "",
+      imageUrl: item.imageUrl || "",
+      description: item.description || "",
+    });
   };
 
-  const deleteItem = (index) => {
+  const deleteItem = async (id) => {
     if (!window.confirm("למחוק מוצר יד שנייה?")) return;
 
-    const list = items.filter((_, i) => i !== index);
-    saveItems(list);
-    setMessage("🗑️ המוצר נמחק");
+    try {
+      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+
+      setMessage("🗑️ מוצר יד שנייה נמחק");
+      loadItems();
+    } catch {
+      setMessage("❌ שגיאה במחיקה");
+    }
   };
 
   return (
     <section className="loginBox">
-      <h2>♻️ ניהול היד השנייה של אלון</h2>
+      <h2>♻️ ניהול יד שנייה MongoDB</h2>
 
       <input
         placeholder="שם מוצר"
@@ -148,19 +171,21 @@ function AdminSecondHand() {
       />
 
       <button onClick={saveItem}>
-        {editIndex >= 0 ? "💾 שמור עריכה" : "➕ הוסף מוצר"}
+        {editId ? "💾 שמור עריכה" : "➕ הוסף מוצר יד שנייה"}
       </button>
 
-      {editIndex >= 0 && <button onClick={clearForm}>❌ ביטול</button>}
+      {editId && <button onClick={clearForm}>❌ ביטול עריכה</button>}
 
       <p>{message}</p>
 
       <hr />
 
+      <h2>מוצרים קיימים ביד שנייה</h2>
+
       {items.length === 0 && <p>אין עדיין מוצרים ביד השנייה.</p>}
 
-      {items.map((item, index) => (
-        <div className="adminService" key={index}>
+      {items.map((item) => (
+        <div className="adminService" key={item._id}>
           {item.imageUrl && (
             <img
               src={item.imageUrl}
@@ -175,13 +200,14 @@ function AdminSecondHand() {
           )}
 
           <h3>{item.name}</h3>
-          <p>{item.category}</p>
+          <p>קטגוריה: {item.category}</p>
           <p>מותג: {item.brand}</p>
           <p>מצב: {item.condition}</p>
           <p>מחיר: ₪{item.price}</p>
+          <p>{item.description}</p>
 
-          <button onClick={() => editItem(index)}>✏️ ערוך</button>
-          <button onClick={() => deleteItem(index)}>🗑️ מחק</button>
+          <button onClick={() => startEdit(item)}>✏️ ערוך</button>
+          <button onClick={() => deleteItem(item._id)}>🗑️ מחק</button>
         </div>
       ))}
     </section>

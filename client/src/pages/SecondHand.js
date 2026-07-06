@@ -1,18 +1,36 @@
 import { useEffect, useState } from "react";
 
 function SecondHand() {
+  const API = "http://localhost:3001/api/second-hand";
+
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("secondHandItems")) || [];
-    setItems(saved);
+    loadItems();
   }, []);
 
+  const loadItems = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      setItems(data);
+    } catch {
+      setMessage("לא ניתן לטעון מוצרי יד שנייה כרגע");
+    }
+  };
+
   const filteredItems = items.filter((item) => {
-    const text = `${item.name} ${item.category} ${item.condition} ${item.description || ""}`.toLowerCase();
+    const text = `${item.name} ${item.category} ${item.brand} ${item.condition} ${item.description || ""}`.toLowerCase();
     return text.includes(search.toLowerCase());
   });
+
+  const whatsappText = (item) => {
+    return encodeURIComponent(
+      `שלום אלון, אני מתעניין במוצר יד שנייה:\n\n${item.name}\nמחיר: ₪${item.price}\nמצב: ${item.condition}`
+    );
+  };
 
   return (
     <div>
@@ -30,15 +48,21 @@ function SecondHand() {
         />
       </div>
 
+      {message && (
+        <p style={{ textAlign: "center", color: "white", fontWeight: "bold" }}>
+          {message}
+        </p>
+      )}
+
       <main className="grid">
-        {filteredItems.length === 0 && (
+        {filteredItems.length === 0 && !message && (
           <h3 style={{ color: "white", textAlign: "center" }}>
             עדיין אין מוצרים ביד השנייה
           </h3>
         )}
 
-        {filteredItems.map((item, index) => (
-          <div className="card" key={index}>
+        {filteredItems.map((item) => (
+          <div className="card" key={item._id}>
             {item.imageUrl ? (
               <img
                 src={item.imageUrl}
@@ -57,6 +81,7 @@ function SecondHand() {
 
             <h3>{item.name}</h3>
             <p>{item.category}</p>
+            {item.brand && <p>מותג: {item.brand}</p>}
             <p>מצב: {item.condition}</p>
             <h2>₪{item.price}</h2>
 
@@ -65,7 +90,7 @@ function SecondHand() {
             )}
 
             <a
-              href="https://wa.me/972545221809"
+              href={`https://wa.me/972545221809?text=${whatsappText(item)}`}
               target="_blank"
               rel="noreferrer"
             >
