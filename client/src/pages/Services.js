@@ -23,7 +23,7 @@ function Services() {
   };
 
   const filteredServices = services.filter((service) => {
-    const text = ${service.name} ${service.category} ${service.description || ""}.toLowerCase();
+    const text = `${service.name} ${service.category} ${service.description || ""}`.toLowerCase();
     return text.includes(search.toLowerCase());
   });
 
@@ -50,7 +50,7 @@ function Services() {
           <button
             className="card"
             key={service._id}
-            onClick={() => navigate(/service/${service._id})}
+            onClick={() => navigate(`/service/${service._id}`)}
           >
             <h3>{service.icon || "🛎️"} {service.name}</h3>
             <p>{service.category}</p>

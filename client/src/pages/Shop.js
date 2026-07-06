@@ -21,7 +21,7 @@ function Shop() {
   };
 
   const filteredProducts = products.filter((product) => {
-    const text = ${product.name} ${product.category} ${product.brand} ${product.description || ""}.toLowerCase();
+    const text = `${product.name} ${product.category} ${product.brand} ${product.description || ""}`.toLowerCase();
     return text.includes(search.toLowerCase());
   });
 
@@ -53,7 +53,7 @@ function Shop() {
 
             <a
               href={`https://wa.me/972545221809?text=${encodeURIComponent(
-                שלום אלון, אני מתעניין במוצר: ${product.name}
+                `שלום אלון, אני מתעניין במוצר: ${product.name}`
               )}`}
               target="_blank"
               rel="noreferrer"
