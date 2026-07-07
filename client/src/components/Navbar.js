@@ -14,6 +14,7 @@ function Navbar() {
       services: "שירותים",
       shop: "חנות",
       secondHand: "יד שנייה",
+      documents: "מסמכים",
       about: "אודות",
       contact: "צור קשר",
       adminTitle: "כניסת מנהל",
@@ -28,6 +29,7 @@ function Navbar() {
       services: "Services",
       shop: "Shop",
       secondHand: "Second Hand",
+      documents: "Documents",
       about: "About",
       contact: "Contact",
       adminTitle: "Admin Login",
@@ -42,6 +44,7 @@ function Navbar() {
       services: "Услуги",
       shop: "Магазин",
       secondHand: "Б/у",
+      documents: "Документы",
       about: "О нас",
       contact: "Контакты",
       adminTitle: "Вход администратора",
@@ -56,6 +59,7 @@ function Navbar() {
       services: "الخدمات",
       shop: "المتجر",
       secondHand: "مستعمل",
+      documents: "الملفات",
       about: "من نحن",
       contact: "اتصل بنا",
       adminTitle: "دخول المدير",
@@ -70,6 +74,7 @@ function Navbar() {
       services: "አገልግሎቶች",
       shop: "ሱቅ",
       secondHand: "ሁለተኛ እጅ",
+      documents: "ሰነዶች",
       about: "ስለ እኛ",
       contact: "አግኙን",
       adminTitle: "የአስተዳዳሪ መግቢያ",
@@ -150,6 +155,7 @@ function Navbar() {
         <Link className="servicesBtn" to="/services">🛎️ {n.services}</Link>
         <Link className="shopBtn" to="/shop">🛍️ {n.shop}</Link>
         <Link className="secondHandBtn" to="/second-hand">♻️ {n.secondHand}</Link>
+        <Link className="documentsBtn" to="/documents">📄 {n.documents}</Link>
         <Link className="aboutBtn" to="/about">ℹ️ {n.about}</Link>
         <Link className="contactBtn" to="/contact">✉️ {n.contact}</Link>
 
