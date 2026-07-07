@@ -11,54 +11,47 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// תיקיית תמונות
+// קבצים סטטיים
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// =======================
 // MongoDB
-// =======================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error(err));
+  .catch((err) => console.error("❌ MongoDB Error:", err));
 
-// =======================
-// Routes
-// =======================
+// ===== Routes =====
 const serviceRoutes = require("./routes/serviceRoutes");
 const productRoutes = require("./routes/productRoutes");
 const secondHandRoutes = require("./routes/secondHandRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const documentUploadRoutes = require("./routes/documentUploadRoutes");
+const documentRoutes = require("./routes/documentRoutes");
 
 app.use("/api/services", serviceRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/second-hand", secondHandRoutes);
 app.use("/api/bookings", bookingRoutes);
-app.use("/api/upload", uploadRoutes);
 
-// =======================
-// Home
-// =======================
+app.use("/api/upload", uploadRoutes);
+app.use("/api/documents/upload", documentUploadRoutes);
+app.use("/api/documents", documentRoutes);
+
+// דף הבית
 app.get("/", (req, res) => {
-  res.send("🚀 ALON PC API Server עובד");
+  res.send("🚀 ALON PC API Server");
 });
 
-// =======================
-// Health
-// =======================
+// בדיקת שרת
 app.get("/api/health", (req, res) => {
   res.json({
     success: true,
-    server: "ALON PC",
     mongodb: "Connected",
-    version: "1.0",
+    server: "ALON PC"
   });
 });
 
-// =======================
-// Start Server
-// =======================
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {

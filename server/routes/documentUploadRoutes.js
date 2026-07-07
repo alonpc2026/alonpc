@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+mport { useEffect, useState } from "react";
 
 function AdminSecondHand() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -63,6 +63,7 @@ function AdminSecondHand() {
       });
 
       const data = await res.json();
+
       if (!res.ok) throw new Error();
 
       updateField("imageUrl", data.imageUrl);
@@ -93,7 +94,7 @@ function AdminSecondHand() {
     }
 
     try {
-      const res = await fetch(editId ? `${API}/${editId}` : API, {
+      const res = await fetch(editId ? ${API}/${editId} : API, {
         method: editId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -128,7 +129,8 @@ function AdminSecondHand() {
     if (!window.confirm("למחוק מוצר יד שנייה?")) return;
 
     try {
-      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+      const res = await fetch(${API}/${id}, { method: "DELETE" });
+
       if (!res.ok) throw new Error();
 
       setMessage("🗑️ מוצר יד שנייה נמחק");
@@ -142,9 +144,16 @@ function AdminSecondHand() {
     <section className="loginBox">
       <h2>♻️ ניהול יד שנייה + העלאת תמונה</h2>
 
-      <input placeholder="שם מוצר" value={form.name} onChange={(e) => updateField("name", e.target.value)} />
+      <input
+        placeholder="שם מוצר"
+        value={form.name}
+        onChange={(e) => updateField("name", e.target.value)}
+      />
 
-      <select value={form.category} onChange={(e) => updateField("category", e.target.value)}>
+      <select
+        value={form.category}
+        onChange={(e) => updateField("category", e.target.value)}
+      >
         <option value="">בחר קטגוריה</option>
         <option value="מחשב נייד">מחשב נייד</option>
         <option value="מחשב נייח">מחשב נייח</option>
@@ -156,9 +165,16 @@ function AdminSecondHand() {
         <option value="שונות">שונות</option>
       </select>
 
-      <input placeholder="מותג" value={form.brand} onChange={(e) => updateField("brand", e.target.value)} />
+      <input
+        placeholder="מותג"
+        value={form.brand}
+        onChange={(e) => updateField("brand", e.target.value)}
+      />
 
-      <select value={form.condition} onChange={(e) => updateField("condition", e.target.value)}>
+      <select
+        value={form.condition}
+        onChange={(e) => updateField("condition", e.target.value)}
+      >
         <option value="">מצב המוצר</option>
         <option value="חדש">חדש</option>
         <option value="כמו חדש">כמו חדש</option>
@@ -167,24 +183,48 @@ function AdminSecondHand() {
         <option value="דורש תיקון">דורש תיקון</option>
       </select>
 
-      <input type="number" placeholder="מחיר" value={form.price} onChange={(e) => updateField("price", e.target.value)} />
+      <input
+        type="number"
+        placeholder="מחיר"
+        value={form.price}
+        onChange={(e) => updateField("price", e.target.value)}
+      />
 
-      <textarea placeholder="תיאור קצר" value={form.description} onChange={(e) => updateField("description", e.target.value)} />
+      <textarea
+        placeholder="תיאור קצר"
+        value={form.description}
+        onChange={(e) => updateField("description", e.target.value)}
+      />
 
       <hr />
 
       <h3>🖼️ תמונת מוצר יד שנייה</h3>
 
-      <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setSelectedImage(e.target.files[0])}
+      />
+
       <button onClick={uploadImage}>⬆️ העלה תמונה</button>
 
-      <input placeholder="קישור תמונה" value={form.imageUrl} onChange={(e) => updateField("imageUrl", e.target.value)} />
+      <input
+        placeholder="קישור תמונה"
+        value={form.imageUrl}
+        onChange={(e) => updateField("imageUrl", e.target.value)}
+      />
 
       {form.imageUrl && (
         <img
           src={form.imageUrl}
           alt="preview"
-          style={{ width: 140, height: 140, objectFit: "cover", borderRadius: 14, background: "white" }}
+          style={{
+            width: 140,
+            height: 140,
+            objectFit: "cover",
+            borderRadius: 14,
+            background: "white",
+          }}
         />
       )}
 
@@ -208,7 +248,12 @@ function AdminSecondHand() {
             <img
               src={item.imageUrl}
               alt={item.name}
-              style={{ width: 90, height: 90, objectFit: "cover", borderRadius: 10 }}
+              style={{
+                width: 90,
+                height: 90,
+                objectFit: "cover",
+                borderRadius: 10,
+              }}
             />
           )}
 
