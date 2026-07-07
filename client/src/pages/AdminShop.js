@@ -65,7 +65,6 @@ function AdminShop() {
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error();
 
       updateField("imageUrl", data.imageUrl);
@@ -98,7 +97,7 @@ function AdminShop() {
     }
 
     try {
-      const res = await fetch(editId ? ${API}/${editId} : API, {
+      const res = await fetch(editId ? `${API}/${editId}` : API, {
         method: editId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -135,8 +134,7 @@ function AdminShop() {
     if (!window.confirm("למחוק מוצר?")) return;
 
     try {
-      const res = await fetch(${API}/${id}, { method: "DELETE" });
-
+      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
 
       setMessage("🗑️ המוצר נמחק");
@@ -169,32 +167,16 @@ function AdminShop() {
       <hr />
 
       <h3>🖼️ תמונת מוצר</h3>
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setSelectedImage(e.target.files[0])}
-      />
-
+      <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
       <button onClick={uploadImage}>⬆️ העלה תמונה</button>
 
-      <input
-        placeholder="קישור תמונה"
-        value={form.imageUrl}
-        onChange={(e) => updateField("imageUrl", e.target.value)}
-      />
+      <input placeholder="קישור תמונה" value={form.imageUrl} onChange={(e) => updateField("imageUrl", e.target.value)} />
 
       {form.imageUrl && (
         <img
           src={form.imageUrl}
           alt="preview"
-          style={{
-            width: 140,
-            height: 140,
-            objectFit: "cover",
-            borderRadius: 14,
-            background: "white",
-          }}
+          style={{ width: 140, height: 140, objectFit: "cover", borderRadius: 14, background: "white" }}
         />
       )}
 
@@ -218,12 +200,7 @@ function AdminShop() {
             <img
               src={product.imageUrl}
               alt={product.name}
-              style={{
-                width: 90,
-                height: 90,
-                objectFit: "cover",
-                borderRadius: 10,
-              }}
+              style={{ width: 90, height: 90, objectFit: "cover", borderRadius: 10 }}
             />
           )}
 
