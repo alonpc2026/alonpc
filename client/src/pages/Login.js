@@ -1,23 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   const loginUser = () => {
-    if (username === "korkusal" && password === "631892") {
-      const adminUser = {
-        name: "Alon Admin",
-        email: "korkusal",
-        role: "admin",
-      };
+    if (username.trim() === "korkusal" && password === "631892") {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: "Alon Admin",
+          email: "korkusal",
+          role: "admin",
+        })
+      );
 
-      localStorage.setItem("user", JSON.stringify(adminUser));
       setMessage("התחברת כמנהל בהצלחה ✅");
 
       setTimeout(() => {
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
       }, 500);
     } else {
       setMessage("שם משתמש או סיסמה שגויים ❌");
