@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 function AdminDocuments() {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const API = "http://localhost:3001/api/documents";
-  const UPLOAD_API = "http://localhost:3001/api/documents/upload";
+  const API = "https://alonpc-server.onrender.com/api/documents";
+  const UPLOAD_API = "https://alonpc-server.onrender.com/api/documents/upload";
 
   const [documents, setDocuments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function SecondHand() {
-  const API = "http://localhost:3001/api/second-hand";
+  const API = "https://alonpc-server.onrender.com/api/second-hand";
 
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");

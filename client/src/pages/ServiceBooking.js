@@ -28,7 +28,7 @@ function ServiceBooking() {
 
     try {
       // שמירה במסד הנתונים
-      const response = await fetch("http://localhost:3001/api/bookings", {
+      const response = await fetch("https://alonpc-server.onrender.com/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

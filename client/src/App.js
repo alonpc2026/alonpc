@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function Documents() {
-  const API = "http://localhost:3001/api/documents";
+  const API = "https://alonpc-server.onrender.com/api/documents";
 
   const [documents, setDocuments] = useState([]);
   const [search, setSearch] = useState("");

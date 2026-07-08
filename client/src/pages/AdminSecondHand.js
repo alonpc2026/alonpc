@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 function AdminSecondHand() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const API = "http://localhost:3001/api/second-hand";
-  const UPLOAD_API = "http://localhost:3001/api/upload";
+  const API = "https://alonpc-server.onrender.com/api/second-hand";
+  const UPLOAD_API = "https://alonpc-server.onrender.com/api/upload";
 
   const [items, setItems] = useState([]);
   const [editId, setEditId] = useState(null);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function Shop() {
-  const API = "http://localhost:3001/api/products";
+  const API = "https://alonpc-server.onrender.com/api/products";
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");

@@ -20,7 +20,7 @@ function Admin() {
     imageUrl: "",
   });
 
-  const API = "http://localhost:3001/api/services";
+  const API = "https://alonpc-server.onrender.com/api/services";
 
   useEffect(() => {
     loadServices();

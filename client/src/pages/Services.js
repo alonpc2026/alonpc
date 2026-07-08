@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Services() {
-  const API = "http://localhost:3001/api/services";
+  const API = "https://alonpc-server.onrender.com/api/services";
   const [services, setServices] = useState([]);
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
