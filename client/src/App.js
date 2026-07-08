@@ -1,70 +1,79 @@
-import { useEffect, useState } from "react";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function Documents() {
-  const API = "https://alonpc-server.onrender.com/api/documents";
+import Navbar from "./components/Navbar";
 
-  const [documents, setDocuments] = useState([]);
-  const [search, setSearch] = useState("");
-  const [message, setMessage] = useState("");
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import ServiceDetails from "./pages/ServiceDetails";
+import Shop from "./pages/Shop";
+import SecondHand from "./pages/SecondHand";
+import Documents from "./pages/Documents";
+import ServiceBooking from "./pages/ServiceBooking";
 
-  useEffect(() => {
-    loadDocuments();
-  }, []);
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
-  const loadDocuments = async () => {
-    try {
-      const res = await fetch(API);
-      const data = await res.json();
-      setDocuments(Array.isArray(data) ? data : []);
-    } catch {
-      setMessage("לא ניתן לטעון מסמכים כרגע");
-    }
-  };
+import Admin from "./pages/Admin";
+import AdminShop from "./pages/AdminShop";
+import AdminBookings from "./pages/AdminBookings";
+import AdminServiceCategories from "./pages/AdminServiceCategories";
+import AdminProductCategories from "./pages/AdminProductCategories";
+import AdminBrands from "./pages/AdminBrands";
+import AdminOffers from "./pages/AdminOffers";
+import AdminUsers from "./pages/AdminUsers";
+import AdminPermissions from "./pages/AdminPermissions";
+import AdminGallery from "./pages/AdminGallery";
+import AdminSecondHand from "./pages/AdminSecondHand";
+import AdminDocuments from "./pages/AdminDocuments";
+import AdminUploads from "./pages/AdminUploads";
+import AdminSettings from "./pages/AdminSettings";
+import AdminStatistics from "./pages/AdminStatistics";
+import AdminBackup from "./pages/AdminBackup";
 
-  const filteredDocuments = documents.filter((doc) => {
-    const text = `${doc.title || ""} ${doc.category || ""} ${doc.description || ""}`.toLowerCase();
-    return text.includes(search.toLowerCase());
-  });
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
+function App() {
   return (
-    <div>
-      <section className="heroBanner">
-        <h2>📄 מסמכים להורדה</h2>
-        <p>טפסים • מחירונים • מדריכים • קבצי מידע</p>
-      </section>
+    <BrowserRouter>
+      <div className="app">
+        <Navbar />
 
-      <div className="searchBox">
-        <input
-          type="text"
-          placeholder="🔍 חפש מסמך..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/service/:id" element={<ServiceDetails />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/second-hand" element={<SecondHand />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/booking" element={<ServiceBooking />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/service-categories" element={<AdminServiceCategories />} />
+          <Route path="/admin/shop" element={<AdminShop />} />
+          <Route path="/admin/product-categories" element={<AdminProductCategories />} />
+          <Route path="/admin/brands" element={<AdminBrands />} />
+          <Route path="/admin/offers" element={<AdminOffers />} />
+          <Route path="/admin/second-hand" element={<AdminSecondHand />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/permissions" element={<AdminPermissions />} />
+          <Route path="/admin/gallery" element={<AdminGallery />} />
+          <Route path="/admin/documents" element={<AdminDocuments />} />
+          <Route path="/admin/uploads" element={<AdminUploads />} />
+          <Route path="/admin/settings" element={<AdminSettings />} />
+          <Route path="/admin/statistics" element={<AdminStatistics />} />
+          <Route path="/admin/backup" element={<AdminBackup />} />
+          <Route path="/admin/bookings" element={<AdminBookings />} />
+        </Routes>
       </div>
-
-      {message && <p style={{ textAlign: "center", color: "white" }}>{message}</p>}
-
-      <main className="grid">
-        {filteredDocuments.length === 0 && !message && (
-          <h3 style={{ color: "white", textAlign: "center" }}>
-            אין מסמכים עדיין
-          </h3>
-        )}
-
-        {filteredDocuments.map((doc) => (
-          <div className="card" key={doc._id}>
-            <h3>📄 {doc.title}</h3>
-            <p>{doc.category}</p>
-            <p>{doc.description}</p>
-
-            <a href={doc.fileUrl} target="_blank" rel="noreferrer">
-              <button>📂 פתח / הורד</button>
-            </a>
-          </div>
-        ))}
-      </main>
-    </div>
+    </BrowserRouter>
   );
 }
 
-export default Documents;
+export default App;
