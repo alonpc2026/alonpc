@@ -1,275 +1,35 @@
-mport { useEffect, useState } from "react";
+const express = require("express");
+const multer = require("multer");
+const path = require("path");
 
-function AdminSecondHand() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const API = "http://localhost:3001/api/second-hand";
-  const UPLOAD_API = "http://localhost:3001/api/upload";
+const router = express.Router();
 
-  const [items, setItems] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [message, setMessage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueName =
+      Date.now() +
+      "-" +
+      Math.round(Math.random() * 1000000000) +
+      path.extname(file.originalname);
 
-  const [form, setForm] = useState({
-    name: "",
-    category: "",
-    brand: "",
-    condition: "",
-    price: "",
-    imageUrl: "",
-    description: "",
-  });
+    cb(null, uniqueName);
+  },
+});
 
-  useEffect(() => {
-    loadItems();
-  }, []);
+const upload = multer({ storage });
 
-  if (!user || user.role !== "admin") {
-    return (
-      <section className="loginBox">
-        <h2>🔐 אין הרשאה</h2>
-        <p>רק מנהל יכול לנהל יד שנייה.</p>
-      </section>
-    );
+router.post("/", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "לא נבחר קובץ" });
   }
 
-  const loadItems = async () => {
-    try {
-      const res = await fetch(API);
-      const data = await res.json();
-      setItems(Array.isArray(data) ? data : []);
-    } catch {
-      setMessage("❌ שגיאה בטעינת מוצרי יד שנייה");
-    }
-  };
+  res.json({
+    fileUrl: `https://alonpc-server.onrender.com/uploads/${req.file.filename}`,
+    filename: req.file.filename,
+  });
+});
 
-  const updateField = (field, value) => {
-    setForm({ ...form, [field]: value });
-  };
-
-  const uploadImage = async () => {
-    if (!selectedImage) {
-      setMessage("בחר תמונה קודם");
-      return;
-    }
-
-    try {
-      const imageData = new FormData();
-      imageData.append("image", selectedImage);
-
-      const res = await fetch(UPLOAD_API, {
-        method: "POST",
-        body: imageData,
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error();
-
-      updateField("imageUrl", data.imageUrl);
-      setMessage("✅ התמונה הועלתה בהצלחה");
-    } catch {
-      setMessage("❌ שגיאה בהעלאת תמונה");
-    }
-  };
-
-  const clearForm = () => {
-    setEditId(null);
-    setSelectedImage(null);
-    setForm({
-      name: "",
-      category: "",
-      brand: "",
-      condition: "",
-      price: "",
-      imageUrl: "",
-      description: "",
-    });
-  };
-
-  const saveItem = async () => {
-    if (!form.name || !form.price) {
-      setMessage("נא למלא שם מוצר ומחיר");
-      return;
-    }
-
-    try {
-      const res = await fetch(editId ? ${API}/${editId} : API, {
-        method: editId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error();
-
-      setMessage(editId ? "✅ מוצר יד שנייה עודכן" : "✅ מוצר יד שנייה נוסף");
-      clearForm();
-      loadItems();
-    } catch {
-      setMessage("❌ שגיאה בשמירת מוצר יד שנייה");
-    }
-  };
-
-  const startEdit = (item) => {
-    setEditId(item._id);
-    setSelectedImage(null);
-
-    setForm({
-      name: item.name || "",
-      category: item.category || "",
-      brand: item.brand || "",
-      condition: item.condition || "",
-      price: item.price || "",
-      imageUrl: item.imageUrl || "",
-      description: item.description || "",
-    });
-  };
-
-  const deleteItem = async (id) => {
-    if (!window.confirm("למחוק מוצר יד שנייה?")) return;
-
-    try {
-      const res = await fetch(${API}/${id}, { method: "DELETE" });
-
-      if (!res.ok) throw new Error();
-
-      setMessage("🗑️ מוצר יד שנייה נמחק");
-      loadItems();
-    } catch {
-      setMessage("❌ שגיאה במחיקה");
-    }
-  };
-
-  return (
-    <section className="loginBox">
-      <h2>♻️ ניהול יד שנייה + העלאת תמונה</h2>
-
-      <input
-        placeholder="שם מוצר"
-        value={form.name}
-        onChange={(e) => updateField("name", e.target.value)}
-      />
-
-      <select
-        value={form.category}
-        onChange={(e) => updateField("category", e.target.value)}
-      >
-        <option value="">בחר קטגוריה</option>
-        <option value="מחשב נייד">מחשב נייד</option>
-        <option value="מחשב נייח">מחשב נייח</option>
-        <option value="מסך">מסך</option>
-        <option value="מדפסת">מדפסת</option>
-        <option value="חלקי מחשב">חלקי מחשב</option>
-        <option value="ציוד היקפי">ציוד היקפי</option>
-        <option value="ציוד נגישות">ציוד נגישות</option>
-        <option value="שונות">שונות</option>
-      </select>
-
-      <input
-        placeholder="מותג"
-        value={form.brand}
-        onChange={(e) => updateField("brand", e.target.value)}
-      />
-
-      <select
-        value={form.condition}
-        onChange={(e) => updateField("condition", e.target.value)}
-      >
-        <option value="">מצב המוצר</option>
-        <option value="חדש">חדש</option>
-        <option value="כמו חדש">כמו חדש</option>
-        <option value="טוב מאוד">טוב מאוד</option>
-        <option value="טוב">טוב</option>
-        <option value="דורש תיקון">דורש תיקון</option>
-      </select>
-
-      <input
-        type="number"
-        placeholder="מחיר"
-        value={form.price}
-        onChange={(e) => updateField("price", e.target.value)}
-      />
-
-      <textarea
-        placeholder="תיאור קצר"
-        value={form.description}
-        onChange={(e) => updateField("description", e.target.value)}
-      />
-
-      <hr />
-
-      <h3>🖼️ תמונת מוצר יד שנייה</h3>
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setSelectedImage(e.target.files[0])}
-      />
-
-      <button onClick={uploadImage}>⬆️ העלה תמונה</button>
-
-      <input
-        placeholder="קישור תמונה"
-        value={form.imageUrl}
-        onChange={(e) => updateField("imageUrl", e.target.value)}
-      />
-
-      {form.imageUrl && (
-        <img
-          src={form.imageUrl}
-          alt="preview"
-          style={{
-            width: 140,
-            height: 140,
-            objectFit: "cover",
-            borderRadius: 14,
-            background: "white",
-          }}
-        />
-      )}
-
-      <hr />
-
-      <button onClick={saveItem}>
-        {editId ? "💾 שמור עריכה" : "➕ הוסף מוצר יד שנייה"}
-      </button>
-
-      {editId && <button onClick={clearForm}>❌ ביטול עריכה</button>}
-
-      <p>{message}</p>
-
-      <hr />
-
-      <h2>מוצרים קיימים ביד שנייה</h2>
-
-      {items.map((item) => (
-        <div className="adminService" key={item._id}>
-          {item.imageUrl && (
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              style={{
-                width: 90,
-                height: 90,
-                objectFit: "cover",
-                borderRadius: 10,
-              }}
-            />
-          )}
-
-          <h3>{item.name}</h3>
-          <p>קטגוריה: {item.category}</p>
-          <p>מותג: {item.brand}</p>
-          <p>מצב: {item.condition}</p>
-          <p>מחיר: ₪{item.price}</p>
-          <p>{item.description}</p>
-
-          <button onClick={() => startEdit(item)}>✏️ ערוך</button>
-          <button onClick={() => deleteItem(item._id)}>🗑️ מחק</button>
-        </div>
-      ))}
-    </section>
-  );
-}
-
-export default AdminSecondHand;
+module.exports = router;

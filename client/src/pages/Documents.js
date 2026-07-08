@@ -1,36 +1,78 @@
-const express = require("express");
-const multer = require("multer");
-const path = require("path");
+import { useEffect, useState } from "react";
 
-const router = express.Router();
+function Documents() {
+  const API = "http://localhost:3001/api/documents";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
+  const [documents, setDocuments] = useState([]);
+  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
 
-  filename: function (req, file, cb) {
-    const uniqueName =
-      Date.now() +
-      "-" +
-      Math.round(Math.random() * 1000000000) +
-      path.extname(file.originalname);
+  useEffect(() => {
+    loadDocuments();
+  }, []);
 
-    cb(null, uniqueName);
-  },
-});
+  const loadDocuments = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
 
-const upload = multer({ storage });
+      if (Array.isArray(data)) {
+        setDocuments(data);
+      } else {
+        setDocuments([]);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("לא ניתן לטעון מסמכים כרגע");
+    }
+  };
 
-router.post("/", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "לא נבחר קובץ" });
-  }
-
-  res.json({
-    fileUrl: `https://alonpc-server.onrender.com/uploads/${req.file.filename}`,
-    filename: req.file.filename,
+  const filteredDocuments = documents.filter((doc) => {
+    const text = `${doc.title || ""} ${doc.category || ""} ${doc.description || ""}`.toLowerCase();
+    return text.includes(search.toLowerCase());
   });
-});
 
-module.exports = router;
+  return (
+    <div className="pageContainer">
+      <h1>📄 מסמכים</h1>
+
+      <input
+        type="text"
+        placeholder="חפש מסמך..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="searchInput"
+      />
+
+      {message && <p>{message}</p>}
+
+      <div className="grid">
+        {filteredDocuments.length === 0 ? (
+          <p>אין מסמכים להצגה.</p>
+        ) : (
+          filteredDocuments.map((doc) => (
+            <div className="card" key={doc._id}>
+              <h3>{doc.title}</h3>
+
+              <p>
+                <strong>קטגוריה:</strong> {doc.category}
+              </p>
+
+              <p>{doc.description}</p>
+
+              <a
+                href={doc.fileUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <button>📥 פתח / הורד</button>
+              </a>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Documents;
