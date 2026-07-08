@@ -1,70 +1,36 @@
-import { useEffect, useState } from "react";
+const express = require("express");
+const multer = require("multer");
+const path = require("path");
 
-function Documents() {
-  const API = "http://localhost:3001/api/documents";
+const router = express.Router();
 
-  const [documents, setDocuments] = useState([]);
-  const [search, setSearch] = useState("");
-  const [message, setMessage] = useState("");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
 
-  useEffect(() => {
-    loadDocuments();
-  }, []);
+  filename: function (req, file, cb) {
+    const uniqueName =
+      Date.now() +
+      "-" +
+      Math.round(Math.random() * 1000000000) +
+      path.extname(file.originalname);
 
-  const loadDocuments = async () => {
-    try {
-      const res = await fetch(API);
-      const data = await res.json();
-      setDocuments(Array.isArray(data) ? data : []);
-    } catch {
-      setMessage("לא ניתן לטעון מסמכים כרגע");
-    }
-  };
+    cb(null, uniqueName);
+  },
+});
 
-  const filteredDocuments = documents.filter((doc) => {
-    const text = `${doc.title || ""} ${doc.category || ""} ${doc.description || ""}`.toLowerCase();
-    return text.includes(search.toLowerCase());
+const upload = multer({ storage });
+
+router.post("/", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "לא נבחר קובץ" });
+  }
+
+  res.json({
+    fileUrl: `https://alonpc-server.onrender.com/uploads/${req.file.filename}`,
+    filename: req.file.filename,
   });
+});
 
-  return (
-    <div>
-      <section className="heroBanner">
-        <h2>📄 מסמכים להורדה</h2>
-        <p>טפסים • מחירונים • מדריכים • קבצי מידע</p>
-      </section>
-
-      <div className="searchBox">
-        <input
-          type="text"
-          placeholder="🔍 חפש מסמך..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
-      {message && <p style={{ textAlign: "center", color: "white" }}>{message}</p>}
-
-      <main className="grid">
-        {filteredDocuments.length === 0 && !message && (
-          <h3 style={{ color: "white", textAlign: "center" }}>
-            אין מסמכים עדיין
-          </h3>
-        )}
-
-        {filteredDocuments.map((doc) => (
-          <div className="card" key={doc._id}>
-            <h3>📄 {doc.title}</h3>
-            <p>{doc.category}</p>
-            <p>{doc.description}</p>
-
-            <a href={doc.fileUrl} target="_blank" rel="noreferrer">
-              <button>📂 פתח / הורד</button>
-            </a>
-          </div>
-        ))}
-      </main>
-    </div>
-  );
-}
-
-export default Documents;
+module.exports = router;
