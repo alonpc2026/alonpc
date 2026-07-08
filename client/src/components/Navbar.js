@@ -193,13 +193,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-
-אחרי שמירה:
-
-cd C:\alonpc\client
-npm run build
-cd C:\alonpc
-git add .
-git commit -m "Fix admin login navigation"
-git push
