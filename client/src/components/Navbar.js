@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import translations from "../translations";
 
 function Navbar() {
+  const navigate = useNavigate();
+
   const [lang, setLang] = useState(localStorage.getItem("lang") || "he");
   const [showLogin, setShowLogin] = useState(false);
   const [username, setUsername] = useState("");
@@ -105,7 +107,8 @@ function Navbar() {
         })
       );
 
-      window.location.href = "/dashboard";
+      setShowLogin(false);
+      navigate("/dashboard");
     } else {
       alert(n.wrong);
     }
@@ -123,9 +126,7 @@ function Navbar() {
 
       <div className="topBar">
         <div className="contactInfo">
-          <a href="tel:0545221809" className="phoneBtn">
-            📞 054-5221809
-          </a>
+          <a href="tel:0545221809" className="phoneBtn">📞 054-5221809</a>
 
           <a
             href="https://wa.me/972545221809"
@@ -192,3 +193,13 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+אחרי שמירה:
+
+cd C:\alonpc\client
+npm run build
+cd C:\alonpc
+git add .
+git commit -m "Fix admin login navigation"
+git push
