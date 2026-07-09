@@ -1,246 +1,80 @@
-import { useEffect, useState } from "react";
+const Service = require("../models/Service");
 
-function Admin() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const API = "https://alonpc-server.onrender.com/api/services";
-
-  const categories = [
-    "מחשבים",
-    "נגישות",
-    "בריאות",
-    "משפטים",
-    "תחבורה",
-    "לימודים",
-    "עסקים",
-    "מסמכים",
-    "שונות",
-  ];
-
-  const icons = ["💻", "♿", "🏥", "⚖️", "🚌", "📚", "🏪", "📄", "🛠️", "☎️"];
-
-  const [services, setServices] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [message, setMessage] = useState("");
-  const [showExtra, setShowExtra] = useState(false);
-
-  const [form, setForm] = useState({
-    name: "",
-    category: "מחשבים",
-    icon: "💻",
-    link: "",
-    description: "",
-    businessName: "",
-    address: "",
-    city: "",
-    phone: "",
-  });
-
-  useEffect(() => {
-    loadServices();
-  }, []);
-
-  if (!user || user.role !== "admin") {
-    return (
-      <section className="loginBox">
-        <h2>🔐 אין הרשאה</h2>
-        <p>רק מנהל יכול לנהל שירותים.</p>
-      </section>
-    );
+const getServices = async (req, res) => {
+  try {
+    const services = await Service.find().sort({ createdAt: -1 });
+    res.json(services);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
+};
 
-  const loadServices = async () => {
-    try {
-      const res = await fetch(API);
-      const data = await res.json();
-      setServices(Array.isArray(data) ? data : []);
-    } catch {
-      setMessage("❌ שגיאה בטעינת שירותים");
-    }
-  };
+const addService = async (req, res) => {
+  try {
+    const service = await Service.create({
+      name: req.body.name || "",
+      category: req.body.category || "שונות",
+      icon: req.body.icon || "💻",
+      link: req.body.link || "",
+      description: req.body.description || "",
 
-  const updateField = (field, value) => {
-    setForm({ ...form, [field]: value });
-  };
+      businessName: req.body.businessName || "",
+      address: req.body.address || "",
+      city: req.body.city || "",
+      phone: req.body.phone || "",
 
-  const clearForm = () => {
-    setEditId(null);
-    setShowExtra(false);
-    setForm({
-      name: "",
-      category: "מחשבים",
-      icon: "💻",
-      link: "",
-      description: "",
-      businessName: "",
-      address: "",
-      city: "",
-      phone: "",
+      email: req.body.email || "",
+      hours: req.body.hours || "",
+      imageUrl: req.body.imageUrl || "",
     });
-  };
 
-  const saveService = async () => {
-    if (!form.name.trim()) {
-      setMessage("נא למלא שם אתר / שירות");
-      return;
-    }
+    res.status(201).json(service);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-    try {
-      const res = await fetch(editId ? `${API}/${editId}` : API, {
-        method: editId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+const updateService = async (req, res) => {
+  try {
+    const updatedService = await Service.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name || "",
+        category: req.body.category || "שונות",
+        icon: req.body.icon || "💻",
+        link: req.body.link || "",
+        description: req.body.description || "",
 
-      if (!res.ok) throw new Error();
+        businessName: req.body.businessName || "",
+        address: req.body.address || "",
+        city: req.body.city || "",
+        phone: req.body.phone || "",
 
-      setMessage(editId ? "✅ השירות עודכן" : "✅ השירות נוסף");
-      clearForm();
-      loadServices();
-    } catch {
-      setMessage("❌ לא ניתן לשמור שירות");
-    }
-  };
-
-  const startEdit = (service) => {
-    setEditId(service._id);
-    setShowExtra(
-      Boolean(service.businessName || service.address || service.city || service.phone)
+        email: req.body.email || "",
+        hours: req.body.hours || "",
+        imageUrl: req.body.imageUrl || "",
+      },
+      { new: true, runValidators: true }
     );
 
-    setForm({
-      name: service.name || "",
-      category: service.category || "מחשבים",
-      icon: service.icon || "💻",
-      link: service.link || "",
-      description: service.description || "",
-      businessName: service.businessName || "",
-      address: service.address || "",
-      city: service.city || "",
-      phone: service.phone || "",
-    });
-  };
+    res.json(updatedService);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-  const deleteService = async (id) => {
-    if (!window.confirm("למחוק שירות?")) return;
+const deleteService = async (req, res) => {
+  try {
+    await Service.findByIdAndDelete(req.params.id);
+    res.json({ message: "השירות נמחק בהצלחה" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    try {
-      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error();
-
-      setMessage("🗑️ השירות נמחק");
-      loadServices();
-    } catch {
-      setMessage("❌ שגיאה במחיקה");
-    }
-  };
-
-  return (
-    <section className="loginBox">
-      <h2>📋 ניהול שירותים</h2>
-
-      <input
-        placeholder="שם אתר / שירות"
-        value={form.name}
-        onChange={(e) => updateField("name", e.target.value)}
-      />
-
-      <select value={form.category} onChange={(e) => updateField("category", e.target.value)}>
-        {categories.map((cat) => (
-          <option key={cat} value={cat}>{cat}</option>
-        ))}
-      </select>
-
-      <select value={form.icon} onChange={(e) => updateField("icon", e.target.value)}>
-        {icons.map((icon) => (
-          <option key={icon} value={icon}>{icon}</option>
-        ))}
-      </select>
-
-      <input
-        placeholder="כתובת קישור לאתר"
-        value={form.link}
-        onChange={(e) => updateField("link", e.target.value)}
-      />
-
-      <textarea
-        placeholder="תיאור קצר"
-        value={form.description}
-        onChange={(e) => updateField("description", e.target.value)}
-      />
-
-      <h3>להוסיף עוד פרטים של האתר?</h3>
-
-      <button type="button" onClick={() => setShowExtra(true)}>
-        ✅ כן
-      </button>
-
-      <button type="button" onClick={() => setShowExtra(false)}>
-        ❌ לא
-      </button>
-
-      {showExtra && (
-        <>
-          <input
-            placeholder="שם עסק"
-            value={form.businessName}
-            onChange={(e) => updateField("businessName", e.target.value)}
-          />
-
-          <input
-            placeholder="כתובת"
-            value={form.address}
-            onChange={(e) => updateField("address", e.target.value)}
-          />
-
-          <input
-            placeholder="עיר"
-            value={form.city}
-            onChange={(e) => updateField("city", e.target.value)}
-          />
-
-          <input
-            placeholder="טלפון"
-            value={form.phone}
-            onChange={(e) => updateField("phone", e.target.value)}
-          />
-        </>
-      )}
-
-      <button onClick={saveService}>
-        {editId ? "💾 שמור עריכה" : "➕ הוסף שירות"}
-      </button>
-
-      {editId && <button onClick={clearForm}>❌ ביטול עריכה</button>}
-
-      <p>{message}</p>
-
-      <hr />
-
-      <h2>שירותים קיימים</h2>
-
-      {services.map((service) => (
-        <div className="adminService" key={service._id}>
-          <h3>{service.icon || "🛠️"} {service.name}</h3>
-          <p>קטגוריה: {service.category}</p>
-          <p>{service.description}</p>
-
-          {service.businessName && <p>שם עסק: {service.businessName}</p>}
-          {service.address && <p>כתובת: {service.address}</p>}
-          {service.city && <p>עיר: {service.city}</p>}
-          {service.phone && <p>טלפון: {service.phone}</p>}
-
-          {service.link && (
-            <a href={service.link} target="_blank" rel="noreferrer">
-              <button>🔗 פתח אתר</button>
-            </a>
-          )}
-
-          <button onClick={() => startEdit(service)}>✏️ ערוך</button>
-          <button onClick={() => deleteService(service._id)}>🗑️ מחק</button>
-        </div>
-      ))}
-    </section>
-  );
-}
-
-export default Admin;
+module.exports = {
+  getServices,
+  addService,
+  updateService,
+  deleteService,
+};
