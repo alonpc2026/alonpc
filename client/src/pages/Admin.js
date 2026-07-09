@@ -53,8 +53,8 @@ function Admin() {
       const res = await fetch(API);
       const data = await res.json();
       setServices(Array.isArray(data) ? data : []);
-    } catch {
-      setMessage("❌ שגיאה בטעינת שירותים");
+    } catch (error) {
+      setMessage("❌ שגיאה בטעינת שירותים: " + error.message);
     }
   };
 
@@ -88,16 +88,30 @@ function Admin() {
       const res = await fetch(editId ? `${API}/${editId}` : API, {
         method: editId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name,
+          category: form.category,
+          icon: form.icon,
+          link: form.link,
+          description: form.description,
+          businessName: form.businessName,
+          address: form.address,
+          city: form.city,
+          phone: form.phone,
+        }),
       });
 
-      if (!res.ok) throw new Error();
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "שגיאת שרת");
+      }
 
       setMessage(editId ? "✅ השירות עודכן" : "✅ השירות נוסף");
       clearForm();
       loadServices();
-    } catch {
-      setMessage("❌ לא ניתן לשמור שירות");
+    } catch (error) {
+      setMessage("❌ לא ניתן לשמור שירות: " + error.message);
     }
   };
 
@@ -125,12 +139,16 @@ function Admin() {
 
     try {
       const res = await fetch(`${API}/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error();
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "שגיאת שרת");
+      }
 
       setMessage("🗑️ השירות נמחק");
       loadServices();
-    } catch {
-      setMessage("❌ שגיאה במחיקה");
+    } catch (error) {
+      setMessage("❌ שגיאה במחיקה: " + error.message);
     }
   };
 
@@ -170,13 +188,8 @@ function Admin() {
 
       <h3>להוסיף עוד פרטים של האתר?</h3>
 
-      <button type="button" onClick={() => setShowExtra(true)}>
-        ✅ כן
-      </button>
-
-      <button type="button" onClick={() => setShowExtra(false)}>
-        ❌ לא
-      </button>
+      <button type="button" onClick={() => setShowExtra(true)}>✅ כן</button>
+      <button type="button" onClick={() => setShowExtra(false)}>❌ לא</button>
 
       {showExtra && (
         <>
