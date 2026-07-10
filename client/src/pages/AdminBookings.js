@@ -9,14 +9,14 @@ function AdminBookings() {
   }, []);
 
   const loadBookings = () => {
-    fetch("https://alonpc-server.onrender.com/api/bookings")
+    fetch("https://alonpc02026.onrender.com/api/bookings")
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch(() => setMessage("שגיאה בטעינת הזמנות ❌"));
   };
 
   const updateStatus = async (id, status) => {
-    const res = await fetch(`https://alonpc-server.onrender.com/api/bookings/${id}`, {
+    const res = await fetch(`https://alonpc02026.onrender.com/api/bookings/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
@@ -31,7 +31,7 @@ function AdminBookings() {
   const deleteBooking = async (id) => {
     if (!window.confirm("למחוק הזמנה?")) return;
 
-    const res = await fetch(`https://alonpc-server.onrender.com/api/bookings/${id}`, {
+    const res = await fetch(`https://alonpc02026.onrender.com/api/bookings/${id}`, {
       method: "DELETE",
     });
 

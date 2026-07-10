@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 function AdminShop() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const API = "https://alonpc-server.onrender.com/api/products";
-  const UPLOAD_API = "https://alonpc-server.onrender.com/api/upload";
+  const API = "https://alonpc02026.onrender.com/api/products";
+  const UPLOAD_API = "https://alonpc02026.onrender.com/api/upload";
 
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);

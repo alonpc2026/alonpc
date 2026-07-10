@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 function Admin() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const API = "https://alonpc-server.onrender.com/api/services";
+  const API = "https://alonpc02026.onrender.com/api/services";
 
   const categories = [
     "מחשבים",

@@ -6,7 +6,7 @@ function ServiceDetails() {
   const [service, setService] = useState(null);
 
   useEffect(() => {
-    fetch("https://alonpc-server.onrender.com/api/services")
+    fetch("https://alonpc02026.onrender.com/api/services")
       .then((res) => res.json())
       .then((data) => {
         const found = data.find((item) => item._id === id);

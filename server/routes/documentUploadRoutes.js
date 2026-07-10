@@ -27,7 +27,7 @@ router.post("/", upload.single("file"), (req, res) => {
   }
 
   res.json({
-    fileUrl: `https://alonpc-server.onrender.com/uploads/${req.file.filename}`,
+    fileUrl: `https://alonpc02026.onrender.com/uploads/${req.file.filename}`,
     filename: req.file.filename,
   });
 });
