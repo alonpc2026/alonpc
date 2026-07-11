@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 
 import Admin from "./pages/Admin";
+import AdminGovernment from "./pages/AdminGovernment";
 import AdminShop from "./pages/AdminShop";
 import AdminBookings from "./pages/AdminBookings";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
@@ -43,6 +44,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+<Route
+  path="/admin/government"
+  element={<AdminGovernment />}
+/>
 
           <Route path="/services" element={<Services />} />
           <Route path="/service/:id" element={<ServiceDetails />} />
