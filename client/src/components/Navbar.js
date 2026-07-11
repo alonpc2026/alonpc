@@ -14,6 +14,7 @@ function Navbar() {
     he: {
       home: "בית",
       services: "שירותים",
+      government: "ממשלתי",
       shop: "חנות",
       secondHand: "יד שנייה",
       documents: "מסמכים",
@@ -29,6 +30,7 @@ function Navbar() {
     en: {
       home: "Home",
       services: "Services",
+      government: "Government",
       shop: "Shop",
       secondHand: "Second Hand",
       documents: "Documents",
@@ -44,6 +46,7 @@ function Navbar() {
     ru: {
       home: "Главная",
       services: "Услуги",
+      government: "Государственные",
       shop: "Магазин",
       secondHand: "Б/у",
       documents: "Документы",
@@ -59,6 +62,7 @@ function Navbar() {
     ar: {
       home: "الرئيسية",
       services: "الخدمات",
+      government: "حكومي",
       shop: "المتجر",
       secondHand: "مستعمل",
       documents: "الملفات",
@@ -74,6 +78,7 @@ function Navbar() {
     am: {
       home: "መነሻ",
       services: "አገልግሎቶች",
+      government: "መንግስታዊ",
       shop: "ሱቅ",
       secondHand: "ሁለተኛ እጅ",
       documents: "ሰነዶች",
@@ -118,6 +123,7 @@ function Navbar() {
     <header className="siteHeader">
       <div className="brandHero">
         <img src="/alonlogo.png" alt="ALON PC" className="brandLogo" />
+
         <div>
           <h1>ALON PC</h1>
           <p>{t.subtitle || "מרכז שירותים לאנשים עם מוגבלויות"}</p>
@@ -126,7 +132,9 @@ function Navbar() {
 
       <div className="topBar">
         <div className="contactInfo">
-          <a href="tel:0545221809" className="phoneBtn">📞 054-5221809</a>
+          <a href="tel:0545221809" className="phoneBtn">
+            📞 054-5221809
+          </a>
 
           <a
             href="https://wa.me/972545221809"
@@ -140,7 +148,7 @@ function Navbar() {
           <select
             className="languageSelect"
             value={lang}
-            onChange={(e) => setLang(e.target.value)}
+            onChange={(event) => setLang(event.target.value)}
           >
             <option value="he">🇮🇱 עברית</option>
             <option value="en">🇺🇸 English</option>
@@ -152,15 +160,44 @@ function Navbar() {
       </div>
 
       <nav className="menu">
-        <Link className="homeBtn" to="/">🏠 {n.home}</Link>
-        <Link className="servicesBtn" to="/services">🛎️ {n.services}</Link>
-        <Link className="shopBtn" to="/shop">🛍️ {n.shop}</Link>
-        <Link className="secondHandBtn" to="/second-hand">♻️ {n.secondHand}</Link>
-        <Link className="documentsBtn" to="/documents">📄 {n.documents}</Link>
-        <Link className="aboutBtn" to="/about">ℹ️ {n.about}</Link>
-        <Link className="contactBtn" to="/contact">✉️ {n.contact}</Link>
+        <Link className="homeBtn" to="/">
+          🏠 {n.home}
+        </Link>
 
-        <button className="adminBtn" onClick={() => setShowLogin(true)}>
+        <Link className="servicesBtn" to="/services">
+          🛎️ {n.services}
+        </Link>
+
+        <Link className="governmentBtn" to="/government">
+          🏛️ {n.government}
+        </Link>
+
+        <Link className="shopBtn" to="/shop">
+          🛍️ {n.shop}
+        </Link>
+
+        <Link className="secondHandBtn" to="/second-hand">
+          ♻️ {n.secondHand}
+        </Link>
+
+        <Link className="documentsBtn" to="/documents">
+          📄 {n.documents}
+        </Link>
+
+        <Link className="aboutBtn" to="/about">
+          ℹ️ {n.about}
+        </Link>
+
+        <Link className="contactBtn" to="/contact">
+          ✉️ {n.contact}
+        </Link>
+
+        <button
+          type="button"
+          className="adminBtn"
+          onClick={() => setShowLogin(true)}
+          aria-label={n.adminTitle}
+        >
           ⚙️
         </button>
       </nav>
@@ -171,20 +208,38 @@ function Navbar() {
             <h2>🔐 {n.adminTitle}</h2>
 
             <input
+              type="text"
               placeholder={n.username}
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(event) => setUsername(event.target.value)}
             />
 
             <input
               type="password"
               placeholder={n.password}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  loginAdmin();
+                }
+              }}
             />
 
-            <button onClick={loginAdmin}>{n.login}</button>
-            <button onClick={() => setShowLogin(false)}>{n.cancel}</button>
+            <button type="button" onClick={loginAdmin}>
+              {n.login}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowLogin(false);
+                setUsername("");
+                setPassword("");
+              }}
+            >
+              {n.cancel}
+            </button>
           </div>
         </div>
       )}

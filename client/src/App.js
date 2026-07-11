@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
+import Government from "./pages/Government";
 import Shop from "./pages/Shop";
 import SecondHand from "./pages/SecondHand";
 import Documents from "./pages/Documents";
@@ -42,12 +43,17 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route path="/services" element={<Services />} />
           <Route path="/service/:id" element={<ServiceDetails />} />
+
+          <Route path="/government" element={<Government />} />
+
           <Route path="/shop" element={<Shop />} />
           <Route path="/second-hand" element={<SecondHand />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/booking" element={<ServiceBooking />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
@@ -55,19 +61,49 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/service-categories" element={<AdminServiceCategories />} />
+
+          <Route
+            path="/admin/service-categories"
+            element={<AdminServiceCategories />}
+          />
+
           <Route path="/admin/shop" element={<AdminShop />} />
-          <Route path="/admin/product-categories" element={<AdminProductCategories />} />
+
+          <Route
+            path="/admin/product-categories"
+            element={<AdminProductCategories />}
+          />
+
           <Route path="/admin/brands" element={<AdminBrands />} />
           <Route path="/admin/offers" element={<AdminOffers />} />
-          <Route path="/admin/second-hand" element={<AdminSecondHand />} />
+
+          <Route
+            path="/admin/second-hand"
+            element={<AdminSecondHand />}
+          />
+
           <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/permissions" element={<AdminPermissions />} />
+
+          <Route
+            path="/admin/permissions"
+            element={<AdminPermissions />}
+          />
+
           <Route path="/admin/gallery" element={<AdminGallery />} />
-          <Route path="/admin/documents" element={<AdminDocuments />} />
+
+          <Route
+            path="/admin/documents"
+            element={<AdminDocuments />}
+          />
+
           <Route path="/admin/uploads" element={<AdminUploads />} />
           <Route path="/admin/settings" element={<AdminSettings />} />
-          <Route path="/admin/statistics" element={<AdminStatistics />} />
+
+          <Route
+            path="/admin/statistics"
+            element={<AdminStatistics />}
+          />
+
           <Route path="/admin/backup" element={<AdminBackup />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
         </Routes>
