@@ -32,11 +32,26 @@ function AdminGovernment() {
     city: "",
     phone: "",
   });
+useEffect(() => {
+  const fetchServices = async () => {
+    try {
+      const response = await fetch(API);
+      const data = await response.json();
 
-  useEffect(() => {
-    loadServices();
-  }, []);
+      const governmentServices = Array.isArray(data)
+        ? data.filter((service) => categories.includes(service.category))
+        : [];
 
+      setServices(governmentServices);
+      setMessage("");
+    } catch {
+      setServices([]);
+      setMessage("? שגיאה בטעינת שירותים ממשלתיים");
+    }
+  };
+
+  fetchServices();
+}, []);
   if (!user || user.role !== "admin") {
     return (
       <section className="loginBox">
