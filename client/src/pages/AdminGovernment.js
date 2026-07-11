@@ -1,159 +1,285 @@
 import { useEffect, useState } from "react";
 
 function AdminGovernment() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const API = "https://alonpc02026.onrender.com/api/services";
 
   const categories = [
-    "׳—׳™׳¨׳©׳™׳ ׳•׳›׳‘׳“׳™ ׳©׳׳™׳¢׳”",
-    "׳׳•׳˜׳™׳–׳",
-    "׳׳•׳’׳‘׳׳•׳× ׳׳•׳˜׳•׳¨׳™׳×",
-    "׳׳•׳’׳‘׳׳•׳× ׳ ׳•׳™׳¨׳•׳§׳•׳’׳ ׳™׳˜׳™׳‘׳™׳×",
-    "׳׳•׳’׳‘׳׳•׳× ׳©׳›׳׳™׳× ׳”׳×׳₪׳×׳—׳•׳×׳™׳×",
-    "׳¢׳™׳•׳•׳¨׳•׳ ׳•׳׳§׳•׳× ׳¨׳׳™׳™׳”",
-    "׳™׳׳“׳™׳ ׳¢׳ ׳¢׳™׳›׳•׳‘ ׳”׳×׳₪׳×׳—׳•׳×׳™",
+    "חירשים וכבדי שמיעה",
+    "אוטיזם",
+    "מוגבלות מוטורית",
+    "מוגבלות נוירוקוגניטיבית",
+    "מוגבלות שכלית התפתחותית",
+    "עיוורון ולקות ראייה",
+    "ילדים עם עיכוב התפתחותי",
   ];
 
+  const icons = ["???", "??", "??", "?", "??", "??", "??", "??"];
+
   const [services, setServices] = useState([]);
+  const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
     name: "",
     category: categories[0],
-    icon: "נ›ן¸",
+    icon: "???",
     link: "",
     description: "",
+    businessName: "",
+    address: "",
+    city: "",
+    phone: "",
   });
 
   useEffect(() => {
     loadServices();
   }, []);
 
+  if (!user || user.role !== "admin") {
+    return (
+      <section className="loginBox">
+        <h2>?? אין הרשאה</h2>
+        <p>רק מנהל מחובר יכול לנהל שירותים ממשלתיים.</p>
+      </section>
+    );
+  }
+
   const loadServices = async () => {
     try {
-      const res = await fetch(API);
-      const data = await res.json();
+      const response = await fetch(API);
+      const data = await response.json();
 
-      setServices(
-        Array.isArray(data)
-          ? data.filter((s) => categories.includes(s.category))
-          : []
-      );
+      const governmentServices = Array.isArray(data)
+        ? data.filter((service) => categories.includes(service.category))
+        : [];
+
+      setServices(governmentServices);
+      setMessage("");
     } catch {
-      setMessage("׳©׳’׳™׳׳” ׳‘׳˜׳¢׳™׳ ׳× ׳”׳©׳™׳¨׳•׳×׳™׳");
+      setServices([]);
+      setMessage("? שגיאה בטעינת שירותים ממשלתיים");
     }
+  };
+
+  const updateField = (field, value) => {
+    setForm((currentForm) => ({
+      ...currentForm,
+      [field]: value,
+    }));
+  };
+
+  const clearForm = () => {
+    setEditId(null);
+
+    setForm({
+      name: "",
+      category: categories[0],
+      icon: "???",
+      link: "",
+      description: "",
+      businessName: "",
+      address: "",
+      city: "",
+      phone: "",
+    });
   };
 
   const saveService = async () => {
     if (!form.name.trim()) {
-      alert("׳™׳© ׳׳”׳–׳™׳ ׳©׳ ׳©׳™׳¨׳•׳×");
+      setMessage("נא למלא שם שירות ממשלתי");
       return;
     }
 
     try {
-      const res = await fetch(API, {
-        method: "POST",
+      const response = await fetch(editId ? `${API}/${editId}` : API, {
+        method: editId ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(form),
       });
 
-      if (!res.ok) throw new Error();
+      const result = await response.json();
 
-      setMessage("ג… ׳”׳©׳™׳¨׳•׳× ׳ ׳©׳׳¨");
-      setForm({
-        name: "",
-        category: categories[0],
-        icon: "נ›ן¸",
-        link: "",
-        description: "",
+      if (!response.ok) {
+        throw new Error(result.message || "שגיאה בשמירה");
+      }
+
+      setMessage(editId ? "? השירות עודכן" : "? השירות נשמר");
+      clearForm();
+      await loadServices();
+    } catch (error) {
+      setMessage(`? לא ניתן לשמור שירות: ${error.message}`);
+    }
+  };
+
+  const startEdit = (service) => {
+    setEditId(service._id);
+
+    setForm({
+      name: service.name || "",
+      category: service.category || categories[0],
+      icon: service.icon || "???",
+      link: service.link || "",
+      description: service.description || "",
+      businessName: service.businessName || "",
+      address: service.address || "",
+      city: service.city || "",
+      phone: service.phone || "",
+    });
+
+    setMessage("?? מצב עריכה פעיל");
+  };
+
+  const deleteService = async (id) => {
+    if (!window.confirm("למחוק את השירות הממשלתי?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
       });
 
-      loadServices();
-    } catch {
-      setMessage("ג ׳©׳’׳™׳׳” ׳‘׳©׳׳™׳¨׳”");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "שגיאה במחיקה");
+      }
+
+      setMessage("??? השירות נמחק");
+      await loadServices();
+    } catch (error) {
+      setMessage(`? לא ניתן למחוק שירות: ${error.message}`);
     }
   };
 
   return (
-    <div className="adminPage">
-      <h1>נ›ן¸ ׳ ׳™׳”׳•׳ ׳׳׳©׳׳×׳™</h1>
+    <section className="loginBox">
+      <h2>??? ניהול שירותים ממשלתיים</h2>
 
       <input
-        placeholder="׳©׳ ׳”׳©׳™׳¨׳•׳×"
+        type="text"
+        placeholder="שם השירות"
         value={form.name}
-        onChange={(e) =>
-          setForm({ ...form, name: e.target.value })
-        }
+        onChange={(event) => updateField("name", event.target.value)}
       />
 
       <select
         value={form.category}
-        onChange={(e) =>
-          setForm({ ...form, category: e.target.value })
-        }
+        onChange={(event) => updateField("category", event.target.value)}
       >
-        {categories.map((c) => (
-          <option key={c}>{c}</option>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={form.icon}
+        onChange={(event) => updateField("icon", event.target.value)}
+      >
+        {icons.map((icon) => (
+          <option key={icon} value={icon}>
+            {icon}
+          </option>
         ))}
       </select>
 
       <input
-        placeholder="׳§׳™׳©׳•׳¨"
+        type="text"
+        placeholder="קישור לאתר הממשלתי"
         value={form.link}
-        onChange={(e) =>
-          setForm({ ...form, link: e.target.value })
-        }
+        onChange={(event) => updateField("link", event.target.value)}
       />
 
       <textarea
-        placeholder="׳×׳™׳׳•׳¨"
+        placeholder="תיאור השירות"
         value={form.description}
-        onChange={(e) =>
-          setForm({ ...form, description: e.target.value })
-        }
+        onChange={(event) => updateField("description", event.target.value)}
       />
 
-      <button onClick={saveService}>
-        נ’¾ ׳©׳׳•׳¨ ׳©׳™׳¨׳•׳×
+      <input
+        type="text"
+        placeholder="שם הגוף / המשרד"
+        value={form.businessName}
+        onChange={(event) => updateField("businessName", event.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="כתובת"
+        value={form.address}
+        onChange={(event) => updateField("address", event.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="עיר"
+        value={form.city}
+        onChange={(event) => updateField("city", event.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="טלפון"
+        value={form.phone}
+        onChange={(event) => updateField("phone", event.target.value)}
+      />
+
+      <button type="button" onClick={saveService}>
+        {editId ? "?? שמור עריכה" : "? הוסף שירות ממשלתי"}
       </button>
 
-      <p>{message}</p>
+      {editId && (
+        <button type="button" onClick={clearForm}>
+          ? ביטול עריכה
+        </button>
+      )}
+
+      {message && <p>{message}</p>}
 
       <hr />
 
-      <h2>׳©׳™׳¨׳•׳×׳™׳ ׳׳׳©׳׳×׳™׳™׳</h2>
+      <h2>שירותים ממשלתיים קיימים</h2>
+
+      {services.length === 0 && (
+        <p>עדיין אין שירותים ממשלתיים.</p>
+      )}
 
       {services.map((service) => (
-        <div
-          key={service._id}
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: 10,
-            padding: 10,
-            marginBottom: 10,
-          }}
-        >
+        <div className="adminService" key={service._id}>
           <h3>
-            {service.icon} {service.name}
+            {service.icon || "???"} {service.name}
           </h3>
 
-          <p>{service.category}</p>
+          <p>קטגוריה: {service.category}</p>
 
-          <p>{service.description}</p>
+          {service.description && <p>{service.description}</p>}
+          {service.businessName && <p>שם הגוף: {service.businessName}</p>}
+          {service.address && <p>כתובת: {service.address}</p>}
+          {service.city && <p>עיר: {service.city}</p>}
+          {service.phone && <p>טלפון: {service.phone}</p>}
 
           {service.link && (
-            <a
-              href={service.link}
-              target="_blank"
-              rel="noreferrer"
-            >
-              ׳׳¢׳‘׳¨ ׳׳׳×׳¨
+            <a href={service.link} target="_blank" rel="noreferrer">
+              <button type="button">?? פתח אתר</button>
             </a>
           )}
+
+          <button type="button" onClick={() => startEdit(service)}>
+            ?? ערוך
+          </button>
+
+          <button type="button" onClick={() => deleteService(service._id)}>
+            ??? מחק
+          </button>
         </div>
       ))}
-    </div>
+    </section>
   );
 }
 
