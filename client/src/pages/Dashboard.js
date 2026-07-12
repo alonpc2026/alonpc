@@ -7,11 +7,11 @@ function Dashboard() {
   if (!user || user.role !== "admin") {
     return (
       <section className="loginBox">
-        <h2>?? ΰιο δψωΰδ</h2>
-        <p>ψχ ξπδμ ξηεαψ ιλεμ μψΰεϊ ΰϊ τεψθμ δπιδεμ.</p>
+        <h2>?? ΧΧ™Χ Χ”Χ¨Χ©ΧΧ”</h2>
+        <p>Χ¨Χ§ ΧΧ Χ”Χ ΧΧ—Χ•Χ‘Χ¨ Χ™Χ›Χ•Χ ΧΧ¨ΧΧ•Χª ΧΧª Χ¤Χ•Χ¨ΧΧ Χ”Χ Χ™Χ”Χ•Χ.</p>
 
         <Link to="/">
-          <button type="button">?? ηζψδ μΰϊψ</button>
+          <button type="button">?? Χ—Χ–Χ¨Χ” ΧΧΧªΧ¨</button>
         </Link>
       </section>
     );
@@ -24,103 +24,103 @@ function Dashboard() {
 
   return (
     <section className="loginBox">
-      <h2>?? τεψθμ πιδεμ ALON PC</h2>
+      <h2>?? Χ¤Χ•Χ¨ΧΧ Χ Χ™Χ”Χ•Χ ALON PC</h2>
 
-      <p>αψεκ δαΰ {user.name || "Alon Admin"}</p>
+      <p>Χ‘Χ¨Χ•Χ Χ”Χ‘Χ {user.name || "Alon Admin"}</p>
 
       <div className="dashboardGrid">
-        {/* ωιψεϊιν */}
+        {/* Χ©Χ™Χ¨Χ•ΧªΧ™Χ */}
         <Link to="/admin" className="dashboardCard">
-          ?? πιδεμ ωιψεϊιν
+          ?? Χ Χ™Χ”Χ•Χ Χ©Χ™Χ¨Χ•ΧªΧ™Χ
         </Link>
 
         <Link to="/admin/government" className="dashboardCard">
-          ??? πιδεμ ξξωμϊι
+          ??? Χ Χ™Χ”Χ•Χ ΧΧΧ©ΧΧªΧ™
         </Link>
 
         <Link to="/admin/service-categories" className="dashboardCard">
-          ?? χθβεψιεϊ ωιψεϊιν
+          ?? Χ§ΧΧ’Χ•Χ¨Χ™Χ•Χª Χ©Χ™Χ¨Χ•ΧªΧ™Χ
         </Link>
 
-        {/* ηπεϊ */}
+        {/* Χ—Χ Χ•Χª */}
         <Link to="/admin/shop" className="dashboardCard">
-          ?? πιδεμ ηπεϊ
+          ?? Χ Χ™Χ”Χ•Χ Χ—Χ Χ•Χª
         </Link>
 
         <Link to="/admin/product-categories" className="dashboardCard">
-          ??? χθβεψιεϊ ξεφψιν
+          ??? Χ§ΧΧ’Χ•Χ¨Χ™Χ•Χª ΧΧ•Χ¦Χ¨Χ™Χ
         </Link>
 
         <Link to="/admin/brands" className="dashboardCard">
-          ??? ξεϊβιν
+          ??? ΧΧ•ΧªΧ’Χ™Χ
         </Link>
 
         <Link to="/admin/offers" className="dashboardCard">
-          ?? ξαφςιν
+          ?? ΧΧ‘Χ¦ΧΆΧ™Χ
         </Link>
 
-        {/* ιγ ωπιιδ */}
+        {/* Χ™Χ“ Χ©Χ Χ™Χ™Χ” */}
         <Link to="/admin/second-hand" className="dashboardCard">
-          ?? πιδεμ ιγ ωπιιδ
+          ?? Χ Χ™Χ”Χ•Χ Χ™Χ“ Χ©Χ Χ™Χ™Χ”
         </Link>
 
-        {/* δζξπεϊ */}
+        {/* Χ”Χ–ΧΧ Χ•Χª */}
         <Link to="/admin/bookings" className="dashboardCard">
-          ?? πιδεμ δζξπεϊ ωιψεϊ
+          ?? Χ Χ™Χ”Χ•Χ Χ”Χ–ΧΧ Χ•Χª Χ©Χ™Χ¨Χ•Χª
         </Link>
 
         <Link to="/admin/shop-orders" className="dashboardCard">
-          ??? πιδεμ δζξπεϊ ηπεϊ
+          ??? Χ Χ™Χ”Χ•Χ Χ”Χ–ΧΧ Χ•Χª Χ—Χ Χ•Χª
         </Link>
 
-        {/* ξωϊξωιν */}
+        {/* ΧΧ©ΧªΧΧ©Χ™Χ */}
         <Link to="/admin/users" className="dashboardCard">
-          ?? πιδεμ ξωϊξωιν
+          ?? Χ Χ™Χ”Χ•Χ ΧΧ©ΧªΧΧ©Χ™Χ
         </Link>
 
         <Link to="/admin/permissions" className="dashboardCard">
-          ?? δψωΰεϊ
+          ?? Χ”Χ¨Χ©ΧΧ•Χª
         </Link>
 
-        {/* ξγιδ */}
+        {/* ΧΧ“Χ™Χ” */}
         <Link to="/admin/gallery" className="dashboardCard">
-          ??? βμψιιϊ ϊξεπεϊ
+          ??? Χ’ΧΧ¨Χ™Χ™Χª ΧªΧΧ•Χ Χ•Χª
         </Link>
 
         <Link to="/admin/documents" className="dashboardCard">
-          ?? ξρξλιν
+          ?? ΧΧ΅ΧΧ›Χ™Χ
         </Link>
 
         <Link to="/admin/uploads" className="dashboardCard">
-          ?? δςμΰϊ χαφιν
+          ?? Χ”ΧΆΧΧΧª Χ§Χ‘Χ¦Χ™Χ
         </Link>
 
-        {/* ξςψλϊ */}
+        {/* ΧΧΆΧ¨Χ›Χª */}
         <Link to="/admin/translations" className="dashboardCard">
-          ?? πιδεμ ωτεϊ
+          ?? Χ Χ™Χ”Χ•Χ Χ©Χ¤Χ•Χª
         </Link>
 
         <Link to="/admin/edit-translations" className="dashboardCard">
-          ?? ςψιλϊ ϊψβεξιν
+          ?? ΧΆΧ¨Χ™Χ›Χª ΧªΧ¨Χ’Χ•ΧΧ™Χ
         </Link>
 
         <Link to="/admin/settings" className="dashboardCard">
-          ?? δβγψεϊ δΰϊψ
+          ?? Χ”Χ’Χ“Χ¨Χ•Χª Χ”ΧΧªΧ¨
         </Link>
 
         <Link to="/admin/statistics" className="dashboardCard">
-          ?? ρθθιρθιχεϊ
+          ?? Χ΅ΧΧΧ™Χ΅ΧΧ™Χ§Χ•Χª
         </Link>
 
         <Link to="/admin/backup" className="dashboardCard">
-          ?? βιαει
+          ?? Χ’Χ™Χ‘Χ•Χ™
         </Link>
       </div>
 
       <br />
 
       <button type="button" className="logoutBtn" onClick={logout}>
-        ?? ιφιΰδ ξδπιδεμ
+        ?? Χ™Χ¦Χ™ΧΧ” ΧΧ”Χ Χ™Χ”Χ•Χ
       </button>
     </section>
   );
