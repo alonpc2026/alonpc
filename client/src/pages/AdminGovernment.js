@@ -1,82 +1,65 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+const API = "https://alonpc02026.onrender.com/api/services";
+
+const CATEGORIES = [
+  "חירשים וכבדי שמיעה",
+  "אוטיזם",
+  "מוגבלות מוטורית",
+  "מוגבלות נוירוקוגניטיבית",
+  "מוגבלות שכלית התפתחותית",
+  "עיוורון ולקות ראייה",
+  "ילדים עם עיכוב התפתחותי",
+];
+
+const ICONS = ["???", "??", "??", "?", "??", "??", "??", "??"];
+
+const EMPTY_FORM = {
+  name: "",
+  category: CATEGORIES[0],
+  icon: "???",
+  link: "",
+  description: "",
+  businessName: "",
+  address: "",
+  city: "",
+  phone: "",
+};
 
 function AdminGovernment() {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const API = "https://alonpc02026.onrender.com/api/services";
-
-  const categories = [
-    "חירשים וכבדי שמיעה",
-    "אוטיזם",
-    "מוגבלות מוטורית",
-    "מוגבלות נוירוקוגניטיבית",
-    "מוגבלות שכלית התפתחותית",
-    "עיוורון ולקות ראייה",
-    "ילדים עם עיכוב התפתחותי",
-  ];
-
-  const icons = ["???", "??", "??", "?", "??", "??", "??", "??"];
-
   const [services, setServices] = useState([]);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
+  const [form, setForm] = useState(EMPTY_FORM);
 
-  const [form, setForm] = useState({
-    name: "",
-    category: categories[0],
-    icon: "???",
-    link: "",
-    description: "",
-    businessName: "",
-    address: "",
-    city: "",
-    phone: "",
-  });
-useEffect(() => {
-  const fetchServices = async () => {
+  const loadServices = useCallback(async () => {
     try {
       const response = await fetch(API);
+
+      if (!response.ok) {
+        throw new Error("שגיאה בקבלת השירותים");
+      }
+
       const data = await response.json();
 
       const governmentServices = Array.isArray(data)
-        ? data.filter((service) => categories.includes(service.category))
+        ? data.filter((service) =>
+            CATEGORIES.includes(service.category)
+          )
         : [];
 
       setServices(governmentServices);
-      setMessage("");
-    } catch {
+    } catch (error) {
       setServices([]);
-      setMessage("? שגיאה בטעינת שירותים ממשלתיים");
+      setMessage(`? שגיאה בטעינת שירותים: ${error.message}`);
     }
-  };
+  }, []);
 
-  fetchServices();
-}, []);
-  if (!user || user.role !== "admin") {
-    return (
-      <section className="loginBox">
-        <h2>?? אין הרשאה</h2>
-        <p>רק מנהל מחובר יכול לנהל שירותים ממשלתיים.</p>
-      </section>
-    );
-  }
-
-  const loadServices = async () => {
-    try {
-      const response = await fetch(API);
-      const data = await response.json();
-
-      const governmentServices = Array.isArray(data)
-        ? data.filter((service) => categories.includes(service.category))
-        : [];
-
-      setServices(governmentServices);
-      setMessage("");
-    } catch {
-      setServices([]);
-      setMessage("? שגיאה בטעינת שירותים ממשלתיים");
-    }
-  };
+  useEffect(() => {
+    loadServices();
+  }, [loadServices]);
 
   const updateField = (field, value) => {
     setForm((currentForm) => ({
@@ -87,18 +70,7 @@ useEffect(() => {
 
   const clearForm = () => {
     setEditId(null);
-
-    setForm({
-      name: "",
-      category: categories[0],
-      icon: "???",
-      link: "",
-      description: "",
-      businessName: "",
-      address: "",
-      city: "",
-      phone: "",
-    });
+    setForm(EMPTY_FORM);
   };
 
   const saveService = async () => {
@@ -108,13 +80,16 @@ useEffect(() => {
     }
 
     try {
-      const response = await fetch(editId ? `${API}/${editId}` : API, {
-        method: editId ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+      const response = await fetch(
+        editId ? `${API}/${editId}` : API,
+        {
+          method: editId ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
 
       const result = await response.json();
 
@@ -135,7 +110,7 @@ useEffect(() => {
 
     setForm({
       name: service.name || "",
-      category: service.category || categories[0],
+      category: service.category || CATEGORIES[0],
       icon: service.icon || "???",
       link: service.link || "",
       description: service.description || "",
@@ -171,6 +146,15 @@ useEffect(() => {
     }
   };
 
+  if (!user || user.role !== "admin") {
+    return (
+      <section className="loginBox">
+        <h2>?? אין הרשאה</h2>
+        <p>רק מנהל מחובר יכול לנהל שירותים ממשלתיים.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="loginBox">
       <h2>??? ניהול שירותים ממשלתיים</h2>
@@ -179,14 +163,18 @@ useEffect(() => {
         type="text"
         placeholder="שם השירות"
         value={form.name}
-        onChange={(event) => updateField("name", event.target.value)}
+        onChange={(event) =>
+          updateField("name", event.target.value)
+        }
       />
 
       <select
         value={form.category}
-        onChange={(event) => updateField("category", event.target.value)}
+        onChange={(event) =>
+          updateField("category", event.target.value)
+        }
       >
-        {categories.map((category) => (
+        {CATEGORIES.map((category) => (
           <option key={category} value={category}>
             {category}
           </option>
@@ -195,9 +183,11 @@ useEffect(() => {
 
       <select
         value={form.icon}
-        onChange={(event) => updateField("icon", event.target.value)}
+        onChange={(event) =>
+          updateField("icon", event.target.value)
+        }
       >
-        {icons.map((icon) => (
+        {ICONS.map((icon) => (
           <option key={icon} value={icon}>
             {icon}
           </option>
@@ -208,41 +198,53 @@ useEffect(() => {
         type="text"
         placeholder="קישור לאתר הממשלתי"
         value={form.link}
-        onChange={(event) => updateField("link", event.target.value)}
+        onChange={(event) =>
+          updateField("link", event.target.value)
+        }
       />
 
       <textarea
         placeholder="תיאור השירות"
         value={form.description}
-        onChange={(event) => updateField("description", event.target.value)}
+        onChange={(event) =>
+          updateField("description", event.target.value)
+        }
       />
 
       <input
         type="text"
         placeholder="שם הגוף / המשרד"
         value={form.businessName}
-        onChange={(event) => updateField("businessName", event.target.value)}
+        onChange={(event) =>
+          updateField("businessName", event.target.value)
+        }
       />
 
       <input
         type="text"
         placeholder="כתובת"
         value={form.address}
-        onChange={(event) => updateField("address", event.target.value)}
+        onChange={(event) =>
+          updateField("address", event.target.value)
+        }
       />
 
       <input
         type="text"
         placeholder="עיר"
         value={form.city}
-        onChange={(event) => updateField("city", event.target.value)}
+        onChange={(event) =>
+          updateField("city", event.target.value)
+        }
       />
 
       <input
         type="text"
         placeholder="טלפון"
         value={form.phone}
-        onChange={(event) => updateField("phone", event.target.value)}
+        onChange={(event) =>
+          updateField("phone", event.target.value)
+        }
       />
 
       <button type="button" onClick={saveService}>
@@ -274,22 +276,34 @@ useEffect(() => {
           <p>קטגוריה: {service.category}</p>
 
           {service.description && <p>{service.description}</p>}
-          {service.businessName && <p>שם הגוף: {service.businessName}</p>}
+          {service.businessName && (
+            <p>שם הגוף: {service.businessName}</p>
+          )}
           {service.address && <p>כתובת: {service.address}</p>}
           {service.city && <p>עיר: {service.city}</p>}
           {service.phone && <p>טלפון: {service.phone}</p>}
 
           {service.link && (
-            <a href={service.link} target="_blank" rel="noreferrer">
+            <a
+              href={service.link}
+              target="_blank"
+              rel="noreferrer"
+            >
               <button type="button">?? פתח אתר</button>
             </a>
           )}
 
-          <button type="button" onClick={() => startEdit(service)}>
+          <button
+            type="button"
+            onClick={() => startEdit(service)}
+          >
             ?? ערוך
           </button>
 
-          <button type="button" onClick={() => deleteService(service._id)}>
+          <button
+            type="button"
+            onClick={() => deleteService(service._id)}
+          >
             ??? מחק
           </button>
         </div>
