@@ -2,16 +2,23 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+
+  let user = null;
+
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
 
   if (!user || user.role !== "admin") {
     return (
-      <section className="loginBox">
-        <h2>?? אין הרשאה</h2>
+      <section className="loginBox" dir="rtl">
+        <h2>🔐 אין הרשאה</h2>
         <p>רק מנהל מחובר יכול לראות את פורטל הניהול.</p>
 
         <Link to="/">
-          <button type="button">?? חזרה לאתר</button>
+          <button type="button">🏠 חזרה לאתר</button>
         </Link>
       </section>
     );
@@ -23,104 +30,97 @@ function Dashboard() {
   };
 
   return (
-    <section className="loginBox">
-      <h2>?? פורטל ניהול ALON PC</h2>
+    <section className="loginBox" dir="rtl">
+      <h2>⚙️ פורטל ניהול ALON PC</h2>
 
-      <p>ברוך הבא {user.name || "Alon Admin"}</p>
+      <p>ברוך הבא, {user.name || "Alon Admin"}</p>
 
       <div className="dashboardGrid">
-        {/* שירותים */}
         <Link to="/admin" className="dashboardCard">
-          ?? ניהול שירותים
+          📋 ניהול שירותים
         </Link>
 
         <Link to="/admin/government" className="dashboardCard">
-          ??? ניהול ממשלתי
+          🏛️ ניהול ממשלתי
         </Link>
 
         <Link to="/admin/service-categories" className="dashboardCard">
-          ?? קטגוריות שירותים
+          📂 קטגוריות שירותים
         </Link>
 
-        {/* חנות */}
         <Link to="/admin/shop" className="dashboardCard">
-          ?? ניהול חנות
+          🛒 ניהול חנות
         </Link>
 
         <Link to="/admin/product-categories" className="dashboardCard">
-          ??? קטגוריות מוצרים
+          🗂️ קטגוריות מוצרים
         </Link>
 
         <Link to="/admin/brands" className="dashboardCard">
-          ??? מותגים
+          🏷️ מותגים
         </Link>
 
         <Link to="/admin/offers" className="dashboardCard">
-          ?? מבצעים
+          💰 מבצעים
         </Link>
 
-        {/* יד שנייה */}
         <Link to="/admin/second-hand" className="dashboardCard">
-          ?? ניהול יד שנייה
+          ♻️ ניהול יד שנייה
         </Link>
 
-        {/* הזמנות */}
         <Link to="/admin/bookings" className="dashboardCard">
-          ?? ניהול הזמנות שירות
+          📅 ניהול הזמנות שירות
         </Link>
 
         <Link to="/admin/shop-orders" className="dashboardCard">
-          ??? ניהול הזמנות חנות
+          🛍️ ניהול הזמנות חנות
         </Link>
 
-        {/* משתמשים */}
         <Link to="/admin/users" className="dashboardCard">
-          ?? ניהול משתמשים
+          👥 ניהול משתמשים
         </Link>
 
         <Link to="/admin/permissions" className="dashboardCard">
-          ?? הרשאות
+          🔑 הרשאות
         </Link>
 
-        {/* מדיה */}
         <Link to="/admin/gallery" className="dashboardCard">
-          ??? גלריית תמונות
+          🖼️ גלריית תמונות
         </Link>
 
         <Link to="/admin/documents" className="dashboardCard">
-          ?? מסמכים
+          📄 מסמכים
         </Link>
 
         <Link to="/admin/uploads" className="dashboardCard">
-          ?? העלאת קבצים
+          ⬆️ העלאת קבצים
         </Link>
 
-        {/* מערכת */}
         <Link to="/admin/translations" className="dashboardCard">
-          ?? ניהול שפות
+          🌍 ניהול שפות
         </Link>
 
         <Link to="/admin/edit-translations" className="dashboardCard">
-          ?? עריכת תרגומים
+          ✏️ עריכת תרגומים
         </Link>
 
         <Link to="/admin/settings" className="dashboardCard">
-          ?? הגדרות האתר
+          ⚙️ הגדרות האתר
         </Link>
 
         <Link to="/admin/statistics" className="dashboardCard">
-          ?? סטטיסטיקות
+          📊 סטטיסטיקות
         </Link>
 
         <Link to="/admin/backup" className="dashboardCard">
-          ?? גיבוי
+          💾 גיבוי
         </Link>
       </div>
 
       <br />
 
       <button type="button" className="logoutBtn" onClick={logout}>
-        ?? יציאה מהניהול
+        🚪 יציאה מהניהול
       </button>
     </section>
   );
