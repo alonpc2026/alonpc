@@ -18,6 +18,7 @@ import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import AdminGovernment from "./pages/AdminGovernment";
 import AdminShop from "./pages/AdminShop";
+import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
@@ -55,6 +56,7 @@ function App() {
           <Route path="/government" element={<Government />} />
 
           <Route path="/shop" element={<Shop />} />
+         <Route path="/product/:id" element={<ProductDetails />}/>
           <Route path="/second-hand" element={<SecondHand />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/booking" element={<ServiceBooking />} />
