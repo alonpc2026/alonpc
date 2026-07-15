@@ -1,218 +1,496 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+const API = "https://alonpc02026.onrender.com/api/products";
+
+const EMPTY_FORM = {
+  name: "",
+  category: "מחשבים ניידים",
+  brand: "",
+  price: "",
+  description: "",
+  imageUrl: "",
+  videoUrl: "",
+  condition: "חדש",
+};
 
 function AdminShop() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const API = "https://alonpc02026.onrender.com/api/products";
-  const UPLOAD_API = "https://alonpc02026.onrender.com/api/upload";
+  let user = null;
+
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
 
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [imageError, setImageError] = useState(false);
 
-  const [form, setForm] = useState({
-    name: "",
-    category: "",
-    brand: "",
-    price: "",
-    oldPrice: "",
-    imageUrl: "",
-    description: "",
-    stock: "",
-    condition: "חדש",
-  });
+  const categories = [
+    "מחשבים ניידים",
+    "מחשבים נייחים",
+    "מסכים",
+    "מדפסות",
+    "טלפונים",
+    "טאבלטים",
+    "אביזרי מחשב",
+    "ציוד נגישות",
+    "אחר",
+  ];
+
+  const loadProducts = useCallback(async () => {
+    try {
+      const response = await fetch(API);
+
+      if (!response.ok) {
+        throw new Error("לא ניתן לקבל את המוצרים");
+      }
+
+      const data = await response.json();
+
+      setProducts(Array.isArray(data) ? data : []);
+      setMessage("");
+    } catch (error) {
+      setProducts([]);
+      setMessage(`❌ שגיאה בטעינת מוצרים: ${error.message}`);
+    }
+  }, []);
 
   useEffect(() => {
     loadProducts();
-  }, []);
-
-  if (!user || user.role !== "admin") {
-    return (
-      <section className="loginBox">
-        <h2>🔐 אין הרשאה</h2>
-        <p>רק מנהל מחובר יכול לנהל חנות.</p>
-      </section>
-    );
-  }
-
-  const loadProducts = async () => {
-    try {
-      const res = await fetch(API);
-      const data = await res.json();
-      setProducts(Array.isArray(data) ? data : []);
-    } catch {
-      setMessage("❌ שגיאה בטעינת מוצרים");
-    }
-  };
+  }, [loadProducts]);
 
   const updateField = (field, value) => {
-    setForm({ ...form, [field]: value });
-  };
+    setForm((currentForm) => ({
+      ...currentForm,
+      [field]: value,
+    }));
 
-  const uploadImage = async () => {
-    if (!selectedImage) {
-      setMessage("בחר תמונה קודם");
-      return;
-    }
-
-    try {
-      const imageData = new FormData();
-      imageData.append("image", selectedImage);
-
-      const res = await fetch(UPLOAD_API, {
-        method: "POST",
-        body: imageData,
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error();
-
-      updateField("imageUrl", data.imageUrl);
-      setMessage("✅ התמונה הועלתה בהצלחה");
-    } catch {
-      setMessage("❌ שגיאה בהעלאת תמונה");
+    if (field === "imageUrl") {
+      setImageError(false);
     }
   };
 
   const clearForm = () => {
     setEditId(null);
-    setSelectedImage(null);
-    setForm({
-      name: "",
-      category: "",
-      brand: "",
-      price: "",
-      oldPrice: "",
-      imageUrl: "",
-      description: "",
-      stock: "",
-      condition: "חדש",
-    });
+    setForm(EMPTY_FORM);
+    setImageError(false);
+  };
+
+  const normalizeUrl = (url) => {
+    const cleanUrl = String(url || "").trim();
+
+    if (!cleanUrl) {
+      return "";
+    }
+
+    if (
+      cleanUrl.startsWith("https://") ||
+      cleanUrl.startsWith("http://")
+    ) {
+      return cleanUrl;
+    }
+
+    return `https://${cleanUrl}`;
   };
 
   const saveProduct = async () => {
-    if (!form.name || !form.category || !form.price) {
-      setMessage("נא למלא שם מוצר, קטגוריה ומחיר");
+    if (!form.name.trim()) {
+      setMessage("נא למלא שם מוצר");
       return;
     }
 
+    if (!form.category.trim()) {
+      setMessage("נא לבחור קטגוריה");
+      return;
+    }
+
+    if (!form.price || Number(form.price) <= 0) {
+      setMessage("נא למלא מחיר תקין");
+      return;
+    }
+
+    const fixedImageUrl = normalizeUrl(form.imageUrl);
+    const fixedVideoUrl = normalizeUrl(form.videoUrl);
+
+    if (
+      fixedImageUrl &&
+      !fixedImageUrl.startsWith("https://")
+    ) {
+      setMessage(
+        "❌ כתובת התמונה חייבת להתחיל ב־https://"
+      );
+      return;
+    }
+
+    const productData = {
+      name: form.name.trim(),
+      category: form.category.trim(),
+      brand: form.brand.trim(),
+      price: Number(form.price),
+      description: form.description.trim(),
+      imageUrl: fixedImageUrl,
+      videoUrl: fixedVideoUrl,
+      condition: form.condition,
+    };
+
     try {
-      const res = await fetch(editId ? `${API}/${editId}` : API, {
-        method: editId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const response = await fetch(
+        editId ? `${API}/${editId}` : API,
+        {
+          method: editId ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productData),
+        }
+      );
 
-      if (!res.ok) throw new Error();
+      const result = await response.json();
 
-      setMessage(editId ? "✅ המוצר עודכן" : "✅ המוצר נוסף");
+      if (!response.ok) {
+        throw new Error(
+          result.message || "שגיאה בשמירת המוצר"
+        );
+      }
+
+      setMessage(
+        editId
+          ? "✅ המוצר עודכן בהצלחה"
+          : "✅ המוצר נוסף בהצלחה"
+      );
+
       clearForm();
-      loadProducts();
-    } catch {
-      setMessage("❌ שגיאה בשמירת מוצר");
+      await loadProducts();
+    } catch (error) {
+      setMessage(`❌ לא ניתן לשמור מוצר: ${error.message}`);
     }
   };
 
   const startEdit = (product) => {
     setEditId(product._id);
-    setSelectedImage(null);
 
     setForm({
       name: product.name || "",
-      category: product.category || "",
+      category: product.category || "מחשבים ניידים",
       brand: product.brand || "",
-      price: product.price || "",
-      oldPrice: product.oldPrice || "",
-      imageUrl: product.imageUrl || "",
+      price: product.price ?? "",
       description: product.description || "",
-      stock: product.stock || "",
+      imageUrl: product.imageUrl || "",
+      videoUrl:
+        product.videoUrl ||
+        product.videoLink ||
+        product.youtubeUrl ||
+        "",
       condition: product.condition || "חדש",
+    });
+
+    setImageError(false);
+    setMessage("✏️ מצב עריכה פעיל");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   };
 
   const deleteProduct = async (id) => {
-    if (!window.confirm("למחוק מוצר?")) return;
+    const approved = window.confirm(
+      "האם למחוק את המוצר?"
+    );
+
+    if (!approved) {
+      return;
+    }
 
     try {
-      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error();
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+      });
 
-      setMessage("🗑️ המוצר נמחק");
-      loadProducts();
-    } catch {
-      setMessage("❌ שגיאה במחיקה");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "שגיאה במחיקה"
+        );
+      }
+
+      setMessage("🗑️ המוצר נמחק בהצלחה");
+      await loadProducts();
+    } catch (error) {
+      setMessage(`❌ לא ניתן למחוק מוצר: ${error.message}`);
     }
   };
 
+  if (!user || user.role !== "admin") {
+    return (
+      <section className="loginBox" dir="rtl">
+        <h2>🔐 אין הרשאה</h2>
+        <p>רק מנהל מחובר יכול לנהל את החנות.</p>
+      </section>
+    );
+  }
+
   return (
-    <section className="loginBox">
-      <h2>🛒 ניהול חנות + העלאת תמונה</h2>
+    <section className="loginBox" dir="rtl">
+      <h2>🛒 ניהול החנות</h2>
 
-      <input placeholder="שם מוצר" value={form.name} onChange={(e) => updateField("name", e.target.value)} />
-      <input placeholder="קטגוריה" value={form.category} onChange={(e) => updateField("category", e.target.value)} />
-      <input placeholder="מותג" value={form.brand} onChange={(e) => updateField("brand", e.target.value)} />
-      <input type="number" placeholder="מחיר" value={form.price} onChange={(e) => updateField("price", e.target.value)} />
-      <input type="number" placeholder="מחיר לפני מבצע" value={form.oldPrice} onChange={(e) => updateField("oldPrice", e.target.value)} />
-      <input placeholder="מלאי" value={form.stock} onChange={(e) => updateField("stock", e.target.value)} />
+      <label htmlFor="product-name">
+        שם המוצר
+      </label>
 
-      <select value={form.condition} onChange={(e) => updateField("condition", e.target.value)}>
+      <input
+        id="product-name"
+        type="text"
+        placeholder="לדוגמה: Lenovo ThinkBook 16"
+        value={form.name}
+        onChange={(event) =>
+          updateField("name", event.target.value)
+        }
+      />
+
+      <label htmlFor="product-category">
+        קטגוריה
+      </label>
+
+      <select
+        id="product-category"
+        value={form.category}
+        onChange={(event) =>
+          updateField("category", event.target.value)
+        }
+      >
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+
+      <label htmlFor="product-brand">
+        מותג
+      </label>
+
+      <input
+        id="product-brand"
+        type="text"
+        placeholder="לדוגמה: Lenovo"
+        value={form.brand}
+        onChange={(event) =>
+          updateField("brand", event.target.value)
+        }
+      />
+
+      <label htmlFor="product-price">
+        מחיר
+      </label>
+
+      <input
+        id="product-price"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="מחיר בשקלים"
+        value={form.price}
+        onChange={(event) =>
+          updateField("price", event.target.value)
+        }
+      />
+
+      <label htmlFor="product-condition">
+        מצב המוצר
+      </label>
+
+      <select
+        id="product-condition"
+        value={form.condition}
+        onChange={(event) =>
+          updateField("condition", event.target.value)
+        }
+      >
         <option value="חדש">חדש</option>
         <option value="כמו חדש">כמו חדש</option>
         <option value="יד שנייה">יד שנייה</option>
         <option value="דורש תיקון">דורש תיקון</option>
       </select>
 
-      <textarea placeholder="תיאור מוצר" value={form.description} onChange={(e) => updateField("description", e.target.value)} />
+      <label htmlFor="product-description">
+        תיאור המוצר
+      </label>
 
-      <hr />
+      <textarea
+        id="product-description"
+        placeholder="כתוב מפרט ותיאור מלא של המוצר"
+        value={form.description}
+        onChange={(event) =>
+          updateField("description", event.target.value)
+        }
+      />
 
-      <h3>🖼️ תמונת מוצר</h3>
-      <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
-      <button onClick={uploadImage}>⬆️ העלה תמונה</button>
+      <label htmlFor="product-image">
+        קישור ישיר לתמונה
+      </label>
 
-      <input placeholder="קישור תמונה" value={form.imageUrl} onChange={(e) => updateField("imageUrl", e.target.value)} />
+      <input
+        id="product-image"
+        type="url"
+        placeholder="https://example.com/computer.jpg"
+        value={form.imageUrl}
+        onChange={(event) =>
+          updateField("imageUrl", event.target.value)
+        }
+      />
 
-      {form.imageUrl && (
-        <img
-          src={form.imageUrl}
-          alt="preview"
-          style={{ width: 140, height: 140, objectFit: "cover", borderRadius: 14, background: "white" }}
-        />
+      <p>
+        יש להשתמש בקישור ישיר לתמונה שמתחיל ב־
+        <strong>https://</strong> ומומלץ שיסתיים ב־
+        <strong>.jpg</strong>, <strong>.png</strong> או{" "}
+        <strong>.webp</strong>.
+      </p>
+
+      {form.imageUrl && !imageError && (
+        <div
+          style={{
+            margin: "16px 0",
+            textAlign: "center",
+          }}
+        >
+          <img
+            src={normalizeUrl(form.imageUrl)}
+            alt="תצוגה מקדימה של המוצר"
+            onError={() => setImageError(true)}
+            style={{
+              width: "100%",
+              maxWidth: 320,
+              height: 220,
+              objectFit: "contain",
+              borderRadius: 16,
+              background: "#ffffff",
+              border: "2px solid #d7e2ed",
+              padding: 10,
+            }}
+          />
+        </div>
       )}
 
-      <hr />
+      {form.imageUrl && imageError && (
+        <p className="statusMessage">
+          ❌ הקישור אינו מציג תמונה. יש להדביק כתובת
+          ישירה ותקינה לתמונה.
+        </p>
+      )}
 
-      <button onClick={saveProduct}>
+      <label htmlFor="product-video">
+        קישור לסרטון
+      </label>
+
+      <input
+        id="product-video"
+        type="url"
+        placeholder="https://www.youtube.com/watch?v=..."
+        value={form.videoUrl}
+        onChange={(event) =>
+          updateField("videoUrl", event.target.value)
+        }
+      />
+
+      <button type="button" onClick={saveProduct}>
         {editId ? "💾 שמור עריכה" : "➕ הוסף מוצר"}
       </button>
 
-      {editId && <button onClick={clearForm}>❌ ביטול עריכה</button>}
+      {editId && (
+        <button type="button" onClick={clearForm}>
+          ❌ ביטול עריכה
+        </button>
+      )}
 
-      <p>{message}</p>
+      {message && <p>{message}</p>}
 
       <hr />
 
       <h2>מוצרים קיימים</h2>
 
+      {products.length === 0 && (
+        <p>עדיין אין מוצרים בחנות.</p>
+      )}
+
       {products.map((product) => (
-        <div className="adminService" key={product._id}>
-          {product.imageUrl && (
+        <article
+          className="adminService"
+          key={product._id}
+        >
+          {product.imageUrl ? (
             <img
-              src={product.imageUrl}
-              alt={product.name}
-              style={{ width: 90, height: 90, objectFit: "cover", borderRadius: 10 }}
+              src={normalizeUrl(product.imageUrl)}
+              alt={product.name || "תמונת מוצר"}
+              style={{
+                width: 150,
+                height: 120,
+                objectFit: "contain",
+                borderRadius: 12,
+                background: "#ffffff",
+                border: "1px solid #d7e2ed",
+                padding: 6,
+              }}
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+              }}
             />
+          ) : (
+            <div
+              style={{
+                fontSize: "4rem",
+                textAlign: "center",
+              }}
+            >
+              🖥️
+            </div>
           )}
 
           <h3>{product.name}</h3>
-          <p>קטגוריה: {product.category}</p>
-          <p>מותג: {product.brand}</p>
-          <p>מחיר: ₪{product.price}</p>
-          <p>מצב: {product.condition}</p>
 
-          <button onClick={() => startEdit(product)}>✏️ ערוך</button>
-          <button onClick={() => deleteProduct(product._id)}>🗑️ מחק</button>
-        </div>
+          <p>
+            <strong>קטגוריה:</strong>{" "}
+            {product.category}
+          </p>
+
+          {product.brand && (
+            <p>
+              <strong>מותג:</strong> {product.brand}
+            </p>
+          )}
+
+          <p>
+            <strong>מחיר:</strong> ₪
+            {Number(product.price || 0).toLocaleString(
+              "he-IL"
+            )}
+          </p>
+
+          {product.condition && (
+            <p>
+              <strong>מצב:</strong>{" "}
+              {product.condition}
+            </p>
+          )}
+
+          <button
+            type="button"
+            onClick={() => startEdit(product)}
+          >
+            ✏️ ערוך
+          </button>
+
+          <button
+            type="button"
+            onClick={() => deleteProduct(product._id)}
+          >
+            🗑️ מחק
+          </button>
+        </article>
       ))}
     </section>
   );
