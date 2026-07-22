@@ -1,223 +1,55 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-function Government() {
-  const API = "https://alonpc02026.onrender.com/api/services";
+const links = [
+  { title:"ביטוח לאומי", url:"https://www.btl.gov.il", icon:"🏛️" },
+  { title:"רשות המיסים", url:"https://www.gov.il/he/departments/tax-authority", icon:"💰" },
+  { title:"רשות האוכלוסין וההגירה", url:"https://www.gov.il/he/departments/population_and_immigration_authority", icon:"🆔" },
+  { title:"משרד הרישוי", url:"https://www.gov.il/he/departments/topics/driving_and_vehicles", icon:"🚗" },
+  { title:"נט המשפט", url:"https://www.court.gov.il", icon:"⚖️" },
+  { title:"משטרת ישראל", url:"https://www.gov.il/he/departments/israel_police", icon:"👮" },
+  { title:"משרד הבריאות", url:"https://www.gov.il/he/departments/ministry_of_health", icon:"🏥" },
+  { title:"משרד החינוך", url:"https://www.gov.il/he/departments/ministry_of_education", icon:"📚" },
+  { title:"שירות התעסוקה", url:"https://www.taasuka.gov.il", icon:"💼" },
+  { title:"רכבת ישראל", url:"https://www.rail.co.il", icon:"🚆" }
+];
 
-  const categories = [
-    "חירשים וכבדי שמיעה",
-    "אוטיזם",
-    "מוגבלות מוטורית",
-    "מוגבלות נוירוקוגניטיבית",
-    "מוגבלות שכלית התפתחותית",
-    "עיוורון ולקות ראייה",
-    "ילדים עם עיכוב התפתחותי",
-  ];
+export default function Government() {
+  const [search,setSearch]=useState("");
 
-  const categoryIcons = {
-    "חירשים וכבדי שמיעה": "🦻",
-    אוטיזם: "🧩",
-    "מוגבלות מוטורית": "♿",
-    "מוגבלות נוירוקוגניטיבית": "🧠",
-    "מוגבלות שכלית התפתחותית": "🤝",
-    "עיוורון ולקות ראייה": "🦯",
-    "ילדים עם עיכוב התפתחותי": "🧒",
-  };
-
-  const [services, setServices] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [search, setSearch] = useState("");
-  const [message, setMessage] = useState("טוען שירותים...");
-
-  useEffect(() => {
-    loadServices();
-  }, []);
-
-  const loadServices = async () => {
-    try {
-      const response = await fetch(API);
-
-      if (!response.ok) {
-        throw new Error("שגיאה בקבלת השירותים");
-      }
-
-      const data = await response.json();
-      setServices(Array.isArray(data) ? data : []);
-      setMessage("");
-    } catch (error) {
-      console.error(error);
-      setServices([]);
-      setMessage("לא ניתן לטעון שירותים כרגע");
-    }
-  };
-
-  const filteredServices = services.filter((service) => {
-    const serviceCategory = service.category || "";
-    const searchText = search.trim().toLowerCase();
-
-    const matchesCategory =
-      !selectedCategory || serviceCategory === selectedCategory;
-
-    const combinedText = `
-      ${service.name || ""}
-      ${service.businessName || ""}
-      ${service.description || ""}
-      ${service.category || ""}
-      ${service.city || ""}
-    `.toLowerCase();
-
-    const matchesSearch =
-      !searchText || combinedText.includes(searchText);
-
-    return matchesCategory && matchesSearch;
-  });
-
-  const openServiceLink = (link) => {
-    if (!link) return;
-
-    const fixedLink =
-      link.startsWith("http://") || link.startsWith("https://")
-        ? link
-        : `https://${link}`;
-
-    window.open(fixedLink, "_blank", "noopener,noreferrer");
-  };
+  const filtered=links.filter(l=>
+    l.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <main className="governmentPage">
+    <main className="pageContainer" dir="rtl">
       <section className="heroBanner">
         <h1>🏛️ שירותים ממשלתיים</h1>
-        <p>
-          מידע וקישורים ממשלתיים עבור אנשים עם מוגבלויות ובני משפחותיהם
-        </p>
+        <p>גישה מהירה לאתרים רשמיים</p>
       </section>
 
-      <section className="governmentContent">
-        <h2>בחרו נושא</h2>
+      <div className="searchBox">
+        <input
+          placeholder="חיפוש..."
+          value={search}
+          onChange={(e)=>setSearch(e.target.value)}
+        />
+      </div>
 
-        <div className="governmentCategories">
-          <button
-            type="button"
-            className={!selectedCategory ? "categoryButton active" : "categoryButton"}
-            onClick={() => setSelectedCategory("")}
-          >
-            📋 כל הנושאים
-          </button>
-
-          {categories.map((category) => (
-            <button
-              type="button"
-              key={category}
-              className={
-                selectedCategory === category
-                  ? "categoryButton active"
-                  : "categoryButton"
-              }
-              onClick={() => setSelectedCategory(category)}
+      <section className="grid">
+        {filtered.map(item=>(
+          <article className="card" key={item.title}>
+            <h2>{item.icon} {item.title}</h2>
+            <a
+              className="detailsButton"
+              href={item.url}
+              target="_blank"
+              rel="noreferrer"
             >
-              <span className="categoryIcon">
-                {categoryIcons[category]}
-              </span>
-
-              <span>{category}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="searchBox">
-          <input
-            type="text"
-            placeholder="🔍 חיפוש שירות ממשלתי..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-        </div>
-
-        {selectedCategory && (
-          <div className="selectedCategoryTitle">
-            <h2>
-              {categoryIcons[selectedCategory]} {selectedCategory}
-            </h2>
-
-            <button
-              type="button"
-              onClick={() => setSelectedCategory("")}
-            >
-              הצג את כל הנושאים
-            </button>
-          </div>
-        )}
-
-        {message && <p className="statusMessage">{message}</p>}
-
-        {!message && filteredServices.length === 0 && (
-          <section className="emptyState">
-            <h3>עדיין אין שירותים בנושא זה</h3>
-            <p>
-              אפשר להוסיף שירותים דרך לוח הניהול ולבחור באותה קטגוריה.
-            </p>
-          </section>
-        )}
-
-        <section className="governmentGrid">
-          {filteredServices.map((service) => (
-            <article className="governmentCard" key={service._id}>
-              <div className="governmentCardIcon">
-                {service.icon || categoryIcons[service.category] || "🏛️"}
-              </div>
-
-              <h3>{service.name}</h3>
-
-              {service.category && (
-                <p className="governmentCategoryLabel">
-                  {service.category}
-                </p>
-              )}
-
-              {service.description && (
-                <p>{service.description}</p>
-              )}
-
-              {service.businessName && (
-                <p>
-                  <strong>שם הגוף:</strong> {service.businessName}
-                </p>
-              )}
-
-              {service.address && (
-                <p>
-                  <strong>כתובת:</strong> {service.address}
-                </p>
-              )}
-
-              {service.city && (
-                <p>
-                  <strong>עיר:</strong> {service.city}
-                </p>
-              )}
-
-              {service.phone && (
-                <p>
-                  <strong>טלפון:</strong>{" "}
-                  <a href={`tel:${service.phone}`}>
-                    {service.phone}
-                  </a>
-                </p>
-              )}
-
-              {service.link && (
-                <button
-                  type="button"
-                  onClick={() => openServiceLink(service.link)}
-                >
-                  🔗 מעבר לאתר הממשלתי
-                </button>
-              )}
-            </article>
-          ))}
-        </section>
+              🌐 פתח אתר
+            </a>
+          </article>
+        ))}
       </section>
     </main>
   );
 }
-
-export default Government;

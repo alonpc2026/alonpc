@@ -32,6 +32,9 @@ function Login() {
   return (
     <section className="loginBox">
       <h2>🔐 כניסת מנהל</h2>
+      <p style={{textAlign:"center"}}>
+        ברוכים הבאים למערכת הניהול של ALON PC
+      </p>
 
       <input
         placeholder="שם משתמש"

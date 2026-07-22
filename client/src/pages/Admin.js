@@ -154,7 +154,10 @@ function Admin() {
 
   return (
     <section className="loginBox">
-      <h2>📋 ניהול שירותים</h2>
+      <h2>📋 ניהול שירותים - ALON PC</h2>
+      <p style={{textAlign:"center"}}>
+        ניתן להוסיף, לערוך ולמחוק שירותים מהמערכת.
+      </p>
 
       <input
         placeholder="שם אתר / שירות"

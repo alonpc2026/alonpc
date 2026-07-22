@@ -16,7 +16,7 @@ function Services() {
     try {
       const res = await fetch(API);
       const data = await res.json();
-      setServices(data);
+      setServices(Array.isArray(data) ? data : []);
     } catch {
       setMessage("לא ניתן לטעון שירותים כרגע");
     }
@@ -28,7 +28,7 @@ function Services() {
   });
 
   return (
-    <div>
+    <div className="servicesPage" dir="rtl">
       <section className="heroBanner">
         <h2>🛎️ שירותים</h2>
         <p>כל השירותים, העסקים והסיוע במקום אחד</p>
@@ -43,19 +43,30 @@ function Services() {
         />
       </div>
 
-      {message && <p style={{ textAlign: "center", color: "white" }}>{message}</p>}
+      {message && <p className="statusMessage">{message}</p>}
 
       <main className="grid">
         {filteredServices.map((service) => (
-          <button
-            className="card"
-            key={service._id}
-            onClick={() => navigate(`/service/${service._id}`)}
-          >
+          <article className="card" key={service._id}>
+            {service.imageUrl && (
+              <img
+                src={service.imageUrl}
+                alt={service.name}
+                style={{width:"100%",height:"180px",objectFit:"cover",borderRadius:"10px"}}
+              />
+            )}
+
             <h3>{service.icon || "🛎️"} {service.name}</h3>
-            <p>{service.category}</p>
+            <p><b>{service.category}</b></p>
             <small>{service.description}</small>
-          </button>
+
+            <button
+              style={{marginTop:15}}
+              onClick={() => navigate(`/service/${service._id}`)}
+            >
+              לפרטים נוספים
+            </button>
+          </article>
         ))}
       </main>
     </div>

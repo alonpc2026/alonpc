@@ -1,0 +1,16 @@
+/* Navbar.css - FULL REPLACE */
+*{box-sizing:border-box}
+.site-navbar{position:sticky;top:0;z-index:999;background:linear-gradient(135deg,#021b44,#0b56c8,#02204d);padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.navbar-container{max-width:1500px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.navbar-brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:34px;font-weight:900;color:#fff}
+.brand-logo{width:60px;height:60px;border-radius:50%;background:#fff;color:#0b56c8;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:bold}
+.brand-text{color:#fff}
+.navbar-toggle{display:none}
+.navbar-menu{display:flex;flex-wrap:wrap;gap:10px}
+.nav-button{text-decoration:none;color:#fff;padding:14px 18px;border-radius:14px;font-size:18px;font-weight:bold;transition:.2s}
+.nav-button:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.home-button{background:#1976d2}.services-button{background:#009688}.dashboard-button{background:#3f51b5}.admin-button{background:#9c27b0}.shop-button{background:#ff9800}.login-button{background:#4caf50}.about-button{background:#607d8b}.contact-button{background:#f44336}
+.navbar-contact{display:flex;gap:10px}
+.contact-link{padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:bold;color:#fff}
+.phone-link{background:#1565c0}.whatsapp-link{background:#25D366}
+@media(max-width:900px){.navbar-toggle{display:block;padding:10px 14px;font-size:26px;border:none;border-radius:10px;background:#fff;cursor:pointer}.navbar-menu{display:none;width:100%;flex-direction:column}.navbar-menu.open{display:flex}.nav-button{text-align:center}.navbar-contact{width:100%;justify-content:center}}

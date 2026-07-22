@@ -83,7 +83,7 @@ function Shop() {
   return (
     <main className="pageContainer" dir="rtl">
       <section className="heroBanner">
-        <h1>🛒 החנות של אלון</h1>
+        <h1>🛒 החנות של אלון - ALON PC</h1>
         <p>
           מחשבים, ציוד טכנולוגי ומוצרים נגישים
         </p>

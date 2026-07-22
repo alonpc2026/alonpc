@@ -1,248 +1,53 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import translations from "../translations";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 function Navbar() {
-  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const [lang, setLang] = useState(localStorage.getItem("lang") || "he");
-  const [showLogin, setShowLogin] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const navText = {
-    he: {
-      home: "בית",
-      services: "שירותים",
-      government: "ממשלתי",
-      shop: "חנות",
-      secondHand: "יד שנייה",
-      documents: "מסמכים",
-      about: "אודות",
-      contact: "צור קשר",
-      adminTitle: "כניסת מנהל",
-      username: "שם משתמש",
-      password: "סיסמה",
-      login: "כניסה",
-      cancel: "ביטול",
-      wrong: "שם משתמש או סיסמה שגויים",
-    },
-    en: {
-      home: "Home",
-      services: "Services",
-      government: "Government",
-      shop: "Shop",
-      secondHand: "Second Hand",
-      documents: "Documents",
-      about: "About",
-      contact: "Contact",
-      adminTitle: "Admin Login",
-      username: "Username",
-      password: "Password",
-      login: "Login",
-      cancel: "Cancel",
-      wrong: "Wrong username or password",
-    },
-    ru: {
-      home: "Главная",
-      services: "Услуги",
-      government: "Государственные",
-      shop: "Магазин",
-      secondHand: "Б/у",
-      documents: "Документы",
-      about: "О нас",
-      contact: "Контакты",
-      adminTitle: "Вход администратора",
-      username: "Имя пользователя",
-      password: "Пароль",
-      login: "Войти",
-      cancel: "Отмена",
-      wrong: "Неверное имя пользователя или пароль",
-    },
-    ar: {
-      home: "الرئيسية",
-      services: "الخدمات",
-      government: "حكومي",
-      shop: "المتجر",
-      secondHand: "مستعمل",
-      documents: "الملفات",
-      about: "من نحن",
-      contact: "اتصل بنا",
-      adminTitle: "دخول المدير",
-      username: "اسم المستخدم",
-      password: "كلمة المرور",
-      login: "دخول",
-      cancel: "إلغاء",
-      wrong: "اسم المستخدم أو كلمة المرور غير صحيحة",
-    },
-    am: {
-      home: "መነሻ",
-      services: "አገልግሎቶች",
-      government: "መንግስታዊ",
-      shop: "ሱቅ",
-      secondHand: "ሁለተኛ እጅ",
-      documents: "ሰነዶች",
-      about: "ስለ እኛ",
-      contact: "አግኙን",
-      adminTitle: "የአስተዳዳሪ መግቢያ",
-      username: "የተጠቃሚ ስም",
-      password: "የይለፍ ቃል",
-      login: "ግባ",
-      cancel: "ሰርዝ",
-      wrong: "የተጠቃሚ ስም ወይም የይለፍ ቃል ትክክል አይደለም",
-    },
-  };
-
-  const t = translations[lang] || translations.he;
-  const n = navText[lang] || navText.he;
-
-  useEffect(() => {
-    localStorage.setItem("lang", lang);
-    document.body.dir = lang === "he" || lang === "ar" ? "rtl" : "ltr";
-  }, [lang]);
-
-  const loginAdmin = () => {
-    if (username.trim() === "korkusal" && password === "631892") {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: "Alon Admin",
-          email: "korkusal",
-          role: "admin",
-        })
-      );
-
-      setShowLogin(false);
-      navigate("/dashboard");
-    } else {
-      alert(n.wrong);
-    }
-  };
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="siteHeader">
-      <div className="brandHero">
-        <img src="/alonlogo.png" alt="ALON PC" className="brandLogo" />
-
-        <div>
-          <h1>ALON PC</h1>
-          <p>{t.subtitle || "מרכז שירותים לאנשים עם מוגבלויות"}</p>
-        </div>
-      </div>
-
-      <div className="topBar">
-        <div className="contactInfo">
-          <a href="tel:0545221809" className="phoneBtn">
-            📞 054-5221809
-          </a>
-
-          <a
-            href="https://wa.me/972545221809"
-            target="_blank"
-            rel="noreferrer"
-            className="whatsappBtn"
-          >
-            🟢 WhatsApp
-          </a>
-
-          <select
-            className="languageSelect"
-            value={lang}
-            onChange={(event) => setLang(event.target.value)}
-          >
-            <option value="he">🇮🇱 עברית</option>
-            <option value="en">🇺🇸 English</option>
-            <option value="ru">🇷🇺 Русский</option>
-            <option value="ar">🇸🇦 العربية</option>
-            <option value="am">🇪🇹 አማርኛ</option>
-          </select>
-        </div>
-      </div>
-
-      <nav className="menu">
-        <Link className="homeBtn" to="/">
-          🏠 {n.home}
-        </Link>
-
-        <Link className="servicesBtn" to="/services">
-          🛎️ {n.services}
-        </Link>
-
-        <Link className="governmentBtn" to="/government">
-          🏛️ {n.government}
-        </Link>
-
-        <Link className="shopBtn" to="/shop">
-          🛍️ {n.shop}
-        </Link>
-
-        <Link className="secondHandBtn" to="/second-hand">
-          ♻️ {n.secondHand}
-        </Link>
-
-        <Link className="documentsBtn" to="/documents">
-          📄 {n.documents}
-        </Link>
-
-        <Link className="aboutBtn" to="/about">
-          ℹ️ {n.about}
-        </Link>
-
-        <Link className="contactBtn" to="/contact">
-          ✉️ {n.contact}
+    <header className="site-navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-brand" onClick={closeMenu}>
+          <span className="brand-logo">A</span>
+          <span className="brand-text">ALONPC</span>
         </Link>
 
         <button
           type="button"
-          className="adminBtn"
-          onClick={() => setShowLogin(true)}
-          aria-label={n.adminTitle}
+          className="navbar-toggle"
+          aria-label="פתיחת תפריט"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
         >
-          ⚙️
+          ☰
         </button>
-      </nav>
 
-      {showLogin && (
-        <div className="modalOverlay">
-          <div className="adminModal">
-            <h2>🔐 {n.adminTitle}</h2>
+        <nav className={`navbar-menu ${menuOpen ? "open" : ""}`} aria-label="תפריט ראשי">
+          <Link to="/" className="nav-button home-button" onClick={closeMenu}>דף הבית</Link>
+          <Link to="/services" className="nav-button services-button" onClick={closeMenu}>שירותים</Link>
+          <Link to="/dashboard" className="nav-button dashboard-button" onClick={closeMenu}>לוח בקרה</Link>
+          <Link to="/admin" className="nav-button admin-button" onClick={closeMenu}>ניהול</Link>
+          <Link to="/shop" className="nav-button shop-button" onClick={closeMenu}>החנות של אלון</Link>
+          <Link to="/login" className="nav-button login-button" onClick={closeMenu}>כניסת מנויים</Link>
+          <Link to="/about" className="nav-button about-button" onClick={closeMenu}>אודות</Link>
+          <Link to="/contact" className="nav-button contact-button" onClick={closeMenu}>צור קשר</Link>
+        </nav>
 
-            <input
-              type="text"
-              placeholder={n.username}
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-
-            <input
-              type="password"
-              placeholder={n.password}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  loginAdmin();
-                }
-              }}
-            />
-
-            <button type="button" onClick={loginAdmin}>
-              {n.login}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setShowLogin(false);
-                setUsername("");
-                setPassword("");
-              }}
-            >
-              {n.cancel}
-            </button>
-          </div>
+        <div className="navbar-contact">
+          <a className="contact-link phone-link" href="tel:+972545221809">📞 054-522-1809</a>
+          <a
+            className="contact-link whatsapp-link"
+            href="https://wa.me/972545221809"
+            target="_blank"
+            rel="noreferrer"
+          >
+            WhatsApp
+          </a>
         </div>
-      )}
+      </div>
     </header>
   );
 }

@@ -1,6 +1,4 @@
-/* =========================
-   ALON PC – עיצוב נגיש ומקצועי
-   ========================= */
+/* App.css - FULL REPLACE */
 
 * {
   box-sizing: border-box;
@@ -10,673 +8,203 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
 body {
   margin: 0;
-  min-width: 320px;
-  background: #f3f7fb;
-  color: #172033;
-  font-family: Arial, "Segoe UI", sans-serif;
-  font-size: 18px;
-  line-height: 1.65;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(31, 111, 255, 0.18), transparent 28%),
+    linear-gradient(145deg, #031331 0%, #06265c 48%, #02102a 100%);
+  color: #ffffff;
+  font-family: Arial, "Rubik", "Noto Sans Hebrew", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-body[dir="rtl"] {
-  direction: rtl;
-  text-align: right;
+#root {
+  min-height: 100vh;
 }
 
-body[dir="ltr"] {
-  direction: ltr;
-  text-align: left;
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: inherit;
 }
 
 button,
 input,
-select,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
 button,
 a {
-  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
-a {
-  color: #0645ad;
+button {
+  cursor: pointer;
 }
 
 img {
   max-width: 100%;
+  height: auto;
 }
 
-.app {
-  min-height: 100vh;
+::selection {
+  background: #ffd500;
+  color: #06183d;
 }
 
-/* =========================
-   נגישות ופוקוס
-   ========================= */
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 4px solid #ffbf00;
-  outline-offset: 4px;
+:focus-visible {
+  outline: 4px solid #ffd500;
+  outline-offset: 3px;
 }
 
-/* =========================
-   כותרת ראשית
-   ========================= */
-
-.siteHeader {
-  background: #ffffff;
-  border-bottom: 4px solid #143d73;
-  box-shadow: 0 5px 18px rgba(18, 55, 95, 0.15);
-}
-
-.brandHero {
-  max-width: 1250px;
+.page-container {
+  width: min(1400px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 18px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
+}
+
+.page-title {
+  margin: 0 0 24px;
   text-align: center;
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-.brandLogo {
-  width: 105px;
-  height: 105px;
-  object-fit: contain;
+.page-subtitle {
+  max-width: 850px;
+  margin: 0 auto 30px;
+  text-align: center;
+  color: #dcecff;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.7;
+}
+
+.glass-panel {
+  border: 1px solid rgba(133, 191, 255, 0.42);
   border-radius: 22px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 14px 35px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
 }
 
-.brandHero h1 {
-  margin: 0;
-  color: #123f79;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1.1;
-  letter-spacing: 1px;
-}
-
-.brandHero p {
-  margin: 8px 0 0;
-  color: #34465d;
-  font-size: clamp(1rem, 2.6vw, 1.35rem);
-  font-weight: 700;
-}
-
-/* =========================
-   טלפון, WhatsApp ושפות
-   ========================= */
-
-.topBar {
-  background: #e9f3ff;
-  border-top: 1px solid #c5dcf5;
-  border-bottom: 1px solid #c5dcf5;
-}
-
-.contactInfo {
-  max-width: 1250px;
-  margin: 0 auto;
-  padding: 12px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.phoneBtn,
-.whatsappBtn,
-.languageSelect {
+.primary-button {
   min-height: 50px;
-  border: 2px solid transparent;
-  border-radius: 14px;
-  padding: 10px 18px;
-  font-weight: 800;
-  font-size: 1rem;
-}
-
-.phoneBtn {
-  background: #0a58ca;
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.whatsappBtn {
-  background: #16883d;
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.languageSelect {
-  background: #ffffff;
-  color: #172033;
-  border-color: #7ca6d8;
-  cursor: pointer;
-}
-
-/* =========================
-   תפריט
-   ========================= */
-
-.menu {
-  max-width: 1350px;
-  margin: 0 auto;
-  padding: 16px 18px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 11px;
-}
-
-.menu a,
-.menu button {
-  min-height: 54px;
-  min-width: 125px;
+  padding: 12px 22px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0;
-  border-radius: 15px;
-  padding: 11px 18px;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #1d79f2, #0b49b8);
   color: #ffffff;
   text-decoration: none;
   font-weight: 900;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 4px 9px rgba(25, 50, 85, 0.18);
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    filter 0.15s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
-.menu a:hover,
-.menu button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 14px rgba(25, 50, 85, 0.24);
+.primary-button:hover {
+  transform: translateY(-3px);
   filter: brightness(1.08);
 }
 
-.homeBtn {
-  background: #225aa5;
-}
-
-.servicesBtn {
-  background: #087f5b;
-}
-
-.governmentBtn {
-  background: #6233a6;
-}
-
-.shopBtn {
-  background: #c24b00;
-}
-
-.secondHandBtn {
-  background: #287a27;
-}
-
-.documentsBtn {
-  background: #8c3d82;
-}
-
-.aboutBtn {
-  background: #44546a;
-}
-
-.contactBtn {
-  background: #a22337;
-}
-
-.adminBtn {
-  background: #242b38;
-  min-width: 65px !important;
-  font-size: 1.45rem !important;
-}
-
-/* =========================
-   אזור גיבור
-   ========================= */
-
-.heroBanner {
-  max-width: 1200px;
-  margin: 28px auto 22px;
-  padding: 34px 24px;
-  border-radius: 24px;
-  background:
-    linear-gradient(135deg, rgba(10, 80, 150, 0.97), rgba(26, 128, 115, 0.94));
-  color: #ffffff;
-  text-align: center;
-  box-shadow: 0 12px 30px rgba(19, 58, 100, 0.2);
-}
-
-.heroBanner h1,
-.heroBanner h2 {
-  margin: 0 0 12px;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-}
-
-.heroBanner p {
-  max-width: 850px;
-  margin: 0 auto;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-}
-
-/* =========================
-   תוכן כללי
-   ========================= */
-
-.pageContainer,
-.governmentContent,
-.loginBox,
-.adminPage {
-  width: min(1160px, calc(100% - 28px));
-  margin: 28px auto;
-}
-
-.loginBox,
-.adminPage {
-  background: #ffffff;
-  border: 1px solid #d5e1ee;
-  border-radius: 24px;
-  padding: clamp(20px, 4vw, 38px);
-  box-shadow: 0 10px 26px rgba(22, 52, 85, 0.12);
-}
-
-.loginBox h1,
-.loginBox h2,
-.adminPage h1,
-.adminPage h2 {
-  color: #133f77;
-  margin-top: 0;
-}
-
-/* =========================
-   טפסים
-   ========================= */
-
-.loginBox input,
-.loginBox select,
-.loginBox textarea,
-.adminPage input,
-.adminPage select,
-.adminPage textarea,
-.searchBox input,
-.searchInput {
-  width: 100%;
-  min-height: 54px;
-  margin: 8px 0;
-  border: 2px solid #9ab6d4;
-  border-radius: 13px;
-  background: #ffffff;
-  color: #172033;
-  padding: 12px 15px;
-  font-size: 1rem;
-}
-
-.loginBox textarea,
-.adminPage textarea {
-  min-height: 125px;
-  resize: vertical;
-}
-
-.loginBox input:hover,
-.loginBox select:hover,
-.loginBox textarea:hover,
-.adminPage input:hover,
-.adminPage select:hover,
-.adminPage textarea:hover {
-  border-color: #336ba6;
-}
-
-.loginBox button,
-.adminPage button,
-.card button,
-.governmentCard button,
-.emptyState button,
-.selectedCategoryTitle button {
-  min-height: 52px;
-  margin: 8px 5px;
-  border: 0;
-  border-radius: 13px;
-  padding: 11px 19px;
-  background: #075ea8;
-  color: #ffffff;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 4px 9px rgba(14, 67, 115, 0.2);
-}
-
-.loginBox button:hover,
-.adminPage button:hover,
-.card button:hover,
-.governmentCard button:hover {
-  background: #064a84;
-}
-
-/* =========================
-   רשת וכרטיסים
-   ========================= */
-
-.grid,
-.governmentGrid,
-.dashboardGrid {
-  width: min(1200px, calc(100% - 28px));
-  margin: 24px auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-  gap: 20px;
-}
-
-.card,
-.governmentCard,
-.adminService,
-.dashboardCard {
-  background: #ffffff;
-  border: 2px solid #d7e2ed;
-  border-radius: 20px;
-  padding: 22px;
-  color: #172033;
-  box-shadow: 0 7px 18px rgba(22, 51, 85, 0.1);
-}
-
-.card h3,
-.governmentCard h3,
-.adminService h3 {
-  margin-top: 0;
-  color: #123f79;
-  font-size: 1.3rem;
-}
-
-.card img,
-.adminService img {
-  display: block;
-  margin: 0 auto 16px;
-  border-radius: 16px;
-}
-
-.adminService {
-  margin: 18px 0;
-}
-
-/* =========================
-   פורטל ניהול
-   ========================= */
-
-.dashboardGrid {
-  width: 100%;
-}
-
-.dashboardCard {
-  min-height: 92px;
-  display: flex;
+.secondary-button {
+  min-height: 50px;
+  padding: 12px 22px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  border: 2px solid #4f9eff;
+  border-radius: 14px;
+  background: rgba(3, 29, 73, 0.82);
+  color: #ffffff;
   text-decoration: none;
-  background: #edf5ff;
-  border-color: #8fb5df;
-  color: #143f76;
   font-weight: 900;
-  font-size: 1.05rem;
-  transition:
-    transform 0.15s ease,
-    background 0.15s ease;
 }
 
-.dashboardCard:hover {
-  background: #d9ebff;
+.secondary-button:hover {
   transform: translateY(-3px);
+  background: #0d4ca7;
 }
 
-.logoutBtn {
-  background: #a52135 !important;
-}
-
-/* =========================
-   דף ממשלתי
-   ========================= */
-
-.governmentPage {
-  min-height: 70vh;
-}
-
-.governmentCategories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
-  margin: 22px 0;
-}
-
-.categoryButton {
-  min-height: 72px;
-  border: 2px solid #7fa5d0;
-  border-radius: 16px;
-  padding: 12px;
-  background: #ffffff;
-  color: #163e70;
-  font-size: 1rem;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.categoryButton:hover,
-.categoryButton.active {
-  background: #123f79;
-  color: #ffffff;
-  border-color: #123f79;
-}
-
-.categoryIcon,
-.governmentCardIcon {
-  font-size: 2rem;
-}
-
-.selectedCategoryTitle {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 22px 0;
-  padding: 18px;
-  background: #e8f2ff;
-  border-radius: 16px;
-}
-
-.governmentCategoryLabel {
-  display: inline-block;
-  border-radius: 999px;
-  background: #e4f0ff;
-  color: #123f79;
-  padding: 5px 12px;
-  font-weight: 900;
-}
-
-.emptyState,
-.statusMessage {
-  margin: 24px 0;
-  padding: 22px;
-  border-radius: 17px;
-  background: #fff7d6;
-  border: 2px solid #e3c762;
-  color: #503e00;
-  text-align: center;
-}
-
-/* =========================
-   חיפוש
-   ========================= */
-
-.searchBox {
-  width: min(780px, calc(100% - 28px));
-  margin: 22px auto;
-}
-
-.searchBox input {
-  margin: 0;
-  box-shadow: 0 4px 12px rgba(22, 51, 85, 0.08);
-}
-
-/* =========================
-   חלון כניסת מנהל
-   ========================= */
-
-.modalOverlay {
+.skip-link {
   position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: -120px;
+  right: 20px;
+  z-index: 10000;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: #ffd500;
+  color: #06183d;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.skip-link:focus {
+  top: 20px;
+}
+
+.loading-message,
+.error-message,
+.success-message {
+  width: min(900px, calc(100% - 30px));
+  margin: 25px auto;
   padding: 18px;
-  background: rgba(5, 15, 30, 0.75);
-}
-
-.adminModal {
-  width: min(460px, 100%);
-  background: #ffffff;
-  border-radius: 22px;
-  padding: 28px;
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.4);
-}
-
-.adminModal h2 {
-  color: #123f79;
+  border-radius: 16px;
   text-align: center;
+  font-size: 18px;
+  font-weight: 800;
 }
 
-/* =========================
-   טבלאות
-   ========================= */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #ffffff;
+.loading-message {
+  background: rgba(20, 103, 218, 0.25);
+  border: 2px solid #4fa1ff;
 }
 
-th,
-td {
-  border: 1px solid #b9cde1;
-  padding: 12px;
-  text-align: start;
+.error-message {
+  background: rgba(188, 22, 44, 0.24);
+  border: 2px solid #ff5f73;
 }
 
-th {
-  background: #123f79;
-  color: #ffffff;
+.success-message {
+  background: rgba(17, 139, 60, 0.25);
+  border: 2px solid #49d579;
 }
-
-/* =========================
-   מסכים קטנים
-   ========================= */
 
 @media (max-width: 760px) {
-  body {
-    font-size: 17px;
+  .page-container {
+    width: min(100% - 20px, 1400px);
   }
 
-  .brandHero {
-    flex-direction: column;
-    padding: 16px;
-  }
-
-  .brandLogo {
-    width: 90px;
-    height: 90px;
-  }
-
-  .contactInfo {
-    flex-direction: column;
-  }
-
-  .phoneBtn,
-  .whatsappBtn,
-  .languageSelect {
+  .primary-button,
+  .secondary-button {
     width: 100%;
-    text-align: center;
-  }
-
-  .menu {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 12px;
-  }
-
-  .menu a,
-  .menu button {
-    min-width: 0;
-    width: 100%;
-    min-height: 60px;
-    padding: 9px;
-    font-size: 0.95rem;
-  }
-
-  .adminBtn {
-    grid-column: 1 / -1;
-  }
-
-  .heroBanner {
-    width: calc(100% - 20px);
-    margin: 16px auto;
-    padding: 25px 16px;
-  }
-
-  .pageContainer,
-  .governmentContent,
-  .loginBox,
-  .adminPage {
-    width: calc(100% - 18px);
-    margin: 16px auto;
-    padding: 18px;
-  }
-
-  .grid,
-  .governmentGrid,
-  .dashboardGrid {
-    width: 100%;
-    grid-template-columns: 1fr;
-  }
-
-  .governmentCategories {
-    grid-template-columns: 1fr;
-  }
-
-  .selectedCategoryTitle {
-    display: block;
-  }
-
-  .loginBox button,
-  .adminPage button,
-  .card button,
-  .governmentCard button {
-    width: 100%;
-    margin: 6px 0;
   }
 }
-
-/* =========================
-   מסכים רחבים
-   ========================= */
-
-@media (min-width: 1200px) {
-  .menu a {
-    min-width: 140px;
-  }
-}
-
-/* =========================
-   הפחתת אנימציות
-   ========================= */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -685,29 +213,5 @@ th {
     scroll-behavior: auto !important;
     transition: none !important;
     animation: none !important;
-  }
-}
-
-/* =========================
-   הדפסה
-   ========================= */
-
-@media print {
-  .siteHeader,
-  .menu,
-  button {
-    display: none !important;
-  }
-
-  body {
-    background: #ffffff;
-    color: #000000;
-  }
-
-  .card,
-  .governmentCard,
-  .adminService {
-    box-shadow: none;
-    border: 1px solid #000000;
   }
 }
