@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AdminEvents.css";
 
@@ -33,7 +33,7 @@ function AdminEvents() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  async function apiRequest(path = "", options = {}) {
+  const apiRequest = useCallback(async (path = "", options = {}) => {
     const response = await fetch(`${API_BASE}/events${path}`, {
       ...options,
       headers: {
@@ -50,9 +50,9 @@ function AdminEvents() {
     }
 
     return data;
-  }
+  }, []);
 
-  async function loadEvents() {
+  const loadEvents = useCallback(async () => {
     setLoading(true);
     setError("");
 
@@ -64,11 +64,11 @@ function AdminEvents() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiRequest]);
 
   useEffect(() => {
     loadEvents();
-  }, []);
+  }, [loadEvents]);
 
   const filteredEvents = useMemo(() => {
     const term = search.trim().toLowerCase();
