@@ -1,141 +1,230 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 
-const translations = {
-  he: {
-    title: "🛎️ שירותים",
-    intro: "כל השירותים, העסקים והסיוע במקום אחד",
-    search: "🔍 חפש שירות...",
-    loadError: "לא ניתן לטעון שירותים כרגע",
-    details: "לפרטים נוספים",
-    noResults: "לא נמצאו שירותים מתאימים."
-  },
-  en: {
-    title: "🛎️ Services",
-    intro: "All services, businesses and assistance in one place",
-    search: "🔍 Search services...",
-    loadError: "Services cannot be loaded right now",
-    details: "More details",
-    noResults: "No matching services were found."
-  },
-  ru: {
-    title: "🛎️ Услуги",
-    intro: "Все услуги, предприятия и помощь в одном месте",
-    search: "🔍 Поиск услуги...",
-    loadError: "Сейчас не удаётся загрузить услуги",
-    details: "Подробнее",
-    noResults: "Подходящие услуги не найдены."
-  },
-  ar: {
-    title: "🛎️ الخدمات",
-    intro: "جميع الخدمات والأعمال والمساعدة في مكان واحد",
-    search: "🔍 ابحث عن خدمة...",
-    loadError: "تعذر تحميل الخدمات الآن",
-    details: "مزيد من التفاصيل",
-    noResults: "لم يتم العثور على خدمات مطابقة."
-  },
-  am: {
-    title: "🛎️ አገልግሎቶች",
-    intro: "ሁሉም አገልግሎቶች፣ ንግዶችና እርዳታ በአንድ ቦታ",
-    search: "🔍 አገልግሎት ፈልግ...",
-    loadError: "አገልግሎቶችን አሁን መጫን አልተቻለም",
-    details: "ተጨማሪ ዝርዝር",
-    noResults: "ተዛማጅ አገልግሎት አልተገኘም።"
-  }
-};
+const API = "https://alonpc02026.onrender.com/api/services";
+const WHATSAPP = "972545221809";
 
-function Services() {
-  const API = "https://alonpc02026.onrender.com/api/services";
-  const { language, dir } = useLanguage();
-  const text = translations[language] || translations.he;
-  const [services, setServices] = useState([]);
-  const [search, setSearch] = useState("");
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+function normalizeVideoUrl(url) {
+  if (!url) return "";
+
+  if (url.includes("watch?v=")) {
+    return url.replace("watch?v=", "embed/");
+  }
+
+  if (url.includes("youtu.be/")) {
+    return url.replace("youtu.be/", "www.youtube.com/embed/");
+  }
+
+  return url;
+}
+
+function ServiceDetails() {
+  const { id } = useParams();
+  const { dir, language, localize, t } = useLanguage();
+
+  const [service, setService] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    async function loadServices() {
+    async function loadService() {
       try {
-        const res = await fetch(API, { signal: controller.signal });
-        const data = await res.json().catch(() => []);
+        setLoading(true);
+        setLoadFailed(false);
 
-        if (!res.ok) throw new Error(text.loadError);
+        const response = await fetch(`${API}/${id}`, {
+          signal: controller.signal,
+        });
 
-        setServices(Array.isArray(data) ? data : []);
-        setMessage("");
+        if (response.ok) {
+          const item = await response.json();
+          setService(item);
+          return;
+        }
+
+        const allResponse = await fetch(API, {
+          signal: controller.signal,
+        });
+
+        const data = await allResponse.json().catch(() => []);
+        const found = Array.isArray(data)
+          ? data.find((item) => String(item._id) === String(id))
+          : null;
+
+        setService(found || null);
       } catch (error) {
         if (error.name === "AbortError") return;
-        setServices([]);
-        setMessage(text.loadError);
+
+        console.error("Load service error:", error);
+        setService(null);
+        setLoadFailed(true);
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
-    loadServices();
-    return () => controller.abort();
-  }, [text.loadError]);
+    loadService();
 
-  const filteredServices = services.filter((service) => {
-    const value = `${service.name || ""} ${service.category || ""} ${service.description || ""}`.toLocaleLowerCase();
-    return value.includes(search.trim().toLocaleLowerCase());
-  });
+    return () => controller.abort();
+  }, [id, language]);
+
+  const video = useMemo(() => {
+    if (!service) return "";
+
+    return normalizeVideoUrl(
+      service.videoUrl ||
+        service.youtubeUrl ||
+        service.videoLink ||
+        service.video ||
+        ""
+    );
+  }, [service]);
+
+  if (loading) {
+    return (
+      <main className="pageContainer" dir={dir}>
+        <p>{t("loading")}</p>
+      </main>
+    );
+  }
+
+  if (!service || loadFailed) {
+    return (
+      <main className="pageContainer" dir={dir}>
+        <h2>{t("serviceNotFound")}</h2>
+        <Link to="/services">⬅ {t("backToServices")}</Link>
+      </main>
+    );
+  }
+
+  const name = localize(service, "name");
+  const category = localize(service, "category");
+  const description = localize(service, "description");
+  const address = localize(service, "address");
+  const city = localize(service, "city");
+  const hours = localize(service, "hours");
+  const businessName = localize(service, "businessName");
+
+  const whatsappText = encodeURIComponent(
+    `${name} - ${t("servicesDetails")}`
+  );
 
   return (
-    <div className="servicesPage" dir={dir}>
-      <section className="heroBanner">
-        <h2>{text.title}</h2>
-        <p>{text.intro}</p>
-      </section>
+    <main className="pageContainer" dir={dir}>
+      <article
+        className="card"
+        style={{
+          maxWidth: 900,
+          margin: "20px auto",
+          padding: 24,
+        }}
+      >
+        {service.imageUrl && (
+          <img
+            src={service.imageUrl}
+            alt={name}
+            style={{
+              width: "100%",
+              maxHeight: 420,
+              objectFit: "cover",
+              borderRadius: 18,
+            }}
+          />
+        )}
 
-      <div className="searchBox">
-        <input
-          type="text"
-          placeholder={text.search}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </div>
+        <h1>{name}</h1>
 
-      {message && <p className="statusMessage">{message}</p>}
+        {category && <h3>{category}</h3>}
+        {businessName && <p><strong>{businessName}</strong></p>}
+        {description && <p>{description}</p>}
 
-      {!message && filteredServices.length === 0 && (
-        <p className="statusMessage">{text.noResults}</p>
-      )}
+        {(address || city) && (
+          <p>
+            📍 <strong>{t("address")}:</strong>{" "}
+            {[address, city].filter(Boolean).join(", ")}
+          </p>
+        )}
 
-      <main className="grid">
-        {filteredServices.map((service) => (
-          <article className="card" key={service._id}>
-            {service.imageUrl && (
-              <img
-                src={service.imageUrl}
-                alt={service.name || ""}
-                style={{
-                  width: "100%",
-                  height: "180px",
-                  objectFit: "cover",
-                  borderRadius: "10px"
-                }}
-              />
-            )}
+        {service.phone && (
+          <p>
+            📞 <strong>{t("phone")}:</strong> {service.phone}
+          </p>
+        )}
 
-            <h3>{service.icon || "🛎️"} {service.name}</h3>
-            <p><b>{service.category}</b></p>
-            <small>{service.description}</small>
+        {service.email && (
+          <p>
+            ✉️ <strong>{t("email")}:</strong> {service.email}
+          </p>
+        )}
 
-            <button
-              type="button"
-              style={{ marginTop: 15 }}
-              onClick={() => navigate(`/service/${service._id}`)}
+        {hours && (
+          <p>
+            🕒 <strong>{t("hours")}:</strong> {hours}
+          </p>
+        )}
+
+        {video && (
+          <>
+            <h2>🎥 {t("video")}</h2>
+
+            <iframe
+              title={t("video")}
+              src={video}
+              width="100%"
+              height="450"
+              style={{
+                border: 0,
+                borderRadius: 16,
+              }}
+              allowFullScreen
+            />
+          </>
+        )}
+
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+            marginTop: 25,
+          }}
+        >
+          {service.phone && (
+            <a href={`tel:${service.phone}`}>
+              📞 {t("call")}
+            </a>
+          )}
+
+          <a
+            href={`https://wa.me/${WHATSAPP}?text=${whatsappText}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            🟢 {t("whatsapp")}
+          </a>
+
+          {service.link && (
+            <a
+              href={service.link}
+              target="_blank"
+              rel="noreferrer"
             >
-              {text.details}
-            </button>
-          </article>
-        ))}
-      </main>
-    </div>
+              🌐 {t("website")}
+            </a>
+          )}
+
+          <Link to="/services">
+            ⬅ {t("backToServices")}
+          </Link>
+        </div>
+      </article>
+    </main>
   );
 }
 
-export default Services;
+export default ServiceDetails;
