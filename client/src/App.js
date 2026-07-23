@@ -25,6 +25,7 @@ import AdminGovernment from "./pages/AdminGovernment";
 import AdminShop from "./pages/AdminShop";
 import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
+import AdminEvents from "./pages/AdminEvents";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
 import AdminBrands from "./pages/AdminBrands";
@@ -141,6 +142,7 @@ function App() {
           />
 
           <Route path="/admin/backup" element={<AdminRoute><AdminBackup /></AdminRoute>} />
+          <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
           <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
         </Routes>
           </div>

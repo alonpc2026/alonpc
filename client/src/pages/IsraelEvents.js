@@ -1,5 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./IsraelEvents.css";
+
+const API_BASE =
+  process.env.REACT_APP_API_BASE ||
+  "https://alonpc02026.onrender.com/api";
 
 const MONTHS = [
   "ינואר",
@@ -18,25 +22,6 @@ const MONTHS = [
 
 const WEEK_DAYS = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש׳"];
 
-/*
-  כאן מוסיפים אירועים חדשים.
-  date חייב להיות בפורמט YYYY-MM-DD.
-  website יכול להיות קישור לאתר האירוע, או מחרוזת ריקה.
-*/
-const EVENTS = [
-  {
-    id: "alonpc-example-event",
-    title: "אירוע נגיש לדוגמה",
-    date: "2026-08-20",
-    time: "17:00",
-    city: "חיפה",
-    location: "מרכז קהילתי",
-    description:
-      "אירוע לדוגמה בלוח האירועים בישראל. אפשר להחליף את הפרטים באירוע אמיתי.",
-    website: "https://alonpc.netlify.app/",
-  },
-];
-
 function toDateKey(year, month, day) {
   return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(
     2,
@@ -49,6 +34,45 @@ function IsraelEvents() {
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadEvents() {
+      setLoading(true);
+      setMessage("");
+
+      try {
+        const response = await fetch(`${API_BASE}/events`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "טעינת האירועים נכשלה");
+        }
+
+        if (active) {
+          setEvents(Array.isArray(data) ? data : data.events || []);
+        }
+      } catch (error) {
+        if (active) {
+          setMessage(error.message || "לא ניתן לטעון את האירועים");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadEvents();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const calendarDays = useMemo(() => {
     const firstDay = new Date(year, month, 1).getDay();
@@ -61,7 +85,9 @@ function IsraelEvents() {
 
     for (let day = 1; day <= totalDays; day += 1) {
       const key = toDateKey(year, month, day);
-      const dayEvents = EVENTS.filter((event) => event.date === key);
+      const dayEvents = events
+        .filter((event) => event.date === key)
+        .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
 
       cells.push({
         type: "day",
@@ -72,7 +98,17 @@ function IsraelEvents() {
     }
 
     return cells;
-  }, [year, month]);
+  }, [year, month, events]);
+
+  const sortedEvents = useMemo(
+    () =>
+      [...events].sort((a, b) => {
+        const first = `${a.date || ""} ${a.time || ""}`;
+        const second = `${b.date || ""} ${b.time || ""}`;
+        return first.localeCompare(second);
+      }),
+    [events]
+  );
 
   const goToPreviousMonth = () => {
     if (month === 0) {
@@ -115,6 +151,18 @@ function IsraelEvents() {
           </p>
         </div>
       </section>
+
+      {message && (
+        <div className="events-status events-status-error" role="alert">
+          {message}
+        </div>
+      )}
+
+      {loading && (
+        <div className="events-status" role="status">
+          טוען אירועים...
+        </div>
+      )}
 
       <section className="calendar-card">
         <div className="calendar-toolbar">
@@ -187,12 +235,12 @@ function IsraelEvents() {
                 <div className="calendar-events-list">
                   {cell.events.map((event) => (
                     <button
-                      key={event.id}
+                      key={event._id || event.id}
                       type="button"
                       className="calendar-event-button"
                       onClick={() => setSelectedEvent(event)}
                     >
-                      <span>{event.time}</span>
+                      <span>{event.time || "ללא שעה"}</span>
                       <strong>{event.title}</strong>
                     </button>
                   ))}
@@ -206,13 +254,13 @@ function IsraelEvents() {
       <section className="upcoming-events-section">
         <h2>אירועים רשומים</h2>
 
-        {EVENTS.length === 0 ? (
+        {!loading && sortedEvents.length === 0 ? (
           <p>עדיין לא נרשמו אירועים.</p>
         ) : (
           <div className="upcoming-events-grid">
-            {EVENTS.map((event) => (
+            {sortedEvents.map((event) => (
               <button
-                key={event.id}
+                key={event._id || event.id}
                 type="button"
                 className="upcoming-event-card"
                 onClick={() => setSelectedEvent(event)}
@@ -220,7 +268,7 @@ function IsraelEvents() {
                 <span className="upcoming-event-date">{event.date}</span>
                 <strong>{event.title}</strong>
                 <small>
-                  {event.city} · {event.time}
+                  {event.city || "ללא עיר"} · {event.time || "ללא שעה"}
                 </small>
                 <span className="upcoming-event-more">לפרטים ←</span>
               </button>
@@ -257,6 +305,14 @@ function IsraelEvents() {
 
             <h2 id="event-modal-title">{selectedEvent.title}</h2>
 
+            {selectedEvent.imageUrl && (
+              <img
+                className="event-modal-image"
+                src={selectedEvent.imageUrl}
+                alt={selectedEvent.title}
+              />
+            )}
+
             <dl className="event-details-list">
               <div>
                 <dt>תאריך</dt>
@@ -280,7 +336,7 @@ function IsraelEvents() {
             </dl>
 
             <p className="event-modal-description">
-              {selectedEvent.description}
+              {selectedEvent.description || "לא נמסר תיאור"}
             </p>
 
             <div className="event-modal-actions">
