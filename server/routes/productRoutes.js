@@ -1,28 +1,13 @@
-const express = require("express");
+const express=require('express');
+const router=express.Router();
+const auth=require('../middleware/auth');
+const admin=require('../middleware/admin');
+const controller=require('../controllers/productController');
 
-const {
-  getProducts,
-  getProductById,
-  addProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/productController");
+router.get('/',controller.getProducts);
+router.get('/:id',controller.getProduct);
+router.post('/',auth,admin,controller.createProduct);
+router.put('/:id',auth,admin,controller.updateProduct);
+router.delete('/:id',auth,admin,controller.deleteProduct);
 
-const router = express.Router();
-
-// הצגת כל המוצרים
-router.get("/", getProducts);
-
-// הצגת מוצר אחד לפי מזהה
-router.get("/:id", getProductById);
-
-// הוספת מוצר חדש
-router.post("/", addProduct);
-
-// עדכון מוצר קיים
-router.put("/:id", updateProduct);
-
-// מחיקת מוצר
-router.delete("/:id", deleteProduct);
-
-module.exports = router;
+module.exports=router;

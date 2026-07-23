@@ -1,59 +1,38 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const path = require("path");
+חבילה 4 — שינויים בקובץ server/index.js
 
-dotenv.config();
+אין למחוק את index.js הקיים.
+
+1. בראש הקובץ, ליד שאר ה-require, הוסף:
+
+const applySecurity = require("./middleware/security");
+
+2. אחרי יצירת app:
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+הוסף מיד:
 
-// קבצים סטטיים
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+applySecurity(app);
 
-// MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+3. ודא שה-CORS שלך מגביל את המקורות המותרים:
 
-// ===== Routes =====
-const serviceRoutes = require("./routes/serviceRoutes");
-const productRoutes = require("./routes/productRoutes");
-const secondHandRoutes = require("./routes/secondHandRoutes");
-const bookingRoutes = require("./routes/bookingRoutes");
-const uploadRoutes = require("./routes/uploadRoutes");
-const documentUploadRoutes = require("./routes/documentUploadRoutes");
-const documentRoutes = require("./routes/documentRoutes");
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://alonpc.netlify.app"
+];
 
-app.use("/api/services", serviceRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/second-hand", secondHandRoutes);
-app.use("/api/bookings", bookingRoutes);
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-app.use("/api/upload", uploadRoutes);
-app.use("/api/documents/upload", documentUploadRoutes);
-app.use("/api/documents", documentRoutes);
+      return callback(new Error("Origin not allowed by CORS"));
+    },
+    credentials: true
+  })
+);
 
-// דף הבית
-app.get("/", (req, res) => {
-  res.send("🚀 ALON PC API Server");
-});
-
-// בדיקת שרת
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    mongodb: "Connected",
-    server: "ALON PC"
-  });
-});
-
-const PORT = process.env.PORT || 3001;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+חשוב:
+אל תשאיר גם app.use(cors()) פתוח בנוסף לקוד המוגבל.

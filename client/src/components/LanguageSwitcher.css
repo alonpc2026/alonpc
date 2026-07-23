@@ -1,0 +1,44 @@
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 5px 10px;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 13px;
+  background: #ffffff;
+  color: #07366f;
+  font-weight: 900;
+}
+
+.language-switcher span {
+  white-space: nowrap;
+}
+
+.language-switcher select {
+  min-height: 38px;
+  padding: 5px 8px;
+  border: 2px solid #8aa5c5;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #102f55;
+  font-family: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.language-switcher select:focus-visible {
+  outline: 4px solid #ffd500;
+  outline-offset: 2px;
+}
+
+@media (max-width: 850px) {
+  .language-switcher {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .language-switcher select {
+    flex: 1;
+  }
+}
