@@ -1,4 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import "./AdminEvents.css";
 
@@ -28,7 +33,10 @@ function getToken() {
 function normalizeEvent(eventItem = {}) {
   return {
     ...eventItem,
-    startDate: eventItem.startDate || eventItem.date || "",
+    startDate:
+      eventItem.startDate ||
+      eventItem.date ||
+      "",
     endDate:
       eventItem.endDate ||
       eventItem.startDate ||
@@ -47,61 +55,76 @@ function AdminEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   const [editingId, setEditingId] = useState("");
-
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
   const [search, setSearch] = useState("");
-  const [monthFilter, setMonthFilter] = useState("");
+  const [monthFilter, setMonthFilter] =
+    useState("");
+  const [form, setForm] =
+    useState(EMPTY_FORM);
 
-  const [form, setForm] = useState(EMPTY_FORM);
+  const apiRequest = useCallback(
+    async (path = "", options = {}) => {
+      const response = await fetch(
+        `${API_BASE}/events${path}`,
+        {
+          ...options,
+          headers: {
+            "Content-Type":
+              "application/json",
+            Authorization:
+              `Bearer ${getToken()}`,
+            ...(options.headers || {}),
+          },
+        }
+      );
 
-  async function apiRequest(path = "", options = {}) {
-    const response = await fetch(`${API_BASE}/events${path}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
-        ...(options.headers || {}),
-      },
-    });
+      const data = await response
+        .json()
+        .catch(() => ({}));
 
-    const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+            "הפעולה נכשלה"
+        );
+      }
 
-    if (!response.ok) {
-      throw new Error(data.message || "הפעולה נכשלה");
-    }
+      return data;
+    },
+    []
+  );
 
-    return data;
-  }
+  const loadEvents = useCallback(
+    async () => {
+      setLoading(true);
 
-  async function loadEvents() {
-    setLoading(true);
+      try {
+        const data =
+          await apiRequest("/admin");
 
-    try {
-      const data = await apiRequest("/admin");
+        const list = Array.isArray(data)
+          ? data
+          : data.events || [];
 
-      const list = Array.isArray(data)
-        ? data
-        : data.events || [];
+        setEvents(
+          list.map(normalizeEvent)
+        );
+        setError("");
+      } catch (err) {
+        setError(err.message);
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [apiRequest]
+  );
 
-      setEvents(list.map(normalizeEvent));
-
-      setError("");
-    } catch (err) {
-      setError(err.message);
-      setEvents([]);
-    }
-
-    setLoading(false);
-  }
-
- useEffect(() => {
-  loadEvents();
-}, [loadEvents]);
-
+  useEffect(() => {
+    loadEvents();
+  }, [loadEvents]);
   const filteredEvents = useMemo(() => {
     const text = search.trim().toLowerCase();
 
