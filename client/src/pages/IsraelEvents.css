@@ -78,6 +78,10 @@
   font-weight: 900;
 }
 
+.calendar-secondary-actions input {
+  min-width: 210px;
+}
+
 .calendar-toolbar button,
 .calendar-secondary-actions button {
   cursor: pointer;
@@ -89,6 +93,12 @@
 .calendar-secondary-actions button:focus-visible {
   background: #1565c0;
   color: #ffffff;
+  outline: 3px solid #ffca28;
+  outline-offset: 2px;
+}
+
+.calendar-secondary-actions select:focus-visible,
+.calendar-secondary-actions input:focus-visible {
   outline: 3px solid #ffca28;
   outline-offset: 2px;
 }
@@ -147,6 +157,11 @@
   background: #f2f5f8;
 }
 
+.calendar-day-today {
+  background: #fff8dc;
+  box-shadow: inset 0 0 0 3px #ffb300;
+}
+
 .calendar-day-number {
   display: grid;
   place-items: center;
@@ -158,6 +173,11 @@
   color: #123e70;
   font-size: 17px;
   font-weight: 900;
+}
+
+.calendar-day-today .calendar-day-number {
+  background: #ffb300;
+  color: #172033;
 }
 
 .calendar-events-list {
@@ -206,6 +226,17 @@
   font-size: 28px;
 }
 
+.upcoming-events-section > p {
+  margin: 0;
+  padding: 18px;
+  border: 2px dashed #9fb7d3;
+  border-radius: 14px;
+  background: #f7fbff;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+
 .upcoming-events-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(230px, 1fr));
@@ -223,6 +254,7 @@
   color: #32104b;
   text-align: right;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .upcoming-event-card:hover,
@@ -230,6 +262,15 @@
   transform: translateY(-3px);
   outline: 3px solid #ffca28;
   outline-offset: 2px;
+}
+
+.upcoming-event-image {
+  display: block;
+  width: calc(100% + 40px);
+  height: 190px;
+  margin: -20px -20px 8px;
+  object-fit: cover;
+  background: #e8e8e8;
 }
 
 .upcoming-event-card strong {
@@ -241,8 +282,19 @@
   font-weight: 700;
 }
 
-.upcoming-event-date,
+.upcoming-event-date {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #6a1b9a;
+  color: #ffffff;
+  font-weight: 900;
+}
+
 .upcoming-event-more {
+  margin-top: auto;
+  color: #0d47a1;
   font-weight: 900;
 }
 
@@ -272,6 +324,8 @@
   position: absolute;
   top: 14px;
   left: 14px;
+  display: grid;
+  place-items: center;
   width: 48px;
   height: 48px;
   border: 0;
@@ -283,6 +337,13 @@
   cursor: pointer;
 }
 
+.event-modal-close:hover,
+.event-modal-close:focus-visible {
+  background: #7f0000;
+  outline: 3px solid #ffca28;
+  outline-offset: 2px;
+}
+
 .event-modal-icon {
   display: block;
   font-size: 46px;
@@ -290,8 +351,19 @@
 
 .event-modal h2 {
   margin: 8px 0 20px;
+  padding-left: 55px;
   color: #0d47a1;
   font-size: 31px;
+}
+
+.event-modal-image {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  margin: 0 0 18px;
+  border-radius: 16px;
+  background: #eeeeee;
 }
 
 .event-details-list {
@@ -314,6 +386,7 @@
 .event-details-list dd {
   margin: 5px 0 0;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .event-modal-description {
@@ -322,6 +395,7 @@
   background: #faf5fc;
   font-size: 18px;
   line-height: 1.65;
+  white-space: pre-line;
 }
 
 .event-modal-actions {
@@ -357,44 +431,22 @@
   color: #0d47a1;
 }
 
-@media (max-width: 950px) {
-  .calendar-grid,
-  .calendar-weekdays {
-    grid-template-columns: repeat(7, minmax(92px, 1fr));
-    min-width: 700px;
-  }
-
-  .calendar-card {
-    overflow-x: auto;
-  }
-
-  .upcoming-events-grid {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-  }
+.event-modal-actions a:hover,
+.event-modal-actions a:focus-visible,
+.event-modal-actions button:hover,
+.event-modal-actions button:focus-visible {
+  outline: 3px solid #ffca28;
+  outline-offset: 2px;
 }
 
-@media (max-width: 680px) {
-  .events-hero {
-    flex-direction: column;
-    text-align: center;
-  }
+.event-modal-actions a:hover,
+.event-modal-actions a:focus-visible {
+  background: #083676;
+}
 
-  .calendar-toolbar {
-    grid-template-columns: 1fr;
-  }
-
-  .calendar-toolbar h2 {
-    order: -1;
-  }
-
-  .upcoming-events-grid,
-  .event-details-list {
-    grid-template-columns: 1fr;
-  }
-
-  .event-modal {
-    padding: 24px 18px;
-  }
+.event-modal-actions button:hover,
+.event-modal-actions button:focus-visible {
+  background: #eef4fb;
 }
 
 .events-status {
@@ -413,11 +465,114 @@
   color: #8b0000;
 }
 
-.event-modal-image {
-  display: block;
-  width: 100%;
-  max-height: 320px;
-  object-fit: cover;
-  margin: 0 0 18px;
-  border-radius: 16px;
+@media (max-width: 1100px) {
+  .calendar-secondary-actions {
+    align-items: stretch;
+  }
+
+  .calendar-secondary-actions label {
+    flex: 1 1 190px;
+  }
+
+  .calendar-secondary-actions select,
+  .calendar-secondary-actions input {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 950px) {
+  .calendar-grid,
+  .calendar-weekdays {
+    grid-template-columns: repeat(7, minmax(92px, 1fr));
+    min-width: 700px;
+  }
+
+  .calendar-card {
+    overflow-x: auto;
+  }
+
+  .upcoming-events-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .israel-events-page {
+    width: min(100% - 16px, 1450px);
+    margin-top: 14px;
+  }
+
+  .events-hero {
+    flex-direction: column;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .events-hero-icon {
+    width: 70px;
+    min-width: 70px;
+    height: 70px;
+    font-size: 38px;
+  }
+
+  .events-hero p {
+    font-size: 17px;
+  }
+
+  .calendar-card,
+  .upcoming-events-section {
+    padding: 14px;
+  }
+
+  .calendar-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-toolbar h2 {
+    order: -1;
+    font-size: 26px;
+  }
+
+  .calendar-secondary-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .calendar-secondary-actions label,
+  .calendar-secondary-actions button {
+    width: 100%;
+  }
+
+  .upcoming-events-grid,
+  .event-details-list {
+    grid-template-columns: 1fr;
+  }
+
+  .upcoming-event-image {
+    height: 170px;
+  }
+
+  .event-modal-overlay {
+    padding: 10px;
+  }
+
+  .event-modal {
+    padding: 24px 18px;
+    border-width: 3px;
+  }
+
+  .event-modal h2 {
+    padding-left: 48px;
+    font-size: 26px;
+  }
+
+  .event-modal-actions {
+    flex-direction: column;
+  }
+
+  .event-modal-actions a,
+  .event-modal-actions button {
+    width: 100%;
+  }
 }
