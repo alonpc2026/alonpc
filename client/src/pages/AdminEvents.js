@@ -98,9 +98,9 @@ function AdminEvents() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    loadEvents();
-  }, []);
+ useEffect(() => {
+  loadEvents();
+}, [loadEvents]);
 
   const filteredEvents = useMemo(() => {
     const text = search.trim().toLowerCase();
