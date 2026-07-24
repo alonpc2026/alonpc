@@ -556,4 +556,197 @@ function AdminEvents() {
             )}
           </div>
         </form>
+      </section>      <section className="admin-events-list-card">
+        <div className="admin-events-tools">
+          <h2>
+            כל האירועים ({filteredEvents.length})
+          </h2>
+
+          <input
+            type="search"
+            value={search}
+            onChange={(event) =>
+              setSearch(event.target.value)
+            }
+            placeholder="חיפוש לפי שם, עיר, מקום או תיאור"
+          />
+
+          <input
+            type="month"
+            value={monthFilter}
+            onChange={(event) =>
+              setMonthFilter(event.target.value)
+            }
+            aria-label="סינון לפי חודש"
+          />
+
+          {(search || monthFilter) && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setMonthFilter("");
+              }}
+            >
+              ניקוי סינון
+            </button>
+          )}
+        </div>
+
+        {loading ? (
+          <p className="admin-events-empty">
+            טוען אירועים...
+          </p>
+        ) : filteredEvents.length === 0 ? (
+          <p className="admin-events-empty">
+            לא נמצאו אירועים.
+          </p>
+        ) : (
+          <div className="admin-events-grid">
+            {filteredEvents.map((eventItem) => {
+              const normalizedEvent =
+                normalizeEvent(eventItem);
+
+              const dateText =
+                normalizedEvent.endDate &&
+                normalizedEvent.endDate !==
+                  normalizedEvent.startDate
+                  ? `${normalizedEvent.startDate} עד ${normalizedEvent.endDate}`
+                  : normalizedEvent.startDate;
+
+              let timeText = "ללא שעה";
+
+              if (normalizedEvent.allDay) {
+                timeText = "כל היום";
+              } else if (
+                normalizedEvent.startTime &&
+                normalizedEvent.endTime
+              ) {
+                timeText = `${normalizedEvent.startTime} עד ${normalizedEvent.endTime}`;
+              } else if (
+                normalizedEvent.startTime
+              ) {
+                timeText =
+                  normalizedEvent.startTime;
+              } else if (
+                normalizedEvent.endTime
+              ) {
+                timeText =
+                  normalizedEvent.endTime;
+              }
+
+              return (
+                <article
+                  key={normalizedEvent._id}
+                  className="admin-event-card"
+                >
+                  {normalizedEvent.imageUrl && (
+                    <img
+                      src={
+                        normalizedEvent.imageUrl
+                      }
+                      alt={
+                        normalizedEvent.title
+                      }
+                      loading="lazy"
+                    />
+                  )}
+
+                  <div className="admin-event-card-content">
+                    <div className="admin-event-card-top">
+                      <strong>
+                        {normalizedEvent.title}
+                      </strong>
+
+                      <span
+                        className={
+                          normalizedEvent.active !==
+                          false
+                            ? "active"
+                            : "hidden"
+                        }
+                      >
+                        {normalizedEvent.active !==
+                        false
+                          ? "מוצג"
+                          : "מוסתר"}
+                      </span>
+                    </div>
+
+                    <p>
+                      📅{" "}
+                      {dateText ||
+                        "ללא תאריך"}
+                    </p>
+
+                    <p>
+                      🕒 {timeText}
+                    </p>
+
+                    <p>
+                      📍{" "}
+                      {normalizedEvent.city ||
+                        "ללא עיר"}
+
+                      {normalizedEvent.location &&
+                        ` · ${normalizedEvent.location}`}
+                    </p>
+
+                    {normalizedEvent.description && (
+                      <p className="admin-event-description">
+                        {
+                          normalizedEvent.description
+                        }
+                      </p>
+                    )}
+
+                    {normalizedEvent.website && (
+                      <p>
+                        <a
+                          href={
+                            normalizedEvent.website
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          מעבר לאתר האירוע
+                        </a>
+                      </p>
+                    )}
+
+                    <div className="admin-event-card-actions">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          startEdit(
+                            normalizedEvent
+                          )
+                        }
+                      >
+                        עריכה
+                      </button>
+
+                      <button
+                        type="button"
+                        className="danger"
+                        onClick={() =>
+                          removeEvent(
+                            normalizedEvent
+                          )
+                        }
+                      >
+                        מחיקה
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </section>
+    </main>
+  );
+}
+
+export default AdminEvents;
