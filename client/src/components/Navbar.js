@@ -14,6 +14,7 @@ import { useLanguage } from "../context/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 import "./Navbar.css";
+import logo from "../assets/images/logo.png";
 
 function readUser() {
   try {

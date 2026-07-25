@@ -26,6 +26,7 @@ import AdminShop from "./pages/AdminShop";
 import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
 import AdminEvents from "./pages/AdminEvents";
+import AdminServices from "./pages/AdminServices";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
 import AdminBrands from "./pages/AdminBrands";
@@ -42,7 +43,6 @@ import AdminBackup from "./pages/AdminBackup";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-
 
 function readStoredUser() {
   try {
@@ -67,84 +67,46 @@ function App() {
       <CartProvider>
         <HashRouter>
           <div className="app">
-        <Navbar />
+            <Navbar />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/interesting-sites" element={<AlonLinks />} />
+              <Route path="/israel-events" element={<IsraelEvents />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/service/:id" element={<ServiceDetails />} />
+              <Route path="/government" element={<Government />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/second-hand" element={<SecondHand />} />
+              <Route path="/documents" element={<Documents />} />
+              <Route path="/booking" element={<ServiceBooking />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
 
-          <Route path="/interesting-sites" element={<AlonLinks />} />
-          <Route path="/israel-events" element={<IsraelEvents />} />
-          <Route
-            path="/admin/government"
-            element={<AdminRoute><AdminGovernment /></AdminRoute>}
-          />
-
-          <Route path="/services" element={<Services />} />
-          <Route path="/service/:id" element={<ServiceDetails />} />
-
-          <Route path="/government" element={<Government />} />
-
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/second-hand" element={<SecondHand />} />
-          <Route path="/documents" element={<Documents />} />
-          <Route path="/booking" element={<ServiceBooking />} />
-
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-
-          <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
-
-          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
-
-          <Route
-            path="/admin/service-categories"
-            element={<AdminRoute><AdminServiceCategories /></AdminRoute>}
-          />
-
-          <Route path="/admin/shop" element={<AdminRoute><AdminShop /></AdminRoute>} />
-
-          <Route
-            path="/admin/product-categories"
-            element={<AdminRoute><AdminProductCategories /></AdminRoute>}
-          />
-
-          <Route path="/admin/brands" element={<AdminRoute><AdminBrands /></AdminRoute>} />
-          <Route path="/admin/offers" element={<AdminRoute><AdminOffers /></AdminRoute>} />
-
-          <Route
-            path="/admin/second-hand"
-            element={<AdminRoute><AdminSecondHand /></AdminRoute>}
-          />
-
-          <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
-
-          <Route
-            path="/admin/permissions"
-            element={<AdminRoute><AdminPermissions /></AdminRoute>}
-          />
-
-          <Route path="/admin/gallery" element={<AdminRoute><AdminGallery /></AdminRoute>} />
-
-          <Route
-            path="/admin/documents"
-            element={<AdminRoute><AdminDocuments /></AdminRoute>}
-          />
-
-          <Route path="/admin/uploads" element={<AdminRoute><AdminUploads /></AdminRoute>} />
-          <Route path="/admin/settings" element={<AdminRoute><AdminSettings /></AdminRoute>} />
-
-          <Route
-            path="/admin/statistics"
-            element={<AdminRoute><AdminStatistics /></AdminRoute>}
-          />
-
-          <Route path="/admin/backup" element={<AdminRoute><AdminBackup /></AdminRoute>} />
-          <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
-          <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
-        </Routes>
+              <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+              <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+              <Route path="/admin/services" element={<AdminRoute><AdminServices /></AdminRoute>} />
+              <Route path="/admin/service-categories" element={<AdminRoute><AdminServiceCategories /></AdminRoute>} />
+              <Route path="/admin/government" element={<AdminRoute><AdminGovernment /></AdminRoute>} />
+              <Route path="/admin/shop" element={<AdminRoute><AdminShop /></AdminRoute>} />
+              <Route path="/admin/product-categories" element={<AdminRoute><AdminProductCategories /></AdminRoute>} />
+              <Route path="/admin/brands" element={<AdminRoute><AdminBrands /></AdminRoute>} />
+              <Route path="/admin/offers" element={<AdminRoute><AdminOffers /></AdminRoute>} />
+              <Route path="/admin/second-hand" element={<AdminRoute><AdminSecondHand /></AdminRoute>} />
+              <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+              <Route path="/admin/permissions" element={<AdminRoute><AdminPermissions /></AdminRoute>} />
+              <Route path="/admin/gallery" element={<AdminRoute><AdminGallery /></AdminRoute>} />
+              <Route path="/admin/documents" element={<AdminRoute><AdminDocuments /></AdminRoute>} />
+              <Route path="/admin/uploads" element={<AdminRoute><AdminUploads /></AdminRoute>} />
+              <Route path="/admin/settings" element={<AdminRoute><AdminSettings /></AdminRoute>} />
+              <Route path="/admin/statistics" element={<AdminRoute><AdminStatistics /></AdminRoute>} />
+              <Route path="/admin/backup" element={<AdminRoute><AdminBackup /></AdminRoute>} />
+              <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
+              <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
+            </Routes>
           </div>
         </HashRouter>
       </CartProvider>
