@@ -5,11 +5,11 @@
   padding: 14px 18px 16px;
   border-bottom: 5px solid #082e63;
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, .16), transparent 34%),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 34%),
     linear-gradient(135deg, #06285a 0%, #0b4488 55%, #0a3269 100%);
   color: #ffffff;
-  font-family: Arial, "Noto Sans Hebrew", sans-serif;
-  box-shadow: 0 8px 24px rgba(0, 31, 72, .28);
+  font-family: Arial, "Rubik", "Noto Sans Hebrew", sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 31, 72, 0.28);
 }
 
 .alonpc-navbar *,
@@ -33,36 +33,38 @@
   gap: 13px;
   min-height: 76px;
   padding: 8px 12px;
-  border: 3px solid rgba(255, 255, 255, .75);
+  border: 3px solid rgba(255, 255, 255, 0.78);
   border-radius: 20px;
-  background: rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   text-decoration: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .alonpc-brand__logo {
-  display: block;
+  display: grid;
+  place-items: center;
   flex: 0 0 auto;
   width: 72px;
   height: 72px;
-  object-fit: cover;
-  object-position: center;
   border: 4px solid #ffffff;
   border-radius: 50%;
-  background: #000000;
-  box-shadow: 0 5px 14px rgba(0, 0, 0, .32);
+  background: #020b18;
+  color: #ffffff;
+  font-size: 38px;
+  font-weight: 1000;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.32);
 }
 
 .alonpc-brand__content {
   display: grid;
-  gap: 2px;
+  gap: 3px;
 }
 
 .alonpc-brand__content strong {
   font-size: clamp(27px, 2.5vw, 39px);
   line-height: 1;
-  letter-spacing: .8px;
+  letter-spacing: 0.8px;
 }
 
 .alonpc-brand__content small {
@@ -91,8 +93,8 @@
   text-decoration: none;
   font-size: 21px;
   font-weight: 1000;
-  box-shadow: 0 5px 14px rgba(0, 0, 0, .2);
-  transition: transform .16s ease, box-shadow .16s ease;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
 }
 
 .alonpc-contact__button > span:first-child {
@@ -119,7 +121,8 @@
 
 .alonpc-contact__button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .28);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
 }
 
 .alonpc-navbar__controls {
@@ -130,71 +133,34 @@
 }
 
 .alonpc-language {
-  position: relative;
+  min-width: 150px;
 }
 
-.alonpc-language__toggle,
-.alonpc-menu-toggle {
-  min-height: 58px;
-  padding: 10px 15px;
-  border: 3px solid #ffffff;
-  border-radius: 15px;
-  background: #ffffff;
-  color: #0b356a;
-  font-size: 18px;
-  font-weight: 1000;
-  cursor: pointer;
-}
-
-.alonpc-language__toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.alonpc-language__menu {
-  position: absolute;
-  top: calc(100% + 9px);
-  left: 0;
-  z-index: 1100;
-  display: grid;
-  width: 210px;
-  padding: 9px;
-  border: 4px solid #0b3c75;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 12px 28px rgba(0, 25, 60, .3);
-}
-
-.alonpc-language__option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 9px 12px;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #142842;
-  font-size: 17px;
-  font-weight: 900;
-  text-align: right;
-  cursor: pointer;
-}
-
-.alonpc-language__option:hover,
-.alonpc-language__option.active {
-  border-color: #1768c5;
-  background: #e4f0ff;
-  color: #0b3b73;
+.alonpc-language button,
+.alonpc-language select {
+  min-height: 58px !important;
+  padding: 10px 15px !important;
+  border: 3px solid #ffffff !important;
+  border-radius: 15px !important;
+  background: #ffffff !important;
+  color: #0b356a !important;
+  font-size: 18px !important;
+  font-weight: 1000 !important;
 }
 
 .alonpc-menu-toggle {
   display: none;
   align-items: center;
   gap: 8px;
+  min-height: 58px;
+  padding: 10px 15px;
+  border: 3px solid #ffffff;
+  border-radius: 15px;
   background: #ffca22;
   color: #092f61;
+  font-size: 18px;
+  font-weight: 1000;
+  cursor: pointer;
 }
 
 .alonpc-menu-toggle span {
@@ -205,8 +171,8 @@
   max-width: 1700px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(9, minmax(105px, 1fr));
-  gap: 9px;
+  grid-template-columns: repeat(9, minmax(125px, 1fr));
+  gap: 10px;
 }
 
 .alonpc-nav-item {
@@ -214,42 +180,45 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  min-height: 78px;
-  padding: 9px 8px;
-  border: 3px solid rgba(255, 255, 255, .92);
-  border-radius: 15px;
+  gap: 6px;
+  min-height: 86px;
+  padding: 11px 9px;
+  border: 3px solid rgba(255, 255, 255, 0.94);
+  border-radius: 16px;
   color: #ffffff;
-  font-size: clamp(16px, 1.25vw, 20px);
+  font-family: inherit;
+  font-size: clamp(17px, 1.25vw, 21px);
   font-weight: 1000;
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
-  box-shadow: 0 5px 13px rgba(0, 0, 0, .2);
-  transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 13px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .alonpc-nav-item__icon {
-  font-size: 28px;
+  font-size: 31px;
   line-height: 1;
 }
 
 .alonpc-nav-item--home { background: #186ab9; }
 .alonpc-nav-item--services { background: #13864b; }
-.alonpc-nav-item--events { background: #9a4f09; }
-.alonpc-nav-item--dashboard { background: #6554b5; }
-.alonpc-nav-item--admin { background: #a12438; }
+.alonpc-nav-item--government { background: #6d4aa2; }
 .alonpc-nav-item--shop { background: #bd6505; }
-.alonpc-nav-item--login { background: #087d82; }
+.alonpc-nav-item--cart { background: #0a7d82; }
 .alonpc-nav-item--about { background: #526276; }
 .alonpc-nav-item--contact { background: #81508d; }
+.alonpc-nav-item--admin { background: #a12438; }
+.alonpc-nav-item--login { background: #2555a6; }
+.alonpc-nav-item--logout { background: #7e1d1d; }
 
 .alonpc-nav-item:hover,
 .alonpc-nav-item.active {
   transform: translateY(-3px);
   filter: brightness(1.14);
-  box-shadow: 0 9px 19px rgba(0, 0, 0, .3);
+  box-shadow: 0 9px 19px rgba(0, 0, 0, 0.3);
 }
 
 .alonpc-nav-item.active {
@@ -258,12 +227,19 @@
 }
 
 .alonpc-navbar a:focus-visible,
-.alonpc-navbar button:focus-visible {
+.alonpc-navbar button:focus-visible,
+.alonpc-navbar select:focus-visible {
   outline: 5px solid #ffdc39;
   outline-offset: 4px;
 }
 
-@media (max-width: 1350px) {
+@media (max-width: 1450px) {
+  .alonpc-navbar__menu {
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 1150px) {
   .alonpc-navbar__top {
     grid-template-columns: auto 1fr;
   }
@@ -276,10 +252,6 @@
   .alonpc-contact {
     grid-column: 1 / -1;
     grid-row: 2;
-  }
-
-  .alonpc-navbar__menu {
-    grid-template-columns: repeat(5, minmax(135px, 1fr));
   }
 }
 
@@ -301,6 +273,7 @@
   .alonpc-brand__logo {
     width: 56px;
     height: 56px;
+    font-size: 30px;
   }
 
   .alonpc-brand__content small {
@@ -319,13 +292,13 @@
     font-size: 17px;
   }
 
-  .alonpc-language__toggle {
-    min-width: 58px;
+  .alonpc-language {
+    min-width: auto;
   }
 
-  .alonpc-language__toggle span:nth-child(2),
-  .alonpc-language__toggle span:nth-child(3) {
-    display: none;
+  .alonpc-language button,
+  .alonpc-language select {
+    min-width: 58px !important;
   }
 
   .alonpc-menu-toggle {
@@ -337,7 +310,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 13px;
     padding-top: 13px;
-    border-top: 3px solid rgba(255, 255, 255, .55);
+    border-top: 3px solid rgba(255, 255, 255, 0.55);
   }
 
   .alonpc-navbar__menu--open {
@@ -345,8 +318,8 @@
   }
 
   .alonpc-nav-item {
-    min-height: 72px;
-    font-size: 17px;
+    min-height: 78px;
+    font-size: 18px;
   }
 }
 
@@ -363,9 +336,10 @@
     gap: 6px;
   }
 
-  .alonpc-language__toggle,
+  .alonpc-language button,
+  .alonpc-language select,
   .alonpc-menu-toggle {
-    padding: 8px 10px;
+    padding: 8px 10px !important;
   }
 
   .alonpc-menu-toggle strong {
@@ -374,5 +348,18 @@
 
   .alonpc-navbar__menu {
     grid-template-columns: 1fr;
+  }
+
+  .alonpc-nav-item {
+    min-height: 76px;
+    font-size: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alonpc-navbar *,
+  .alonpc-navbar *::before,
+  .alonpc-navbar *::after {
+    transition: none !important;
   }
 }
