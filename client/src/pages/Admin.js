@@ -31,15 +31,17 @@ const adminSections = [
     className: "admin-card-red",
   },
   {
-    title: "ניהול שירותים",
-    description: "קטגוריות שירותים ותוכן השירותים",
-    icon: "🛎️",
-    path: "/admin/service-categories",
+    title: "ניהול עסקים נותני שירות",
+    description:
+      "הוספה, תיקון ומחיקה של עסקים, בעלי מקצוע ופרטי נגישות",
+    icon: "🏢",
+    path: "/admin/services",
     className: "admin-card-green",
   },
   {
-    title: "שירותים ממשלתיים",
-    description: "ניהול קישורים ומידע ממשלתי",
+    title: "גופים ממשלתיים וציבוריים",
+    description:
+      "משטרה, כבאות, מד״א, ביטוח לאומי ומשרדי ממשלה",
     icon: "🏛️",
     path: "/admin/government",
     className: "admin-card-navy",
@@ -139,11 +141,15 @@ function Admin() {
         </div>
 
         <div>
-          <p className="admin-private-label">🔒 אזור מנהל בלבד</p>
+          <p className="admin-private-label">
+            🔒 אזור מנהל בלבד
+          </p>
+
           <h1>פורטל ניהול ALONPC</h1>
+
           <p>
-            בחר את תחום הניהול הרצוי. כפתורי שינוי, עריכה ומחיקה זמינים
-            למנהל מורשה בלבד.
+            בחר את תחום הניהול הרצוי. כפתורי שינוי, עריכה
+            ומחיקה זמינים למנהל מורשה בלבד.
           </p>
         </div>
       </section>
@@ -158,7 +164,10 @@ function Admin() {
             to={section.path}
             className={`admin-portal-card ${section.className}`}
           >
-            <span className="admin-portal-icon" aria-hidden="true">
+            <span
+              className="admin-portal-icon"
+              aria-hidden="true"
+            >
               {section.icon}
             </span>
 
@@ -167,16 +176,23 @@ function Admin() {
               <small>{section.description}</small>
             </span>
 
-            <span className="admin-portal-arrow" aria-hidden="true">
+            <span
+              className="admin-portal-arrow"
+              aria-hidden="true"
+            >
               ←
             </span>
           </Link>
         ))}
       </section>
 
-      <section className="admin-portal-warning" role="note">
-        <strong>חשוב:</strong> אין לשתף את פרטי הכניסה. לאחר סיום העבודה
-        יש ללחוץ על כפתור היציאה בתפריט העליון.
+      <section
+        className="admin-portal-warning"
+        role="note"
+      >
+        <strong>חשוב:</strong> אין לשתף את פרטי הכניסה.
+        לאחר סיום העבודה יש ללחוץ על כפתור היציאה בתפריט
+        העליון.
       </section>
 
       <div className="admin-portal-bottom-actions">
