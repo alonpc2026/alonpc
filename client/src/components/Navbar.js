@@ -1,236 +1,189 @@
-import React, {
-  useEffect,
-  useState,
-} from "react";
-import {
-  Link,
-  NavLink,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-
-import { useCart } from "../context/CartContext";
-import { useLanguage } from "../context/LanguageContext";
-import LanguageSwitcher from "./LanguageSwitcher";
-
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import logo from "../assets/images/logo.png";
 
-function readUser() {
-  try {
-    const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  } catch {
-    return null;
-  }
-}
+const NAV_ITEMS = [
+  { to: "/", icon: "🏠", text: "דף הבית", color: "home" },
+  { to: "/services", icon: "♿", text: "שירותים", color: "services" },
+  { to: "/israel-events", icon: "📅", text: "לוח אירועים", color: "events" },
+  { to: "/dashboard", icon: "📊", text: "לוח בקרה", color: "dashboard" },
+  { to: "/admin", icon: "⚙️", text: "ניהול", color: "admin" },
+  { to: "/shop", icon: "🛒", text: "החנות של אלון", color: "shop" },
+  { to: "/login", icon: "👤", text: "כניסת מנויים", color: "login" },
+  { to: "/about", icon: "ℹ️", text: "אודות", color: "about" },
+  { to: "/contact", icon: "✉️", text: "צור קשר", color: "contact" },
+];
+
+const LANGUAGES = [
+  { code: "he", label: "עברית", flag: "🇮🇱" },
+  { code: "en", label: "English", flag: "🇬🇧" },
+  { code: "ru", label: "Русский", flag: "🇷🇺" },
+  { code: "ar", label: "العربية", flag: "🇸🇦" },
+  { code: "am", label: "አማርኛ", flag: "🇪🇹" },
+];
 
 function Navbar() {
-  const { itemCount } = useCart();
-  const { t, dir } = useLanguage();
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState(readUser());
-
   const location = useLocation();
-  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "he"
+  );
 
   useEffect(() => {
-    setUser(readUser());
     setMenuOpen(false);
+    setLanguageOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    const refreshUser = () => {
-      setUser(readUser());
-    };
-
-    window.addEventListener("storage", refreshUser);
-    window.addEventListener(
-      "alonpc-auth-change",
-      refreshUser
-    );
-
-    return () => {
-      window.removeEventListener(
-        "storage",
-        refreshUser
-      );
-      window.removeEventListener(
-        "alonpc-auth-change",
-        refreshUser
-      );
-    };
-  }, []);
-
-  const isAdmin = user?.role === "admin";
-
-  const closeMenu = () => {
+  function closeMenus() {
     setMenuOpen(false);
-  };
+    setLanguageOpen(false);
+  }
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    setUser(null);
-    setMenuOpen(false);
-
+  function changeLanguage(code) {
+    setLanguage(code);
+    localStorage.setItem("language", code);
     window.dispatchEvent(
-      new Event("alonpc-auth-change")
+      new CustomEvent("alonpc-language-change", {
+        detail: { language: code },
+      })
     );
+    setLanguageOpen(false);
+  }
 
-    navigate("/");
-  };
-
-  const navClass = ({ isActive }) =>
-    `nav-button ${isActive ? "active" : ""}`;
+  const currentLanguage =
+    LANGUAGES.find((item) => item.code === language) || LANGUAGES[0];
 
   return (
-    <header
-      className="site-navbar"
-      dir={dir}
-    >
-      <div className="navbar-container">
+    <header className="alonpc-navbar" dir="rtl">
+      <div className="alonpc-navbar__top">
         <Link
           to="/"
-          className="navbar-brand"
-          onClick={closeMenu}
+          className="alonpc-brand"
+          onClick={closeMenus}
+          aria-label="ALONPC - מעבר לדף הבית"
         >
-          <span
-            className="brand-logo"
-            aria-hidden="true"
-          >
-            A
-          </span>
+          <img
+            src={logo}
+            alt="לוגו ALONPC"
+            className="alonpc-brand__logo"
+          />
 
-          <span className="brand-text">
-            ALONPC
+          <span className="alonpc-brand__content">
+            <strong>ALONPC</strong>
+            <small>מרכז שירותים לאנשים עם מוגבלות</small>
           </span>
         </Link>
 
-        <button
-          type="button"
-          className="navbar-toggle"
-          aria-label={
-            menuOpen ? "Close menu" : "Open menu"
-          }
-          aria-expanded={menuOpen}
-          onClick={() =>
-            setMenuOpen((current) => !current)
-          }
-        >
-          {menuOpen ? "✕" : "☰"}
-        </button>
-
-        <nav
-          className={`navbar-menu ${
-            menuOpen ? "open" : ""
-          }`}
-          aria-label="Main navigation"
-        >
-          <NavLink
-            to="/"
-            end
-            className={navClass}
-            onClick={closeMenu}
-          >
-            🏠 {t("home")}
-          </NavLink>
-
-          <NavLink
-            to="/services"
-            className={navClass}
-            onClick={closeMenu}
-          >
-            🛎️ {t("services")}
-          </NavLink>
-
-          <NavLink
-            to="/shop"
-            className={navClass}
-            onClick={closeMenu}
-          >
-            🛍️ {t("shop")}
-          </NavLink>
-
-          <NavLink
-            to="/cart"
-            className={navClass}
-            onClick={closeMenu}
-          >
-            🛒 {t("cart")} ({itemCount})
-          </NavLink>
-
-          <NavLink
-            to="/about"
-            className={navClass}
-            onClick={closeMenu}
-          >
-            ℹ️ {t("about")}
-          </NavLink>
-
-          <NavLink
-            to="/contact"
-            className={navClass}
-            onClick={closeMenu}
-          >
-            ✉️ {t("contact")}
-          </NavLink>
-
-          {isAdmin ? (
-            <NavLink
-              to="/admin"
-              className={({ isActive }) =>
-                `nav-button admin-gear-button ${
-                  isActive ? "active" : ""
-                }`
-              }
-              onClick={closeMenu}
-            >
-              ⚙️ {t("admin")}
-            </NavLink>
-          ) : !user ? (
-            <NavLink
-              to="/login"
-              className={navClass}
-              onClick={closeMenu}
-            >
-              🔐 {t("login")}
-            </NavLink>
-          ) : null}
-
-          {user && (
-            <button
-              type="button"
-              className="nav-button logout-button"
-              onClick={logout}
-            >
-              🚪 {t("logout")}
-            </button>
-          )}
-        </nav>
-
-        <div className="navbar-actions">
-          <LanguageSwitcher />
-
+        <div className="alonpc-contact">
           <a
-            className="contact-link phone-link"
+            className="alonpc-contact__button alonpc-contact__phone"
             href="tel:+972545221809"
           >
-            📞 054-5221809
+            <span aria-hidden="true">📞</span>
+            <span>
+              <small>טלפון</small>
+              <strong>054-522-1809</strong>
+            </span>
           </a>
 
           <a
-            className="contact-link whatsapp-link"
+            className="alonpc-contact__button alonpc-contact__whatsapp"
             href="https://wa.me/972545221809"
             target="_blank"
             rel="noreferrer"
           >
-            💬 {t("whatsapp")}
+            <span aria-hidden="true">💬</span>
+            <span>
+              <small>יצירת קשר בכתב</small>
+              <strong>WhatsApp</strong>
+            </span>
           </a>
         </div>
+
+        <div className="alonpc-navbar__controls">
+          <div className="alonpc-language">
+            <button
+              type="button"
+              className="alonpc-language__toggle"
+              aria-haspopup="true"
+              aria-expanded={languageOpen}
+              onClick={() => setLanguageOpen((current) => !current)}
+            >
+              <span>{currentLanguage.flag}</span>
+              <span>{currentLanguage.label}</span>
+              <span aria-hidden="true">▾</span>
+            </button>
+
+            {languageOpen && (
+              <div className="alonpc-language__menu" role="menu">
+                {LANGUAGES.map((item) => (
+                  <button
+                    type="button"
+                    key={item.code}
+                    className={
+                      item.code === language
+                        ? "alonpc-language__option active"
+                        : "alonpc-language__option"
+                    }
+                    onClick={() => changeLanguage(item.code)}
+                    role="menuitem"
+                  >
+                    <span>{item.flag}</span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            className="alonpc-menu-toggle"
+            aria-label={menuOpen ? "סגירת התפריט" : "פתיחת התפריט"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((current) => !current)}
+          >
+            <span aria-hidden="true">{menuOpen ? "✕" : "☰"}</span>
+            <strong>{menuOpen ? "סגור" : "תפריט"}</strong>
+          </button>
+        </div>
       </div>
+
+      <nav
+        className={
+          menuOpen
+            ? "alonpc-navbar__menu alonpc-navbar__menu--open"
+            : "alonpc-navbar__menu"
+        }
+        aria-label="תפריט ראשי"
+      >
+        {NAV_ITEMS.map((item) => {
+          const active =
+            item.to === "/"
+              ? location.pathname === "/"
+              : location.pathname === item.to ||
+                location.pathname.startsWith(`${item.to}/`);
+
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={closeMenus}
+              className={`alonpc-nav-item alonpc-nav-item--${item.color}${
+                active ? " active" : ""
+              }`}
+              aria-current={active ? "page" : undefined}
+            >
+              <span className="alonpc-nav-item__icon" aria-hidden="true">
+                {item.icon}
+              </span>
+              <span>{item.text}</span>
+            </Link>
+          );
+        })}
+      </nav>
     </header>
   );
 }

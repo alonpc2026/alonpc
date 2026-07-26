@@ -1,259 +1,378 @@
-/* Navbar.css — חבילה 2, מחק הכול והדבק */
+.alonpc-navbar {
+  position: relative;
+  z-index: 1000;
+  width: 100%;
+  padding: 14px 18px 16px;
+  border-bottom: 5px solid #082e63;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, .16), transparent 34%),
+    linear-gradient(135deg, #06285a 0%, #0b4488 55%, #0a3269 100%);
+  color: #ffffff;
+  font-family: Arial, "Noto Sans Hebrew", sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 31, 72, .28);
+}
 
-* {
+.alonpc-navbar *,
+.alonpc-navbar *::before,
+.alonpc-navbar *::after {
   box-sizing: border-box;
 }
 
-.site-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #021b44, #0b56c8, #02204d);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+.alonpc-navbar__top {
+  max-width: 1700px;
+  margin: 0 auto 14px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
 }
 
-.navbar-container {
-  width: min(1500px, 100%);
-  margin: auto;
-  display: flex;
+.alonpc-brand {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
+  gap: 13px;
+  min-height: 76px;
+  padding: 8px 12px;
+  border: 3px solid rgba(255, 255, 255, .75);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .12);
+  color: #ffffff;
   text-decoration: none;
-  color: #fff;
-  font-size: 30px;
-  font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35);
 }
 
-.brand-logo {
-  width: 58px;
-  height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 4px solid #fff;
+.alonpc-brand__logo {
+  display: block;
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  object-position: center;
+  border: 4px solid #ffffff;
   border-radius: 50%;
-  background: #ffca28;
-  color: #063775;
-  font-size: 32px;
-  font-weight: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  background: #000000;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .32);
 }
 
-.brand-text {
-  color: #fff;
-  letter-spacing: 1px;
+.alonpc-brand__content {
+  display: grid;
+  gap: 2px;
 }
 
-.navbar-menu {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
+.alonpc-brand__content strong {
+  font-size: clamp(27px, 2.5vw, 39px);
+  line-height: 1;
+  letter-spacing: .8px;
 }
 
-.nav-button {
-  min-height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 15px;
-  border: 0;
-  border-radius: 13px;
-  text-decoration: none;
-  color: #fff;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 900;
-  cursor: pointer;
-  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
-}
-
-.nav-button:hover,
-.nav-button:focus-visible {
-  transform: translateY(-3px);
-  filter: brightness(1.1);
-  outline: 3px solid #fff;
-  outline-offset: 2px;
-}
-
-.nav-button.active {
-  box-shadow: 0 0 0 3px #fff;
-}
-
-.home-button { background: #1976d2; }
-.services-button { background: #00897b; }
-.dashboard-button { background: #5e35b1; }
-.shop-button { background: #ef6c00; }
-.cart-button { background: #ad1457; }
-.login-button { background: #2e7d32; }
-.about-button { background: #546e7a; }
-.contact-button { background: #c62828; }
-.logout-button { background: #6d4c41; }
-
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.admin-gear-button {
-  width: 48px;
-  height: 48px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid #fff;
-  border-radius: 50%;
-  background: #7b1fa2;
-  color: #fff;
-  text-decoration: none;
-  font-size: 25px;
-  transition: transform 0.2s ease;
-}
-
-.admin-gear-button:hover,
-.admin-gear-button:focus-visible {
-  transform: rotate(30deg) scale(1.06);
-  outline: 3px solid #ffeb3b;
-  outline-offset: 2px;
-}
-
-.contact-link {
-  min-height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 13px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: #fff;
+.alonpc-brand__content small {
+  color: #eaf4ff;
+  font-size: 15px;
   font-weight: 900;
   white-space: nowrap;
 }
 
-.phone-link { background: #1565c0; }
-.whatsapp-link { background: #128c3a; }
-
-.navbar-toggle {
-  display: none;
+.alonpc-contact {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-
-
-/* כפתור פורטל ניהול האתר */
-.admin-portal-button {
-  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
-  color: #ffffff;
+.alonpc-contact__button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 9px 16px;
   border: 3px solid #ffffff;
-  box-shadow: 0 5px 14px rgba(74, 20, 140, 0.35);
+  border-radius: 17px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 21px;
+  font-weight: 1000;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .2);
+  transition: transform .16s ease, box-shadow .16s ease;
 }
 
-.admin-portal-button:hover,
-.admin-portal-button:focus-visible {
-  background: linear-gradient(135deg, #4a148c, #7b1fa2);
-  transform: translateY(-3px) scale(1.03);
-  outline: 3px solid #ffeb3b;
-  outline-offset: 2px;
+.alonpc-contact__button > span:first-child {
+  font-size: 30px;
 }
 
-@media (max-width: 1250px) {
-  .navbar-container {
-    flex-wrap: wrap;
+.alonpc-contact__button > span:last-child {
+  display: grid;
+}
+
+.alonpc-contact__button small {
+  color: inherit;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.alonpc-contact__phone {
+  background: linear-gradient(145deg, #0b6db0, #084e89);
+}
+
+.alonpc-contact__whatsapp {
+  background: linear-gradient(145deg, #18a653, #087a38);
+}
+
+.alonpc-contact__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .28);
+}
+
+.alonpc-navbar__controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 11px;
+}
+
+.alonpc-language {
+  position: relative;
+}
+
+.alonpc-language__toggle,
+.alonpc-menu-toggle {
+  min-height: 58px;
+  padding: 10px 15px;
+  border: 3px solid #ffffff;
+  border-radius: 15px;
+  background: #ffffff;
+  color: #0b356a;
+  font-size: 18px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.alonpc-language__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alonpc-language__menu {
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 0;
+  z-index: 1100;
+  display: grid;
+  width: 210px;
+  padding: 9px;
+  border: 4px solid #0b3c75;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 25, 60, .3);
+}
+
+.alonpc-language__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 9px 12px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #142842;
+  font-size: 17px;
+  font-weight: 900;
+  text-align: right;
+  cursor: pointer;
+}
+
+.alonpc-language__option:hover,
+.alonpc-language__option.active {
+  border-color: #1768c5;
+  background: #e4f0ff;
+  color: #0b3b73;
+}
+
+.alonpc-menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: #ffca22;
+  color: #092f61;
+}
+
+.alonpc-menu-toggle span {
+  font-size: 27px;
+}
+
+.alonpc-navbar__menu {
+  max-width: 1700px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(105px, 1fr));
+  gap: 9px;
+}
+
+.alonpc-nav-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  min-height: 78px;
+  padding: 9px 8px;
+  border: 3px solid rgba(255, 255, 255, .92);
+  border-radius: 15px;
+  color: #ffffff;
+  font-size: clamp(16px, 1.25vw, 20px);
+  font-weight: 1000;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+  box-shadow: 0 5px 13px rgba(0, 0, 0, .2);
+  transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+}
+
+.alonpc-nav-item__icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.alonpc-nav-item--home { background: #186ab9; }
+.alonpc-nav-item--services { background: #13864b; }
+.alonpc-nav-item--events { background: #9a4f09; }
+.alonpc-nav-item--dashboard { background: #6554b5; }
+.alonpc-nav-item--admin { background: #a12438; }
+.alonpc-nav-item--shop { background: #bd6505; }
+.alonpc-nav-item--login { background: #087d82; }
+.alonpc-nav-item--about { background: #526276; }
+.alonpc-nav-item--contact { background: #81508d; }
+
+.alonpc-nav-item:hover,
+.alonpc-nav-item.active {
+  transform: translateY(-3px);
+  filter: brightness(1.14);
+  box-shadow: 0 9px 19px rgba(0, 0, 0, .3);
+}
+
+.alonpc-nav-item.active {
+  outline: 5px solid #ffdc39;
+  outline-offset: 1px;
+}
+
+.alonpc-navbar a:focus-visible,
+.alonpc-navbar button:focus-visible {
+  outline: 5px solid #ffdc39;
+  outline-offset: 4px;
+}
+
+@media (max-width: 1350px) {
+  .alonpc-navbar__top {
+    grid-template-columns: auto 1fr;
   }
 
-  .navbar-menu {
-    order: 3;
-    width: 100%;
+  .alonpc-navbar__controls {
+    grid-column: 2;
+    grid-row: 1;
   }
 
-  .navbar-actions {
-    margin-inline-start: auto;
+  .alonpc-contact {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .alonpc-navbar__menu {
+    grid-template-columns: repeat(5, minmax(135px, 1fr));
   }
 }
 
-@media (max-width: 760px) {
-  .site-navbar {
+@media (max-width: 860px) {
+  .alonpc-navbar {
     padding: 10px;
   }
 
-  .navbar-brand {
-    font-size: 25px;
+  .alonpc-navbar__top {
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    margin-bottom: 0;
   }
 
-  .brand-logo {
-    width: 50px;
-    height: 50px;
-    font-size: 27px;
+  .alonpc-brand {
+    min-height: 68px;
   }
 
-  .navbar-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border: 0;
-    border-radius: 11px;
-    background: #fff;
-    color: #082f66;
-    font-size: 25px;
-    font-weight: 900;
-    cursor: pointer;
+  .alonpc-brand__logo {
+    width: 56px;
+    height: 56px;
   }
 
-  .navbar-menu {
+  .alonpc-brand__content small {
     display: none;
-    order: 4;
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
   }
 
-  .navbar-menu.open {
+  .alonpc-contact {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .alonpc-contact__button {
+    justify-content: center;
+    min-height: 58px;
+    font-size: 17px;
+  }
+
+  .alonpc-language__toggle {
+    min-width: 58px;
+  }
+
+  .alonpc-language__toggle span:nth-child(2),
+  .alonpc-language__toggle span:nth-child(3) {
+    display: none;
+  }
+
+  .alonpc-menu-toggle {
     display: flex;
   }
 
-  .nav-button {
-    width: 100%;
-    min-height: 52px;
-    font-size: 18px;
+  .alonpc-navbar__menu {
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 13px;
+    padding-top: 13px;
+    border-top: 3px solid rgba(255, 255, 255, .55);
   }
 
-  .navbar-actions {
-    order: 3;
-    width: 100%;
+  .alonpc-navbar__menu--open {
     display: grid;
-    grid-template-columns: 48px 1fr 1fr;
   }
 
-  .contact-link {
-    min-width: 0;
-    padding: 0 8px;
-    font-size: 14px;
+  .alonpc-nav-item {
+    min-height: 72px;
+    font-size: 17px;
   }
 }
 
-@media (max-width: 430px) {
-  .brand-text {
-    font-size: 22px;
+@media (max-width: 520px) {
+  .alonpc-brand__content strong {
+    font-size: 26px;
   }
 
-  .navbar-actions {
-    grid-template-columns: 48px 1fr;
+  .alonpc-contact {
+    grid-template-columns: 1fr;
   }
 
-  .phone-link {
+  .alonpc-navbar__controls {
+    gap: 6px;
+  }
+
+  .alonpc-language__toggle,
+  .alonpc-menu-toggle {
+    padding: 8px 10px;
+  }
+
+  .alonpc-menu-toggle strong {
     display: none;
+  }
+
+  .alonpc-navbar__menu {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./AdminSecondHand.css";
 
 function AdminSecondHand() {
   const user = JSON.parse(localStorage.getItem("user"));

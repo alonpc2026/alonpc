@@ -1,0 +1,58 @@
+.second-hand-page{
+    direction:rtl;
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+    min-height:100vh;
+    background:#eef5ff;
+}
+
+.second-hand-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.second-hand-header h1{
+    font-size:42px;
+    color:#0b4d92;
+    margin-bottom:10px;
+}
+
+.second-hand-header p{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.second-hand-box{
+    background:white;
+    border:3px solid #1b66b3;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.second-hand-box h2{
+    color:#0b4d92;
+    margin-bottom:20px;
+}
+
+.second-hand-box ul{
+    margin:25px 0;
+    line-height:2;
+    font-size:20px;
+}
+
+.back-button{
+    display:inline-block;
+    padding:14px 28px;
+    background:#1768c5;
+    color:white;
+    text-decoration:none;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.back-button:hover{
+    background:#0d56a5;
+}

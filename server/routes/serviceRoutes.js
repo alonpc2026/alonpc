@@ -1,21 +1,12 @@
 const express = require("express");
-const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
-
-const {
-  getServices,
-  getServiceById,
-  addService,
-  updateService,
-  deleteService,
-} = require("../controllers/serviceController");
-
 const router = express.Router();
+const controller = require("../controllers/serviceController");
 
-router.get("/", getServices);
-router.get("/:id", getServiceById);
-router.post("/", auth, admin, addService);
-router.put("/:id", auth, admin, updateService);
-router.delete("/:id", auth, admin, deleteService);
+// אם יש אצלך middleware של מנהל, הוסף אותו ל-POST/PUT/DELETE.
+router.get("/", controller.getServices);
+router.get("/:id", controller.getServiceById);
+router.post("/", controller.createService);
+router.put("/:id", controller.updateService);
+router.delete("/:id", controller.deleteService);
 
 module.exports = router;

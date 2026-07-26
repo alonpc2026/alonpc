@@ -1,0 +1,127 @@
+/* ===========================
+   ALONPC - AdminSecondHand.css
+   =========================== */
+
+.loginBox{
+max-width:1200px;
+margin:30px auto;
+padding:25px;
+background:#ffffff;
+border-radius:18px;
+box-shadow:0 4px 15px rgba(0,0,0,.15);
+direction:rtl;
+}
+
+.loginBox h2{
+font-size:32px;
+color:#0d47a1;
+margin-bottom:20px;
+font-weight:bold;
+}
+
+.loginBox h3{
+font-size:24px;
+color:#1565c0;
+margin-top:20px;
+}
+
+.loginBox input,
+.loginBox select,
+.loginBox textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+font-size:18px;
+border:2px solid #b0bec5;
+border-radius:10px;
+box-sizing:border-box;
+background:white;
+}
+
+.loginBox textarea{
+min-height:120px;
+resize:vertical;
+}
+
+.loginBox button{
+padding:12px 24px;
+margin:8px 5px;
+font-size:18px;
+font-weight:bold;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#1976d2;
+color:white;
+transition:.2s;
+}
+
+.loginBox button:hover{
+background:#0d47a1;
+transform:scale(1.03);
+}
+
+.loginBox img{
+margin-top:10px;
+border-radius:12px;
+border:2px solid #ddd;
+}
+
+.adminService{
+display:flex;
+gap:20px;
+align-items:flex-start;
+padding:18px;
+margin-top:18px;
+border:2px solid #d6dde5;
+border-radius:15px;
+background:#f8fbff;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.adminService img{
+width:90px;
+height:90px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.adminService h3{
+margin:0;
+font-size:24px;
+color:#0d47a1;
+}
+
+.adminService p{
+margin:5px 0;
+font-size:17px;
+}
+
+hr{
+margin:25px 0;
+border:0;
+border-top:2px solid #ddd;
+}
+
+@media (max-width:700px){
+
+.adminService{
+flex-direction:column;
+}
+
+.loginBox{
+padding:15px;
+}
+
+.loginBox h2{
+font-size:26px;
+}
+
+.loginBox input,
+.loginBox select,
+.loginBox textarea,
+.loginBox button{
+font-size:17px;
+}
+
+}

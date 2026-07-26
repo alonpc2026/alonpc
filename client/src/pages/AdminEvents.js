@@ -1,296 +1,103 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AdminEvents.css";
 
-const API_BASE =
-  process.env.REACT_APP_API_BASE ||
-  "https://alonpc02026.onrender.com/api";
-
+const API_BASE = process.env.REACT_APP_API_BASE || "https://alonpc02026.onrender.com/api";
+const LANGUAGES = ["עברית", "אנגלית", "רוסית", "אמהרית", "ערבית"];
+const SIGN_LANGUAGES = ["שפת סימנים ישראלית", "שפת סימנים רוסית", "שפת סימנים אמריקאית", "שפת סימנים ערבית"];
+const ACCESS_OPTIONS = [
+  ["transcription", "תמלול בזמן אמת"], ["captions", "כתוביות"], ["signLanguage", "תרגום לשפת סימנים"],
+  ["hearingLoop", "לולאת השראה / מערכת עזר לשמיעה"], ["wheelchairAccess", "נגיש לכיסא גלגלים"],
+  ["accessibleParking", "חניה נגישה"], ["accessibleRestrooms", "שירותים נגישים"], ["writtenContact", "יצירת קשר בכתב / WhatsApp"],
+];
+const emptyAccess = Object.fromEntries(ACCESS_OPTIONS.map(([key]) => [key, false]));
 const EMPTY_FORM = {
-  title: "",
-  startDate: "",
-  endDate: "",
-  startTime: "",
-  endTime: "",
-  allDay: false,
-  city: "",
-  location: "",
-  description: "",
-  website: "",
-  imageUrl: "",
-  active: true,
+  title: "", startDate: "", endDate: "", startTime: "", endTime: "", allDay: false,
+  city: "", location: "", description: "", website: "", imageUrl: "", active: true,
+  accessibility: emptyAccess, languages: [], captionLanguages: [], signLanguages: [],
 };
 
-function getToken() {
-  return localStorage.getItem("token") || "";
-}
+const getToken = () => localStorage.getItem("token") || "";
+const normalizeEvent = (item = {}) => ({
+  ...EMPTY_FORM, ...item,
+  startDate: item.startDate || item.date || "",
+  endDate: item.endDate || item.startDate || item.date || "",
+  startTime: item.startTime || item.time || "",
+  accessibility: { ...emptyAccess, ...(item.accessibility || {}) },
+  languages: Array.isArray(item.languages) ? item.languages : [],
+  captionLanguages: Array.isArray(item.captionLanguages) ? item.captionLanguages : [],
+  signLanguages: Array.isArray(item.signLanguages) ? item.signLanguages : [],
+});
 
-function normalizeEvent(eventItem = {}) {
-  return {
-    ...eventItem,
-    startDate:
-      eventItem.startDate ||
-      eventItem.date ||
-      "",
-    endDate:
-      eventItem.endDate ||
-      eventItem.startDate ||
-      eventItem.date ||
-      "",
-    startTime:
-      eventItem.startTime ||
-      eventItem.time ||
-      "",
-    endTime: eventItem.endTime || "",
-    allDay: eventItem.allDay === true,
-  };
-}
-
-function AdminEvents() {
+export default function AdminEvents() {
   const [events, setEvents] = useState([]);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [editingId, setEditingId] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [editingId, setEditingId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [monthFilter, setMonthFilter] =
-    useState("");
-  const [form, setForm] =
-    useState(EMPTY_FORM);
 
-  const apiRequest = useCallback(
-    async (path = "", options = {}) => {
-      const response = await fetch(
-        `${API_BASE}/events${path}`,
-        {
-          ...options,
-          headers: {
-            "Content-Type":
-              "application/json",
-            Authorization:
-              `Bearer ${getToken()}`,
-            ...(options.headers || {}),
-          },
-        }
-      );
+  const apiRequest = useCallback(async (path = "", options = {}) => {
+    const response = await fetch(`${API_BASE}/events${path}`, {
+      ...options,
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}`, ...(options.headers || {}) },
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.message || "הפעולה נכשלה");
+    return data;
+  }, []);
 
-      const data = await response
-        .json()
-        .catch(() => ({}));
+  const loadEvents = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await apiRequest("");
+      setEvents((Array.isArray(data) ? data : data.events || []).map(normalizeEvent));
+      setError("");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [apiRequest]);
 
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "הפעולה נכשלה"
-        );
-      }
+  useEffect(() => { loadEvents(); }, [loadEvents]);
 
-      return data;
-    },
-    []
-  );
-
-  const loadEvents = useCallback(
-    async () => {
-      setLoading(true);
-
-      try {
-        const data =
-          await apiRequest("/admin");
-
-        const list = Array.isArray(data)
-          ? data
-          : data.events || [];
-
-        setEvents(
-          list.map(normalizeEvent)
-        );
-        setError("");
-      } catch (err) {
-        setError(err.message);
-        setEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [apiRequest]
-  );
-
-  useEffect(() => {
-    loadEvents();
-  }, [loadEvents]);
   const filteredEvents = useMemo(() => {
     const text = search.trim().toLowerCase();
+    return events.filter((event) => !text || `${event.title} ${event.city} ${event.location} ${event.description}`.toLowerCase().includes(text));
+  }, [events, search]);
 
-    return [...events]
-      .filter((event) => {
-        const searchText = `${event.title} ${event.city} ${event.location} ${event.description}`
-          .toLowerCase();
+  const updateField = (name, value) => setForm((current) => ({ ...current, [name]: value }));
+  const toggleArrayValue = (field, value) => setForm((current) => ({
+    ...current,
+    [field]: current[field].includes(value) ? current[field].filter((item) => item !== value) : [...current[field], value],
+  }));
+  const toggleAccess = (key) => setForm((current) => ({
+    ...current,
+    accessibility: { ...current.accessibility, [key]: !current.accessibility[key] },
+  }));
+  const resetForm = () => { setEditingId(""); setForm(EMPTY_FORM); };
 
-        const okSearch =
-          !text || searchText.includes(text);
-
-        const okMonth =
-          !monthFilter ||
-          event.startDate.startsWith(monthFilter) ||
-          event.endDate.startsWith(monthFilter);
-
-        return okSearch && okMonth;
-      })
-      .sort((a, b) =>
-        `${a.startDate} ${a.startTime}`.localeCompare(
-          `${b.startDate} ${b.startTime}`
-        )
-      );
-  }, [events, search, monthFilter]);
-
-  function handleChange(e) {
-    const { name, value, checked, type } = e.target;
-
-    setForm((current) => {
-      const next = {
-        ...current,
-        [name]:
-          type === "checkbox"
-            ? checked
-            : value,
-      };
-
-      if (
-        name === "startDate" &&
-        !current.endDate
-      ) {
-        next.endDate = value;
-      }
-
-      if (
-        name === "allDay" &&
-        checked
-      ) {
-        next.startTime = "";
-        next.endTime = "";
-      }
-
-      return next;
-    });
-  }
-
-  function resetForm() {
-    setEditingId("");
-    setForm(EMPTY_FORM);
-  }
-
-  function startEdit(event) {
+  const startEdit = (event) => {
     setEditingId(event._id);
+    setForm(normalizeEvent(event));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    setForm({
-      title: event.title,
-      startDate: event.startDate,
-      endDate: event.endDate,
-      startTime: event.startTime,
-      endTime: event.endTime,
-      allDay: event.allDay,
-      city: event.city,
-      location: event.location,
-      description: event.description,
-      website: event.website,
-      imageUrl: event.imageUrl,
-      active: event.active,
-    });
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }  async function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
-    setSaving(true);
-    setMessage("");
-    setError("");
-
+    setSaving(true); setMessage(""); setError("");
     try {
-      if (!form.title.trim()) {
-        throw new Error("יש למלא שם אירוע");
-      }
-
-      if (!form.startDate) {
-        throw new Error("יש למלא תאריך התחלה");
-      }
-
-      if (!form.endDate) {
-        throw new Error("יש למלא תאריך סיום");
-      }
-
-      if (form.endDate < form.startDate) {
-        throw new Error(
-          "תאריך הסיום לא יכול להיות לפני תאריך ההתחלה"
-        );
-      }
-
-      if (
-        !form.allDay &&
-        form.startDate === form.endDate &&
-        form.startTime &&
-        form.endTime &&
-        form.endTime < form.startTime
-      ) {
-        throw new Error(
-          "שעת הסיום לא יכולה להיות לפני שעת ההתחלה"
-        );
-      }
-
-      const payload = {
-        title: form.title.trim(),
-        startDate: form.startDate,
-        endDate: form.endDate,
-        startTime: form.allDay
-          ? ""
-          : form.startTime,
-        endTime: form.allDay
-          ? ""
-          : form.endTime,
-        allDay: form.allDay,
-        city: form.city.trim(),
-        location: form.location.trim(),
-        description: form.description.trim(),
-        website: form.website.trim(),
-        imageUrl: form.imageUrl.trim(),
-        active: form.active,
-
-        date: form.startDate,
-        time: form.allDay
-          ? ""
-          : form.startTime,
-      };
-
-      const path = editingId
-        ? `/${editingId}`
-        : "";
-
-      const method = editingId
-        ? "PUT"
-        : "POST";
-
-      await apiRequest(path, {
-        method,
-        body: JSON.stringify(payload),
+      if (!form.title.trim()) throw new Error("יש למלא שם אירוע");
+      if (!form.startDate || !form.endDate) throw new Error("יש למלא תאריך התחלה וסיום");
+      await apiRequest(editingId ? `/${editingId}` : "", {
+        method: editingId ? "PUT" : "POST",
+        body: JSON.stringify({ ...form, title: form.title.trim(), date: form.startDate, time: form.allDay ? "" : form.startTime }),
       });
-
-      setMessage(
-        editingId
-          ? "האירוע עודכן בהצלחה"
-          : "האירוע נוסף בהצלחה"
-      );
-
+      setMessage(editingId ? "האירוע עודכן בהצלחה" : "האירוע נוסף בהצלחה");
       resetForm();
-
       await loadEvents();
     } catch (err) {
       setError(err.message);
@@ -299,477 +106,54 @@ function AdminEvents() {
     }
   }
 
-  async function removeEvent(eventItem) {
-    const approved = window.confirm(
-      `האם למחוק את האירוע "${eventItem.title}"?`
-    );
-
-    if (!approved) {
-      return;
-    }
-
-    setMessage("");
-    setError("");
-
+  async function removeEvent(event) {
+    if (!window.confirm(`האם למחוק את האירוע "${event.title}"?`)) return;
     try {
-      await apiRequest(
-        `/${eventItem._id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
+      await apiRequest(`/${event._id}`, { method: "DELETE" });
       setMessage("האירוע נמחק בהצלחה");
-
-      if (editingId === eventItem._id) {
-        resetForm();
-      }
-
       await loadEvents();
-    } catch (err) {
-      setError(err.message);
-    }
+    } catch (err) { setError(err.message); }
   }
 
   return (
-    <main
-      className="admin-events-page"
-      dir="rtl"
-    >
-      <section className="admin-events-header">
-        <div>
-          <p>🔒 אזור מנהל</p>
+    <main className="admin-events-page" dir="rtl">
+      <header className="admin-events-header">
+        <div><p>🔒 אזור מנהל</p><h1>ניהול אירועים נגישים</h1><span>הוספה, עריכה, שפות והתאמות נגישות.</span></div>
+        <nav><Link to="/israel-events">צפייה בלוח האירועים</Link><Link to="/admin">חזרה לניהול</Link></nav>
+      </header>
 
-          <h1>ניהול אירועים</h1>
+      {message && <div className="admin-events-notice success">{message}</div>}
+      {error && <div className="admin-events-notice error">{error}</div>}
 
-          <span>
-            הוספה, עריכה ומחיקה של אירועים,
-            כולל אירועים של יום אחד או מספר ימים.
-          </span>
-        </div>
+      <section className="admin-events-panel">
+        <h2>{editingId ? "עריכת אירוע" : "הוספת אירוע חדש"}</h2>
+        <form onSubmit={handleSubmit}>
+          <label>שם האירוע *<input value={form.title} onChange={(e) => updateField("title", e.target.value)} required /></label>
+          <div className="admin-events-row">
+            <label>תאריך התחלה *<input type="date" value={form.startDate} onChange={(e) => updateField("startDate", e.target.value)} required /></label>
+            <label>תאריך סיום *<input type="date" min={form.startDate || undefined} value={form.endDate} onChange={(e) => updateField("endDate", e.target.value)} required /></label>
+          </div>
+          <label className="check"><input type="checkbox" checked={form.allDay} onChange={(e) => setForm((c) => ({ ...c, allDay: e.target.checked, startTime: e.target.checked ? "" : c.startTime, endTime: e.target.checked ? "" : c.endTime }))} />אירוע של כל היום</label>
+          {!form.allDay && <div className="admin-events-row">
+            <label>שעת התחלה<input type="time" value={form.startTime} onChange={(e) => updateField("startTime", e.target.value)} /></label>
+            <label>שעת סיום<input type="time" value={form.endTime} onChange={(e) => updateField("endTime", e.target.value)} /></label>
+          </div>}
+          <div className="admin-events-row"><label>עיר<input value={form.city} onChange={(e) => updateField("city", e.target.value)} /></label><label>מקום<input value={form.location} onChange={(e) => updateField("location", e.target.value)} /></label></div>
+          <label>תיאור<textarea rows="5" value={form.description} onChange={(e) => updateField("description", e.target.value)} /></label>
+          <div className="admin-events-row"><label>קישור לאתר<input type="url" value={form.website} onChange={(e) => updateField("website", e.target.value)} placeholder="https://" /></label><label>קישור לתמונה<input type="url" value={form.imageUrl} onChange={(e) => updateField("imageUrl", e.target.value)} placeholder="https://" /></label></div>
 
-        <div className="admin-events-header-actions">
-          <Link to="/israel-events">
-            צפייה בלוח האירועים
-          </Link>
-
-          <Link to="/admin">
-            חזרה לפורטל הניהול
-          </Link>
-        </div>
+          <fieldset><legend>נגישות באירוע</legend><div className="options-grid">{ACCESS_OPTIONS.map(([key, label]) => <label className="check" key={key}><input type="checkbox" checked={form.accessibility[key]} onChange={() => toggleAccess(key)} />{label}</label>)}</div></fieldset>
+          <fieldset><legend>שפות האירוע</legend><div className="options-grid">{LANGUAGES.map((language) => <label className="check" key={language}><input type="checkbox" checked={form.languages.includes(language)} onChange={() => toggleArrayValue("languages", language)} />{language}</label>)}</div></fieldset>
+          <fieldset><legend>שפות כתוביות</legend><div className="options-grid">{LANGUAGES.map((language) => <label className="check" key={language}><input type="checkbox" checked={form.captionLanguages.includes(language)} onChange={() => toggleArrayValue("captionLanguages", language)} />{language}</label>)}</div></fieldset>
+          <fieldset><legend>שפות סימנים</legend><div className="options-grid">{SIGN_LANGUAGES.map((language) => <label className="check" key={language}><input type="checkbox" checked={form.signLanguages.includes(language)} onChange={() => toggleArrayValue("signLanguages", language)} />{language}</label>)}</div></fieldset>
+          <label className="check"><input type="checkbox" checked={form.active} onChange={(e) => updateField("active", e.target.checked)} />אירוע פעיל ומוצג באתר</label>
+          <div className="admin-events-actions"><button type="submit" disabled={saving}>{saving ? "שומר..." : editingId ? "שמירת שינויים" : "הוספת האירוע"}</button>{editingId && <button type="button" className="secondary" onClick={resetForm}>ביטול עריכה</button>}</div>
+        </form>
       </section>
 
-      {message && (
-        <div
-          className="admin-events-message"
-          role="status"
-        >
-          {message}
-        </div>
-      )}
-
-      {error && (
-        <div
-          className="admin-events-message admin-events-error"
-          role="alert"
-        >
-          {error}
-        </div>
-      )}
-
-      <section className="admin-events-form-card">
-        <h2>
-          {editingId
-            ? "עריכת אירוע"
-            : "הוספת אירוע חדש"}
-        </h2>
-
-        <form onSubmit={handleSubmit}>
-          <label>
-            שם האירוע *
-
-            <input
-              type="text"
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              required
-              maxLength="180"
-              placeholder="לדוגמה: הרצאה מיוחדת בחיפה"
-            />
-          </label>
-
-          <div className="admin-events-form-row">
-            <label>
-              תאריך התחלה *
-
-              <input
-                type="date"
-                name="startDate"
-                value={form.startDate}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              תאריך סיום *
-
-              <input
-                type="date"
-                name="endDate"
-                value={form.endDate}
-                min={
-                  form.startDate ||
-                  undefined
-                }
-                onChange={handleChange}
-                required
-              />
-            </label>
-          </div>
-
-          <label className="admin-events-checkbox">
-            <input
-              type="checkbox"
-              name="allDay"
-              checked={form.allDay}
-              onChange={handleChange}
-            />
-
-            אירוע של כל היום
-          </label>
-
-          {!form.allDay && (
-            <div className="admin-events-form-row">
-              <label>
-                שעת התחלה
-
-                <input
-                  type="time"
-                  name="startTime"
-                  value={form.startTime}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                שעת סיום
-
-                <input
-                  type="time"
-                  name="endTime"
-                  value={form.endTime}
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
-          )}
-
-          <div className="admin-events-form-row">
-            <label>
-              עיר
-
-              <input
-                type="text"
-                name="city"
-                value={form.city}
-                onChange={handleChange}
-                maxLength="120"
-                placeholder="לדוגמה: חיפה"
-              />
-            </label>
-
-            <label>
-              מקום
-
-              <input
-                type="text"
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                maxLength="250"
-                placeholder="שם האולם, המתנ״ס או הכתובת"
-              />
-            </label>
-          </div>
-
-          <label>
-            תיאור האירוע
-
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows="6"
-              maxLength="5000"
-              placeholder="פרטים מלאים על האירוע"
-            />
-          </label>
-
-          <label>
-            קישור לאתר האירוע
-
-            <input
-              type="url"
-              name="website"
-              value={form.website}
-              onChange={handleChange}
-              placeholder="https://"
-            />
-          </label>
-
-          <label>
-            קישור לתמונת האירוע
-
-            <input
-              type="url"
-              name="imageUrl"
-              value={form.imageUrl}
-              onChange={handleChange}
-              placeholder="https://"
-            />
-          </label>
-
-          {form.imageUrl && (
-            <div className="admin-events-image-preview">
-              <span>
-                תצוגה מקדימה:
-              </span>
-
-              <img
-                src={form.imageUrl}
-                alt="תצוגה מקדימה של תמונת האירוע"
-              />
-            </div>
-          )}
-
-          <label className="admin-events-checkbox">
-            <input
-              type="checkbox"
-              name="active"
-              checked={form.active}
-              onChange={handleChange}
-            />
-
-            אירוע פעיל ומוצג באתר
-          </label>
-
-          <div className="admin-events-form-actions">
-            <button
-              type="submit"
-              disabled={saving}
-            >
-              {saving
-                ? "שומר..."
-                : editingId
-                ? "שמירת השינויים"
-                : "הוספת האירוע"}
-            </button>
-
-            {editingId && (
-              <button
-                type="button"
-                className="secondary"
-                onClick={resetForm}
-                disabled={saving}
-              >
-                ביטול עריכה
-              </button>
-            )}
-          </div>
-        </form>
-      </section>      <section className="admin-events-list-card">
-        <div className="admin-events-tools">
-          <h2>
-            כל האירועים ({filteredEvents.length})
-          </h2>
-
-          <input
-            type="search"
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
-            placeholder="חיפוש לפי שם, עיר, מקום או תיאור"
-          />
-
-          <input
-            type="month"
-            value={monthFilter}
-            onChange={(event) =>
-              setMonthFilter(event.target.value)
-            }
-            aria-label="סינון לפי חודש"
-          />
-
-          {(search || monthFilter) && (
-            <button
-              type="button"
-              onClick={() => {
-                setSearch("");
-                setMonthFilter("");
-              }}
-            >
-              ניקוי סינון
-            </button>
-          )}
-        </div>
-
-        {loading ? (
-          <p className="admin-events-empty">
-            טוען אירועים...
-          </p>
-        ) : filteredEvents.length === 0 ? (
-          <p className="admin-events-empty">
-            לא נמצאו אירועים.
-          </p>
-        ) : (
-          <div className="admin-events-grid">
-            {filteredEvents.map((eventItem) => {
-              const normalizedEvent =
-                normalizeEvent(eventItem);
-
-              const dateText =
-                normalizedEvent.endDate &&
-                normalizedEvent.endDate !==
-                  normalizedEvent.startDate
-                  ? `${normalizedEvent.startDate} עד ${normalizedEvent.endDate}`
-                  : normalizedEvent.startDate;
-
-              let timeText = "ללא שעה";
-
-              if (normalizedEvent.allDay) {
-                timeText = "כל היום";
-              } else if (
-                normalizedEvent.startTime &&
-                normalizedEvent.endTime
-              ) {
-                timeText = `${normalizedEvent.startTime} עד ${normalizedEvent.endTime}`;
-              } else if (
-                normalizedEvent.startTime
-              ) {
-                timeText =
-                  normalizedEvent.startTime;
-              } else if (
-                normalizedEvent.endTime
-              ) {
-                timeText =
-                  normalizedEvent.endTime;
-              }
-
-              return (
-                <article
-                  key={normalizedEvent._id}
-                  className="admin-event-card"
-                >
-                  {normalizedEvent.imageUrl && (
-                    <img
-                      src={
-                        normalizedEvent.imageUrl
-                      }
-                      alt={
-                        normalizedEvent.title
-                      }
-                      loading="lazy"
-                    />
-                  )}
-
-                  <div className="admin-event-card-content">
-                    <div className="admin-event-card-top">
-                      <strong>
-                        {normalizedEvent.title}
-                      </strong>
-
-                      <span
-                        className={
-                          normalizedEvent.active !==
-                          false
-                            ? "active"
-                            : "hidden"
-                        }
-                      >
-                        {normalizedEvent.active !==
-                        false
-                          ? "מוצג"
-                          : "מוסתר"}
-                      </span>
-                    </div>
-
-                    <p>
-                      📅{" "}
-                      {dateText ||
-                        "ללא תאריך"}
-                    </p>
-
-                    <p>
-                      🕒 {timeText}
-                    </p>
-
-                    <p>
-                      📍{" "}
-                      {normalizedEvent.city ||
-                        "ללא עיר"}
-
-                      {normalizedEvent.location &&
-                        ` · ${normalizedEvent.location}`}
-                    </p>
-
-                    {normalizedEvent.description && (
-                      <p className="admin-event-description">
-                        {
-                          normalizedEvent.description
-                        }
-                      </p>
-                    )}
-
-                    {normalizedEvent.website && (
-                      <p>
-                        <a
-                          href={
-                            normalizedEvent.website
-                          }
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          מעבר לאתר האירוע
-                        </a>
-                      </p>
-                    )}
-
-                    <div className="admin-event-card-actions">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          startEdit(
-                            normalizedEvent
-                          )
-                        }
-                      >
-                        עריכה
-                      </button>
-
-                      <button
-                        type="button"
-                        className="danger"
-                        onClick={() =>
-                          removeEvent(
-                            normalizedEvent
-                          )
-                        }
-                      >
-                        מחיקה
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+      <section className="admin-events-panel"><div className="admin-events-tools"><h2>כל האירועים ({filteredEvents.length})</h2><input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="חיפוש אירוע" /></div>
+        {loading ? <p>טוען...</p> : <div className="admin-events-grid">{filteredEvents.map((event) => <article className="admin-event-card" key={event._id}>{event.imageUrl && <img src={event.imageUrl} alt={event.title} />}<div><h3>{event.title}</h3><p>📅 {event.startDate}{event.endDate !== event.startDate ? ` עד ${event.endDate}` : ""}</p><p>📍 {event.city || "ללא עיר"}{event.location ? ` · ${event.location}` : ""}</p><div className="chips">{event.languages.map((x) => <span key={x}>{x}</span>)}{ACCESS_OPTIONS.filter(([key]) => event.accessibility[key]).map(([key, label]) => <span key={key}>{label}</span>)}</div><div className="card-actions"><button onClick={() => startEdit(event)}>עריכה</button><button className="danger" onClick={() => removeEvent(event)}>מחיקה</button></div></div></article>)}</div>}
       </section>
     </main>
   );
 }
-
-export default AdminEvents;

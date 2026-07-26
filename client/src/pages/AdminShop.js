@@ -1,7 +1,27 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import "./AdminShop.css";
 
 const API =
-  "https://alonpc02026.onrender.com/api/products";
+  process.env.REACT_APP_API_BASE
+    ? `${process.env.REACT_APP_API_BASE}/products`
+    : "https://alonpc02026.onrender.com/api/products";
+
+function getToken() {
+  return (
+    localStorage.getItem("token") ||
+    localStorage.getItem("authToken") ||
+    ""
+  );
+}
+
+function authHeaders(extraHeaders = {}) {
+  const token = getToken();
+
+  return {
+    ...extraHeaders,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
 
 const EMPTY_FORM = {
   name: "",
@@ -186,9 +206,9 @@ function AdminShop() {
         editId ? `${API}/${editId}` : API,
         {
           method: editId ? "PUT" : "POST",
-          headers: {
+          headers: authHeaders({
             "Content-Type": "application/json",
-          },
+          }),
           body: JSON.stringify(productData),
         }
       );
@@ -293,6 +313,7 @@ function AdminShop() {
     try {
       const response = await fetch(`${API}/${id}`, {
         method: "DELETE",
+        headers: authHeaders(),
       });
 
       const result = await response.json();
@@ -314,15 +335,15 @@ function AdminShop() {
 
   if (!user || user.role !== "admin") {
     return (
-      <section className="loginBox" dir="rtl">
+      <section className="admin-shop-page" dir="rtl">
         <h2>🔐 אין הרשאה</h2>
-        <p>רק מנהל מחובר יכול לנהל את החנות.</p>
+        <p>רק מנהל מחובר יכול לנהל את החנות. יש להתחבר מחדש אם פג תוקף ההתחברות.</p>
       </section>
     );
   }
 
   return (
-    <section className="loginBox" dir="rtl">
+    <section className="admin-shop-page" dir="rtl">
       <h1>🛒 ניהול החנות</h1>
 
       <h2>

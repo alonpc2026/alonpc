@@ -1,579 +1,312 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import "./AdminServices.css";
 
-const API = "https://alonpc02026.onrender.com/api/services";
+const API_BASE =
+  process.env.REACT_APP_API_BASE ||
+  "https://alonpc02026.onrender.com/api";
+const API = `${API_BASE}/services`;
 
-const emptyForm = {
+const CATEGORIES = [
+  "מחשבים",
+  "נגישות",
+  "בריאות",
+  "משפטים",
+  "תחבורה",
+  "לימודים",
+  "עסקים",
+  "מסמכים",
+  "שונות",
+];
+
+const EMPTY = {
   name: "",
-  professionType: "",
-  category: "",
-  serviceType: "",
+  category: "נגישות",
   businessName: "",
   logoUrl: "",
-  websiteUrl: "",
-  address: "",
-  phone: "",
-  acceptsWhatsApp: false,
-  serviceCitiesText: "",
-  description: "",
-  email: "",
-  hours: "",
   imageUrl: "",
+  description: "",
+  address: "",
+  city: "",
+  phone: "",
+  link: "",
+  supportsSignLanguage: false,
+  supportsTranscription: false,
   active: true,
 };
 
+function getToken() {
+  return localStorage.getItem("token") || localStorage.getItem("authToken") || "";
+}
+
 function AdminServices() {
   const [services, setServices] = useState([]);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState(EMPTY);
   const [editingId, setEditingId] = useState("");
   const [search, setSearch] = useState("");
-  const [message, setMessage] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const headers = useCallback(() => {
-    const token = localStorage.getItem("token");
-
-    return {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
+  const request = useCallback(async (path = "", options = {}) => {
+    const token = getToken();
+    const response = await fetch(`${API}${path}`, {
+      ...options,
+      headers: {
+        ...(options.body ? { "Content-Type": "application/json" } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(options.headers || {}),
+      },
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.message || "הפעולה נכשלה");
+    return data;
   }, []);
 
-  const loadServices = useCallback(async () => {
+  const load = useCallback(async () => {
     setLoading(true);
-
     try {
-      const response = await fetch(API);
-      const data = await response.json().catch(() => []);
-
-      if (!response.ok) {
-        throw new Error(data.message || "לא ניתן לטעון את השירותים");
-      }
-
-      setServices(Array.isArray(data) ? data : []);
-    } catch (error) {
+      const data = await request();
+      setServices(Array.isArray(data) ? data : data.services || []);
+      setError("");
+    } catch (err) {
+      setError(err.message);
       setServices([]);
-      setMessage(`שגיאה בטעינה: ${error.message}`);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [request]);
 
   useEffect(() => {
-    loadServices();
-  }, [loadServices]);
+    load();
+  }, [load]);
 
-  const filteredServices = useMemo(() => {
-    const query = search.trim().toLowerCase();
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return services.filter((item) => {
+      const haystack = `${item.name || ""} ${item.businessName || ""} ${item.category || ""} ${item.city || ""} ${item.description || ""}`.toLowerCase();
+      return (!q || haystack.includes(q)) &&
+        (!categoryFilter || item.category === categoryFilter);
+    });
+  }, [services, search, categoryFilter]);
 
-    if (!query) return services;
-
-    return services.filter((service) =>
-      [
-        service.name,
-        service.professionType,
-        service.category,
-        service.serviceType,
-        service.businessName,
-        service.address,
-        service.phone,
-        ...(Array.isArray(service.serviceCities)
-          ? service.serviceCities
-          : []),
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(query)
-    );
-  }, [services, search]);
-
-  const updateField = (event) => {
-    const { name, value, type, checked } = event.target;
-
+  function change(event) {
+    const { name, value, checked, type } = event.target;
     setForm((current) => ({
       ...current,
       [name]: type === "checkbox" ? checked : value,
     }));
-  };
+  }
 
-  const resetForm = () => {
-    setForm(emptyForm);
+  function reset() {
     setEditingId("");
-  };
+    setForm(EMPTY);
+  }
 
-  const startEdit = (service) => {
-    setEditingId(service._id);
+  function edit(item) {
+    setEditingId(item._id);
     setForm({
-      name: service.name || "",
-      professionType: service.professionType || "",
-      category: service.category || "",
-      serviceType: service.serviceType || "",
-      businessName: service.businessName || "",
-      logoUrl: service.logoUrl || "",
-      websiteUrl: service.websiteUrl || service.link || "",
-      address: service.address || "",
-      phone: service.phone || "",
-      acceptsWhatsApp: Boolean(service.acceptsWhatsApp),
-      serviceCitiesText: Array.isArray(service.serviceCities)
-        ? service.serviceCities.join(", ")
-        : service.city || "",
-      description: service.description || "",
-      email: service.email || "",
-      hours: service.hours || "",
-      imageUrl: service.imageUrl || "",
-      active: service.active !== false,
+      name: item.name || "",
+      category: item.category || "נגישות",
+      businessName: item.businessName || "",
+      logoUrl: item.logoUrl || item.imageUrl || "",
+      imageUrl: item.imageUrl || item.logoUrl || "",
+      description: item.description || "",
+      address: item.address || "",
+      city: item.city || "",
+      phone: item.phone || "",
+      link: item.link || item.websiteUrl || "",
+      supportsSignLanguage: Boolean(item.supportsSignLanguage),
+      supportsTranscription: Boolean(item.supportsTranscription),
+      active: item.active !== false,
     });
-
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }
 
-  const buildPayload = () => {
-    const cities = form.serviceCitiesText
-      .split(",")
-      .map((city) => city.trim())
-      .filter(Boolean);
-
-    return {
-      name: form.name.trim(),
-      professionType: form.professionType.trim(),
-      category: form.category.trim(),
-      serviceType: form.serviceType.trim(),
-      businessName: form.businessName.trim(),
-      logoUrl: form.logoUrl.trim(),
-      websiteUrl: form.websiteUrl.trim(),
-      link: form.websiteUrl.trim(),
-      address: form.address.trim(),
-      phone: form.phone.trim(),
-      acceptsWhatsApp: form.acceptsWhatsApp,
-      serviceCities: cities,
-      city: cities[0] || "",
-      description: form.description.trim(),
-      email: form.email.trim(),
-      hours: form.hours.trim(),
-      imageUrl: form.imageUrl.trim(),
-      active: form.active,
-    };
-  };
-
-  const saveService = async (event) => {
+  async function submit(event) {
     event.preventDefault();
-    setMessage("");
-
-    const payload = buildPayload();
-
-    if (!payload.name || !payload.professionType || !payload.serviceType) {
-      setMessage("חובה למלא שם שירות, סוג מקצוע וסוג שירות.");
-      return;
-    }
-
     setSaving(true);
-
+    setMessage("");
+    setError("");
     try {
-      const response = await fetch(
-        editingId ? `${API}/${editingId}` : API,
-        {
-          method: editingId ? "PUT" : "POST",
-          headers: headers(),
-          body: JSON.stringify(payload),
-        }
-      );
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(data.message || "לא ניתן לשמור את השירות");
-      }
-
-      setMessage(editingId ? "השירות עודכן בהצלחה." : "השירות נוסף בהצלחה.");
-      resetForm();
-      await loadServices();
-    } catch (error) {
-      setMessage(`שגיאה בשמירה: ${error.message}`);
+      if (!form.name.trim()) throw new Error("חובה להזין שם שירות");
+      if (!form.category) throw new Error("חובה לבחור קטגוריה");
+      const payload = {
+        ...form,
+        name: form.name.trim(),
+        businessName: form.businessName.trim(),
+        description: form.description.trim(),
+        address: form.address.trim(),
+        city: form.city.trim(),
+        phone: form.phone.trim(),
+        link: form.link.trim(),
+        imageUrl: (form.imageUrl || form.logoUrl).trim(),
+        logoUrl: (form.logoUrl || form.imageUrl).trim(),
+      };
+      await request(editingId ? `/${editingId}` : "", {
+        method: editingId ? "PUT" : "POST",
+        body: JSON.stringify(payload),
+      });
+      setMessage(editingId ? "השירות עודכן בהצלחה" : "השירות נוסף בהצלחה");
+      reset();
+      await load();
+    } catch (err) {
+      setError(err.message);
     } finally {
       setSaving(false);
     }
-  };
+  }
 
-  const removeService = async (service) => {
-    if (!window.confirm(`למחוק את השירות "${service.name}"?`)) return;
-
+  async function remove(item) {
+    if (!window.confirm(`האם למחוק את "${item.name}"?`)) return;
+    setError("");
+    setMessage("");
     try {
-      const response = await fetch(`${API}/${service._id}`, {
-        method: "DELETE",
-        headers: headers(),
-      });
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(data.message || "לא ניתן למחוק את השירות");
-      }
-
-      setMessage("השירות נמחק בהצלחה.");
-      await loadServices();
-    } catch (error) {
-      setMessage(`שגיאה במחיקה: ${error.message}`);
+      await request(`/${item._id}`, { method: "DELETE" });
+      setMessage("השירות נמחק בהצלחה");
+      if (editingId === item._id) reset();
+      await load();
+    } catch (err) {
+      setError(err.message);
     }
-  };
-
-  const inputStyle = {
-    width: "100%",
-    minHeight: 46,
-    padding: "10px 12px",
-    border: "2px solid #cbd5e1",
-    borderRadius: 10,
-    fontSize: 17,
-    boxSizing: "border-box",
-  };
-
-  const labelStyle = {
-    display: "grid",
-    gap: 7,
-    fontWeight: 700,
-  };
+  }
 
   return (
-    <main dir="rtl" style={{ maxWidth: 1250, margin: "0 auto", padding: 20 }}>
-      <section style={panelStyle}>
-        <div style={topRowStyle}>
-          <div>
-            <h1 style={{ margin: 0 }}>ניהול שירותים</h1>
-            <p>הוספה, עריכה ומחיקה של נותני שירות ועסקים.</p>
+    <main className="admin-services-page" dir="rtl">
+      <header className="admin-services-header">
+        <div>
+          <p>♿ אזור מנהל</p>
+          <h1>ניהול שירותים נגישים</h1>
+          <span>קטגוריה, עסק, תמונה, פרטי קשר וסימוני נגישות.</span>
+        </div>
+        <div>
+          <Link to="/services">צפייה בשירותים</Link>
+          <Link to="/admin">חזרה לניהול</Link>
+        </div>
+      </header>
+
+      {message && <div className="admin-services-message" role="status">{message}</div>}
+      {error && <div className="admin-services-message error" role="alert">{error}</div>}
+
+      <section className="admin-services-form-card">
+        <h2>{editingId ? "עריכת שירות" : "הוספת שירות נגיש"}</h2>
+        <form onSubmit={submit}>
+          <div className="admin-services-row">
+            <label>שם השירות *
+              <input name="name" value={form.name} onChange={change} required />
+            </label>
+            <label>קטגוריה *
+              <select name="category" value={form.category} onChange={change}>
+                {CATEGORIES.map((category) => <option key={category}>{category}</option>)}
+              </select>
+            </label>
           </div>
 
-          <Link to="/admin" style={backButtonStyle}>
-            חזרה לפורטל הניהול
-          </Link>
-        </div>
+          <label>שם העסק
+            <input name="businessName" value={form.businessName} onChange={change} />
+          </label>
+
+          <div className="admin-services-row">
+            <label>קישור לוגו
+              <input type="url" name="logoUrl" value={form.logoUrl} onChange={change} placeholder="https://" />
+            </label>
+            <label>קישור תמונה
+              <input type="url" name="imageUrl" value={form.imageUrl} onChange={change} placeholder="https://" />
+            </label>
+          </div>
+
+          {(form.imageUrl || form.logoUrl) && (
+            <div className="admin-services-preview">
+              <img src={form.imageUrl || form.logoUrl} alt="תצוגה מקדימה" />
+            </div>
+          )}
+
+          <label>תיאור העסק
+            <textarea name="description" value={form.description} onChange={change} rows="6" />
+          </label>
+
+          <div className="admin-services-row">
+            <label>כתובת העסק
+              <input name="address" value={form.address} onChange={change} />
+            </label>
+            <label>עיר
+              <input name="city" value={form.city} onChange={change} />
+            </label>
+          </div>
+
+          <div className="admin-services-row">
+            <label>פלאפון
+              <input type="tel" name="phone" value={form.phone} onChange={change} />
+            </label>
+            <label>קישור העסק
+              <input type="url" name="link" value={form.link} onChange={change} placeholder="https://" />
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>סימוני נגישות</legend>
+            <label className="admin-services-checkbox">
+              <input type="checkbox" name="supportsSignLanguage" checked={form.supportsSignLanguage} onChange={change} />
+              תומך בתרגום לשפת סימנים
+            </label>
+            <label className="admin-services-checkbox">
+              <input type="checkbox" name="supportsTranscription" checked={form.supportsTranscription} onChange={change} />
+              תומך בתמלול
+            </label>
+            <label className="admin-services-checkbox">
+              <input type="checkbox" name="active" checked={form.active} onChange={change} />
+              שירות פעיל ומוצג באתר
+            </label>
+          </fieldset>
+
+          <div className="admin-services-actions">
+            <button type="submit" disabled={saving}>{saving ? "שומר..." : editingId ? "שמירת שינויים" : "הוספת השירות"}</button>
+            {editingId && <button type="button" className="secondary" onClick={reset}>ביטול עריכה</button>}
+          </div>
+        </form>
       </section>
 
-      <form onSubmit={saveService} style={panelStyle}>
-        <h2>{editingId ? "עריכת שירות" : "הוספת שירות חדש"}</h2>
-
-        <div style={formGridStyle}>
-          <label style={labelStyle}>
-            שם השירות *
-            <input name="name" value={form.name} onChange={updateField} style={inputStyle} />
-          </label>
-
-          <label style={labelStyle}>
-            סוג מקצוע *
-            <input
-              name="professionType"
-              value={form.professionType}
-              onChange={updateField}
-              style={inputStyle}
-              placeholder="למשל: טכנאי מחשבים"
-            />
-          </label>
-
-          <label style={labelStyle}>
-            קטגוריה
-            <input name="category" value={form.category} onChange={updateField} style={inputStyle} />
-          </label>
-
-          <label style={labelStyle}>
-            סוג שירות *
-            <input
-              name="serviceType"
-              value={form.serviceType}
-              onChange={updateField}
-              style={inputStyle}
-              placeholder="למשל: שירות בבית הלקוח"
-            />
-          </label>
-
-          <label style={labelStyle}>
-            שם העסק או החברה
-            <input
-              name="businessName"
-              value={form.businessName}
-              onChange={updateField}
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            טלפון
-            <input name="phone" value={form.phone} onChange={updateField} style={inputStyle} />
-          </label>
-
-          <label style={labelStyle}>
-            כתובת
-            <input name="address" value={form.address} onChange={updateField} style={inputStyle} />
-          </label>
-
-          <label style={labelStyle}>
-            ערים שבהן ניתן השירות
-            <input
-              name="serviceCitiesText"
-              value={form.serviceCitiesText}
-              onChange={updateField}
-              style={inputStyle}
-              placeholder="חיפה, נשר, קריות, טירת כרמל"
-            />
-          </label>
-
-          <label style={labelStyle}>
-            קישור ללוגו החברה
-            <input
-              type="url"
-              name="logoUrl"
-              value={form.logoUrl}
-              onChange={updateField}
-              style={inputStyle}
-              placeholder="https://..."
-            />
-          </label>
-
-          <label style={labelStyle}>
-            קישור לאתר
-            <input
-              type="url"
-              name="websiteUrl"
-              value={form.websiteUrl}
-              onChange={updateField}
-              style={inputStyle}
-              placeholder="https://..."
-            />
-          </label>
-
-          <label style={labelStyle}>
-            דוא"ל
-            <input type="email" name="email" value={form.email} onChange={updateField} style={inputStyle} />
-          </label>
-
-          <label style={labelStyle}>
-            שעות פעילות
-            <input name="hours" value={form.hours} onChange={updateField} style={inputStyle} />
-          </label>
-
-          <label style={labelStyle}>
-            קישור לתמונה נוספת
-            <input
-              type="url"
-              name="imageUrl"
-              value={form.imageUrl}
-              onChange={updateField}
-              style={inputStyle}
-              placeholder="https://..."
-            />
-          </label>
+      <section className="admin-services-list-card">
+        <div className="admin-services-tools">
+          <h2>כל השירותים ({filtered.length})</h2>
+          <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="חיפוש עסק, שירות, עיר או תיאור" />
+          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+            <option value="">כל הקטגוריות</option>
+            {CATEGORIES.map((category) => <option key={category}>{category}</option>)}
+          </select>
         </div>
 
-        <label style={{ ...labelStyle, marginTop: 16 }}>
-          תיאור השירות
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={updateField}
-            style={{ ...inputStyle, minHeight: 130, resize: "vertical" }}
-          />
-        </label>
-
-        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginTop: 18 }}>
-          <label style={{ fontWeight: 700 }}>
-            <input
-              type="checkbox"
-              name="acceptsWhatsApp"
-              checked={form.acceptsWhatsApp}
-              onChange={updateField}
-              style={{ marginLeft: 8, width: 20, height: 20 }}
-            />
-            מקבל WhatsApp: כן
-          </label>
-
-          <label style={{ fontWeight: 700 }}>
-            <input
-              type="checkbox"
-              name="active"
-              checked={form.active}
-              onChange={updateField}
-              style={{ marginLeft: 8, width: 20, height: 20 }}
-            />
-            שירות פעיל
-          </label>
-        </div>
-
-        {message && <p style={messageStyle}>{message}</p>}
-
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 20 }}>
-          <button type="submit" disabled={saving} style={saveButtonStyle}>
-            {saving ? "שומר..." : editingId ? "שמור עדכון" : "הוסף שירות"}
-          </button>
-
-          {editingId && (
-            <button type="button" onClick={resetForm} style={cancelButtonStyle}>
-              ביטול עריכה
-            </button>
-          )}
-        </div>
-      </form>
-
-      <section style={panelStyle}>
-        <div style={topRowStyle}>
-          <div>
-            <h2 style={{ marginBottom: 4 }}>רשימת שירותים</h2>
-            <span>{filteredServices.length} שירותים</span>
-          </div>
-
-          <label style={{ ...labelStyle, minWidth: 280 }}>
-            חיפוש
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              style={inputStyle}
-              placeholder="שם, מקצוע, עיר או טלפון"
-            />
-          </label>
-        </div>
-
-        {loading ? (
-          <p>טוען שירותים...</p>
-        ) : filteredServices.length === 0 ? (
-          <p>לא נמצאו שירותים.</p>
-        ) : (
-          <div style={{ display: "grid", gap: 14, marginTop: 18 }}>
-            {filteredServices.map((service) => (
-              <article key={service._id} style={serviceCardStyle}>
-                <div style={logoBoxStyle}>
-                  {service.logoUrl || service.imageUrl ? (
-                    <img
-                      src={service.logoUrl || service.imageUrl}
-                      alt={service.businessName || service.name}
-                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                    />
-                  ) : (
-                    "🛎️"
-                  )}
-                </div>
-
+        {loading ? <p className="admin-services-empty">טוען...</p> :
+          filtered.length === 0 ? <p className="admin-services-empty">לא נמצאו שירותים.</p> :
+          <div className="admin-services-grid">
+            {filtered.map((item) => (
+              <article key={item._id}>
+                {(item.imageUrl || item.logoUrl) && <img src={item.imageUrl || item.logoUrl} alt={item.name} />}
                 <div>
-                  <h3 style={{ margin: "0 0 8px" }}>{service.name}</h3>
-                  <p><strong>מקצוע:</strong> {service.professionType || "לא צוין"}</p>
-                  <p><strong>סוג שירות:</strong> {service.serviceType || "לא צוין"}</p>
-                  <p>
-                    <strong>ערים:</strong>{" "}
-                    {Array.isArray(service.serviceCities) && service.serviceCities.length
-                      ? service.serviceCities.join(", ")
-                      : service.city || "לא צוינו"}
-                  </p>
-                  <p><strong>WhatsApp:</strong> {service.acceptsWhatsApp ? "כן" : "לא"}</p>
-                  <p><strong>מצב:</strong> {service.active !== false ? "פעיל" : "לא פעיל"}</p>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  <button type="button" onClick={() => startEdit(service)} style={editButtonStyle}>
-                    עריכה
-                  </button>
-
-                  <button type="button" onClick={() => removeService(service)} style={deleteButtonStyle}>
-                    מחיקה
-                  </button>
+                  <h3>{item.name}</h3>
+                  <p className="category">{item.category}</p>
+                  {item.businessName && <p><strong>עסק:</strong> {item.businessName}</p>}
+                  <p>📍 {item.city || "ללא עיר"} {item.address && `· ${item.address}`}</p>
+                  {item.phone && <p>📱 {item.phone}</p>}
+                  <div className="admin-services-badges">
+                    {item.supportsSignLanguage && <span>🤟 שפת סימנים</span>}
+                    {item.supportsTranscription && <span>📝 תמלול</span>}
+                    <span className={item.active === false ? "hidden" : "active"}>{item.active === false ? "מוסתר" : "מוצג"}</span>
+                  </div>
+                  <div className="admin-services-actions">
+                    <button type="button" onClick={() => edit(item)}>עריכה</button>
+                    <button type="button" className="danger" onClick={() => remove(item)}>מחיקה</button>
+                  </div>
                 </div>
               </article>
             ))}
           </div>
-        )}
+        }
       </section>
     </main>
   );
 }
-
-const panelStyle = {
-  background: "#ffffff",
-  borderRadius: 18,
-  padding: 22,
-  boxShadow: "0 6px 24px rgba(15, 23, 42, 0.12)",
-  marginBottom: 24,
-};
-
-const topRowStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: 14,
-  flexWrap: "wrap",
-};
-
-const formGridStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-  gap: 16,
-};
-
-const backButtonStyle = {
-  padding: "12px 18px",
-  borderRadius: 10,
-  background: "#334155",
-  color: "white",
-  textDecoration: "none",
-  fontWeight: 700,
-};
-
-const messageStyle = {
-  marginTop: 18,
-  padding: 12,
-  borderRadius: 10,
-  background: "#f1f5f9",
-  fontWeight: 700,
-};
-
-const saveButtonStyle = {
-  minHeight: 48,
-  padding: "10px 24px",
-  border: 0,
-  borderRadius: 10,
-  background: "#15803d",
-  color: "white",
-  fontSize: 17,
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const cancelButtonStyle = {
-  ...saveButtonStyle,
-  background: "#64748b",
-};
-
-const serviceCardStyle = {
-  border: "2px solid #e2e8f0",
-  borderRadius: 14,
-  padding: 16,
-  display: "grid",
-  gridTemplateColumns: "90px minmax(0, 1fr) auto",
-  gap: 16,
-  alignItems: "center",
-};
-
-const logoBoxStyle = {
-  width: 80,
-  height: 80,
-  borderRadius: 12,
-  background: "#f1f5f9",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  overflow: "hidden",
-  fontSize: 34,
-};
-
-const editButtonStyle = {
-  padding: "10px 18px",
-  border: 0,
-  borderRadius: 9,
-  background: "#1d4ed8",
-  color: "white",
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const deleteButtonStyle = {
-  ...editButtonStyle,
-  background: "#b91c1c",
-};
 
 export default AdminServices;

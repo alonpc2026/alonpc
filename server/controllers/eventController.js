@@ -1,564 +1,164 @@
 const mongoose = require("mongoose");
 const Event = require("../models/Event");
 
-function cleanText(value) {
-  if (typeof value !== "string") {
-    return "";
-  }
+const ACCESS_KEYS = [
+  "transcription", "captions", "signLanguage", "hearingLoop",
+  "wheelchairAccess", "accessibleParking", "accessibleRestrooms", "writtenContact",
+];
 
-  return value.trim();
-}
-
-function normalizeBoolean(value, defaultValue = false) {
-  if (typeof value === "boolean") {
-    return value;
-  }
-
-  if (value === "true" || value === "1" || value === 1) {
-    return true;
-  }
-
-  if (value === "false" || value === "0" || value === 0) {
-    return false;
-  }
-
-  return defaultValue;
-}
-
-function normalizeDate(value) {
+const cleanText = (value) => (typeof value === "string" ? value.trim() : "");
+const toBool = (value, fallback = false) => {
+  if (typeof value === "boolean") return value;
+  if (["true", "1", 1].includes(value)) return true;
+  if (["false", "0", 0].includes(value)) return false;
+  return fallback;
+};
+const normalizeDate = (value) => {
   const text = cleanText(value);
-
-  if (!text) {
-    return "";
-  }
-
-  const simpleDatePattern = /^\d{4}-\d{2}-\d{2}$/;
-
-  if (simpleDatePattern.test(text)) {
-    return text;
-  }
-
-  const parsedDate = new Date(text);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return "";
-  }
-
-  return parsedDate.toISOString().slice(0, 10);
-}
-
-function normalizeTime(value) {
+  if (!text) return "";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+  const date = new Date(text);
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
+};
+const normalizeTime = (value) => {
   const text = cleanText(value);
-
-  if (!text) {
-    return "";
-  }
-
-  const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-  if (!timePattern.test(text)) {
-    return "";
-  }
-
-  return text;
-}
-
-function isValidUrl(value) {
-  if (!value) {
-    return true;
-  }
-
+  return /^([01]\d|2[0-3]):([0-5]\d)$/.test(text) ? text : "";
+};
+const normalizeArray = (value, fallback = []) => {
+  const array = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : fallback;
+  return [...new Set(array.map(cleanText).filter(Boolean))];
+};
+const validUrl = (value) => {
+  if (!value) return true;
   try {
     const url = new URL(value);
-
-    return url.protocol === "http:" || url.protocol === "https:";
+    return ["http:", "https:"].includes(url.protocol);
   } catch {
     return false;
   }
-}
+};
 
-function normalizeEventData(body = {}, existingEvent = null) {
-  const legacyDate = normalizeDate(body.date);
-  const legacyTime = normalizeTime(body.time);
-
-  const previousStartDate = existingEvent
-    ? normalizeDate(existingEvent.startDate || existingEvent.date)
-    : "";
-
-  const previousEndDate = existingEvent
-    ? normalizeDate(
-        existingEvent.endDate ||
-          existingEvent.startDate ||
-          existingEvent.date
-      )
-    : "";
-
-  const previousStartTime = existingEvent
-    ? normalizeTime(existingEvent.startTime || existingEvent.time)
-    : "";
-
-  const previousEndTime = existingEvent
-    ? normalizeTime(existingEvent.endTime)
-    : "";
-
-  const startDate =
-    normalizeDate(body.startDate) ||
-    legacyDate ||
-    previousStartDate;
-
-  const endDate =
-    normalizeDate(body.endDate) ||
-    startDate ||
-    previousEndDate;
-
-  const allDay =
-    body.allDay !== undefined
-      ? normalizeBoolean(body.allDay)
-      : normalizeBoolean(existingEvent?.allDay);
-
-  const startTime = allDay
-    ? ""
-    : normalizeTime(body.startTime) ||
-      legacyTime ||
-      previousStartTime;
-
-  const endTime = allDay
-    ? ""
-    : normalizeTime(body.endTime) || previousEndTime;
-
-  const active =
-    body.active !== undefined
-      ? normalizeBoolean(body.active, true)
-      : existingEvent?.active !== false;
+function normalizeEventData(body = {}, existing = null) {
+  const previous = existing || {};
+  const startDate = normalizeDate(body.startDate ?? body.date) || normalizeDate(previous.startDate ?? previous.date);
+  const endDate = normalizeDate(body.endDate) || startDate || normalizeDate(previous.endDate);
+  const allDay = body.allDay !== undefined ? toBool(body.allDay) : toBool(previous.allDay);
+  const startTime = allDay ? "" : normalizeTime(body.startTime ?? body.time) || normalizeTime(previous.startTime ?? previous.time);
+  const endTime = allDay ? "" : normalizeTime(body.endTime) || normalizeTime(previous.endTime);
+  const previousAccess = previous.accessibility || {};
+  const incomingAccess = body.accessibility || {};
+  const accessibility = {};
+  ACCESS_KEYS.forEach((key) => {
+    accessibility[key] = incomingAccess[key] !== undefined ? toBool(incomingAccess[key]) : toBool(previousAccess[key]);
+  });
 
   return {
-    title:
-      body.title !== undefined
-        ? cleanText(body.title)
-        : cleanText(existingEvent?.title),
-
-    description:
-      body.description !== undefined
-        ? cleanText(body.description)
-        : cleanText(existingEvent?.description),
-
-    city:
-      body.city !== undefined
-        ? cleanText(body.city)
-        : cleanText(existingEvent?.city),
-
-    location:
-      body.location !== undefined
-        ? cleanText(body.location)
-        : cleanText(existingEvent?.location),
-
-    website:
-      body.website !== undefined
-        ? cleanText(body.website)
-        : cleanText(existingEvent?.website),
-
-    imageUrl:
-      body.imageUrl !== undefined
-        ? cleanText(body.imageUrl)
-        : cleanText(existingEvent?.imageUrl),
-
+    title: body.title !== undefined ? cleanText(body.title) : cleanText(previous.title),
+    description: body.description !== undefined ? cleanText(body.description) : cleanText(previous.description),
+    city: body.city !== undefined ? cleanText(body.city) : cleanText(previous.city),
+    location: body.location !== undefined ? cleanText(body.location) : cleanText(previous.location),
+    website: body.website !== undefined ? cleanText(body.website) : cleanText(previous.website),
+    imageUrl: body.imageUrl !== undefined ? cleanText(body.imageUrl) : cleanText(previous.imageUrl),
     startDate,
     endDate,
     startTime,
     endTime,
     allDay,
-    active,
-
-    // תאימות לאירועים ישנים
+    active: body.active !== undefined ? toBool(body.active, true) : previous.active !== false,
+    accessibility,
+    languages: body.languages !== undefined ? normalizeArray(body.languages) : normalizeArray(previous.languages),
+    captionLanguages: body.captionLanguages !== undefined ? normalizeArray(body.captionLanguages) : normalizeArray(previous.captionLanguages),
+    signLanguages: body.signLanguages !== undefined ? normalizeArray(body.signLanguages) : normalizeArray(previous.signLanguages),
     date: startDate,
     time: startTime,
   };
 }
 
-function validateEventData(eventData) {
+function validate(data) {
   const errors = [];
-
-  if (!eventData.title) {
-    errors.push("חובה להזין שם אירוע");
-  }
-
-  if (!eventData.startDate) {
-    errors.push("חובה להזין תאריך התחלה");
-  }
-
-  if (!eventData.endDate) {
-    errors.push("חובה להזין תאריך סיום");
-  }
-
-  if (
-    eventData.startDate &&
-    eventData.endDate &&
-    eventData.endDate < eventData.startDate
-  ) {
-    errors.push("תאריך הסיום לא יכול להיות לפני תאריך ההתחלה");
-  }
-
-  if (
-    !eventData.allDay &&
-    eventData.startDate === eventData.endDate &&
-    eventData.startTime &&
-    eventData.endTime &&
-    eventData.endTime < eventData.startTime
-  ) {
-    errors.push("שעת הסיום לא יכולה להיות לפני שעת ההתחלה");
-  }
-
-  if (!isValidUrl(eventData.website)) {
-    errors.push("כתובת אתר האירוע אינה תקינה");
-  }
-
-  if (!isValidUrl(eventData.imageUrl)) {
-    errors.push("כתובת תמונת האירוע אינה תקינה");
-  }
-
+  if (!data.title) errors.push("חובה להזין שם אירוע");
+  if (!data.startDate) errors.push("חובה להזין תאריך התחלה");
+  if (!data.endDate) errors.push("חובה להזין תאריך סיום");
+  if (data.startDate && data.endDate && data.endDate < data.startDate) errors.push("תאריך הסיום לא יכול להיות לפני תאריך ההתחלה");
+  if (!data.allDay && data.startDate === data.endDate && data.startTime && data.endTime && data.endTime < data.startTime) errors.push("שעת הסיום לא יכולה להיות לפני שעת ההתחלה");
+  if (!validUrl(data.website)) errors.push("כתובת אתר האירוע אינה תקינה");
+  if (!validUrl(data.imageUrl)) errors.push("כתובת תמונת האירוע אינה תקינה");
   return errors;
-}
-
-function isValidObjectId(id) {
-  return mongoose.Types.ObjectId.isValid(id);
 }
 
 async function getEvents(req, res) {
   try {
-    const {
-      city,
-      search,
-      active,
-      startDate,
-      endDate,
-      includePast,
-    } = req.query;
-
     const filter = {};
-
-    if (city) {
-      filter.city = {
-        $regex: cleanText(city),
-        $options: "i",
-      };
+    if (req.query.active !== undefined) filter.active = toBool(req.query.active);
+    if (req.query.city) filter.city = { $regex: cleanText(req.query.city), $options: "i" };
+    if (req.query.search) {
+      const q = cleanText(req.query.search);
+      filter.$or = ["title", "description", "city", "location"].map((field) => ({ [field]: { $regex: q, $options: "i" } }));
     }
-
-    if (active !== undefined) {
-      filter.active = normalizeBoolean(active);
-    }
-
-    if (search) {
-      const searchText = cleanText(search);
-
-      filter.$or = [
-        {
-          title: {
-            $regex: searchText,
-            $options: "i",
-          },
-        },
-        {
-          description: {
-            $regex: searchText,
-            $options: "i",
-          },
-        },
-        {
-          city: {
-            $regex: searchText,
-            $options: "i",
-          },
-        },
-        {
-          location: {
-            $regex: searchText,
-            $options: "i",
-          },
-        },
-      ];
-    }
-
-    const requestedStartDate = normalizeDate(startDate);
-    const requestedEndDate = normalizeDate(endDate);
-
-    if (requestedStartDate || requestedEndDate) {
-      filter.$and = filter.$and || [];
-
-      if (requestedStartDate) {
-        filter.$and.push({
-          $or: [
-            {
-              endDate: {
-                $gte: requestedStartDate,
-              },
-            },
-            {
-              endDate: {
-                $in: ["", null],
-              },
-              startDate: {
-                $gte: requestedStartDate,
-              },
-            },
-            {
-              startDate: {
-                $in: ["", null],
-              },
-              date: {
-                $gte: requestedStartDate,
-              },
-            },
-          ],
-        });
-      }
-
-      if (requestedEndDate) {
-        filter.$and.push({
-          $or: [
-            {
-              startDate: {
-                $lte: requestedEndDate,
-              },
-            },
-            {
-              startDate: {
-                $in: ["", null],
-              },
-              date: {
-                $lte: requestedEndDate,
-              },
-            },
-          ],
-        });
-      }
-    }
-
-    if (includePast === "false") {
+    if (req.query.includePast === "false") {
       const today = new Date().toISOString().slice(0, 10);
-
-      filter.$and = filter.$and || [];
-
-      filter.$and.push({
-        $or: [
-          {
-            endDate: {
-              $gte: today,
-            },
-          },
-          {
-            endDate: {
-              $in: ["", null],
-            },
-            startDate: {
-              $gte: today,
-            },
-          },
-          {
-            startDate: {
-              $in: ["", null],
-            },
-            date: {
-              $gte: today,
-            },
-          },
-        ],
-      });
+      filter.$or = [...(filter.$or || []), { endDate: { $gte: today } }, { endDate: { $in: ["", null] }, startDate: { $gte: today } }];
     }
-
-    const events = await Event.find(filter).lean();
-
-    const normalizedEvents = events
-      .map((eventItem) => {
-        const normalized = normalizeEventData({}, eventItem);
-
-        return {
-          ...eventItem,
-          ...normalized,
-        };
-      })
-      .sort((firstEvent, secondEvent) => {
-        const firstValue = `${
-          firstEvent.startDate || firstEvent.date || ""
-        } ${firstEvent.startTime || firstEvent.time || "00:00"}`;
-
-        const secondValue = `${
-          secondEvent.startDate || secondEvent.date || ""
-        } ${secondEvent.startTime || secondEvent.time || "00:00"}`;
-
-        return firstValue.localeCompare(secondValue);
-      });
-
-    return res.status(200).json(normalizedEvents);
+    const events = await Event.find(filter).sort({ startDate: 1, startTime: 1 }).lean();
+    res.status(200).json(events.map((item) => ({ ...item, ...normalizeEventData({}, item) })));
   } catch (error) {
     console.error("getEvents error:", error);
-
-    return res.status(500).json({
-      message: "אירעה שגיאה בטעינת האירועים",
-    });
+    res.status(500).json({ message: "אירעה שגיאה בטעינת האירועים" });
   }
 }
 
 async function getEventById(req, res) {
   try {
-    const { id } = req.params;
-
-    if (!isValidObjectId(id)) {
-      return res.status(400).json({
-        message: "מזהה האירוע אינו תקין",
-      });
-    }
-
-    const eventItem = await Event.findById(id).lean();
-
-    if (!eventItem) {
-      return res.status(404).json({
-        message: "האירוע לא נמצא",
-      });
-    }
-
-    const normalized = normalizeEventData({}, eventItem);
-
-    return res.status(200).json({
-      ...eventItem,
-      ...normalized,
-    });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(400).json({ message: "מזהה האירוע אינו תקין" });
+    const item = await Event.findById(req.params.id).lean();
+    if (!item) return res.status(404).json({ message: "האירוע לא נמצא" });
+    res.json({ ...item, ...normalizeEventData({}, item) });
   } catch (error) {
     console.error("getEventById error:", error);
-
-    return res.status(500).json({
-      message: "אירעה שגיאה בטעינת האירוע",
-    });
+    res.status(500).json({ message: "אירעה שגיאה בטעינת האירוע" });
   }
 }
 
 async function createEvent(req, res) {
   try {
-    const eventData = normalizeEventData(req.body);
-    const validationErrors = validateEventData(eventData);
-
-    if (validationErrors.length > 0) {
-      return res.status(400).json({
-        message: validationErrors[0],
-        errors: validationErrors,
-      });
-    }
-
-    const createdEvent = await Event.create(eventData);
-
-    return res.status(201).json({
-      message: "האירוע נוסף בהצלחה",
-      event: createdEvent,
-    });
+    const data = normalizeEventData(req.body);
+    const errors = validate(data);
+    if (errors.length) return res.status(400).json({ message: errors[0], errors });
+    const event = await Event.create(data);
+    res.status(201).json({ message: "האירוע נוסף בהצלחה", event });
   } catch (error) {
     console.error("createEvent error:", error);
-
-    if (error.name === "ValidationError") {
-      return res.status(400).json({
-        message: "חלק מפרטי האירוע אינם תקינים",
-        errors: Object.values(error.errors).map(
-          (validationError) => validationError.message
-        ),
-      });
-    }
-
-    return res.status(500).json({
-      message: "אירעה שגיאה בהוספת האירוע",
-    });
+    res.status(500).json({ message: error.message || "אירעה שגיאה בהוספת האירוע" });
   }
 }
 
 async function updateEvent(req, res) {
   try {
-    const { id } = req.params;
-
-    if (!isValidObjectId(id)) {
-      return res.status(400).json({
-        message: "מזהה האירוע אינו תקין",
-      });
-    }
-
-    const existingEvent = await Event.findById(id);
-
-    if (!existingEvent) {
-      return res.status(404).json({
-        message: "האירוע לא נמצא",
-      });
-    }
-
-    const eventData = normalizeEventData(
-      req.body,
-      existingEvent.toObject()
-    );
-
-    const validationErrors = validateEventData(eventData);
-
-    if (validationErrors.length > 0) {
-      return res.status(400).json({
-        message: validationErrors[0],
-        errors: validationErrors,
-      });
-    }
-
-    Object.assign(existingEvent, eventData);
-
-    const updatedEvent = await existingEvent.save();
-
-    return res.status(200).json({
-      message: "האירוע עודכן בהצלחה",
-      event: updatedEvent,
-    });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(400).json({ message: "מזהה האירוע אינו תקין" });
+    const event = await Event.findById(req.params.id);
+    if (!event) return res.status(404).json({ message: "האירוע לא נמצא" });
+    const data = normalizeEventData(req.body, event.toObject());
+    const errors = validate(data);
+    if (errors.length) return res.status(400).json({ message: errors[0], errors });
+    Object.assign(event, data);
+    await event.save();
+    res.json({ message: "האירוע עודכן בהצלחה", event });
   } catch (error) {
     console.error("updateEvent error:", error);
-
-    if (error.name === "ValidationError") {
-      return res.status(400).json({
-        message: "חלק מפרטי האירוע אינם תקינים",
-        errors: Object.values(error.errors).map(
-          (validationError) => validationError.message
-        ),
-      });
-    }
-
-    return res.status(500).json({
-      message: "אירעה שגיאה בעדכון האירוע",
-    });
+    res.status(500).json({ message: error.message || "אירעה שגיאה בעדכון האירוע" });
   }
 }
 
 async function deleteEvent(req, res) {
   try {
-    const { id } = req.params;
-
-    if (!isValidObjectId(id)) {
-      return res.status(400).json({
-        message: "מזהה האירוע אינו תקין",
-      });
-    }
-
-    const deletedEvent = await Event.findByIdAndDelete(id);
-
-    if (!deletedEvent) {
-      return res.status(404).json({
-        message: "האירוע לא נמצא",
-      });
-    }
-
-    return res.status(200).json({
-      message: "האירוע נמחק בהצלחה",
-    });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.status(400).json({ message: "מזהה האירוע אינו תקין" });
+    const event = await Event.findByIdAndDelete(req.params.id);
+    if (!event) return res.status(404).json({ message: "האירוע לא נמצא" });
+    res.json({ message: "האירוע נמחק בהצלחה" });
   } catch (error) {
     console.error("deleteEvent error:", error);
-
-    return res.status(500).json({
-      message: "אירעה שגיאה במחיקת האירוע",
-    });
+    res.status(500).json({ message: "אירעה שגיאה במחיקת האירוע" });
   }
 }
 
-module.exports = {
-  getEvents,
-  getEventById,
-  createEvent,
-  updateEvent,
-  deleteEvent,
-};
+module.exports = { getEvents, getEventById, createEvent, updateEvent, deleteEvent };
