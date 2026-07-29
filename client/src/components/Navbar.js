@@ -133,6 +133,11 @@ function Navbar() {
           <span>גופים ממשלתיים וציבוריים</span>
         </NavLink>
 
+        <NavLink to="/permanent-events" className={navClass("events")} onClick={closeMenu}>
+          <span className="alonpc-nav-item__icon" aria-hidden="true">📌</span>
+          <span>אירועים קבועים</span>
+        </NavLink>
+
         <NavLink to="/shop" className={navClass("shop")} onClick={closeMenu}>
           <span className="alonpc-nav-item__icon" aria-hidden="true">🛍️</span>
           <span>{t("shop")}</span>

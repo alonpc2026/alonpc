@@ -1,37 +1,214 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import "./Admin.css";
 
-const actions = [
-  "ניהול משתמשים",
-  "ניהול שירותים",
-  "ניהול חנות",
-  "ניהול פרסומים",
-  "הודעות מערכת",
-  "הגדרות האתר"
+const adminSections = [
+  {
+    title: "ניהול מוצרים וחנות",
+    description: "הוספה, עריכה, מחיקה, מחירים, מלאי ותמונות",
+    icon: "🛍️",
+    path: "/admin/shop",
+    className: "admin-card-blue",
+  },
+  {
+    title: "ניהול קטגוריות מוצרים",
+    description: "יצירה ועדכון של קטגוריות החנות",
+    icon: "🗂️",
+    path: "/admin/product-categories",
+    className: "admin-card-purple",
+  },
+  {
+    title: "ניהול מותגים",
+    description: "הוספה ועריכה של מותגים",
+    icon: "🏷️",
+    path: "/admin/brands",
+    className: "admin-card-orange",
+  },
+  {
+    title: "ניהול מבצעים",
+    description: "יצירת מבצעים ועדכון מבצעים קיימים",
+    icon: "🎁",
+    path: "/admin/offers",
+    className: "admin-card-red",
+  },
+  {
+    title: "ניהול עסקים נותני שירות",
+    description:
+      "הוספה, תיקון ומחיקה של עסקים, בעלי מקצוע ופרטי נגישות",
+    icon: "🏢",
+    path: "/admin/services",
+    className: "admin-card-green",
+  },
+  {
+    title: "גופים ממשלתיים וציבוריים",
+    description:
+      "משטרה, כבאות, מד״א, ביטוח לאומי ומשרדי ממשלה",
+    icon: "🏛️",
+    path: "/admin/government",
+    className: "admin-card-navy",
+  },
+  {
+    title: "ניהול יד שנייה",
+    description: "פרסום, עריכה והסרה של מוצרים יד שנייה",
+    icon: "♻️",
+    path: "/admin/second-hand",
+    className: "admin-card-teal",
+  },
+  {
+    title: "ניהול מסמכים",
+    description: "העלאה, עריכה ומחיקה של מסמכים",
+    icon: "📄",
+    path: "/admin/documents",
+    className: "admin-card-brown",
+  },
+  {
+    title: "ניהול גלריה",
+    description: "ניהול תמונות ותצוגת הגלריה",
+    icon: "🖼️",
+    path: "/admin/gallery",
+    className: "admin-card-pink",
+  },
+  {
+    title: "ניהול העלאות",
+    description: "צפייה וניהול של קבצים שהועלו",
+    icon: "📤",
+    path: "/admin/uploads",
+    className: "admin-card-cyan",
+  },
+  {
+    title: "ניהול משתמשים",
+    description: "צפייה במשתמשים ועדכון הרשאות",
+    icon: "👥",
+    path: "/admin/users",
+    className: "admin-card-indigo",
+  },
+  {
+    title: "הרשאות מנהלים",
+    description: "ניהול הרשאות וגישה למסכי הניהול",
+    icon: "🔐",
+    path: "/admin/permissions",
+    className: "admin-card-dark",
+  },
+  {
+    title: "ניהול אירועים",
+    description: "הוספה, עריכה ומחיקה של אירועים בלוח החודשי",
+    icon: "📅",
+    path: "/admin/events",
+    className: "admin-card-blue",
+  },
+  {
+    title: "ניהול אירועים קבועים",
+    description: "ניהול מקומות קבועים, קישורים, מסמכים ופרטי נגישות",
+    icon: "📌",
+    path: "/admin/permanent-events",
+    className: "admin-card-purple",
+  },
+  {
+    title: "הזמנות ובקשות שירות",
+    description: "צפייה בבקשות, טיפול ועדכון מצב",
+    icon: "📅",
+    path: "/admin/bookings",
+    className: "admin-card-yellow",
+  },
+  {
+    title: "סטטיסטיקות",
+    description: "צפייה בנתוני שימוש ופעילות באתר",
+    icon: "📊",
+    path: "/admin/statistics",
+    className: "admin-card-violet",
+  },
+  {
+    title: "הגדרות האתר",
+    description: "פרטי קשר, טקסטים והגדרות כלליות",
+    icon: "⚙️",
+    path: "/admin/settings",
+    className: "admin-card-gray",
+  },
+  {
+    title: "גיבוי ושחזור",
+    description: "יצירת גיבוי ושחזור נתוני האתר",
+    icon: "💾",
+    path: "/admin/backup",
+    className: "admin-card-lime",
+  },
+  {
+    title: "לוח בקרה פנימי",
+    description: "מידע פנימי למנהל בלבד",
+    icon: "📈",
+    path: "/dashboard",
+    className: "admin-card-dashboard",
+  },
 ];
 
-export default function Admin() {
+function Admin() {
   return (
-    <main className="admin-page" dir="rtl">
-      <h1>ניהול האתר ALONPC</h1>
+    <main className="admin-portal-page" dir="rtl">
+      <section className="admin-portal-header">
+        <div className="admin-portal-logo" aria-hidden="true">
+          A
+        </div>
 
-      <div className="admin-grid">
-        {actions.map((action) => (
-          <button key={action} className="admin-card">
-            <span className="admin-icon">⚙️</span>
-            <strong>{action}</strong>
-          </button>
-        ))}
-      </div>
+        <div>
+          <p className="admin-private-label">
+            🔒 אזור מנהל בלבד
+          </p>
 
-      <section className="admin-info">
-        <h2>סטטוס מערכת</h2>
-        <ul>
-          <li>✅ השרת פעיל</li>
-          <li>✅ מסד הנתונים מחובר</li>
-          <li>✅ האתר זמין</li>
-        </ul>
+          <h1>פורטל ניהול ALONPC</h1>
+
+          <p>
+            בחר את תחום הניהול הרצוי. כפתורי שינוי, עריכה
+            ומחיקה זמינים למנהל מורשה בלבד.
+          </p>
+        </div>
       </section>
+
+      <section
+        className="admin-portal-grid"
+        aria-label="כפתורי פורטל הניהול"
+      >
+        {adminSections.map((section) => (
+          <Link
+            key={section.path}
+            to={section.path}
+            className={`admin-portal-card ${section.className}`}
+          >
+            <span
+              className="admin-portal-icon"
+              aria-hidden="true"
+            >
+              {section.icon}
+            </span>
+
+            <span className="admin-portal-content">
+              <strong>{section.title}</strong>
+              <small>{section.description}</small>
+            </span>
+
+            <span
+              className="admin-portal-arrow"
+              aria-hidden="true"
+            >
+              ←
+            </span>
+          </Link>
+        ))}
+      </section>
+
+      <section
+        className="admin-portal-warning"
+        role="note"
+      >
+        <strong>חשוב:</strong> אין לשתף את פרטי הכניסה.
+        לאחר סיום העבודה יש ללחוץ על כפתור היציאה בתפריט
+        העליון.
+      </section>
+
+      <div className="admin-portal-bottom-actions">
+        <Link to="/" className="admin-home-button">
+          🏠 חזרה לאתר
+        </Link>
+      </div>
     </main>
   );
 }
+
+export default Admin;

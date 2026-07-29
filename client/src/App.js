@@ -8,6 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./pages/Home";
 import AlonLinks from "./pages/AlonLinks";
 import IsraelEvents from "./pages/IsraelEvents";
+import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
 import Government from "./pages/Government";
@@ -26,6 +27,7 @@ import AdminShop from "./pages/AdminShop";
 import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
 import AdminEvents from "./pages/AdminEvents";
+import AdminPermanentEvents from "./pages/AdminPermanentEvents";
 import AdminServices from "./pages/AdminServices";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
@@ -73,6 +75,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/interesting-sites" element={<AlonLinks />} />
               <Route path="/israel-events" element={<IsraelEvents />} />
+              <Route path="/permanent-events" element={<PermanentEvents />} />
               <Route path="/services" element={<Services />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
               <Route path="/government" element={<Government />} />
@@ -105,6 +108,7 @@ function App() {
               <Route path="/admin/statistics" element={<AdminRoute><AdminStatistics /></AdminRoute>} />
               <Route path="/admin/backup" element={<AdminRoute><AdminBackup /></AdminRoute>} />
               <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
+              <Route path="/admin/permanent-events" element={<AdminRoute><AdminPermanentEvents /></AdminRoute>} />
               <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
             </Routes>
           </div>
