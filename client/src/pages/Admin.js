@@ -96,6 +96,13 @@ const adminSections = [
     className: "admin-card-blue",
   },
   {
+    title: "ניהול אתרים מעניינים",
+    description: "שם, לוגו, קישור, קטגוריה וצבעי פרסום נגישים",
+    icon: "🌐",
+    path: "/admin/interesting-sites",
+    className: "admin-card-indigo",
+  },
+  {
     title: "הזמנות ובקשות שירות",
     description: "צפייה בבקשות, טיפול ועדכון מצב",
     icon: "📅",

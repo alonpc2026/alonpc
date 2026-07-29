@@ -1,0 +1,291 @@
+.admin-interesting-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 26px 16px 60px;
+}
+
+.admin-interesting-header {
+  padding: 22px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  color: #fff;
+  background: #173d84;
+}
+
+.admin-interesting-header h1 {
+  margin: 0 0 7px;
+  font-size: 38px;
+}
+
+.admin-interesting-header p {
+  margin: 0;
+  font-size: 19px;
+}
+
+.admin-interesting-message {
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 3px solid #333;
+  border-radius: 12px;
+  background: #fff7cc;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.admin-interesting-form,
+.admin-interesting-list {
+  padding: 22px;
+  margin-bottom: 25px;
+  border: 2px solid #555;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+.admin-interesting-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.admin-interesting-fields label,
+.admin-interesting-custom-colors label {
+  display: grid;
+  gap: 7px;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.admin-interesting-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-interesting-fields input,
+.admin-interesting-fields select,
+.admin-interesting-fields textarea,
+.admin-interesting-list-tools input,
+.admin-interesting-list-tools select {
+  min-height: 50px;
+  padding: 10px 12px;
+  border: 2px solid #555;
+  border-radius: 10px;
+  background: #fff;
+  color: #111;
+  font-size: 17px;
+}
+
+.admin-interesting-fields textarea {
+  resize: vertical;
+}
+
+.admin-interesting-logo-preview {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 18px 0;
+}
+
+.admin-interesting-logo-preview img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  border: 2px solid #555;
+  border-radius: 14px;
+}
+
+.admin-interesting-logo-preview button,
+.admin-interesting-actions button,
+.admin-interesting-item-actions button,
+.admin-interesting-item-actions a {
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 2px solid #222;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-interesting-colors {
+  margin: 22px 0;
+  padding: 17px;
+  border: 3px solid #333;
+  border-radius: 14px;
+}
+
+.admin-interesting-colors legend {
+  padding: 0 10px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.admin-interesting-color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.admin-interesting-color-grid button {
+  min-height: 72px;
+  padding: 10px;
+  border: 4px solid transparent;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-interesting-color-grid button.selected {
+  border-color: #ff7a00;
+  outline: 3px solid #111;
+}
+
+.admin-interesting-custom-colors {
+  display: flex;
+  gap: 25px;
+  margin-top: 18px;
+}
+
+.admin-interesting-custom-colors input {
+  width: 90px;
+  height: 55px;
+}
+
+.admin-interesting-card-preview {
+  display: grid;
+  gap: 7px;
+  max-width: 430px;
+  padding: 20px;
+  margin: 18px auto;
+  border: 5px solid currentColor;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.admin-interesting-card-preview strong {
+  font-size: 26px;
+}
+
+.admin-interesting-card-preview span {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.admin-interesting-check {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+}
+
+.admin-interesting-check input {
+  width: 24px;
+  height: 24px;
+}
+
+.admin-interesting-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.admin-interesting-actions button:first-child {
+  background: #126b31;
+  color: #fff;
+}
+
+.admin-interesting-list-tools {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-interesting-items {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-interesting-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  align-items: center;
+  gap: 15px;
+  padding: 14px;
+  border: 2px solid #777;
+  border-radius: 13px;
+}
+
+.admin-interesting-item > img,
+.admin-interesting-no-logo {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  border: 2px solid #555;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+}
+
+.admin-interesting-item h3 {
+  margin: 0 0 5px;
+  font-size: 23px;
+}
+
+.admin-interesting-item p {
+  margin: 0 0 8px;
+}
+
+.admin-interesting-mini-color {
+  width: fit-content;
+  padding: 5px 10px;
+  border: 2px solid currentColor;
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.admin-interesting-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-interesting-item-actions a {
+  background: #e8f1ff;
+  color: #072b68;
+}
+
+.admin-interesting-item-actions button {
+  background: #fff4c2;
+}
+
+.admin-interesting-item-actions .delete {
+  background: #a00000;
+  color: #fff;
+}
+
+.admin-interesting-page :focus-visible {
+  outline: 5px solid #ff7a00;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .admin-interesting-fields,
+  .admin-interesting-list-tools {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-interesting-wide {
+    grid-column: auto;
+  }
+
+  .admin-interesting-item {
+    grid-template-columns: 75px 1fr;
+  }
+
+  .admin-interesting-item-actions {
+    grid-column: 1 / -1;
+  }
+}

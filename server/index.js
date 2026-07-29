@@ -69,6 +69,7 @@ mountRoute("./routes/uploadRoutes", "/api/upload");
 mountRoute("./routes/productRoutes", "/api/products");
 mountRoute("./routes/userRoutes", "/api/users");
 mountRoute("./routes/eventRoutes", "/api/events");
+mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {
