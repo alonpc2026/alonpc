@@ -16,7 +16,7 @@ const emptyHours = () => Object.fromEntries(DAYS.map(([key]) => [key, { enabled:
 const EMPTY = {
   name:"", category:"נגישות", businessName:"", logoUrl:"", imageUrl:"", description:"",
   address:"", city:"", phone:"", acceptsWhatsApp:false, whatsapp:"", acceptsEmail:false,
-  email:"", link:"", openingHours:emptyHours(), openingHoursNote:"",
+  email:"", hasInstagram:false, instagramUrl:"", hasFacebook:false, facebookUrl:"", hasTikTok:false, tiktokUrl:"", hasWaze:false, wazeUrl:"", link:"", openingHours:emptyHours(), openingHoursNote:"",
   supportsSignLanguage:false, supportsTranscription:false, active:true
 };
 const getToken = () => localStorage.getItem("token") || localStorage.getItem("authToken") || "";
@@ -47,11 +47,11 @@ export default function AdminServices() {
   const change=e=>{const{name,value,checked,type}=e.target;setForm(f=>({...f,[name]:type==="checkbox"?checked:value}))};
   const changeDay=(key,field,value)=>setForm(f=>({...f,openingHours:{...f.openingHours,[key]:{...f.openingHours[key],[field]:value}}}));
   const reset=()=>{setEditingId("");setForm({...EMPTY,openingHours:emptyHours()})};
-  const edit=i=>{setEditingId(i._id);setForm({...EMPTY,...i,openingHours:normalizeHours(i.openingHours),acceptsWhatsApp:Boolean(i.acceptsWhatsApp),acceptsEmail:Boolean(i.acceptsEmail),supportsSignLanguage:Boolean(i.supportsSignLanguage),supportsTranscription:Boolean(i.supportsTranscription),active:i.active!==false});window.scrollTo({top:0,behavior:"smooth"})};
+  const edit=i=>{setEditingId(i._id);setForm({...EMPTY,...i,openingHours:normalizeHours(i.openingHours),acceptsWhatsApp:Boolean(i.acceptsWhatsApp),acceptsEmail:Boolean(i.acceptsEmail),hasInstagram:Boolean(i.hasInstagram),hasFacebook:Boolean(i.hasFacebook),hasTikTok:Boolean(i.hasTikTok),hasWaze:Boolean(i.hasWaze),supportsSignLanguage:Boolean(i.supportsSignLanguage),supportsTranscription:Boolean(i.supportsTranscription),active:i.active!==false});window.scrollTo({top:0,behavior:"smooth"})};
   const submit=async e=>{e.preventDefault();setSaving(true);setMessage("");setError("");try{
     if(!form.name.trim()) throw new Error("חובה להזין שם שירות");
     for(const [key,label] of DAYS){const d=form.openingHours[key];if(d.enabled&&(!d.open||!d.close))throw new Error(`יש לבחור שעת פתיחה וסגירה עבור ${label}`)}
-    const payload={...form,name:form.name.trim(),businessName:form.businessName.trim(),description:form.description.trim(),address:form.address.trim(),city:form.city.trim(),phone:form.phone.trim(),whatsapp:form.acceptsWhatsApp?form.whatsapp.trim():"",email:form.acceptsEmail?form.email.trim():"",link:form.link.trim(),openingHoursNote:form.openingHoursNote.trim(),imageUrl:(form.imageUrl||form.logoUrl).trim(),logoUrl:(form.logoUrl||form.imageUrl).trim()};
+    const payload={...form,name:form.name.trim(),businessName:form.businessName.trim(),description:form.description.trim(),address:form.address.trim(),city:form.city.trim(),phone:form.phone.trim(),whatsapp:form.acceptsWhatsApp?form.whatsapp.trim():"",email:form.acceptsEmail?form.email.trim():"",instagramUrl:form.hasInstagram?form.instagramUrl.trim():"",facebookUrl:form.hasFacebook?form.facebookUrl.trim():"",tiktokUrl:form.hasTikTok?form.tiktokUrl.trim():"",wazeUrl:form.hasWaze?form.wazeUrl.trim():"",link:form.link.trim(),openingHoursNote:form.openingHoursNote.trim(),imageUrl:(form.imageUrl||form.logoUrl).trim(),logoUrl:(form.logoUrl||form.imageUrl).trim()};
     await request(editingId?`/${editingId}`:"",{method:editingId?"PUT":"POST",body:JSON.stringify(payload)});setMessage(editingId?"השירות עודכן בהצלחה":"השירות נוסף בהצלחה");reset();await load()
   }catch(e){setError(e.message)}finally{setSaving(false)}};
   const remove=async i=>{if(!window.confirm(`האם למחוק את "${i.name}"?`))return;try{await request(`/${i._id}`,{method:"DELETE"});setMessage("השירות נמחק בהצלחה");await load()}catch(e){setError(e.message)}};
@@ -68,6 +68,42 @@ export default function AdminServices() {
       <div className="admin-services-row"><label>טלפון<input name="phone" value={form.phone} onChange={change}/></label><label>כתובת אתר<input type="url" name="link" value={form.link} onChange={change}/></label></div>
       <fieldset><legend>ימי ושעות פתיחה</legend><div className="opening-hours-editor">{DAYS.map(([key,label])=><div className="opening-hours-row" key={key}><label className="admin-services-checkbox"><input type="checkbox" checked={form.openingHours[key].enabled} onChange={e=>changeDay(key,"enabled",e.target.checked)}/>{label}</label><label>פתיחה<input type="time" disabled={!form.openingHours[key].enabled} value={form.openingHours[key].open} onChange={e=>changeDay(key,"open",e.target.value)}/></label><label>סגירה<input type="time" disabled={!form.openingHours[key].enabled} value={form.openingHours[key].close} onChange={e=>changeDay(key,"close",e.target.value)}/></label></div>)}</div><label>הערה לשעות פתיחה<textarea name="openingHoursNote" value={form.openingHoursNote} onChange={change} placeholder="לדוגמה: בערבי חג יש לבדוק באתר"/></label></fieldset>
       <fieldset><legend>אפשרויות קשר ונגישות</legend><label className="admin-services-checkbox"><input type="checkbox" name="acceptsWhatsApp" checked={form.acceptsWhatsApp} onChange={change}/>מקבל WhatsApp</label>{form.acceptsWhatsApp&&<input name="whatsapp" value={form.whatsapp} onChange={change} placeholder="מספר WhatsApp"/>}<label className="admin-services-checkbox"><input type="checkbox" name="acceptsEmail" checked={form.acceptsEmail} onChange={change}/>מקבל דואר אלקטרוני</label>{form.acceptsEmail&&<input type="email" name="email" value={form.email} onChange={change} placeholder="דואר אלקטרוני"/>}<label className="admin-services-checkbox"><input type="checkbox" name="supportsSignLanguage" checked={form.supportsSignLanguage} onChange={change}/>שפת סימנים</label><label className="admin-services-checkbox"><input type="checkbox" name="supportsTranscription" checked={form.supportsTranscription} onChange={change}/>תמלול</label><label className="admin-services-checkbox"><input type="checkbox" name="active" checked={form.active} onChange={change}/>פעיל ומוצג באתר</label></fieldset>
+      <fieldset className="admin-services-social-fieldset">
+        <legend>רשתות חברתיות וניווט</legend>
+
+        <div className="admin-services-social-option instagram-option">
+          <label className="admin-services-checkbox">
+            <input type="checkbox" name="hasInstagram" checked={form.hasInstagram} onChange={change}/>
+            יש לעסק Instagram
+          </label>
+          {form.hasInstagram&&<label>קישור Instagram<input type="url" name="instagramUrl" value={form.instagramUrl} onChange={change} placeholder="https://www.instagram.com/..."/></label>}
+        </div>
+
+        <div className="admin-services-social-option facebook-option">
+          <label className="admin-services-checkbox">
+            <input type="checkbox" name="hasFacebook" checked={form.hasFacebook} onChange={change}/>
+            יש לעסק Facebook
+          </label>
+          {form.hasFacebook&&<label>קישור Facebook<input type="url" name="facebookUrl" value={form.facebookUrl} onChange={change} placeholder="https://www.facebook.com/..."/></label>}
+        </div>
+
+        <div className="admin-services-social-option tiktok-option">
+          <label className="admin-services-checkbox">
+            <input type="checkbox" name="hasTikTok" checked={form.hasTikTok} onChange={change}/>
+            יש לעסק TikTok
+          </label>
+          {form.hasTikTok&&<label>קישור TikTok<input type="url" name="tiktokUrl" value={form.tiktokUrl} onChange={change} placeholder="https://www.tiktok.com/@..."/></label>}
+        </div>
+
+        <div className="admin-services-social-option waze-option">
+          <label className="admin-services-checkbox">
+            <input type="checkbox" name="hasWaze" checked={form.hasWaze} onChange={change}/>
+            יש לעסק קישור Waze
+          </label>
+          {form.hasWaze&&<label>קישור Waze<input type="url" name="wazeUrl" value={form.wazeUrl} onChange={change} placeholder="https://waze.com/ul?..."/></label>}
+        </div>
+      </fieldset>
+
       <div className="admin-services-actions"><button disabled={saving}>{saving?"שומר...":editingId?"💾 שמור עריכה":"➕ הוסף שירות"}</button>{editingId&&<button type="button" className="secondary" onClick={reset}>ביטול</button>}</div>
     </form></section>
     <section className="admin-services-list-card"><h2>שירותים קיימים</h2><div className="admin-services-tools"><input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="חיפוש"/><select value={categoryFilter} onChange={e=>setCategoryFilter(e.target.value)}><option value="">כל הקטגוריות</option>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select></div>{loading?<p>טוען...</p>:<div className="admin-services-grid">{filtered.map(i=><article key={i._id}><div><h3>{i.name}</h3><p>{i.businessName}</p><p>📍 {i.city}</p><div className="admin-services-actions"><button onClick={()=>edit(i)}>עריכה</button><button className="danger" onClick={()=>remove(i)}>מחיקה</button></div></div></article>)}</div>}</section>

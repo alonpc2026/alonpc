@@ -85,6 +85,22 @@ function normalize(body = {}, existing = null) {
     acceptsEmail:
       body.acceptsEmail !== undefined ? bool(body.acceptsEmail) : bool(current.acceptsEmail),
     email: body.email !== undefined ? text(body.email).toLowerCase() : text(current.email).toLowerCase(),
+    hasInstagram:
+      body.hasInstagram !== undefined ? bool(body.hasInstagram) : bool(current.hasInstagram),
+    instagramUrl:
+      body.instagramUrl !== undefined ? text(body.instagramUrl) : text(current.instagramUrl),
+    hasFacebook:
+      body.hasFacebook !== undefined ? bool(body.hasFacebook) : bool(current.hasFacebook),
+    facebookUrl:
+      body.facebookUrl !== undefined ? text(body.facebookUrl) : text(current.facebookUrl),
+    hasTikTok:
+      body.hasTikTok !== undefined ? bool(body.hasTikTok) : bool(current.hasTikTok),
+    tiktokUrl:
+      body.tiktokUrl !== undefined ? text(body.tiktokUrl) : text(current.tiktokUrl),
+    hasWaze:
+      body.hasWaze !== undefined ? bool(body.hasWaze) : bool(current.hasWaze),
+    wazeUrl:
+      body.wazeUrl !== undefined ? text(body.wazeUrl) : text(current.wazeUrl),
     link: link || websiteUrl,
     websiteUrl: websiteUrl || link,
     icon: body.icon !== undefined ? text(body.icon) || "♿" : text(current.icon) || "♿",
@@ -108,6 +124,14 @@ function validate(data) {
   if (!validUrl(data.imageUrl)) errors.push("קישור התמונה אינו תקין");
   if (!validUrl(data.logoUrl)) errors.push("קישור הלוגו אינו תקין");
   if (!validUrl(data.link)) errors.push("קישור העסק אינו תקין");
+  if (data.hasInstagram && !data.instagramUrl) errors.push("חובה להזין קישור Instagram");
+  if (data.hasInstagram && !validUrl(data.instagramUrl)) errors.push("קישור Instagram אינו תקין");
+  if (data.hasFacebook && !data.facebookUrl) errors.push("חובה להזין קישור Facebook");
+  if (data.hasFacebook && !validUrl(data.facebookUrl)) errors.push("קישור Facebook אינו תקין");
+  if (data.hasTikTok && !data.tiktokUrl) errors.push("חובה להזין קישור TikTok");
+  if (data.hasTikTok && !validUrl(data.tiktokUrl)) errors.push("קישור TikTok אינו תקין");
+  if (data.hasWaze && !data.wazeUrl) errors.push("חובה להזין קישור Waze");
+  if (data.hasWaze && !validUrl(data.wazeUrl)) errors.push("קישור Waze אינו תקין");
   if (data.acceptsWhatsApp && !data.whatsapp) errors.push("חובה להזין מספר WhatsApp");
   for (const [key, day] of Object.entries(data.openingHours || {})) { if (day.enabled && (!/^([01]\d|2[0-3]):[0-5]\d$/.test(day.open) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(day.close))) errors.push(`שעות פתיחה אינן תקינות עבור ${key}`); }
   if (data.acceptsEmail && !/^\S+@\S+\.\S+$/.test(data.email)) errors.push("כתובת הדואר האלקטרוני אינה תקינה");

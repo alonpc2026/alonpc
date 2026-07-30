@@ -35,3 +35,12 @@
 .services-accessible-grid .contact-button.whatsapp{border-color:#08783c;background:#daf7e6;color:#07582d}
 .services-accessible-grid .contact-button.email{border-color:#185b9d;background:#e2f0ff;color:#0b477e}
 .opening-hours-public{margin:14px 0;padding:14px;border:3px solid #86670c;border-radius:14px;background:#fff8d9}.opening-hours-public h3{margin:0 0 8px;color:#523d00}.opening-hours-public p{margin:5px 0}.opening-hours-public .hours-note{margin-top:10px;padding-top:8px;border-top:2px dashed #b69b48}
+
+
+/* Social networks and Waze buttons */
+.services-accessible-grid .social-links{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+.services-accessible-grid .social-button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:9px 13px;border:3px solid;border-radius:12px;font-weight:900;text-decoration:none}
+.services-accessible-grid .social-button.instagram{border-color:#a42770;background:#fff0f7;color:#7c1450}
+.services-accessible-grid .social-button.facebook{border-color:#1c5ca6;background:#eaf3ff;color:#12467f}
+.services-accessible-grid .social-button.tiktok{border-color:#111;background:#f1f1f1;color:#111}
+.services-accessible-grid .social-button.waze{border-color:#117987;background:#e5fbff;color:#075864}

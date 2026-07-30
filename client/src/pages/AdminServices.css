@@ -94,3 +94,13 @@
 .admin-services-contact-choice label{display:flex!important;grid-template-columns:none;align-items:center;gap:8px;padding:9px 14px;border:3px solid #35618e;border-radius:12px;background:#edf5ff;cursor:pointer}
 .admin-services-contact-choice input[type="radio"]{width:26px;height:26px;accent-color:#087b3f}
 .opening-hours-editor{display:grid;gap:10px}.opening-hours-row{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;align-items:end;padding:12px;border:2px solid #91a9c2;border-radius:12px;background:#f7fbff}.opening-hours-row input[type=time]:disabled{opacity:.45;background:#e5e7eb}.opening-hours-public{margin:14px 0;padding:14px;border:3px solid #86670c;border-radius:14px;background:#fff8d9}.opening-hours-public h3{margin:0 0 8px}.opening-hours-public p{margin:5px 0}@media(max-width:700px){.opening-hours-row{grid-template-columns:1fr}}
+
+
+/* Social networks and Waze */
+.admin-services-social-fieldset{display:grid;gap:16px}
+.admin-services-social-option{display:grid;gap:12px;padding:14px;border:3px solid #6b7f99;border-radius:15px;background:#fff}
+.admin-services-social-option .admin-services-checkbox{margin:0}
+.admin-services-social-option.instagram-option{border-color:#a52b73;background:#fff1f8}
+.admin-services-social-option.facebook-option{border-color:#2467b2;background:#eef6ff}
+.admin-services-social-option.tiktok-option{border-color:#222;background:#f5f5f5}
+.admin-services-social-option.waze-option{border-color:#197b89;background:#e9fbff}
