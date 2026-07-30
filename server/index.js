@@ -69,8 +69,8 @@ mountRoute("./routes/uploadRoutes", "/api/upload");
 mountRoute("./routes/productRoutes", "/api/products");
 mountRoute("./routes/userRoutes", "/api/users");
 mountRoute("./routes/eventRoutes", "/api/events");
-mountRoute("./routes/governmentServiceRoutes", "/api/government");
 mountRoute("./routes/governmentServiceRoutes", "/api/government-services");
+mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {

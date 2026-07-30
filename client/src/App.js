@@ -16,6 +16,7 @@ import Cart from "./pages/Cart";
 import SecondHand from "./pages/SecondHand";
 import Documents from "./pages/Documents";
 import ServiceBooking from "./pages/ServiceBooking";
+import Apps from "./pages/Apps";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -40,9 +41,11 @@ import AdminUploads from "./pages/AdminUploads";
 import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
 import AdminBackup from "./pages/AdminBackup";
+import AdminApps from "./pages/AdminApps";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import AppsHomeButton from "./components/AppsHomeButton";
 
 function readStoredUser() {
   try {
@@ -68,6 +71,7 @@ function App() {
         <HashRouter>
           <div className="app">
             <Navbar />
+            <AppsHomeButton />
 
             <Routes>
               <Route path="/" element={<Home />} />
@@ -82,6 +86,7 @@ function App() {
               <Route path="/second-hand" element={<SecondHand />} />
               <Route path="/documents" element={<Documents />} />
               <Route path="/booking" element={<ServiceBooking />} />
+              <Route path="/apps" element={<Apps />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
@@ -106,6 +111,7 @@ function App() {
               <Route path="/admin/backup" element={<AdminRoute><AdminBackup /></AdminRoute>} />
               <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
               <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
+              <Route path="/admin/apps" element={<AdminRoute><AdminApps /></AdminRoute>} />
             </Routes>
           </div>
         </HashRouter>
