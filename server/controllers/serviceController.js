@@ -12,6 +12,18 @@ function bool(value, fallback = false) {
   return fallback;
 }
 
+
+function normalizeOpeningHours(value, fallback = {}) {
+  const keys = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+  const source = value && typeof value === "object" ? value : fallback || {};
+  const result = {};
+  for (const key of keys) {
+    const day = source[key] || {};
+    result[key] = { enabled: bool(day.enabled), open: text(day.open), close: text(day.close) };
+  }
+  return result;
+}
+
 function validUrl(value) {
   if (!value) return true;
   try {
@@ -64,6 +76,15 @@ function normalize(body = {}, existing = null) {
       body.address !== undefined ? text(body.address) : text(current.address),
     city: body.city !== undefined ? text(body.city) : text(current.city),
     phone: body.phone !== undefined ? text(body.phone) : text(current.phone),
+    openingHours: body.openingHours !== undefined ? normalizeOpeningHours(body.openingHours) : normalizeOpeningHours(current.openingHours),
+    openingHoursNote: body.openingHoursNote !== undefined ? text(body.openingHoursNote) : text(current.openingHoursNote),
+    acceptsWhatsApp:
+      body.acceptsWhatsApp !== undefined ? bool(body.acceptsWhatsApp) : bool(current.acceptsWhatsApp),
+    whatsapp:
+      body.whatsapp !== undefined ? text(body.whatsapp) : text(current.whatsapp),
+    acceptsEmail:
+      body.acceptsEmail !== undefined ? bool(body.acceptsEmail) : bool(current.acceptsEmail),
+    email: body.email !== undefined ? text(body.email).toLowerCase() : text(current.email).toLowerCase(),
     link: link || websiteUrl,
     websiteUrl: websiteUrl || link,
     icon: body.icon !== undefined ? text(body.icon) || "♿" : text(current.icon) || "♿",
@@ -87,6 +108,9 @@ function validate(data) {
   if (!validUrl(data.imageUrl)) errors.push("קישור התמונה אינו תקין");
   if (!validUrl(data.logoUrl)) errors.push("קישור הלוגו אינו תקין");
   if (!validUrl(data.link)) errors.push("קישור העסק אינו תקין");
+  if (data.acceptsWhatsApp && !data.whatsapp) errors.push("חובה להזין מספר WhatsApp");
+  for (const [key, day] of Object.entries(data.openingHours || {})) { if (day.enabled && (!/^([01]\d|2[0-3]):[0-5]\d$/.test(day.open) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(day.close))) errors.push(`שעות פתיחה אינן תקינות עבור ${key}`); }
+  if (data.acceptsEmail && !/^\S+@\S+\.\S+$/.test(data.email)) errors.push("כתובת הדואר האלקטרוני אינה תקינה");
   return errors;
 }
 
