@@ -70,6 +70,7 @@ mountRoute("./routes/productRoutes", "/api/products");
 mountRoute("./routes/userRoutes", "/api/users");
 mountRoute("./routes/eventRoutes", "/api/events");
 mountRoute("./routes/governmentServiceRoutes", "/api/government-services");
+mountRoute("./routes/governmentServiceRoutes", "/api/government");
 mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
 
 /* נתיב שלא נמצא */

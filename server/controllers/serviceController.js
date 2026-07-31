@@ -12,14 +12,22 @@ function bool(value, fallback = false) {
   return fallback;
 }
 
+function number(value, fallback = 0) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
 
 function normalizeOpeningHours(value, fallback = {}) {
-  const keys = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+  const keys = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
   const source = value && typeof value === "object" ? value : fallback || {};
   const result = {};
   for (const key of keys) {
     const day = source[key] || {};
-    result[key] = { enabled: bool(day.enabled), open: text(day.open), close: text(day.close) };
+    result[key] = {
+      enabled: bool(day.enabled),
+      open: text(day.open),
+      close: text(day.close),
+    };
   }
   return result;
 }
@@ -34,86 +42,64 @@ function validUrl(value) {
   }
 }
 
+function validEmail(value) {
+  return !value || /^\S+@\S+\.\S+$/.test(value);
+}
+
 function normalize(body = {}, existing = null) {
   const current = existing || {};
-  const link =
-    body.link !== undefined
-      ? text(body.link)
-      : text(current.link || current.websiteUrl);
-
-  const websiteUrl =
-    body.websiteUrl !== undefined
-      ? text(body.websiteUrl)
-      : text(current.websiteUrl || current.link || link);
-
-  const imageUrl =
-    body.imageUrl !== undefined
-      ? text(body.imageUrl)
-      : text(current.imageUrl || current.logoUrl);
-
-  const logoUrl =
-    body.logoUrl !== undefined
-      ? text(body.logoUrl)
-      : text(current.logoUrl || current.imageUrl || imageUrl);
+  const link = body.link !== undefined ? text(body.link) : text(current.link || current.websiteUrl);
+  const websiteUrl = body.websiteUrl !== undefined
+    ? text(body.websiteUrl)
+    : text(current.websiteUrl || current.link || link);
+  const imageUrl = body.imageUrl !== undefined
+    ? text(body.imageUrl)
+    : text(current.imageUrl || current.logoUrl);
+  const logoUrl = body.logoUrl !== undefined
+    ? text(body.logoUrl)
+    : text(current.logoUrl || current.imageUrl || imageUrl);
 
   return {
+    serviceType: body.serviceType !== undefined ? text(body.serviceType) : text(current.serviceType) || "business",
     name: body.name !== undefined ? text(body.name) : text(current.name),
-    category:
-      body.category !== undefined
-        ? text(body.category)
-        : text(current.category),
-    businessName:
-      body.businessName !== undefined
-        ? text(body.businessName)
-        : text(current.businessName),
+    category: body.category !== undefined ? text(body.category) : text(current.category),
+    businessName: body.businessName !== undefined ? text(body.businessName) : text(current.businessName),
+    icon: body.icon !== undefined ? text(body.icon) || "🏛️" : text(current.icon) || "🏛️",
+    cardColor: body.cardColor !== undefined ? text(body.cardColor) || "#0b5ed7" : text(current.cardColor) || "#0b5ed7",
+    displayOrder: body.displayOrder !== undefined ? number(body.displayOrder) : number(current.displayOrder),
     logoUrl,
     imageUrl,
-    description:
-      body.description !== undefined
-        ? text(body.description)
-        : text(current.description),
-    address:
-      body.address !== undefined ? text(body.address) : text(current.address),
+    description: body.description !== undefined ? text(body.description) : text(current.description),
+    address: body.address !== undefined ? text(body.address) : text(current.address),
     city: body.city !== undefined ? text(body.city) : text(current.city),
     phone: body.phone !== undefined ? text(body.phone) : text(current.phone),
-    openingHours: body.openingHours !== undefined ? normalizeOpeningHours(body.openingHours) : normalizeOpeningHours(current.openingHours),
+    accessiblePhone: body.accessiblePhone !== undefined ? text(body.accessiblePhone) : text(current.accessiblePhone),
+    accessiblePhoneType: body.accessiblePhoneType !== undefined ? text(body.accessiblePhoneType) : text(current.accessiblePhoneType),
+    accessibleEmail: body.accessibleEmail !== undefined
+      ? text(body.accessibleEmail).toLowerCase()
+      : text(current.accessibleEmail).toLowerCase(),
+    accessibilityNote: body.accessibilityNote !== undefined ? text(body.accessibilityNote) : text(current.accessibilityNote),
+    openingHours: body.openingHours !== undefined
+      ? normalizeOpeningHours(body.openingHours)
+      : normalizeOpeningHours(current.openingHours),
     openingHoursNote: body.openingHoursNote !== undefined ? text(body.openingHoursNote) : text(current.openingHoursNote),
-    acceptsWhatsApp:
-      body.acceptsWhatsApp !== undefined ? bool(body.acceptsWhatsApp) : bool(current.acceptsWhatsApp),
-    whatsapp:
-      body.whatsapp !== undefined ? text(body.whatsapp) : text(current.whatsapp),
-    acceptsEmail:
-      body.acceptsEmail !== undefined ? bool(body.acceptsEmail) : bool(current.acceptsEmail),
+    acceptsWhatsApp: body.acceptsWhatsApp !== undefined ? bool(body.acceptsWhatsApp) : bool(current.acceptsWhatsApp),
+    whatsapp: body.whatsapp !== undefined ? text(body.whatsapp) : text(current.whatsapp),
+    acceptsEmail: body.acceptsEmail !== undefined ? bool(body.acceptsEmail) : bool(current.acceptsEmail),
     email: body.email !== undefined ? text(body.email).toLowerCase() : text(current.email).toLowerCase(),
-    hasInstagram:
-      body.hasInstagram !== undefined ? bool(body.hasInstagram) : bool(current.hasInstagram),
-    instagramUrl:
-      body.instagramUrl !== undefined ? text(body.instagramUrl) : text(current.instagramUrl),
-    hasFacebook:
-      body.hasFacebook !== undefined ? bool(body.hasFacebook) : bool(current.hasFacebook),
-    facebookUrl:
-      body.facebookUrl !== undefined ? text(body.facebookUrl) : text(current.facebookUrl),
-    hasTikTok:
-      body.hasTikTok !== undefined ? bool(body.hasTikTok) : bool(current.hasTikTok),
-    tiktokUrl:
-      body.tiktokUrl !== undefined ? text(body.tiktokUrl) : text(current.tiktokUrl),
-    hasWaze:
-      body.hasWaze !== undefined ? bool(body.hasWaze) : bool(current.hasWaze),
-    wazeUrl:
-      body.wazeUrl !== undefined ? text(body.wazeUrl) : text(current.wazeUrl),
+    hasInstagram: body.hasInstagram !== undefined ? bool(body.hasInstagram) : bool(current.hasInstagram),
+    instagramUrl: body.instagramUrl !== undefined ? text(body.instagramUrl) : text(current.instagramUrl),
+    hasFacebook: body.hasFacebook !== undefined ? bool(body.hasFacebook) : bool(current.hasFacebook),
+    facebookUrl: body.facebookUrl !== undefined ? text(body.facebookUrl) : text(current.facebookUrl),
+    hasTikTok: body.hasTikTok !== undefined ? bool(body.hasTikTok) : bool(current.hasTikTok),
+    tiktokUrl: body.tiktokUrl !== undefined ? text(body.tiktokUrl) : text(current.tiktokUrl),
+    hasWaze: body.hasWaze !== undefined ? bool(body.hasWaze) : bool(current.hasWaze),
+    wazeUrl: body.wazeUrl !== undefined ? text(body.wazeUrl) : text(current.wazeUrl),
     link: link || websiteUrl,
     websiteUrl: websiteUrl || link,
-    icon: body.icon !== undefined ? text(body.icon) || "♿" : text(current.icon) || "♿",
-    supportsSignLanguage:
-      body.supportsSignLanguage !== undefined
-        ? bool(body.supportsSignLanguage)
-        : bool(current.supportsSignLanguage),
-    supportsTranscription:
-      body.supportsTranscription !== undefined
-        ? bool(body.supportsTranscription)
-        : bool(current.supportsTranscription),
-    active:
-      body.active !== undefined ? bool(body.active, true) : current.active !== false,
+    supportsSignLanguage: body.supportsSignLanguage !== undefined ? bool(body.supportsSignLanguage) : bool(current.supportsSignLanguage),
+    supportsTranscription: body.supportsTranscription !== undefined ? bool(body.supportsTranscription) : bool(current.supportsTranscription),
+    active: body.active !== undefined ? bool(body.active, true) : current.active !== false,
   };
 }
 
@@ -121,20 +107,14 @@ function validate(data) {
   const errors = [];
   if (!data.name) errors.push("חובה להזין שם שירות");
   if (!data.category) errors.push("חובה לבחור קטגוריה");
+  if (!["business", "government"].includes(data.serviceType)) errors.push("סוג השירות אינו תקין");
   if (!validUrl(data.imageUrl)) errors.push("קישור התמונה אינו תקין");
   if (!validUrl(data.logoUrl)) errors.push("קישור הלוגו אינו תקין");
-  if (!validUrl(data.link)) errors.push("קישור העסק אינו תקין");
-  if (data.hasInstagram && !data.instagramUrl) errors.push("חובה להזין קישור Instagram");
-  if (data.hasInstagram && !validUrl(data.instagramUrl)) errors.push("קישור Instagram אינו תקין");
-  if (data.hasFacebook && !data.facebookUrl) errors.push("חובה להזין קישור Facebook");
-  if (data.hasFacebook && !validUrl(data.facebookUrl)) errors.push("קישור Facebook אינו תקין");
-  if (data.hasTikTok && !data.tiktokUrl) errors.push("חובה להזין קישור TikTok");
-  if (data.hasTikTok && !validUrl(data.tiktokUrl)) errors.push("קישור TikTok אינו תקין");
-  if (data.hasWaze && !data.wazeUrl) errors.push("חובה להזין קישור Waze");
-  if (data.hasWaze && !validUrl(data.wazeUrl)) errors.push("קישור Waze אינו תקין");
+  if (!validUrl(data.link)) errors.push("קישור האתר אינו תקין");
+  if (!validEmail(data.email)) errors.push("כתובת הדואר האלקטרוני אינה תקינה");
+  if (!validEmail(data.accessibleEmail)) errors.push("כתובת הדוא״ל הנגיש אינה תקינה");
   if (data.acceptsWhatsApp && !data.whatsapp) errors.push("חובה להזין מספר WhatsApp");
-  for (const [key, day] of Object.entries(data.openingHours || {})) { if (day.enabled && (!/^([01]\d|2[0-3]):[0-5]\d$/.test(day.open) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(day.close))) errors.push(`שעות פתיחה אינן תקינות עבור ${key}`); }
-  if (data.acceptsEmail && !/^\S+@\S+\.\S+$/.test(data.email)) errors.push("כתובת הדואר האלקטרוני אינה תקינה");
+  if (data.acceptsEmail && !data.email) errors.push("חובה להזין כתובת דואר אלקטרוני");
   return errors;
 }
 
@@ -142,20 +122,17 @@ async function getServices(req, res) {
   try {
     const filter = {};
     if (req.query.active !== undefined) filter.active = bool(req.query.active);
+    if (req.query.serviceType) filter.serviceType = text(req.query.serviceType);
     if (req.query.category) filter.category = new RegExp(text(req.query.category), "i");
     if (req.query.city) filter.city = new RegExp(text(req.query.city), "i");
-    if (req.query.supportsSignLanguage !== undefined) {
-      filter.supportsSignLanguage = bool(req.query.supportsSignLanguage);
-    }
-    if (req.query.supportsTranscription !== undefined) {
-      filter.supportsTranscription = bool(req.query.supportsTranscription);
-    }
     if (req.query.search) {
       const q = text(req.query.search);
-      filter.$or = ["name", "businessName", "category", "description", "city", "address"]
+      filter.$or = ["name", "businessName", "category", "description", "city", "address", "phone", "accessiblePhone", "accessibleEmail"]
         .map((field) => ({ [field]: { $regex: q, $options: "i" } }));
     }
-    const services = await Service.find(filter).sort({ createdAt: -1 }).lean();
+    const services = await Service.find(filter)
+      .sort({ displayOrder: 1, createdAt: -1 })
+      .lean();
     return res.json(services);
   } catch (error) {
     console.error("getServices:", error);
@@ -221,10 +198,4 @@ async function deleteService(req, res) {
   }
 }
 
-module.exports = {
-  getServices,
-  getServiceById,
-  createService,
-  updateService,
-  deleteService,
-};
+module.exports = { getServices, getServiceById, createService, updateService, deleteService };
