@@ -24,6 +24,22 @@ function validUrl(value) {
   }
 }
 
+function translation(body = {}, current = {}, lang) {
+  const incoming = body.translations?.[lang] || {};
+  const existing = current.translations?.[lang] || {};
+
+  return {
+    name:
+      incoming.name !== undefined
+        ? text(incoming.name)
+        : text(existing.name),
+    description:
+      incoming.description !== undefined
+        ? text(incoming.description)
+        : text(existing.description),
+  };
+}
+
 function buildData(body = {}, current = {}) {
   return {
     name: body.name !== undefined ? text(body.name) : text(current.name),
@@ -33,6 +49,13 @@ function buildData(body = {}, current = {}) {
         : text(current.description),
     imageUrl:
       body.imageUrl !== undefined ? text(body.imageUrl) : text(current.imageUrl),
+
+    translations: {
+      en: translation(body, current, "en"),
+      ru: translation(body, current, "ru"),
+      ar: translation(body, current, "ar"),
+      am: translation(body, current, "am"),
+    },
 
     hasAndroid:
       body.hasAndroid !== undefined

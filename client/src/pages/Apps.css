@@ -215,3 +215,39 @@
     width:100%;
   }
 }
+
+.apps-language-bar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:9px;
+  margin-bottom:16px;
+  padding:12px;
+  border:3px solid #8ba2c8;
+  border-radius:17px;
+  background:#fff;
+}
+.apps-language-bar button{
+  min-height:45px;
+  padding:8px 13px;
+  border:3px solid #536d99;
+  border-radius:11px;
+  background:#fff;
+  color:#172033;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+.apps-language-bar button.selected{
+  background:#223f78;
+  color:#fff;
+}
+
+.translation-missing{
+  padding:10px;
+  border:2px dashed #a56b00;
+  border-radius:10px;
+  background:#fff8df;
+  color:#6d4800;
+  font-weight:800;
+}

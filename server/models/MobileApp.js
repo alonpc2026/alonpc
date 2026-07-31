@@ -14,6 +14,25 @@ const mobileAppSchema = new mongoose.Schema(
       default: "",
       maxlength: 1200,
     },
+
+    translations: {
+      en: {
+        name: { type: String, trim: true, default: "", maxlength: 120 },
+        description: { type: String, trim: true, default: "", maxlength: 1200 },
+      },
+      ru: {
+        name: { type: String, trim: true, default: "", maxlength: 120 },
+        description: { type: String, trim: true, default: "", maxlength: 1200 },
+      },
+      ar: {
+        name: { type: String, trim: true, default: "", maxlength: 120 },
+        description: { type: String, trim: true, default: "", maxlength: 1200 },
+      },
+      am: {
+        name: { type: String, trim: true, default: "", maxlength: 120 },
+        description: { type: String, trim: true, default: "", maxlength: 1200 },
+      },
+    },
     imageUrl: {
       type: String,
       trim: true,

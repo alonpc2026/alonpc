@@ -14,6 +14,12 @@ const EMPTY = {
   name: "",
   description: "",
   imageUrl: "",
+  translations: {
+    en: { name: "", description: "" },
+    ru: { name: "", description: "" },
+    ar: { name: "", description: "" },
+    am: { name: "", description: "" },
+  },
   hasAndroid: false,
   androidUrl: "",
   hasIphone: false,
@@ -23,14 +29,32 @@ const EMPTY = {
   displayOrder: 0,
 };
 
+const LANGUAGE_FIELDS = [
+  { code: "he", title: "🇮🇱 עברית", dir: "rtl" },
+  { code: "en", title: "🇬🇧 English", dir: "ltr" },
+  { code: "ru", title: "🇷🇺 Русский", dir: "ltr" },
+  { code: "ar", title: "🇸🇦 العربية", dir: "rtl" },
+  { code: "am", title: "🇪🇹 አማርኛ", dir: "ltr" },
+];
+
 function authToken() {
   return localStorage.getItem("token") || localStorage.getItem("authToken") || "";
+}
+
+function normalizedTranslations(value = {}) {
+  return {
+    en: { name: value.en?.name || "", description: value.en?.description || "" },
+    ru: { name: value.ru?.name || "", description: value.ru?.description || "" },
+    ar: { name: value.ar?.name || "", description: value.ar?.description || "" },
+    am: { name: value.am?.name || "", description: value.am?.description || "" },
+  };
 }
 
 export default function AdminApps() {
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(EMPTY);
   const [editingId, setEditingId] = useState("");
+  const [activeLanguage, setActiveLanguage] = useState("he");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,11 +102,15 @@ export default function AdminApps() {
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    return items.filter((item) =>
-      `${item.name || ""} ${item.description || ""}`
+    return items.filter((item) => {
+      const translations = Object.values(item.translations || {})
+        .map((value) => `${value?.name || ""} ${value?.description || ""}`)
+        .join(" ");
+
+      return `${item.name || ""} ${item.description || ""} ${translations}`
         .toLowerCase()
-        .includes(query)
-    );
+        .includes(query);
+    });
   }, [items, search]);
 
   function change(event) {
@@ -94,9 +122,25 @@ export default function AdminApps() {
     }));
   }
 
+  function changeTranslation(event) {
+    const { name, value } = event.target;
+
+    setForm((current) => ({
+      ...current,
+      translations: {
+        ...current.translations,
+        [activeLanguage]: {
+          ...current.translations[activeLanguage],
+          [name]: value,
+        },
+      },
+    }));
+  }
+
   function reset() {
     setForm(EMPTY);
     setEditingId("");
+    setActiveLanguage("he");
   }
 
   function edit(item) {
@@ -104,6 +148,7 @@ export default function AdminApps() {
     setForm({
       ...EMPTY,
       ...item,
+      translations: normalizedTranslations(item.translations),
       hasAndroid: Boolean(item.hasAndroid),
       hasIphone: Boolean(item.hasIphone),
       featured: Boolean(item.featured),
@@ -124,6 +169,24 @@ export default function AdminApps() {
       name: form.name.trim(),
       description: form.description.trim(),
       imageUrl: form.imageUrl.trim(),
+      translations: {
+        en: {
+          name: form.translations.en.name.trim(),
+          description: form.translations.en.description.trim(),
+        },
+        ru: {
+          name: form.translations.ru.name.trim(),
+          description: form.translations.ru.description.trim(),
+        },
+        ar: {
+          name: form.translations.ar.name.trim(),
+          description: form.translations.ar.description.trim(),
+        },
+        am: {
+          name: form.translations.am.name.trim(),
+          description: form.translations.am.description.trim(),
+        },
+      },
       androidUrl: form.hasAndroid ? form.androidUrl.trim() : "",
       iphoneUrl: form.hasIphone ? form.iphoneUrl.trim() : "",
       displayOrder: Number(form.displayOrder) || 0,
@@ -136,7 +199,7 @@ export default function AdminApps() {
       });
 
       setMessage(
-        editingId ? "האפליקציה עודכנה בהצלחה" : "האפליקציה נוספה בהצלחה"
+        editingId ? "האפליקציה והתרגומים עודכנו בהצלחה" : "האפליקציה נוספה בהצלחה"
       );
       reset();
       await load();
@@ -148,9 +211,7 @@ export default function AdminApps() {
   }
 
   async function remove(item) {
-    if (!window.confirm(`למחוק את האפליקציה "${item.name}"?`)) {
-      return;
-    }
+    if (!window.confirm(`למחוק את האפליקציה "${item.name}"?`)) return;
 
     try {
       await request(`/${item._id}`, { method: "DELETE" });
@@ -162,12 +223,16 @@ export default function AdminApps() {
     }
   }
 
+  const activeInfo =
+    LANGUAGE_FIELDS.find((item) => item.code === activeLanguage) ||
+    LANGUAGE_FIELDS[0];
+
   return (
     <main className="admin-apps-page" dir="rtl">
       <header className="admin-apps-header">
         <div>
-          <h1>📱 ניהול אפליקציות</h1>
-          <p>הוספת אפליקציות ל־iPhone ול־Galaxy / Android ללא קטגוריות.</p>
+          <h1>📱 ניהול אפליקציות רב־לשוני</h1>
+          <p>עברית, אנגלית, רוסית, ערבית ואמהרית.</p>
         </div>
 
         <div className="admin-apps-header-links">
@@ -180,30 +245,78 @@ export default function AdminApps() {
       {error && <p className="admin-apps-message error">❌ {error}</p>}
 
       <section className="admin-apps-card">
-        <h2>{editingId ? "עריכת אפליקציה" : "הוספת אפליקציה חדשה"}</h2>
+        <h2>{editingId ? "עריכת אפליקציה ותרגומים" : "הוספת אפליקציה חדשה"}</h2>
 
         <form onSubmit={submit}>
-          <label>
-            שם האפליקציה *
-            <input
-              name="name"
-              value={form.name}
-              onChange={change}
-              required
-              maxLength="120"
-            />
-          </label>
+          <div className="admin-apps-language-tabs">
+            {LANGUAGE_FIELDS.map((item) => (
+              <button
+                key={item.code}
+                type="button"
+                className={activeLanguage === item.code ? "selected" : ""}
+                onClick={() => setActiveLanguage(item.code)}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
 
-          <label>
-            תיאור קצר
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={change}
-              rows="4"
-              maxLength="1200"
-            />
-          </label>
+          <section className="admin-apps-language-panel" dir={activeInfo.dir}>
+            <h3>{activeInfo.title}</h3>
+
+            {activeLanguage === "he" ? (
+              <>
+                <label>
+                  שם האפליקציה בעברית *
+                  <input
+                    name="name"
+                    value={form.name}
+                    onChange={change}
+                    required
+                    maxLength="120"
+                    placeholder="לדוגמה: ביטוח לאומי"
+                  />
+                </label>
+
+                <label className="admin-apps-description-field">
+                  תיאור האפליקציה בעברית
+                  <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={change}
+                    rows="5"
+                    maxLength="1200"
+                    placeholder="כתוב תיאור קצר וברור של האפליקציה ומה אפשר לעשות בה"
+                  />
+                </label>
+              </>
+            ) : (
+              <>
+                <label>
+                  שם האפליקציה בשפה שנבחרה
+                  <input
+                    name="name"
+                    value={form.translations[activeLanguage].name}
+                    onChange={changeTranslation}
+                    maxLength="120"
+                    placeholder="שם האפליקציה בשפה זו"
+                  />
+                </label>
+
+                <label className="admin-apps-description-field">
+                  תיאור האפליקציה בשפה שנבחרה
+                  <textarea
+                    name="description"
+                    value={form.translations[activeLanguage].description}
+                    onChange={changeTranslation}
+                    rows="5"
+                    maxLength="1200"
+                    placeholder="כתוב כאן את תיאור האפליקציה בשפה זו"
+                  />
+                </label>
+              </>
+            )}
+          </section>
 
           <label>
             כתובת תמונת האפליקציה
@@ -218,13 +331,12 @@ export default function AdminApps() {
 
           {form.imageUrl && (
             <div className="admin-apps-preview">
-              <img src={form.imageUrl} alt="תצוגה מקדימה של האפליקציה" />
+              <img src={form.imageUrl} alt="תצוגה מקדימה" />
             </div>
           )}
 
           <fieldset>
             <legend>🤖 Galaxy / Android</legend>
-
             <label className="admin-apps-checkbox">
               <input
                 type="checkbox"
@@ -237,13 +349,12 @@ export default function AdminApps() {
 
             {form.hasAndroid && (
               <label>
-                קישור להורדה ב־Google Play *
+                קישור Google Play *
                 <input
                   type="url"
                   name="androidUrl"
                   value={form.androidUrl}
                   onChange={change}
-                  placeholder="https://play.google.com/..."
                   required
                 />
               </label>
@@ -252,7 +363,6 @@ export default function AdminApps() {
 
           <fieldset>
             <legend>🍎 iPhone</legend>
-
             <label className="admin-apps-checkbox">
               <input
                 type="checkbox"
@@ -265,13 +375,12 @@ export default function AdminApps() {
 
             {form.hasIphone && (
               <label>
-                קישור להורדה ב־App Store *
+                קישור App Store *
                 <input
                   type="url"
                   name="iphoneUrl"
                   value={form.iphoneUrl}
                   onChange={change}
-                  placeholder="https://apps.apple.com/..."
                   required
                 />
               </label>
@@ -297,7 +406,7 @@ export default function AdminApps() {
                   checked={form.featured}
                   onChange={change}
                 />
-                ⭐ אפליקציה מומלצת
+                ⭐ מומלצת
               </label>
 
               <label className="admin-apps-checkbox">
@@ -307,18 +416,14 @@ export default function AdminApps() {
                   checked={form.active}
                   onChange={change}
                 />
-                👁️ פעילה ומוצגת באתר
+                👁️ מוצגת באתר
               </label>
             </div>
           </div>
 
           <div className="admin-apps-actions">
             <button type="submit" disabled={saving}>
-              {saving
-                ? "שומר..."
-                : editingId
-                ? "💾 שמירת השינויים"
-                : "➕ הוספת אפליקציה"}
+              {saving ? "שומר..." : editingId ? "💾 שמירת השינויים" : "➕ הוספה"}
             </button>
 
             {editingId && (
@@ -334,12 +439,11 @@ export default function AdminApps() {
         <h2>אפליקציות קיימות</h2>
 
         <label className="admin-apps-search">
-          חיפוש
+          חיפוש בכל השפות
           <input
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="חיפוש לפי שם או תיאור"
           />
         </label>
 
@@ -352,38 +456,34 @@ export default function AdminApps() {
             {filtered.map((item) => (
               <article key={item._id}>
                 <div className="admin-apps-list-image">
-                  {item.imageUrl ? (
-                    <img src={item.imageUrl} alt={item.name} />
-                  ) : (
-                    <span>📱</span>
-                  )}
+                  {item.imageUrl ? <img src={item.imageUrl} alt={item.name} /> : <span>📱</span>}
                 </div>
 
                 <div className="admin-apps-list-content">
                   <h3>{item.name}</h3>
-
-                  <div className="admin-apps-badges">
-                    {item.hasIphone && <span>🍎 iPhone</span>}
-                    {item.hasAndroid && <span>🤖 Android</span>}
-                    {item.featured && <span>⭐ מומלץ</span>}
-                    <span className={item.active ? "active" : "hidden"}>
-                      {item.active ? "מוצגת" : "מוסתרת"}
+                  <div className="admin-apps-translation-status">
+                    <strong>מצב תרגומים:</strong>
+                    <span>
+                      EN שם {item.translations?.en?.name ? "✅" : "❌"} /
+                      תיאור {item.translations?.en?.description ? "✅" : "❌"}
+                    </span>
+                    <span>
+                      RU שם {item.translations?.ru?.name ? "✅" : "❌"} /
+                      תיאור {item.translations?.ru?.description ? "✅" : "❌"}
+                    </span>
+                    <span>
+                      AR שם {item.translations?.ar?.name ? "✅" : "❌"} /
+                      תיאור {item.translations?.ar?.description ? "✅" : "❌"}
+                    </span>
+                    <span>
+                      AM שם {item.translations?.am?.name ? "✅" : "❌"} /
+                      תיאור {item.translations?.am?.description ? "✅" : "❌"}
                     </span>
                   </div>
 
-                  {item.description && <p>{item.description}</p>}
-
                   <div className="admin-apps-actions">
-                    <button type="button" onClick={() => edit(item)}>
-                      עריכה
-                    </button>
-                    <button
-                      type="button"
-                      className="danger"
-                      onClick={() => remove(item)}
-                    >
-                      מחיקה
-                    </button>
+                    <button type="button" onClick={() => edit(item)}>עריכה ותרגום</button>
+                    <button type="button" className="danger" onClick={() => remove(item)}>מחיקה</button>
                   </div>
                 </div>
               </article>
