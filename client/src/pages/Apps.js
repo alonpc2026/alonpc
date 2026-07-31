@@ -197,7 +197,7 @@ export default function Apps() {
 
       return matchesSearch && matchesFilter;
     });
-  }, [items, filter, search, language]);
+  }, [items, filter, search, language, t]);
 
   return (
     <main className="apps-page" dir={languageInfo.dir}>
