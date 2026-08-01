@@ -8,11 +8,13 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 25px;
+  padding: 28px;
   margin-bottom: 24px;
   border-radius: 22px;
-  background: #eef4ff;
-  border: 3px solid #1546a0;
+  background: #061522;
+  color: #ffffff;
+  border: 4px solid #38d9ff;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.32);
 }
 
 .interesting-sites-hero > span {
@@ -20,14 +22,19 @@
 }
 
 .interesting-sites-hero h1 {
-  margin: 0 0 7px;
-  font-size: clamp(30px, 5vw, 48px);
+  margin: 0 0 9px;
+  color: #ffffff !important;
+  font-size: clamp(32px, 5vw, 50px);
+  font-weight: 1000;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
 }
 
 .interesting-sites-hero p {
   margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
+  color: #dff8ff !important;
+  font-size: 21px;
+  line-height: 1.65;
+  font-weight: 800;
 }
 
 .interesting-sites-tools {
@@ -170,4 +177,8 @@
   .interesting-sites-hero {
     align-items: flex-start;
   }
+}
+
+.interesting-sites-hero > span {
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.75));
 }
