@@ -72,7 +72,6 @@ mountRoute("./routes/eventRoutes", "/api/events");
 mountRoute("./routes/governmentServiceRoutes", "/api/government-services");
 mountRoute("./routes/governmentServiceRoutes", "/api/government");
 mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
-mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {

@@ -6,7 +6,7 @@ import { CartProvider } from "./context/CartContext";
 import { LanguageProvider } from "./context/LanguageContext";
 
 import Home from "./pages/Home";
-import InterestingSites from "./pages/InterestingSites";
+import AlonLinks from "./pages/AlonLinks";
 import IsraelEvents from "./pages/IsraelEvents";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
@@ -42,7 +42,6 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
-import AdminInterestingSites from "./pages/AdminInterestingSites";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -76,7 +75,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/interesting-sites" element={<InterestingSites />} />
+              <Route path="/interesting-sites" element={<AlonLinks />} />
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/services" element={<Services />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
@@ -113,7 +112,6 @@ function App() {
               <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
               <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
               <Route path="/admin/apps" element={<AdminRoute><AdminApps /></AdminRoute>} />
-              <Route path="/admin/interesting-sites" element={<AdminRoute><AdminInterestingSites /></AdminRoute>} />
             </Routes>
           </div>
         </HashRouter>

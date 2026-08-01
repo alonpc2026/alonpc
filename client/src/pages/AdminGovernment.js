@@ -64,6 +64,7 @@ const EMPTY = {
   appointmentUrl: "",
   email: "",
   phone: "",
+  acceptsWhatsapp: false,
   whatsapp: "",
   address: "",
   city: "",
@@ -231,6 +232,7 @@ export default function AdminGovernment() {
     setForm({
       ...EMPTY,
       ...item,
+      acceptsWhatsapp: Boolean(item.acceptsWhatsapp),
       openingHours: hours,
     });
 
@@ -439,25 +441,66 @@ export default function AdminGovernment() {
             </label>
           </div>
 
-          <div className="row">
-            <label>
-              WhatsApp
-              <input
-                name="whatsapp"
-                value={form.whatsapp}
-                onChange={change}
-              />
-            </label>
+          <fieldset className="government-whatsapp-fieldset">
+            <legend>WhatsApp נגיש</legend>
 
-            <label>
-              עיר
-              <input
-                name="city"
-                value={form.city}
-                onChange={change}
-              />
-            </label>
-          </div>
+            <div className="government-whatsapp-choice">
+              <strong>האם הגוף מקבל פניות ב־WhatsApp?</strong>
+
+              <label className="government-radio-option">
+                <input
+                  type="radio"
+                  name="acceptsWhatsapp"
+                  checked={form.acceptsWhatsapp === true}
+                  onChange={() =>
+                    setForm((current) => ({
+                      ...current,
+                      acceptsWhatsapp: true,
+                    }))
+                  }
+                />
+                כן
+              </label>
+
+              <label className="government-radio-option">
+                <input
+                  type="radio"
+                  name="acceptsWhatsapp"
+                  checked={form.acceptsWhatsapp === false}
+                  onChange={() =>
+                    setForm((current) => ({
+                      ...current,
+                      acceptsWhatsapp: false,
+                      whatsapp: "",
+                    }))
+                  }
+                />
+                לא
+              </label>
+            </div>
+
+            {form.acceptsWhatsapp && (
+              <label>
+                מספר WhatsApp *
+                <input
+                  name="whatsapp"
+                  value={form.whatsapp}
+                  onChange={change}
+                  placeholder="לדוגמה: 050-1234567"
+                  required
+                />
+              </label>
+            )}
+          </fieldset>
+
+          <label>
+            עיר
+            <input
+              name="city"
+              value={form.city}
+              onChange={change}
+            />
+          </label>
 
           <label>
             כתובת
@@ -677,6 +720,7 @@ export default function AdminGovernment() {
 
                   <div className="badges">
                     {item.featured && <span>⭐ מומלץ</span>}
+                    {item.acceptsWhatsapp && item.whatsapp && <span>🟢 WhatsApp</span>}
                     <span className={item.active ? "active" : "hidden"}>
                       {item.active ? "מוצג" : "מוסתר"}
                     </span>

@@ -25,6 +25,11 @@ const validUrl = (v) => {
 const validEmail = (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 function normalize(body = {}, existing = {}) {
+  const acceptsWhatsapp =
+    body.acceptsWhatsapp !== undefined
+      ? bool(body.acceptsWhatsapp)
+      : bool(existing.acceptsWhatsapp);
+
   return {
     bodyName: body.bodyName !== undefined ? text(body.bodyName) : text(existing.bodyName),
     department: body.department !== undefined ? text(body.department) : text(existing.department),
@@ -36,7 +41,10 @@ function normalize(body = {}, existing = {}) {
     appointmentUrl: body.appointmentUrl !== undefined ? text(body.appointmentUrl) : text(existing.appointmentUrl),
     email: body.email !== undefined ? text(body.email) : text(existing.email),
     phone: body.phone !== undefined ? text(body.phone) : text(existing.phone),
-    whatsapp: body.whatsapp !== undefined ? text(body.whatsapp) : text(existing.whatsapp),
+    acceptsWhatsapp,
+    whatsapp: acceptsWhatsapp
+      ? (body.whatsapp !== undefined ? text(body.whatsapp) : text(existing.whatsapp))
+      : "",
     address: body.address !== undefined ? text(body.address) : text(existing.address),
     city: body.city !== undefined ? text(body.city) : text(existing.city),
     openingHours: body.openingHours !== undefined ? normalizeOpeningHours(body.openingHours) : normalizeOpeningHours(existing.openingHours),
@@ -59,6 +67,7 @@ function validate(data) {
     if (!validUrl(data[k])) errors.push(`כתובת ${k} אינה תקינה`);
   });
   if (!validEmail(data.email)) errors.push("כתובת הדואר האלקטרוני אינה תקינה");
+  if (data.acceptsWhatsapp && !data.whatsapp) errors.push("חובה להזין מספר WhatsApp כאשר נבחר כן");
   return errors;
 }
 
