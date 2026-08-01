@@ -6,7 +6,7 @@ import { CartProvider } from "./context/CartContext";
 import { LanguageProvider } from "./context/LanguageContext";
 
 import Home from "./pages/Home";
-import AlonLinks from "./pages/AlonLinks";
+import InterestingSites from "./pages/InterestingSites";
 import IsraelEvents from "./pages/IsraelEvents";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
@@ -75,7 +75,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/interesting-sites" element={<AlonLinks />} />
+              <Route path="/interesting-sites" element={<InterestingSites />} />
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/services" element={<Services />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
