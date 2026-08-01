@@ -110,13 +110,6 @@ const adminSections = [
     className: "admin-card-yellow",
   },
   {
-    title: "ניהול אפליקציות",
-    description: "הוספה, עריכה ומחיקה של אפליקציות iPhone ו־Galaxy / Android",
-    icon: "📱",
-    path: "/admin/apps",
-    className: "admin-card-teal",
-  },
-  {
     title: "סטטיסטיקות",
     description: "צפייה בנתוני שימוש ופעילות באתר",
     icon: "📊",

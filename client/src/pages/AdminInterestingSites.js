@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import "./AdminInterestingSites.css";
 
 const API_BASE =
-  process.env.REACT_APP_API_URL || "http://localhost:3001";
+  process.env.REACT_APP_API_URL ||
+  process.env.REACT_APP_API_BASE?.replace(/\/api\/?$/, "") ||
+  (window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:3001"
+    : "https://alonpc02026.onrender.com");
 const API = `${API_BASE}/api/interesting-sites`;
 
 const DEFAULT_CATEGORIES = [

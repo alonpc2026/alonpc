@@ -42,6 +42,7 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
+import AdminInterestingSites from "./pages/AdminInterestingSites";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -112,6 +113,7 @@ function App() {
               <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
               <Route path="/admin/bookings" element={<AdminRoute><AdminBookings /></AdminRoute>} />
               <Route path="/admin/apps" element={<AdminRoute><AdminApps /></AdminRoute>} />
+              <Route path="/admin/interesting-sites" element={<AdminRoute><AdminInterestingSites /></AdminRoute>} />
             </Routes>
           </div>
         </HashRouter>
