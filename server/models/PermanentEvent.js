@@ -17,4 +17,4 @@ const permanentEventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("PermanentEvent", permanentEventSchema)
+module.exports = mongoose.model("PermanentEvent", permanentEventSchema);

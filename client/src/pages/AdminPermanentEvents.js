@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AdminPermanentEvents.css";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3001";
+const API_BASE = process.env.REACT_APP_API_URL || "https://alonpc02026.onrender.com";
 const API_URL = `${API_BASE}/api/permanent-events`;
 const LANGUAGE_OPTIONS = ["עברית", "אנגלית", "רוסית", "ערבית", "אמהרית", "שפת הסימנים הישראלית"];
 

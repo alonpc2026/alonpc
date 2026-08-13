@@ -17,6 +17,8 @@ import SecondHand from "./pages/SecondHand";
 import Documents from "./pages/Documents";
 import ServiceBooking from "./pages/ServiceBooking";
 import AppsHub from "./pages/AppsHub";
+import GamesHub from "./pages/GamesHub";
+import GamesList from "./pages/GamesList";
 import MobileApps from "./pages/MobileApps";
 import AppCategoryPlaceholder from "./pages/AppCategoryPlaceholder";
 
@@ -29,6 +31,7 @@ import AdminShop from "./pages/AdminShop";
 import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
 import AdminEvents from "./pages/AdminEvents";
+import AdminPermanentEvents from "./pages/AdminPermanentEvents";
 import AdminInterestingSites from "./pages/AdminInterestingSites";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
@@ -44,6 +47,7 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
+import AdminGames from "./pages/AdminGames";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -104,6 +108,8 @@ function App() {
               <Route path="/apps" element={<AppsHub />} />
               <Route path="/apps/mobile" element={<MobileApps />} />
               <Route path="/apps/:type" element={<AppCategoryPlaceholder />} />
+              <Route path="/games" element={<GamesHub />} />
+              <Route path="/games/:type" element={<GamesList />} />
 
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
@@ -290,6 +296,24 @@ function App() {
                 }
               />
 
+
+              <Route
+                path="/admin/games"
+                element={
+                  <AdminRoute>
+                    <AdminGames />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/permanent-events"
+                element={
+                  <AdminRoute>
+                    <AdminPermanentEvents />
+                  </AdminRoute>
+                }
+              />
             </Routes>
           </div>
         </HashRouter>

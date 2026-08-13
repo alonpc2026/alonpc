@@ -95,11 +95,18 @@ const adminSections = [
     className: "admin-card-dark",
   },
   {
-    title: "ניהול אירועים",
-    description: "הוספה, עריכה ומחיקה של אירועים בלוח החודשי",
+    title: "ניהול אירועים רגילים",
+    description: "אירועים עם תאריך ושעה: הוספה, עריכה ומחיקה",
     icon: "📅",
     path: "/admin/events",
     className: "admin-card-blue",
+  },
+  {
+    title: "ניהול אירועים קבועים",
+    description: "מקומות קבועים, קישורים, מסמכים, שעות ופרטי נגישות",
+    icon: "📌",
+    path: "/admin/permanent-events",
+    className: "admin-card-purple",
   },
   {
     title: "ניהול אתרים מעניינים",
