@@ -1,58 +1,68 @@
 const express = require("express");
 const router = express.Router();
 
-const Document = require("../models/Document");
+const Booking = require("../models/Booking");
 
-// קבלת כל המסמכים
+// קבלת כל ההזמנות והבקשות
 router.get("/", async (req, res) => {
   try {
-    const documents = await Document.find().sort({ createdAt: -1 });
-    res.json(documents);
+    const bookings = await Booking.find().sort({ createdAt: -1 });
+    res.json(bookings);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// הוספת מסמך
+// ספירת הודעות/בקשות חדשות למנהל
+router.get("/new-count", async (req, res) => {
+  try {
+    const count = await Booking.countDocuments({ status: "חדש" });
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// הוספת הזמנה / בקשת שירות
 router.post("/", async (req, res) => {
   try {
-    const document = new Document(req.body);
-    await document.save();
-    res.status(201).json(document);
+    const booking = new Booking(req.body);
+    await booking.save();
+    res.status(201).json(booking);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-// עדכון מסמך
+// עדכון הזמנה / סטטוס
 router.put("/:id", async (req, res) => {
   try {
-    const document = await Document.findByIdAndUpdate(
+    const booking = await Booking.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
-    if (!document) {
-      return res.status(404).json({ message: "המסמך לא נמצא" });
+    if (!booking) {
+      return res.status(404).json({ message: "ההזמנה לא נמצאה" });
     }
 
-    res.json(document);
+    res.json(booking);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-// מחיקת מסמך
+// מחיקת הזמנה
 router.delete("/:id", async (req, res) => {
   try {
-    const document = await Document.findByIdAndDelete(req.params.id);
+    const booking = await Booking.findByIdAndDelete(req.params.id);
 
-    if (!document) {
-      return res.status(404).json({ message: "המסמך לא נמצא" });
+    if (!booking) {
+      return res.status(404).json({ message: "ההזמנה לא נמצאה" });
     }
 
-    res.json({ message: "המסמך נמחק בהצלחה" });
+    res.json({ message: "ההזמנה נמחקה בהצלחה" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

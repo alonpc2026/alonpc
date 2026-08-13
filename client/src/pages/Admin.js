@@ -1,5 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Admin.css";
+
+const BOOKINGS_API =
+  process.env.REACT_APP_API_BASE
+    ? `${process.env.REACT_APP_API_BASE}/bookings`
+    : "https://alonpc02026.onrender.com/api/bookings";
 
 const adminSections = [
   {
@@ -116,6 +122,14 @@ const adminSections = [
     path: "/admin/apps",
     className: "admin-card-teal",
   },
+
+  {
+    title: "ניהול כל המשחקים",
+    description: "מחשב, Android, Apple וטלוויזיה חכמה",
+    icon: "🎮",
+    path: "/admin/games",
+    className: "admin-card-violet",
+  },
   {
     title: "סטטיסטיקות",
     description: "צפייה בנתוני שימוש ופעילות באתר",
@@ -147,6 +161,47 @@ const adminSections = [
 ];
 
 function Admin() {
+  const [newBookingsCount, setNewBookingsCount] = useState(0);
+  const [bookingAlertLoading, setBookingAlertLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadNewBookingsCount() {
+      try {
+        const response = await fetch(`${BOOKINGS_API}/new-count`);
+        const data = await response.json().catch(() => ({ count: 0 }));
+
+        if (!response.ok) {
+          throw new Error(data.message || "לא ניתן לבדוק הודעות");
+        }
+
+        if (active) {
+          setNewBookingsCount(Number(data.count || 0));
+        }
+      } catch {
+        if (active) {
+          setNewBookingsCount(0);
+        }
+      } finally {
+        if (active) {
+          setBookingAlertLoading(false);
+        }
+      }
+    }
+
+    loadNewBookingsCount();
+
+    const intervalId = window.setInterval(loadNewBookingsCount, 60000);
+    window.addEventListener("alonpc-bookings-changed", loadNewBookingsCount);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener("alonpc-bookings-changed", loadNewBookingsCount);
+    };
+  }, []);
+
   return (
     <main className="admin-portal-page" dir="rtl">
       <section className="admin-portal-header">
@@ -167,6 +222,35 @@ function Admin() {
           </p>
         </div>
       </section>
+
+
+      <Link
+        to="/admin/bookings"
+        className={`admin-booking-alert ${
+          newBookingsCount > 0 ? "has-new" : "no-new"
+        }`}
+        aria-live="polite"
+      >
+        <span className="admin-booking-alert-icon" aria-hidden="true">
+          {newBookingsCount > 0 ? "🔔" : "🔕"}
+        </span>
+
+        <span className="admin-booking-alert-content">
+          <strong>
+            {bookingAlertLoading
+              ? "בודק הודעות מלקוחות..."
+              : newBookingsCount > 0
+                ? `יש הודעות חדשות מלקוחות (${newBookingsCount})`
+                : "אין הודעות חדשות מלקוחות"}
+          </strong>
+
+          <small>
+            לחץ לצפייה בהזמנות ובקשות השירות
+          </small>
+        </span>
+
+        <span aria-hidden="true">←</span>
+      </Link>
 
       <section
         className="admin-portal-grid"

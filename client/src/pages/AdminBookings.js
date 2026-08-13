@@ -24,6 +24,7 @@ function AdminBookings() {
 
     if (res.ok) {
       setMessage("הסטטוס עודכן ✅");
+      window.dispatchEvent(new Event("alonpc-bookings-changed"));
       loadBookings();
     }
   };
@@ -37,6 +38,7 @@ function AdminBookings() {
 
     if (res.ok) {
       setMessage("ההזמנה נמחקה 🗑️");
+      window.dispatchEvent(new Event("alonpc-bookings-changed"));
       loadBookings();
     }
   };
