@@ -110,6 +110,13 @@ const adminSections = [
     className: "admin-card-yellow",
   },
   {
+    title: "ניהול כל האפליקציות",
+    description: "ניהול אפליקציות סלולרי, טלוויזיה חכמה, Windows 10-11 ו-Mac",
+    icon: "📱",
+    path: "/admin/apps",
+    className: "admin-card-teal",
+  },
+  {
     title: "סטטיסטיקות",
     description: "צפייה בנתוני שימוש ופעילות באתר",
     icon: "📊",

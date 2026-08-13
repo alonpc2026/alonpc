@@ -2,86 +2,38 @@ const mongoose = require("mongoose");
 
 const mobileAppSchema = new mongoose.Schema(
   {
-    name: {
+    name: { type: String, trim: true, default: "" },
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+
+    // mobile | tv | windows | mac
+    type: {
       type: String,
-      required: [true, "שם האפליקציה הוא שדה חובה"],
-      trim: true,
-      maxlength: 120,
-    },
-    description: {
-      type: String,
-      trim: true,
-      default: "",
-      maxlength: 1200,
+      enum: ["mobile", "tv", "windows", "mac"],
+      default: "mobile",
+      index: true,
     },
 
-    translations: {
-      en: {
-        name: { type: String, trim: true, default: "", maxlength: 120 },
-        description: { type: String, trim: true, default: "", maxlength: 1200 },
-      },
-      ru: {
-        name: { type: String, trim: true, default: "", maxlength: 120 },
-        description: { type: String, trim: true, default: "", maxlength: 1200 },
-      },
-      ar: {
-        name: { type: String, trim: true, default: "", maxlength: 120 },
-        description: { type: String, trim: true, default: "", maxlength: 1200 },
-      },
-      am: {
-        name: { type: String, trim: true, default: "", maxlength: 120 },
-        description: { type: String, trim: true, default: "", maxlength: 1200 },
-      },
-    },
-    imageUrl: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+    platform: { type: String, trim: true, default: "" },
+    imageUrl: { type: String, trim: true, default: "" },
+    logoUrl: { type: String, trim: true, default: "" },
 
-    hasAndroid: {
-      type: Boolean,
-      default: false,
-    },
-    androidUrl: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+    url: { type: String, trim: true, default: "" },
+    link: { type: String, trim: true, default: "" },
+    websiteUrl: { type: String, trim: true, default: "" },
+    storeUrl: { type: String, trim: true, default: "" },
+    androidUrl: { type: String, trim: true, default: "" },
+    iosUrl: { type: String, trim: true, default: "" },
 
-    hasIphone: {
-      type: Boolean,
-      default: false,
-    },
-    iphoneUrl: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-
-    featured: {
-      type: Boolean,
-      default: false,
-    },
-    active: {
-      type: Boolean,
-      default: true,
-    },
-    displayOrder: {
-      type: Number,
-      default: 0,
-    },
+    active: { type: Boolean, default: true },
+    order: { type: Number, default: 0 },
   },
   {
     timestamps: true,
+    strict: false,
   }
 );
 
-mobileAppSchema.index({
-  active: 1,
-  featured: -1,
-  displayOrder: 1,
-  name: 1,
-});
-
-module.exports = mongoose.model("MobileApp", mobileAppSchema);
+module.exports =
+  mongoose.models.MobileApp ||
+  mongoose.model("MobileApp", mobileAppSchema);

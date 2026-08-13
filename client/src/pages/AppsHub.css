@@ -1,0 +1,129 @@
+.apps-hub-page {
+  min-height: 100vh;
+  padding: 34px 18px 60px;
+  background:
+    linear-gradient(180deg, #071a38, #0b3268 55%, #071a38);
+  color: #fff;
+}
+
+.apps-graffiti-hero {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  padding: 30px 20px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 12% 20%, #fff500 0 4%, transparent 5%),
+    radial-gradient(circle at 88% 75%, #00ffd5 0 5%, transparent 6%),
+    linear-gradient(135deg, #6814d9, #e00070 55%, #ff7a00);
+  box-shadow: 0 0 0 5px #111827, 0 18px 42px rgba(0,0,0,.35);
+}
+
+.apps-graffiti-hero h1 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: clamp(48px, 9vw, 92px);
+  color: #fff500;
+  letter-spacing: 2px;
+  -webkit-text-stroke: 2px #111827;
+  text-shadow: 5px 5px 0 #111827;
+  transform: rotate(-1deg);
+}
+
+.apps-graffiti-hero p {
+  position: relative;
+  z-index: 2;
+  margin: 14px 0 0;
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 800;
+}
+
+.apps-spray {
+  position: absolute;
+  inset-inline-end: 20px;
+  top: -25px;
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: 150px;
+  color: rgba(255,255,255,.12);
+  transform: rotate(12deg);
+}
+
+.apps-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.apps-category-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+  min-height: 190px;
+  padding: 24px;
+  border: 4px solid #fff;
+  border-radius: 24px;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(0,0,0,.3);
+  transition: transform .16s ease, filter .16s ease;
+}
+
+.apps-category-card:hover,
+.apps-category-card:focus {
+  transform: translateY(-5px) rotate(-.3deg);
+  filter: brightness(1.08);
+}
+
+.apps-card-tv { background: linear-gradient(135deg, #0057b8, #00a7e1); }
+.apps-card-mobile { background: linear-gradient(135deg, #6a00ff, #ff007a); }
+.apps-card-windows { background: linear-gradient(135deg, #005a9e, #107c10); }
+.apps-card-mac { background: linear-gradient(135deg, #333, #777); }
+
+.apps-category-icon {
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 22px;
+  background: #fff;
+  font-size: 50px;
+}
+
+.apps-category-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apps-category-text strong {
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  color: #fff500;
+  -webkit-text-stroke: 1px #111827;
+  text-shadow: 3px 3px 0 #111827;
+}
+
+.apps-category-text small {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.apps-category-open {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+@media (max-width: 720px) {
+  .apps-hub-grid { grid-template-columns: 1fr; }
+  .apps-category-card { min-height: 160px; padding: 18px; }
+  .apps-category-icon { width: 72px; height: 72px; font-size: 40px; }
+}

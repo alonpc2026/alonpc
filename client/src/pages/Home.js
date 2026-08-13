@@ -11,6 +11,9 @@ const HOME_TRANSLATIONS = {
     heroTitle: "מרכז השירותים של ALONPC",
     heroSubtitle: "כל השירותים, החנות, המסמכים והסיוע במקום אחד.",
     searchPlaceholder: "חיפוש כפתור או שירות",
+    aiTitle: "🤖 מנוע בינה מלאכותית למען הנגישות",
+    aiPlaceholder: "מה תרצו לדעת בנושא נגישות?",
+    aiButton: "חיפוש",
     clear: "נקה",
     buttonsAria: "כל הכפתורים הראשיים",
     noResults: "לא נמצאו כפתורים מתאימים לחיפוש.",
@@ -32,6 +35,7 @@ const HOME_TRANSLATIONS = {
       booking: ["הזמנת שירות", "פתיחת בקשה לשירות או טיפול"],
       events: ["לוח אירועים בישראל", "אירועים, הופעות, כנסים ופעילויות לפי חודשים"],
       interestingSites: ["אתרים מעניינים של אלון", "קישורים לאתרים מומלצים ושימושיים"],
+      apps: ["אפליקציות", "טלוויזיה חכמה, סלולרי, Windows ו-Mac"],
       about: ["אודות", "מידע על ALONPC"],
       contact: ["צור קשר", "פנייה לאלון בכתב"]
     }
@@ -41,6 +45,9 @@ const HOME_TRANSLATIONS = {
     heroTitle: "ALONPC Service Center",
     heroSubtitle: "All services, the shop, documents and assistance in one place.",
     searchPlaceholder: "Search for a button or service",
+    aiTitle: "🤖 Artificial Intelligence Engine for Accessibility",
+    aiPlaceholder: "What would you like to know about accessibility?",
+    aiButton: "Search",
     clear: "Clear",
     buttonsAria: "All main buttons",
     noResults: "No matching buttons were found.",
@@ -62,6 +69,7 @@ const HOME_TRANSLATIONS = {
       booking: ["Book a Service", "Open a service or support request"],
       events: ["Events in Israel", "Events, shows, conferences and activities by month"],
       interestingSites: ["Alon's Interesting Sites", "Recommended and useful website links"],
+      apps: ["Apps", "Smart TV, mobile, Windows and Mac"],
       about: ["About", "Information about ALONPC"],
       contact: ["Contact", "Write to Alon"]
     }
@@ -71,6 +79,9 @@ const HOME_TRANSLATIONS = {
     heroTitle: "Центр услуг ALONPC",
     heroSubtitle: "Все услуги, магазин, документы и помощь в одном месте.",
     searchPlaceholder: "Поиск кнопки или услуги",
+    aiTitle: "🤖 Искусственный интеллект для доступности",
+    aiPlaceholder: "Что вы хотите узнать о доступности?",
+    aiButton: "Поиск",
     clear: "Очистить",
     buttonsAria: "Все основные кнопки",
     noResults: "Подходящие кнопки не найдены.",
@@ -92,6 +103,7 @@ const HOME_TRANSLATIONS = {
       booking: ["Заказ услуги", "Открыть заявку на услугу или помощь"],
       events: ["События в Израиле", "События, концерты, конференции и мероприятия по месяцам"],
       interestingSites: ["Интересные сайты Алона", "Рекомендуемые и полезные ссылки"],
+      apps: ["Приложения", "Smart TV, мобильные, Windows и Mac"],
       about: ["О нас", "Информация об ALONPC"],
       contact: ["Контакты", "Написать Алону"]
     }
@@ -101,6 +113,9 @@ const HOME_TRANSLATIONS = {
     heroTitle: "مركز خدمات ALONPC",
     heroSubtitle: "جميع الخدمات والمتجر والمستندات والمساعدة في مكان واحد.",
     searchPlaceholder: "ابحث عن زر أو خدمة",
+    aiTitle: "🤖 محرك الذكاء الاصطناعي من أجل إمكانية الوصول",
+    aiPlaceholder: "ماذا تريد أن تعرف عن إمكانية الوصول؟",
+    aiButton: "بحث",
     clear: "مسح",
     buttonsAria: "جميع الأزرار الرئيسية",
     noResults: "لم يتم العثور على أزرار مطابقة.",
@@ -122,6 +137,7 @@ const HOME_TRANSLATIONS = {
       booking: ["حجز خدمة", "فتح طلب خدمة أو مساعدة"],
       events: ["فعاليات في إسرائيل", "فعاليات وعروض ومؤتمرات وأنشطة حسب الأشهر"],
       interestingSites: ["مواقع ألون المميزة", "روابط لمواقع موصى بها ومفيدة"],
+      apps: ["التطبيقات", "تلفزيون ذكي، هاتف، Windows وMac"],
       about: ["من نحن", "معلومات عن ALONPC"],
       contact: ["اتصل بنا", "مراسلة ألون كتابيًا"]
     }
@@ -131,6 +147,9 @@ const HOME_TRANSLATIONS = {
     heroTitle: "የALONPC አገልግሎት ማዕከል",
     heroSubtitle: "ሁሉም አገልግሎቶች፣ ሱቅ፣ ሰነዶችና እርዳታ በአንድ ቦታ።",
     searchPlaceholder: "ቁልፍ ወይም አገልግሎት ፈልግ",
+    aiTitle: "🤖 ለተደራሽነት የሰው ሰራሽ ብልህነት ሞተር",
+    aiPlaceholder: "ስለ ተደራሽነት ምን ማወቅ ይፈልጋሉ?",
+    aiButton: "ፈልግ",
     clear: "አጽዳ",
     buttonsAria: "ሁሉም ዋና ቁልፎች",
     noResults: "ተዛማጅ ቁልፎች አልተገኙም።",
@@ -152,6 +171,7 @@ const HOME_TRANSLATIONS = {
       booking: ["አገልግሎት ይዘዙ", "የአገልግሎት ወይም ድጋፍ ጥያቄ ይክፈቱ"],
       events: ["በእስራኤል ያሉ ዝግጅቶች", "ዝግጅቶች፣ ትርዒቶችና ጉባኤዎች በወር"],
       interestingSites: ["የአሎን ጠቃሚ ድረ ገጾች", "የሚመከሩና ጠቃሚ አገናኞች"],
+      apps: ["መተግበሪያዎች", "Smart TV፣ ሞባይል፣ Windows እና Mac"],
       about: ["ስለ እኛ", "ስለ ALONPC መረጃ"],
       contact: ["ያግኙን", "ለአሎን በጽሑፍ ይላኩ"]
     }
@@ -172,6 +192,7 @@ const BUTTON_DEFINITIONS = [
   { key: "booking", icon: "🗓️", color: "pink", path: "/booking" },
   { key: "events", icon: "📅", color: "royal", path: "/israel-events" },
   { key: "interestingSites", icon: "🌐", color: "indigo", path: "/interesting-sites" },
+  { key: "apps", icon: "📱", color: "graffiti", path: "/apps" },
   { key: "about", icon: "ℹ️", color: "sky", path: "/about" },
   { key: "contact", icon: "📞", color: "red", path: "/contact" }
 ];
@@ -179,6 +200,7 @@ const BUTTON_DEFINITIONS = [
 function Home() {
   const { language, dir, locale } = useLanguage();
   const [search, setSearch] = useState("");
+  const [aiQuestion, setAiQuestion] = useState("");
 
   const text = HOME_TRANSLATIONS[language] || HOME_TRANSLATIONS.he;
 
@@ -203,6 +225,19 @@ function Home() {
         .includes(term)
     );
   }, [search, mainButtons, locale]);
+
+  function submitAccessibilitySearch(event) {
+    event.preventDefault();
+    const question = aiQuestion.trim();
+    if (!question) return;
+
+    const query = `${question} נגישות אנשים עם מוגבלות ישראל`;
+    window.open(
+      `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
 
   const arrow = dir === "rtl" ? "←" : "→";
 
@@ -236,6 +271,29 @@ function Home() {
               {text.clear}
             </button>
           </div>
+          <form
+            onSubmit={submitAccessibilitySearch}
+            className="home-ai-search"
+          >
+            <strong className="home-ai-graffiti-title">
+              {text.aiTitle}
+            </strong>
+            <div className="home-ai-search-row">
+              <input
+                type="search"
+                value={aiQuestion}
+                onChange={(event) => setAiQuestion(event.target.value)}
+                placeholder={text.aiPlaceholder}
+                aria-label={text.aiPlaceholder}
+              />
+              <button
+                type="submit"
+                className="home-ai-search-button"
+              >
+                {text.aiButton}
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
