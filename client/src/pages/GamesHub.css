@@ -1,0 +1,127 @@
+.games-hub-page {
+  min-height: 100vh;
+  padding: 34px 18px 60px;
+  background:
+    linear-gradient(180deg, #050816, #121b45 55%, #050816);
+  color: #fff;
+}
+
+.games-graffiti-hero {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  padding: 32px 20px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 30px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 12% 20%, #00ffd5 0 4%, transparent 5%),
+    radial-gradient(circle at 88% 75%, #fff500 0 5%, transparent 6%),
+    linear-gradient(135deg, #111827, #6d28d9 45%, #db2777 72%, #f97316);
+  box-shadow: 0 0 0 5px #020617, 0 18px 42px rgba(0,0,0,.45);
+}
+
+.games-graffiti-hero h1 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: clamp(50px, 9vw, 96px);
+  color: #00ffd5;
+  letter-spacing: 2px;
+  -webkit-text-stroke: 2px #020617;
+  text-shadow: 5px 5px 0 #020617;
+  transform: rotate(.8deg);
+}
+
+.games-graffiti-hero p {
+  position: relative;
+  z-index: 2;
+  margin: 14px 0 0;
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 900;
+}
+
+.games-spray {
+  position: absolute;
+  inset-inline-end: 14px;
+  top: -28px;
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: 150px;
+  color: rgba(255,255,255,.10);
+  transform: rotate(-12deg);
+}
+
+.games-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 22px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.game-category-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+  min-height: 190px;
+  padding: 24px;
+  border: 4px solid #fff;
+  border-radius: 24px;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(0,0,0,.35);
+  transition: transform .16s ease, filter .16s ease;
+}
+
+.game-category-card:hover,
+.game-category-card:focus {
+  transform: translateY(-5px) rotate(.4deg);
+  filter: brightness(1.08);
+}
+
+.game-card-computer { background: linear-gradient(135deg, #0f172a, #2563eb); }
+.game-card-android { background: linear-gradient(135deg, #166534, #22c55e); }
+.game-card-apple { background: linear-gradient(135deg, #111827, #6b7280); }
+.game-card-tv { background: linear-gradient(135deg, #7c2d12, #f97316); }
+
+.game-category-icon {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 22px;
+  background: #fff;
+  font-size: 50px;
+}
+
+.game-category-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.game-category-text strong {
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  color: #fff500;
+  -webkit-text-stroke: 1px #020617;
+  text-shadow: 3px 3px 0 #020617;
+}
+
+.game-category-text small {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.game-category-open {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+@media (max-width: 720px) {
+  .games-hub-grid { grid-template-columns: 1fr; }
+}

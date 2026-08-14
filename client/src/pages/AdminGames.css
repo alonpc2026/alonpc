@@ -1,0 +1,21 @@
+.admin-games-page{min-height:100vh;padding:30px 18px 60px;background:linear-gradient(180deg,#050816,#121b45);color:#fff}
+.admin-games-hero,.admin-games-form,.admin-games-list{max-width:1120px;margin:0 auto 24px}
+.admin-games-hero{position:relative;overflow:hidden;padding:28px 20px;border:5px solid #fff;border-radius:28px;background:linear-gradient(135deg,#111827,#6d28d9,#db2777,#f97316);text-align:center;box-shadow:0 0 0 5px #020617,0 15px 34px rgba(0,0,0,.4)}
+.admin-games-hero h1{position:relative;z-index:2;margin:0;color:#00ffd5;font-family:Impact,"Arial Black",Arial,sans-serif;font-size:clamp(40px,7vw,72px);-webkit-text-stroke:1px #020617;text-shadow:4px 4px 0 #020617}
+.admin-games-hero>span{position:absolute;inset-inline-end:20px;top:-28px;font-family:Impact,"Arial Black",Arial,sans-serif;font-size:120px;color:rgba(255,255,255,.1);transform:rotate(-10deg)}
+.admin-games-hero p{position:relative;z-index:2;font-size:21px;font-weight:900}
+.admin-games-message{max-width:1120px;margin:0 auto 18px;padding:14px;border-radius:14px;background:#fff;color:#12213d;font-weight:900}
+.admin-games-form,.admin-games-list{padding:22px;border:3px solid #fff;border-radius:22px;background:rgba(255,255,255,.1)}
+.admin-games-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-games-fields label{display:flex;flex-direction:column;gap:7px}.admin-games-fields .wide{grid-column:1/-1}.admin-games-fields .check{flex-direction:row;align-items:center}
+.admin-games-fields input,.admin-games-fields select,.admin-games-fields textarea,.admin-games-toolbar input,.admin-games-toolbar select{min-height:48px;padding:10px 12px;border:2px solid #d8e5ff;border-radius:12px;font-size:17px}
+.admin-games-actions,.admin-game-card-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.admin-games-actions button,.admin-game-card-actions button{min-height:46px;padding:10px 16px;border:2px solid #fff;border-radius:12px;font-weight:900;cursor:pointer}
+.admin-game-card-actions .delete{background:#9c2929;color:#fff}
+.admin-games-toolbar{display:grid;grid-template-columns:1fr 260px auto;gap:12px;margin-bottom:18px}
+.admin-games-toolbar a{display:grid;place-items:center;min-height:48px;padding:8px 14px;border-radius:12px;background:#00ffd5;color:#071a38;font-weight:900;text-decoration:none}
+.admin-games-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.admin-game-card{padding:16px;border:3px solid #fff;border-radius:18px;background:#fff;color:#172033}
+.admin-game-card img,.admin-game-placeholder{width:100%;height:130px;object-fit:contain;border-radius:12px;background:#eef3ff}.admin-game-placeholder{display:grid;place-items:center;font-size:58px}
+@media(max-width:800px){.admin-games-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-games-toolbar{grid-template-columns:1fr}}
+@media(max-width:560px){.admin-games-fields,.admin-games-grid{grid-template-columns:1fr}.admin-games-fields .wide{grid-column:auto}}

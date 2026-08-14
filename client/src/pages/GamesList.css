@@ -1,0 +1,14 @@
+.games-list-page{min-height:100vh;padding:30px 18px 60px;background:linear-gradient(180deg,#050816,#121b45);color:#fff}
+.games-list-hero{max-width:1100px;margin:0 auto 24px;padding:24px;border:4px solid #fff;border-radius:24px;background:linear-gradient(135deg,#111827,#6d28d9,#db2777);text-align:center}
+.games-list-hero h1{margin:0;font-family:Impact,"Arial Black",Arial,sans-serif;font-size:clamp(38px,7vw,70px);color:#00ffd5;-webkit-text-stroke:1px #020617;text-shadow:4px 4px 0 #020617}
+.games-list-tools{display:flex;gap:12px;flex-wrap:wrap;max-width:1100px;margin:0 auto 24px}
+.games-list-tools input{flex:1 1 320px;min-height:54px;padding:10px 14px;border:3px solid #fff;border-radius:14px;font-size:19px}
+.games-list-tools a{display:grid;place-items:center;min-height:54px;padding:10px 18px;border:3px solid #fff;border-radius:14px;background:#00ffd5;color:#071a38;font-weight:900;text-decoration:none}
+.games-list-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1100px;margin:0 auto}
+.game-item-card{padding:18px;border:3px solid #fff;border-radius:20px;background:#fff;color:#14213d}
+.game-item-card img,.game-item-placeholder{width:100%;height:160px;object-fit:contain;border-radius:14px;background:#eef3ff}
+.game-item-placeholder{display:grid;place-items:center;font-size:70px}
+.game-item-card a{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:10px;background:#6d28d9;color:#fff;font-weight:900;text-decoration:none}
+.games-list-status{max-width:1100px;margin:18px auto;padding:16px;border-radius:14px;background:#fff;color:#14213d;font-weight:800}
+@media(max-width:850px){.games-list-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.games-list-grid{grid-template-columns:1fr}}

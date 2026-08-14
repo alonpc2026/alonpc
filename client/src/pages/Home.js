@@ -36,6 +36,7 @@ const HOME_TRANSLATIONS = {
       events: ["לוח אירועים בישראל", "אירועים, הופעות, כנסים ופעילויות לפי חודשים"],
       interestingSites: ["אתרים מעניינים של אלון", "קישורים לאתרים מומלצים ושימושיים"],
       apps: ["אפליקציות", "טלוויזיה חכמה, סלולרי, Windows ו-Mac"],
+      games: ["משחקים", "מחשב, Android, Apple וטלוויזיה חכמה"],
       about: ["אודות", "מידע על ALONPC"],
       contact: ["צור קשר", "פנייה לאלון בכתב"]
     }
@@ -70,6 +71,7 @@ const HOME_TRANSLATIONS = {
       events: ["Events in Israel", "Events, shows, conferences and activities by month"],
       interestingSites: ["Alon's Interesting Sites", "Recommended and useful website links"],
       apps: ["Apps", "Smart TV, mobile, Windows and Mac"],
+      games: ["Games", "Computer, Android, Apple and Smart TV"],
       about: ["About", "Information about ALONPC"],
       contact: ["Contact", "Write to Alon"]
     }
@@ -104,6 +106,7 @@ const HOME_TRANSLATIONS = {
       events: ["События в Израиле", "События, концерты, конференции и мероприятия по месяцам"],
       interestingSites: ["Интересные сайты Алона", "Рекомендуемые и полезные ссылки"],
       apps: ["Приложения", "Smart TV, мобильные, Windows и Mac"],
+      games: ["Игры", "Компьютер, Android, Apple и Smart TV"],
       about: ["О нас", "Информация об ALONPC"],
       contact: ["Контакты", "Написать Алону"]
     }
@@ -138,6 +141,7 @@ const HOME_TRANSLATIONS = {
       events: ["فعاليات في إسرائيل", "فعاليات وعروض ومؤتمرات وأنشطة حسب الأشهر"],
       interestingSites: ["مواقع ألون المميزة", "روابط لمواقع موصى بها ومفيدة"],
       apps: ["التطبيقات", "تلفزيون ذكي، هاتف، Windows وMac"],
+      games: ["الألعاب", "كمبيوتر، Android، Apple وتلفزيون ذكي"],
       about: ["من نحن", "معلومات عن ALONPC"],
       contact: ["اتصل بنا", "مراسلة ألون كتابيًا"]
     }
@@ -172,6 +176,7 @@ const HOME_TRANSLATIONS = {
       events: ["በእስራኤል ያሉ ዝግጅቶች", "ዝግጅቶች፣ ትርዒቶችና ጉባኤዎች በወር"],
       interestingSites: ["የአሎን ጠቃሚ ድረ ገጾች", "የሚመከሩና ጠቃሚ አገናኞች"],
       apps: ["መተግበሪያዎች", "Smart TV፣ ሞባይል፣ Windows እና Mac"],
+      games: ["ጨዋታዎች", "ኮምፒውተር፣ Android፣ Apple እና Smart TV"],
       about: ["ስለ እኛ", "ስለ ALONPC መረጃ"],
       contact: ["ያግኙን", "ለአሎን በጽሑፍ ይላኩ"]
     }
@@ -193,6 +198,7 @@ const BUTTON_DEFINITIONS = [
   { key: "events", icon: "📅", color: "royal", path: "/israel-events" },
   { key: "interestingSites", icon: "🌐", color: "indigo", path: "/interesting-sites" },
   { key: "apps", icon: "📱", color: "graffiti", path: "/apps" },
+  { key: "games", icon: "🎮", color: "games-graffiti", path: "/games" },
   { key: "about", icon: "ℹ️", color: "sky", path: "/about" },
   { key: "contact", icon: "📞", color: "red", path: "/contact" }
 ];

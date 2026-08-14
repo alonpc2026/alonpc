@@ -1,217 +1,384 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import "./AdminPermanentEvents.css";
+import "./AdminEvents.css";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3001";
-const API_URL = `${API_BASE}/api/permanent-events`;
-const LANGUAGE_OPTIONS = ["עברית", "אנגלית", "רוסית", "ערבית", "אמהרית", "שפת הסימנים הישראלית"];
+const API_BASE =
+  process.env.REACT_APP_API_BASE ||
+  "https://alonpc02026.onrender.com/api";
 
-const emptyForm = {
-  name: "",
+const EMPTY_FORM = {
+  title: "",
+  date: "",
+  time: "",
   city: "",
-  address: "",
-  website: "",
-  document: "",
-  image: "",
+  location: "",
   description: "",
-  accessibility: "",
-  languages: [],
-  openingHours: "",
+  website: "",
+  imageUrl: "",
   active: true,
 };
 
-function AdminPermanentEvents() {
-  const [items, setItems] = useState([]);
-  const [form, setForm] = useState(emptyForm);
+function getToken() {
+  return localStorage.getItem("token") || "";
+}
+
+function AdminEvents() {
+  const [events, setEvents] = useState([]);
+  const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState("");
+  const [search, setSearch] = useState("");
+  const [monthFilter, setMonthFilter] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const loadItems = async () => {
+  async function apiRequest(path = "", options = {}) {
+    const response = await fetch(`${API_BASE}/events${path}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+        ...(options.headers || {}),
+      },
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(data.message || "הפעולה נכשלה");
+    }
+
+    return data;
+  }
+
+  async function loadEvents() {
+    setLoading(true);
+    setError("");
+
     try {
-      setLoading(true);
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("טעינת הנתונים נכשלה");
-      setItems(await response.json());
-    } catch (error) {
-      setMessage(error.message || "לא ניתן לטעון את הרשימה");
+      const data = await apiRequest("");
+      setEvents(Array.isArray(data) ? data : data.events || []);
+    } catch (requestError) {
+      setError(requestError.message);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
-    loadItems();
+    loadEvents();
   }, []);
 
-  const updateField = (event) => {
-    const { name, value, type, checked } = event.target;
-    setForm((current) => ({ ...current, [name]: type === "checkbox" ? checked : value }));
-  };
+  const filteredEvents = useMemo(() => {
+    const term = search.trim().toLowerCase();
 
-  const toggleLanguage = (language) => {
+    return [...events]
+      .filter((event) => {
+        const matchesSearch =
+          !term ||
+          `${event.title} ${event.city} ${event.location}`
+            .toLowerCase()
+            .includes(term);
+
+        const matchesMonth =
+          !monthFilter || String(event.date || "").startsWith(monthFilter);
+
+        return matchesSearch && matchesMonth;
+      })
+      .sort((a, b) =>
+        `${a.date || ""} ${a.time || ""}`.localeCompare(
+          `${b.date || ""} ${b.time || ""}`
+        )
+      );
+  }, [events, search, monthFilter]);
+
+  function handleChange(event) {
+    const { name, value, type, checked } = event.target;
+
     setForm((current) => ({
       ...current,
-      languages: current.languages.includes(language)
-        ? current.languages.filter((item) => item !== language)
-        : [...current.languages, language],
+      [name]: type === "checkbox" ? checked : value,
     }));
-  };
+  }
 
-  const resetForm = () => {
-    setForm(emptyForm);
+  function resetForm() {
+    setForm(EMPTY_FORM);
     setEditingId("");
-    setMessage("");
-  };
+  }
 
-  const startEdit = (item) => {
+  function startEdit(eventItem) {
+    setEditingId(eventItem._id);
     setForm({
-      name: item.name || "",
-      city: item.city || "",
-      address: item.address || "",
-      website: item.website || "",
-      document: item.document || "",
-      image: item.image || "",
-      description: item.description || "",
-      accessibility: item.accessibility || "",
-      languages: Array.isArray(item.languages) ? item.languages : [],
-      openingHours: item.openingHours || "",
-      active: item.active !== false,
+      title: eventItem.title || "",
+      date: eventItem.date || "",
+      time: eventItem.time || "",
+      city: eventItem.city || "",
+      location: eventItem.location || "",
+      description: eventItem.description || "",
+      website: eventItem.website || "",
+      imageUrl: eventItem.imageUrl || "",
+      active: eventItem.active !== false,
     });
-    setEditingId(item._id);
-    setMessage("מצב עריכה פעיל");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
-  const duplicateItem = (item) => {
-    setForm({
-      name: `${item.name || ""} - עותק`,
-      city: item.city || "",
-      address: item.address || "",
-      website: item.website || "",
-      document: item.document || "",
-      image: item.image || "",
-      description: item.description || "",
-      accessibility: item.accessibility || "",
-      languages: Array.isArray(item.languages) ? item.languages : [],
-      openingHours: item.openingHours || "",
-      active: item.active !== false,
-    });
-    setEditingId("");
-    setMessage("נוצר עותק בטופס. לחץ שמירה כדי להוסיף אותו.");
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }
 
-  const submitForm = async (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (!form.name.trim()) {
-      setMessage("חובה להזין שם מקום");
-      return;
-    }
+    setSaving(true);
+    setMessage("");
+    setError("");
 
     try {
-      setSaving(true);
-      const response = await fetch(editingId ? `${API_URL}/${editingId}` : API_URL, {
-        method: editingId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+      if (!form.title.trim() || !form.date) {
+        throw new Error("יש למלא שם אירוע ותאריך");
+      }
+
+      const path = editingId ? `/${editingId}` : "";
+      const method = editingId ? "PUT" : "POST";
+
+      await apiRequest(path, {
+        method,
         body: JSON.stringify(form),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "השמירה נכשלה");
+
+      setMessage(editingId ? "האירוע עודכן בהצלחה" : "האירוע נוסף בהצלחה");
       resetForm();
-      setMessage(editingId ? "המקום עודכן בהצלחה" : "המקום נוסף בהצלחה");
-      await loadItems();
-    } catch (error) {
-      setMessage(error.message || "לא ניתן לשמור");
+      await loadEvents();
+    } catch (requestError) {
+      setError(requestError.message);
     } finally {
       setSaving(false);
     }
-  };
+  }
 
-  const deleteItem = async (id, name) => {
-    if (!window.confirm(`למחוק את ${name}?`)) return;
+  async function removeEvent(eventItem) {
+    const approved = window.confirm(
+      `למחוק את האירוע "${eventItem.title}"?`
+    );
+
+    if (!approved) return;
+
+    setMessage("");
+    setError("");
+
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "המחיקה נכשלה");
-      setMessage("המקום נמחק");
-      await loadItems();
-    } catch (error) {
-      setMessage(error.message || "לא ניתן למחוק");
+      await apiRequest(`/${eventItem._id}`, { method: "DELETE" });
+      setMessage("האירוע נמחק");
+      await loadEvents();
+    } catch (requestError) {
+      setError(requestError.message);
     }
-  };
+  }
 
   return (
-    <main className="ape-page" dir="rtl">
-      <header className="ape-header">
+    <main className="admin-events-page" dir="rtl">
+      <section className="admin-events-header">
         <div>
-          <p>📌 אזור מנהל</p>
-          <h1>ניהול אירועים קבועים</h1>
-          <span>הוסף מקומות, קישורים, מסמכים ופרטי נגישות.</span>
-        </div>
-        <Link to="/admin" className="ape-back">חזרה לניהול</Link>
-      </header>
-
-      {message && <div className="ape-message" role="status">{message}</div>}
-
-      <form className="ape-form" onSubmit={submitForm}>
-        <h2>{editingId ? "עריכת מקום" : "הוספת מקום קבוע"}</h2>
-        <div className="ape-grid">
-          <label>שם המקום *<input name="name" value={form.name} onChange={updateField} required /></label>
-          <label>עיר<input name="city" value={form.city} onChange={updateField} /></label>
-          <label>כתובת<input name="address" value={form.address} onChange={updateField} /></label>
-          <label>שעות פעילות<input name="openingHours" value={form.openingHours} onChange={updateField} /></label>
-          <label>קישור לאתר<input type="url" name="website" value={form.website} onChange={updateField} placeholder="https://" /></label>
-          <label>קישור למסמך / PDF<input type="url" name="document" value={form.document} onChange={updateField} placeholder="https://" /></label>
-          <label className="ape-wide">קישור לתמונה<input type="url" name="image" value={form.image} onChange={updateField} placeholder="https://" /></label>
-          <label className="ape-wide">תיאור<textarea name="description" value={form.description} onChange={updateField} rows="4" /></label>
-          <label className="ape-wide">פרטי נגישות<textarea name="accessibility" value={form.accessibility} onChange={updateField} rows="3" /></label>
+          <p>🔒 אזור מנהל</p>
+          <h1>ניהול אירועים</h1>
+          <span>
+            כל אירוע פעיל שתשמור כאן יופיע אוטומטית בלוח החודשי באתר.
+          </span>
         </div>
 
-        <fieldset className="ape-languages">
-          <legend>שפות ונגישות תקשורתית</legend>
-          {LANGUAGE_OPTIONS.map((language) => (
-            <label key={language}>
-              <input type="checkbox" checked={form.languages.includes(language)} onChange={() => toggleLanguage(language)} />
-              {language}
+        <div className="admin-events-header-actions">
+          <Link to="/israel-events">צפייה בלוח האירועים</Link>
+          <Link to="/admin">חזרה לפורטל הניהול</Link>
+        </div>
+      </section>
+
+      {message && <div className="admin-events-message">{message}</div>}
+      {error && (
+        <div className="admin-events-message admin-events-error" role="alert">
+          {error}
+        </div>
+      )}
+
+      <section className="admin-events-form-card">
+        <h2>{editingId ? "עריכת אירוע" : "הוספת אירוע חדש"}</h2>
+
+        <form onSubmit={handleSubmit}>
+          <label>
+            שם האירוע *
+            <input
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <div className="admin-events-form-row">
+            <label>
+              תאריך *
+              <input
+                type="date"
+                name="date"
+                value={form.date}
+                onChange={handleChange}
+                required
+              />
             </label>
-          ))}
-        </fieldset>
 
-        <label className="ape-active">
-          <input type="checkbox" name="active" checked={form.active} onChange={updateField} />
-          הצג את המקום באתר הציבורי
-        </label>
+            <label>
+              שעה
+              <input
+                type="time"
+                name="time"
+                value={form.time}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-        <div className="ape-form-actions">
-          <button type="submit" disabled={saving}>{saving ? "שומר..." : editingId ? "שמור שינויים" : "הוסף מקום"}</button>
-          <button type="button" className="ape-secondary" onClick={resetForm}>נקה טופס</button>
+          <div className="admin-events-form-row">
+            <label>
+              עיר
+              <input name="city" value={form.city} onChange={handleChange} />
+            </label>
+
+            <label>
+              מקום
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <label>
+            תיאור
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              rows="5"
+            />
+          </label>
+
+          <label>
+            קישור לאתר האירוע
+            <input
+              type="url"
+              name="website"
+              value={form.website}
+              onChange={handleChange}
+              placeholder="https://"
+            />
+          </label>
+
+          <label>
+            קישור לתמונת האירוע
+            <input
+              type="url"
+              name="imageUrl"
+              value={form.imageUrl}
+              onChange={handleChange}
+              placeholder="https://"
+            />
+          </label>
+
+          <label className="admin-events-checkbox">
+            <input
+              type="checkbox"
+              name="active"
+              checked={form.active}
+              onChange={handleChange}
+            />
+            אירוע פעיל ומוצג באתר
+          </label>
+
+          <div className="admin-events-form-actions">
+            <button type="submit" disabled={saving}>
+              {saving
+                ? "שומר..."
+                : editingId
+                ? "שמירת השינויים"
+                : "הוספת האירוע"}
+            </button>
+
+            {editingId && (
+              <button type="button" className="secondary" onClick={resetForm}>
+                ביטול עריכה
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
+
+      <section className="admin-events-list-card">
+        <div className="admin-events-tools">
+          <h2>כל האירועים</h2>
+
+          <input
+            type="search"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="חיפוש לפי שם, עיר או מקום"
+          />
+
+          <input
+            type="month"
+            value={monthFilter}
+            onChange={(event) => setMonthFilter(event.target.value)}
+            aria-label="סינון לפי חודש"
+          />
+
+          {(search || monthFilter) && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setMonthFilter("");
+              }}
+            >
+              ניקוי סינון
+            </button>
+          )}
         </div>
-      </form>
 
-      <section className="ape-list">
-        <h2>מקומות קיימים ({items.length})</h2>
-        {loading ? <p>טוען...</p> : items.length === 0 ? <p>עדיין לא נוספו מקומות.</p> : (
-          <div className="ape-cards">
-            {items.map((item) => (
-              <article className="ape-card" key={item._id}>
-                {item.image && <img src={item.image} alt={item.name} />}
-                <div className="ape-card-body">
-                  <div className="ape-card-title"><h3>{item.name}</h3><span className={item.active ? "ape-on" : "ape-off"}>{item.active ? "פעיל" : "מוסתר"}</span></div>
-                  {(item.city || item.address) && <p>📍 {[item.city, item.address].filter(Boolean).join(", ")}</p>}
-                  {item.openingHours && <p>🕒 {item.openingHours}</p>}
-                  {item.description && <p>{item.description}</p>}
-                  {item.accessibility && <p>♿ {item.accessibility}</p>}
-                  {item.languages?.length > 0 && <p>🗣️ {item.languages.join(" • ")}</p>}
-                  <div className="ape-links">
-                    {item.website && <a href={item.website} target="_blank" rel="noreferrer">אתר המקום</a>}
-                    {item.document && <a href={item.document} target="_blank" rel="noreferrer">מסמך / תוכנייה</a>}
+        {loading ? (
+          <p>טוען אירועים...</p>
+        ) : filteredEvents.length === 0 ? (
+          <p>לא נמצאו אירועים.</p>
+        ) : (
+          <div className="admin-events-grid">
+            {filteredEvents.map((eventItem) => (
+              <article key={eventItem._id} className="admin-event-card">
+                {eventItem.imageUrl && (
+                  <img src={eventItem.imageUrl} alt={eventItem.title} />
+                )}
+
+                <div className="admin-event-card-content">
+                  <div className="admin-event-card-top">
+                    <strong>{eventItem.title}</strong>
+                    <span className={eventItem.active ? "active" : "hidden"}>
+                      {eventItem.active ? "מוצג" : "מוסתר"}
+                    </span>
                   </div>
-                  <div className="ape-actions">
-                    <button type="button" onClick={() => startEdit(item)}>✏️ עריכה</button>
-                    <button type="button" onClick={() => duplicateItem(item)}>📋 שכפל</button>
-                    <button type="button" className="ape-delete" onClick={() => deleteItem(item._id, item.name)}>🗑️ מחיקה</button>
+
+                  <p>
+                    📅 {eventItem.date} {eventItem.time && `· ${eventItem.time}`}
+                  </p>
+                  <p>
+                    📍 {eventItem.city || "ללא עיר"}
+                    {eventItem.location && ` · ${eventItem.location}`}
+                  </p>
+
+                  <div className="admin-event-card-actions">
+                    <button type="button" onClick={() => startEdit(eventItem)}>
+                      עריכה
+                    </button>
+                    <button
+                      type="button"
+                      className="danger"
+                      onClick={() => removeEvent(eventItem)}
+                    >
+                      מחיקה
+                    </button>
                   </div>
                 </div>
               </article>
@@ -223,4 +390,4 @@ function AdminPermanentEvents() {
   );
 }
 
-export default AdminPermanentEvents;
+export default AdminEvents;

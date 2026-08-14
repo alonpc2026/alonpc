@@ -1,0 +1,68 @@
+/* הוסף את התוכן הזה בסוף client/src/pages/Admin.css */
+
+.admin-booking-alert {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 1100px;
+  margin: 0 auto 22px;
+  padding: 18px 22px;
+  border: 4px solid #ffffff;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.admin-booking-alert:hover,
+.admin-booking-alert:focus-visible {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.admin-booking-alert.has-new {
+  background: linear-gradient(135deg, #b42318, #f04438);
+  color: #ffffff;
+  animation: adminBookingPulse 1.8s ease-in-out infinite;
+}
+
+.admin-booking-alert.no-new {
+  background: linear-gradient(135deg, #146c43, #27ae60);
+  color: #ffffff;
+}
+
+.admin-booking-alert-icon {
+  font-size: 34px;
+}
+
+.admin-booking-alert-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-booking-alert-content strong {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.admin-booking-alert-content small {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@keyframes adminBookingPulse {
+  0%, 100% {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+  50% {
+    box-shadow: 0 10px 34px rgba(255, 255, 255, 0.48);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-booking-alert.has-new {
+    animation: none;
+  }
+}
