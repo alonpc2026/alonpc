@@ -66,7 +66,7 @@ function mountRoute(routePath, urlPath) {
 mountRoute("./routes/authRoutes", "/api/auth");
 mountRoute("./routes/serviceRoutes", "/api/services");
 mountRoute("./routes/uploadRoutes", "/api/upload");
-mountRoute("./routes/productRoutes", "/api/products");
+mountRoute("./routes/productRoutes", "/api/products");\nmountRoute("./routes/secondHandRoutes", "/api/second-hand");
 mountRoute("./routes/userRoutes", "/api/users");
 mountRoute("./routes/eventRoutes", "/api/events");
 mountRoute("./routes/permanentEventRoutes", "/api/permanent-events");
