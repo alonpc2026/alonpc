@@ -69,7 +69,7 @@ function Navbar() {
 
           <span className="alonpc-brand__content">
             <strong>ALONPC</strong>
-            <small>מרכז שירותים לאנשים עם מוגבלות</small>
+            <small>{t("subtitle")}</small>
           </span>
         </Link>
 
@@ -77,7 +77,7 @@ function Navbar() {
           <a className="alonpc-contact__button alonpc-contact__phone" href="tel:+972545221809">
             <span aria-hidden="true">📞</span>
             <span>
-              <small>טלפון</small>
+              <small>{t("phone")}</small>
               054-5221809
             </span>
           </a>
@@ -109,7 +109,7 @@ function Navbar() {
             onClick={() => setMenuOpen((current) => !current)}
           >
             <span aria-hidden="true">{menuOpen ? "✕" : "☰"}</span>
-            <strong>תפריט</strong>
+            <strong>{t("menu")}</strong>
           </button>
         </div>
       </div>
@@ -125,17 +125,12 @@ function Navbar() {
 
         <NavLink to="/services" className={navClass("services")} onClick={closeMenu}>
           <span className="alonpc-nav-item__icon" aria-hidden="true">🏢</span>
-          <span>עסקים נותני שירות</span>
+          <span>{t("services")}</span>
         </NavLink>
 
         <NavLink to="/government" className={navClass("government")} onClick={closeMenu}>
           <span className="alonpc-nav-item__icon" aria-hidden="true">🏛️</span>
-          <span>גופים ממשלתיים וציבוריים</span>
-        </NavLink>
-
-        <NavLink to="/permanent-events" className={navClass("events")} onClick={closeMenu}>
-          <span className="alonpc-nav-item__icon" aria-hidden="true">📌</span>
-          <span>אירועים קבועים</span>
+          <span>{t("governmentBodies")}</span>
         </NavLink>
 
         <NavLink to="/shop" className={navClass("shop")} onClick={closeMenu}>

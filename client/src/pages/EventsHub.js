@@ -3,36 +3,36 @@ import "./EventsHub.css";
 
 export default function EventsHub() {
   return (
-    <main className="events-hub-page" dir="rtl">
-      <section className="events-hub-hero">
-        <span className="events-hub-icon" aria-hidden="true">📅</span>
+    <main className="events-choice-page" dir="rtl">
+      <section className="events-choice-header">
+        <span aria-hidden="true">📅</span>
         <div>
           <h1>אירועים נגישים</h1>
-          <p>בחרו את סוג האירועים הרצוי</p>
+          <p>בחרו סוג אירוע</p>
         </div>
       </section>
 
-      <section className="events-hub-grid" aria-label="סוגי אירועים">
-        <Link to="/regular-events" className="events-hub-card regular">
-          <span className="events-hub-card-icon" aria-hidden="true">🗓️</span>
-          <span className="events-hub-card-text">
+      <section className="events-choice-grid">
+        <Link to="/regular-events" className="events-choice-card regular">
+          <span className="events-choice-icon" aria-hidden="true">🗓️</span>
+          <span>
             <strong>אירועים רגילים</strong>
-            <small>אירועים עם תאריך, שעה, מקום וכל פרטי האירוע</small>
+            <small>אירועים עם תאריך, שעה, מקום וכל הפרטים</small>
           </span>
-          <span className="events-hub-arrow" aria-hidden="true">←</span>
+          <b aria-hidden="true">←</b>
         </Link>
 
-        <Link to="/permanent-events" className="events-hub-card permanent">
-          <span className="events-hub-card-icon" aria-hidden="true">📌</span>
-          <span className="events-hub-card-text">
+        <Link to="/permanent-events" className="events-choice-card permanent">
+          <span className="events-choice-icon" aria-hidden="true">📌</span>
+          <span>
             <strong>אירועים קבועים</strong>
-            <small>רק שם האתר, תמונה וקישור לאתר</small>
+            <small>שם אתר, תמונה וקישור לאתר</small>
           </span>
-          <span className="events-hub-arrow" aria-hidden="true">←</span>
+          <b aria-hidden="true">←</b>
         </Link>
       </section>
 
-      <div className="events-hub-back">
+      <div className="events-choice-back">
         <Link to="/">🏠 חזרה לדף הבית</Link>
       </div>
     </main>
