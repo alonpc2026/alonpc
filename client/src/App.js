@@ -8,6 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./pages/Home";
 import InterestingSites from "./pages/InterestingSites";
 import IsraelEvents from "./pages/IsraelEvents";
+import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
 import Government from "./pages/Government";
@@ -17,6 +18,8 @@ import SecondHand from "./pages/SecondHand";
 import Documents from "./pages/Documents";
 import ServiceBooking from "./pages/ServiceBooking";
 import AppsHub from "./pages/AppsHub";
+import GamesHub from "./pages/GamesHub";
+import GamesList from "./pages/GamesList";
 import MobileApps from "./pages/MobileApps";
 import AppsCategory from "./pages/AppsCategory";
 
@@ -29,6 +32,7 @@ import AdminShop from "./pages/AdminShop";
 import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
 import AdminEvents from "./pages/AdminEvents";
+import AdminPermanentEvents from "./pages/AdminPermanentEvents";
 import AdminInterestingSites from "./pages/AdminInterestingSites";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
@@ -44,6 +48,7 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
+import AdminGames from "./pages/AdminGames";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -80,6 +85,7 @@ function App() {
               <Route path="/interesting-sites" element={<InterestingSites />} />
 
               <Route path="/israel-events" element={<IsraelEvents />} />
+              <Route path="/permanent-events" element={<PermanentEvents />} />
 
               <Route
                 path="/admin/government"
@@ -104,6 +110,8 @@ function App() {
               <Route path="/apps" element={<AppsHub />} />
               <Route path="/apps/mobile" element={<AppsCategory />} />
               <Route path="/apps/:type" element={<AppsCategory />} />
+              <Route path="/games" element={<GamesHub />} />
+              <Route path="/games/:type" element={<GamesList />} />
 
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
@@ -261,6 +269,14 @@ function App() {
                   </AdminRoute>
                 }
               />
+              <Route
+                path="/admin/permanent-events"
+                element={
+                  <AdminRoute>
+                    <AdminPermanentEvents />
+                  </AdminRoute>
+                }
+              />
 
 
               <Route
@@ -290,6 +306,15 @@ function App() {
                 }
               />
 
+
+              <Route
+                path="/admin/games"
+                element={
+                  <AdminRoute>
+                    <AdminGames />
+                  </AdminRoute>
+                }
+              />
             </Routes>
           </div>
         </HashRouter>

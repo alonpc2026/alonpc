@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./PermanentEvents.css";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3001";
+const API_BASE = process.env.REACT_APP_API_URL || "https://alonpc02026.onrender.com";
 
 function PermanentEvents() {
   const [items, setItems] = useState([]);

@@ -69,6 +69,7 @@ mountRoute("./routes/uploadRoutes", "/api/upload");
 mountRoute("./routes/productRoutes", "/api/products");
 mountRoute("./routes/userRoutes", "/api/users");
 mountRoute("./routes/eventRoutes", "/api/events");
+mountRoute("./routes/permanentEventRoutes", "/api/permanent-events");
 mountRoute("./routes/governmentServiceRoutes", "/api/government-services");
 mountRoute("./routes/governmentServiceRoutes", "/api/government");
 mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
