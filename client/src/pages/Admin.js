@@ -97,7 +97,7 @@ const adminSections = [
   },
   {
     title: "ניהול אירועים קבועים",
-    description: "מקומות קבועים, שעות פעילות, מסמכים ופרטי נגישות",
+    description: "פשוט: שם אתר, תמונה וקישור לאתר",
     icon: "📌",
     path: "/admin/permanent-events",
     className: "admin-card-violet",

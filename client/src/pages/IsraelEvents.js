@@ -40,12 +40,11 @@ export default function IsraelEvents() {
 
   return (
     <main className="israel-events-page" dir="rtl">
-      <header className="israel-events-hero"><h1>אירועים רגילים</h1><p>אירועים עם תאריך ושעה.</p></header>
-      <nav className="events-type-switcher" aria-label="בחירת סוג אירועים">
-        <Link className="events-type-button active" to="/israel-events">📅 אירועים רגילים</Link>
-        <Link className="events-type-button" to="/permanent-events">📌 אירועים קבועים</Link>
-      </nav>
-
+      <header className="israel-events-hero">
+        <h1>אירועים רגילים</h1>
+        <p>אירועים עם תאריך, שעה, מקום ופרטי נגישות.</p>
+        <Link className="events-back-to-hub" to="/events">← חזרה לאירועים נגישים</Link>
+      </header>
       <section className="events-filters" aria-label="סינון אירועים">
         <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="חיפוש לפי שם, עיר או מקום" />
         <select value={language} onChange={(e) => setLanguage(e.target.value)}><option value="">כל השפות</option>{LANGUAGES.map((item) => <option key={item}>{item}</option>)}</select>
