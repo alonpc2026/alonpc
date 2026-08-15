@@ -7,6 +7,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 
 import Home from "./pages/Home";
 import InterestingSites from "./pages/InterestingSites";
+import EventsHub from "./pages/EventsHub";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
@@ -82,6 +83,8 @@ function App() {
 
               {/* אתרים מעניינים של אלון */}
               <Route path="/interesting-sites" element={<InterestingSites />} />
+
+              <Route path="/events" element={<EventsHub />} />
 
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />

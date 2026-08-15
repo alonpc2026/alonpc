@@ -13,11 +13,11 @@ export default function EventsHub() {
       </section>
 
       <section className="events-choice-grid">
-        <Link to="/regular-events" className="events-choice-card regular">
+        <Link to="/israel-events" className="events-choice-card regular">
           <span className="events-choice-icon" aria-hidden="true">🗓️</span>
           <span>
             <strong>אירועים רגילים</strong>
-            <small>אירועים עם תאריך, שעה, מקום וכל הפרטים</small>
+            <small>אירועים עם תאריך, שעה, מקום וכל פרטי האירוע</small>
           </span>
           <b aria-hidden="true">←</b>
         </Link>
