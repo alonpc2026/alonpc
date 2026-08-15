@@ -174,10 +174,14 @@ function AdminEvents() {
 
   return (
     <main className="admin-events-page" dir="rtl">
+      <nav className="admin-event-type-switcher" aria-label="בחירת ניהול אירועים">
+        <Link className="admin-event-type-button active" to="/admin/events">📅 ניהול אירועים רגילים</Link>
+        <Link className="admin-event-type-button" to="/admin/permanent-events">📌 ניהול אירועים קבועים</Link>
+      </nav>
       <section className="admin-events-header">
         <div>
           <p>🔒 אזור מנהל</p>
-          <h1>ניהול אירועים</h1>
+          <h1>ניהול אירועים רגילים</h1>
           <span>
             כל אירוע פעיל שתשמור כאן יופיע אוטומטית בלוח החודשי באתר.
           </span>

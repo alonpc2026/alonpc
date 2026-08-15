@@ -1,1 +1,31 @@
-.ape-page{max-width:1200px;margin:0 auto;padding:28px 18px 60px;background:#f4f7fb;min-height:100vh;color:#172033}.ape-header{display:flex;justify-content:space-between;align-items:center;gap:20px;background:#fff;border-radius:22px;padding:24px;box-shadow:0 10px 30px rgba(20,40,80,.1)}.ape-header h1{margin:5px 0;font-size:2rem}.ape-header p{margin:0;font-weight:800}.ape-back,.ape-links a{display:inline-block;text-decoration:none;font-weight:800;background:#183b66;color:#fff;padding:12px 18px;border-radius:12px}.ape-message{margin:18px 0;padding:14px 18px;background:#fff4cc;border:2px solid #e1b824;border-radius:12px;font-weight:800}.ape-form,.ape-list{margin-top:22px;background:#fff;padding:24px;border-radius:22px;box-shadow:0 10px 30px rgba(20,40,80,.08)}.ape-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.ape-grid label{font-weight:800;display:flex;flex-direction:column;gap:7px}.ape-grid input,.ape-grid textarea{font:inherit;padding:12px;border:2px solid #c8d3e1;border-radius:10px}.ape-wide{grid-column:1/-1}.ape-languages{margin-top:18px;border:2px solid #c8d3e1;border-radius:14px;padding:15px;display:flex;gap:15px;flex-wrap:wrap}.ape-languages label,.ape-active{display:flex;align-items:center;gap:8px;font-weight:800}.ape-active{margin-top:18px}.ape-form-actions,.ape-actions,.ape-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.ape-form-actions button,.ape-actions button{border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;background:#147d3f;color:#fff}.ape-form-actions .ape-secondary,.ape-actions button:nth-child(2){background:#5d3db7}.ape-actions .ape-delete{background:#b82929}.ape-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:18px}.ape-card{border:2px solid #d9e1ec;border-radius:18px;overflow:hidden;background:#fff}.ape-card img{width:100%;height:190px;object-fit:cover}.ape-card-body{padding:18px}.ape-card-title{display:flex;justify-content:space-between;gap:10px;align-items:center}.ape-card-title h3{margin:0}.ape-on,.ape-off{padding:5px 9px;border-radius:999px;font-weight:800}.ape-on{background:#d9f7e4;color:#12652e}.ape-off{background:#f4dede;color:#8c2222}.ape-links a{padding:9px 12px;background:#176ca4}.ape-card p{white-space:pre-wrap}@media(max-width:700px){.ape-header{align-items:stretch;flex-direction:column}.ape-grid{grid-template-columns:1fr}.ape-wide{grid-column:auto}.ape-form-actions button,.ape-actions button,.ape-back{width:100%;text-align:center}}
+
+.admin-event-type-switcher{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  max-width:1000px;
+  margin:20px auto 28px;
+}
+.admin-event-type-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:72px;
+  padding:14px 20px;
+  border:4px solid #fff;
+  border-radius:18px;
+  background:#68409a;
+  color:#fff !important;
+  font-size:23px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 8px 20px rgba(0,0,0,.22);
+}
+.admin-event-type-button.active{
+  background:#1768c5;
+  outline:5px solid #ffd800;
+  outline-offset:3px;
+}
+@media(max-width:650px){
+  .admin-event-type-switcher{grid-template-columns:1fr}
+}

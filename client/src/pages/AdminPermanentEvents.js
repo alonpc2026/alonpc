@@ -144,6 +144,10 @@ function AdminPermanentEvents() {
 
   return (
     <main className="ape-page" dir="rtl">
+      <nav className="admin-permanent-type-switcher" aria-label="בחירת ניהול אירועים">
+        <Link className="admin-permanent-type-button" to="/admin/events">📅 ניהול אירועים רגילים</Link>
+        <Link className="admin-permanent-type-button active" to="/admin/permanent-events">📌 ניהול אירועים קבועים</Link>
+      </nav>
       <header className="ape-header">
         <div>
           <p>📌 אזור מנהל</p>

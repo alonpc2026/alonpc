@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import "./PermanentEvents.css";
 
 const API_BASE = process.env.REACT_APP_API_URL || "https://alonpc02026.onrender.com";
@@ -33,6 +34,10 @@ function PermanentEvents() {
 
   return (
     <main className="pe-page" dir="rtl">
+      <nav className="permanent-type-switcher" aria-label="בחירת סוג אירועים">
+        <Link className="permanent-type-button" to="/israel-events">📅 אירועים רגילים</Link>
+        <Link className="permanent-type-button active" to="/permanent-events">📌 אירועים קבועים</Link>
+      </nav>
       <header className="pe-hero">
         <span className="pe-icon">📌</span>
         <div>
