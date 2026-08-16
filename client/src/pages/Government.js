@@ -1,1 +1,63 @@
-import{useEffect,useMemo,useState}from"react";import"./Government.css";const API_BASE=process.env.REACT_APP_API_BASE||(window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1"?"http://localhost:3001/api":"https://alonpc02026.onrender.com/api");const DAYS=[["sunday","יום ראשון"],["monday","יום שני"],["tuesday","יום שלישי"],["wednesday","יום רביעי"],["thursday","יום חמישי"],["friday","יום שישי"],["saturday","יום שבת"]];const Hours=({h,n})=>{const rows=DAYS.filter(([k])=>h?.[k]?.enabled);if(!rows.length&&!n)return null;return <section className="opening-hours-public"><h3>🕒 ימים ושעות קבלת קהל</h3>{rows.map(([k,l])=><p key={k}><b>{l}:</b> {h[k].open}–{h[k].close}</p>)}{n&&<p>ℹ️ {n}</p>}</section>};export default function Government(){const[items,setItems]=useState([]),[search,setSearch]=useState(""),[cat,setCat]=useState("");useEffect(()=>{fetch(`${API_BASE}/government?active=true`).then(r=>r.json()).then(d=>setItems(Array.isArray(d)?d:[]))},[]);const cats=[...new Set(items.map(i=>i.category).filter(Boolean))];const filtered=useMemo(()=>items.filter(i=>(!search||`${i.bodyName} ${i.department} ${i.city}`.includes(search))&&(!cat||i.category===cat)),[items,search,cat]);return <main className="government-page" dir="rtl"><header><p>♿ מרכז השירותים</p><h1>כל השירותים במקום אחד</h1></header><section className="filters"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="חיפוש"/><select value={cat} onChange={e=>setCat(e.target.value)}><option value="">כל הקטגוריות</option>{cats.map(c=><option key={c}>{c}</option>)}</select></section><section className="grid">{filtered.map(i=><article key={i._id}>{i.imageUrl&&<img src={i.imageUrl} alt={i.bodyName}/>}<div><span className="category">{i.category}</span><h2>{i.bodyName}</h2>{i.department&&<h3>{i.department}</h3>}{i.description&&<p>{i.description}</p>}{(i.city||i.address)&&<p>📍 {[i.city,i.address].filter(Boolean).join(" · ")}</p>}<Hours h={i.openingHours} n={i.openingHoursNote}/><div className="actions">{i.websiteUrl&&<a href={i.websiteUrl} target="_blank" rel="noreferrer">🌐 אתר</a>}{i.phone&&<a href={`tel:${i.phone}`}>📞 טלפון</a>}{i.email&&<a href={`mailto:${i.email}`}>✉️ דוא״ל</a>}</div></div></article>)}</section></main>}
+import { useMemo, useState } from "react";
+import "./Government.css";
+
+const links = [
+  { title: "ביטוח לאומי", url: "https://www.btl.gov.il", icon: "🏦", category: "זכויות וקצבאות" },
+  { title: "רשות המיסים", url: "https://www.gov.il/he/departments/tax-authority", icon: "💰", category: "מיסים" },
+  { title: "רשות האוכלוסין וההגירה", url: "https://www.gov.il/he/departments/population_and_immigration_authority", icon: "🆔", category: "אוכלוסין והגירה" },
+  { title: "משרד התחבורה והרישוי", url: "https://www.gov.il/he/departments/topics/driving_and_vehicles", icon: "🚗", category: "תחבורה" },
+  { title: "נט המשפט", url: "https://www.court.gov.il", icon: "⚖️", category: "משפט" },
+  { title: "משטרת ישראל", url: "https://www.gov.il/he/departments/israel_police", icon: "👮", category: "ביטחון" },
+  { title: "משרד הבריאות", url: "https://www.gov.il/he/departments/ministry_of_health", icon: "🏥", category: "בריאות" },
+  { title: "משרד החינוך", url: "https://www.gov.il/he/departments/ministry_of_education", icon: "📚", category: "חינוך" },
+  { title: "שירות התעסוקה", url: "https://www.taasuka.gov.il", icon: "💼", category: "תעסוקה" },
+  { title: "רכבת ישראל", url: "https://www.rail.co.il", icon: "🚆", category: "תחבורה ציבורית" },
+  { title: "gov.il", url: "https://www.gov.il", icon: "🏛️", category: "ממשל" }
+];
+
+export default function Government() {
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return links;
+
+    return links.filter((item) =>
+      `${item.title} ${item.category}`.toLowerCase().includes(term)
+    );
+  }, [search]);
+
+  return (
+    <main className="gov-page" dir="rtl">
+      <section className="gov-hero">
+        <span aria-hidden="true">🏛️</span>
+        <div>
+          <h1>משרדי ממשלה</h1>
+          <p>משרדי ממשלה, רשויות וגופים ציבוריים במקום אחד — לא עסקים נותני שירות.</p>
+        </div>
+      </section>
+
+      <div className="gov-search">
+        <input
+          type="search"
+          placeholder="🔎 חיפוש משרד, רשות או גוף ציבורי..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+      </div>
+
+      <section className="gov-grid">
+        {filtered.map((item) => (
+          <article className="gov-card" key={item.title}>
+            <span className="gov-icon" aria-hidden="true">{item.icon}</span>
+            <h2>{item.title}</h2>
+            <p>{item.category}</p>
+            <a href={item.url} target="_blank" rel="noreferrer">
+              🌐 כניסה לאתר הרשמי
+            </a>
+          </article>
+        ))}
+      </section>
+    </main>
+  );
+}
