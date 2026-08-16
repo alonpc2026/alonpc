@@ -1,140 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useLanguage } from "../context/LanguageContext";
 import "./AppsCategory.css";
 
-const API_BASE =
-  process.env.REACT_APP_API_BASE ||
-  "https://alonpc02026.onrender.com/api";
-
-const TYPES = {
-  mobile: { he:"📱 אפליקציות סלולרי", en:"📱 Mobile Apps", ru:"📱 Мобильные приложения", ar:"📱 تطبيقات الهاتف", am:"📱 የሞባይል መተግበሪያዎች" },
-  tv: { he:"📺 אפליקציות טלוויזיה חכמה", en:"📺 Smart TV Apps", ru:"📺 Приложения Smart TV", ar:"📺 تطبيقات التلفزيون الذكي", am:"📺 የSmart TV መተግበሪያዎች" },
-  windows: { he:"💻 אפליקציות Windows 10-11", en:"💻 Windows 10-11 Apps", ru:"💻 Приложения Windows 10-11", ar:"💻 تطبيقات Windows 10-11", am:"💻 የWindows 10-11 መተግበሪያዎች" },
-  mac: { he:"🍎 אפליקציות Mac", en:"🍎 Mac Apps", ru:"🍎 Приложения Mac", ar:"🍎 تطبيقات Mac", am:"🍎 የMac መተግበሪያዎች" },
-};
-
-const TEXT = {
-  he:{search:"חיפוש אפליקציה...",loading:"טוען אפליקציות...",empty:"עדיין אין אפליקציות בקטגוריה זו.",open:"פתיחת האפליקציה",back:"חזרה לכל האפליקציות"},
-  en:{search:"Search apps...",loading:"Loading apps...",empty:"No apps in this category yet.",open:"Open app",back:"Back to all apps"},
-  ru:{search:"Поиск приложения...",loading:"Загрузка приложений...",empty:"В этой категории пока нет приложений.",open:"Открыть приложение",back:"Назад ко всем приложениям"},
-  ar:{search:"بحث عن تطبيق...",loading:"جارٍ تحميل التطبيقات...",empty:"لا توجد تطبيقات في هذه الفئة بعد.",open:"فتح التطبيق",back:"العودة إلى جميع التطبيقات"},
-  am:{search:"መተግበሪያ ፈልግ...",loading:"መተግበሪያዎች በመጫን ላይ...",empty:"በዚህ ምድብ መተግበሪያዎች ገና የሉም።",open:"መተግበሪያውን ክፈት",back:"ወደ ሁሉም መተግበሪያዎች ተመለስ"},
-};
-
-export default function AppsCategory() {
-  const { type } = useParams();
-  const { language, dir } = useLanguage();
-  const t = TEXT[language] || TEXT.he;
-  const title = TYPES[type]?.[language] || TYPES[type]?.he || "Apps";
-
-  const [apps, setApps] = useState([]);
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    let active = true;
-
-    async function loadApps() {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `${API_BASE}/mobile-apps?type=${encodeURIComponent(type)}`
-        );
-        const data = await response.json().catch(() => []);
-
-        if (!response.ok) {
-          throw new Error(data?.message || "Load failed");
-        }
-
-        if (active) {
-          setApps(Array.isArray(data) ? data : data.apps || []);
-          setMessage("");
-        }
-      } catch (error) {
-        if (active) {
-          setApps([]);
-          setMessage(error.message);
-        }
-      } finally {
-        if (active) setLoading(false);
-      }
-    }
-
-    loadApps();
-    return () => { active = false; };
-  }, [type]);
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return apps;
-
-    return apps.filter((app) =>
-      `${app.name || ""} ${app.title || ""} ${app.description || ""} ${app.platform || ""}`
-        .toLowerCase()
-        .includes(q)
-    );
-  }, [apps, search]);
-
-  return (
-    <main className="apps-category-page" dir={dir}>
-      <section className="apps-category-hero">
-        <h1>{title}</h1>
-      </section>
-
-      <div className="apps-category-tools">
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={t.search}
-        />
-        <Link to="/apps">{t.back}</Link>
-      </div>
-
-      {loading && <p className="apps-category-status">{t.loading}</p>}
-      {message && <p className="apps-category-status">{message}</p>}
-      {!loading && !message && filtered.length === 0 && (
-        <p className="apps-category-status">{t.empty}</p>
-      )}
-
-      <section className="apps-category-grid">
-        {filtered.map((app) => {
-          const image = app.imageUrl || app.logoUrl || "";
-          const url =
-            app.url ||
-            app.link ||
-            app.websiteUrl ||
-            app.storeUrl ||
-            app.androidUrl ||
-            app.iosUrl ||
-            "";
-
-          return (
-            <article
-              className="apps-category-card"
-              key={app._id || app.name || app.title}
-            >
-              {image ? (
-                <img src={image} alt={app.name || app.title || ""} />
-              ) : (
-                <div className="apps-category-fallback">📲</div>
-              )}
-
-              <h2>{app.name || app.title || "App"}</h2>
-              {app.platform && <strong>{app.platform}</strong>}
-              {app.description && <p>{app.description}</p>}
-
-              {url && (
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  {t.open}
-                </a>
-              )}
-            </article>
-          );
-        })}
-      </section>
-    </main>
-  );
+const API=(process.env.REACT_APP_API_BASE||"https://alonpc02026.onrender.com/api")+"/apps";
+const META={android:{title:"Android / Galaxy",icon:"🤖",aliases:["android","galaxy","samsung"]},ios:{title:"iPhone / iOS",icon:"🍎",aliases:["ios","iphone","apple"]},windows:{title:"Windows 10–11",icon:"🪟",aliases:["windows","windows10","windows11","pc"]},mac:{title:"Mac",icon:"💻",aliases:["mac","macos"]},tv:{title:"טלוויזיה חכמה",icon:"📺",aliases:["tv","smart-tv","smarttv"]}};
+const norm=v=>String(v||"").trim().toLowerCase().replace(/\s+/g,"-");
+export default function AppsCategory(){
+ const {type}=useParams(); const key=norm(type); const meta=META[key]||{title:type||"אפליקציות",icon:"📱",aliases:[key]};
+ const [apps,setApps]=useState([]),[search,setSearch]=useState(""),[loading,setLoading]=useState(true),[error,setError]=useState("");
+ useEffect(()=>{let active=true;(async()=>{try{const r=await fetch(API);const d=await r.json().catch(()=>[]);if(!r.ok)throw new Error(d.message||"לא ניתן לטעון אפליקציות");if(active)setApps(Array.isArray(d)?d:d.apps||[])}catch(e){if(active)setError(e.message)}finally{if(active)setLoading(false)}})();return()=>{active=false}},[]);
+ const filtered=useMemo(()=>apps.filter(a=>{const p=norm(a.platform||a.type||a.deviceType||a.os);const txt=[a.name,a.title,a.description,a.publisher].filter(Boolean).join(" ").toLowerCase();return meta.aliases.includes(p)&&(!search||txt.includes(search.toLowerCase()))}),[apps,search,meta.aliases]);
+ return <main className="apps-category-page" dir="rtl"><header className="apps-category-hero"><span>{meta.icon}</span><div><h1>{meta.title}</h1><p>מוצגות רק אפליקציות ששויכו למערכת הזו.</p></div></header><section className="apps-category-tools"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder={`🔎 חיפוש בתוך ${meta.title}...`}/><Link to="/apps/mobile">📱 חזרה לאפליקציות סלולרי</Link></section>{loading&&<p className="apps-category-status">טוען...</p>}{error&&<p className="apps-category-status error">{error}</p>}{!loading&&!error&&filtered.length===0&&<section className="apps-category-status"><b>אין כרגע אפליקציות משויכות ל-{meta.title}</b><p>ערוך את האפליקציה בניהול ובחר מערכת הפעלה מתאימה.</p></section>}<section className="apps-category-grid">{filtered.map(a=><article className="app-card" key={a._id||a.id||a.name}><div className="app-card-image">{a.imageUrl||a.logoUrl?<img src={a.imageUrl||a.logoUrl} alt={a.name||a.title||""}/>:<span>{meta.icon}</span>}</div><div className="app-card-body"><h2>{a.name||a.title}</h2>{a.description&&<p>{a.description}</p>}{(a.url||a.websiteUrl||a.storeUrl)&&<a href={a.url||a.websiteUrl||a.storeUrl} target="_blank" rel="noreferrer">פתיחת האפליקציה / החנות</a>}</div></article>)}</section></main>
 }

@@ -1,0 +1,7 @@
+const express=require('express');const router=express.Router();const App=require('../models/App');
+const alias={galaxy:'android',samsung:'android',iphone:'ios',apple:'ios',macos:'mac','smart-tv':'tv',smarttv:'tv'};const norm=v=>alias[String(v||'').trim().toLowerCase()]||String(v||'').trim().toLowerCase();
+const data=b=>({name:String(b.name||b.title||'').trim(),description:String(b.description||''),publisher:String(b.publisher||''),platform:norm(b.platform||b.type||b.deviceType||b.os),imageUrl:String(b.imageUrl||b.logoUrl||''),url:String(b.url||b.websiteUrl||b.storeUrl||''),active:b.active!==false});
+router.get('/',async(req,res)=>{try{const f=req.query.admin==='true'?{}:{active:true};if(req.query.platform)f.platform=norm(req.query.platform);res.json(await App.find(f).sort({createdAt:-1}))}catch(e){res.status(500).json({message:'לא ניתן לטעון אפליקציות'})}});
+router.post('/',async(req,res)=>{try{const d=data(req.body);if(!d.name)return res.status(400).json({message:'חובה להזין שם'});res.status(201).json(await App.create(d))}catch(e){res.status(400).json({message:e.message})}});
+router.put('/:id',async(req,res)=>{try{const a=await App.findByIdAndUpdate(req.params.id,data(req.body),{new:true,runValidators:true});res.json(a)}catch(e){res.status(400).json({message:e.message})}});
+router.delete('/:id',async(req,res)=>{try{await App.findByIdAndDelete(req.params.id);res.json({message:'נמחק'})}catch(e){res.status(400).json({message:e.message})}});module.exports=router;
