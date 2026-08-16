@@ -7,11 +7,9 @@ import { LanguageProvider } from "./context/LanguageContext";
 
 import Home from "./pages/Home";
 import InterestingSites from "./pages/InterestingSites";
-import EventsHub from "./pages/EventsHub";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
-import CategoryServices from "./pages/CategoryServices";
 import ServiceDetails from "./pages/ServiceDetails";
 import Government from "./pages/Government";
 import Shop from "./pages/Shop";
@@ -22,6 +20,7 @@ import ServiceBooking from "./pages/ServiceBooking";
 import AppsHub from "./pages/AppsHub";
 import GamesHub from "./pages/GamesHub";
 import GamesList from "./pages/GamesList";
+import MobileApps from "./pages/MobileApps";
 import AppsCategory from "./pages/AppsCategory";
 
 import Login from "./pages/Login";
@@ -85,8 +84,6 @@ function App() {
               {/* אתרים מעניינים של אלון */}
               <Route path="/interesting-sites" element={<InterestingSites />} />
 
-              <Route path="/events" element={<EventsHub />} />
-
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />
 
@@ -100,11 +97,6 @@ function App() {
               />
 
               <Route path="/services" element={<Services />} />
-              <Route path="/national-insurance" element={<CategoryServices />} />
-              <Route path="/health-services" element={<CategoryServices />} />
-              <Route path="/accessibility-services" element={<CategoryServices />} />
-              <Route path="/transport-services" element={<CategoryServices />} />
-              <Route path="/employment-services" element={<CategoryServices />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
 
               <Route path="/government" element={<Government />} />
@@ -116,7 +108,7 @@ function App() {
               <Route path="/documents" element={<Documents />} />
               <Route path="/booking" element={<ServiceBooking />} />
               <Route path="/apps" element={<AppsHub />} />
-              <Route path="/apps/mobile" element={<AppsCategory />} />
+              <Route path="/apps/mobile" element={<MobileApps />} />
               <Route path="/apps/:type" element={<AppsCategory />} />
               <Route path="/games" element={<GamesHub />} />
               <Route path="/games/:type" element={<GamesList />} />
