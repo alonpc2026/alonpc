@@ -66,7 +66,8 @@ function mountRoute(routePath, urlPath) {
 mountRoute("./routes/authRoutes", "/api/auth");
 mountRoute("./routes/serviceRoutes", "/api/services");
 mountRoute("./routes/uploadRoutes", "/api/upload");
-mountRoute("./routes/productRoutes", "/api/products");\nmountRoute("./routes/secondHandRoutes", "/api/second-hand");
+mountRoute("./routes/productRoutes", "/api/products");
+mountRoute("./routes/secondHandRoutes", "/api/second-hand");
 mountRoute("./routes/userRoutes", "/api/users");
 mountRoute("./routes/eventRoutes", "/api/events");
 mountRoute("./routes/permanentEventRoutes", "/api/permanent-events");
@@ -74,6 +75,7 @@ mountRoute("./routes/governmentServiceRoutes", "/api/government-services");
 mountRoute("./routes/governmentServiceRoutes", "/api/government");
 mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
 mountRoute("./routes/gameRoutes", "/api/games");
+mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {
