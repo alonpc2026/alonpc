@@ -1,95 +1,83 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import AdminAccessButton from "../components/AdminAccessButton";
 import "./AppsCategory.css";
 
-const API = "https://alonpc02026.onrender.com/api/apps";
+// חשוב: משתמשים במאגר הישן הקיים כדי לא לאבד את הנתונים שהוזנו בעבר.
+const API = "https://alonpc02026.onrender.com/api/mobile-apps";
 
-const PLATFORM_META = {
+const META = {
   android: {
     title: "Android / Galaxy",
     icon: "🤖",
-    aliases: ["android", "galaxy", "samsung"]
+    aliases: ["android","galaxy","samsung","סמסונג","אנדרואיד"]
   },
   ios: {
     title: "iPhone / iOS",
     icon: "🍎",
-    aliases: ["ios", "iphone", "apple"]
+    aliases: ["ios","iphone","apple","אפל","אייפון"]
   },
   windows: {
     title: "Windows 10–11",
     icon: "🪟",
-    aliases: ["windows", "windows10", "windows11", "pc"]
+    aliases: ["windows","windows10","windows11","pc"]
   },
   mac: {
     title: "Mac",
     icon: "💻",
-    aliases: ["mac", "macos", "apple-mac"]
+    aliases: ["mac","macos","apple-mac"]
   },
   tv: {
     title: "טלוויזיה חכמה",
     icon: "📺",
-    aliases: ["tv", "smart-tv", "smarttv", "television"]
+    aliases: ["tv","smart-tv","smarttv","television","טלוויזיה"]
   }
 };
 
-function normalize(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[_\s]+/g, "-");
+function norm(value) {
+  return String(value || "").trim().toLowerCase().replace(/[_\s]+/g, "-");
 }
 
-function getPlatformValues(app) {
+function textOf(item) {
   return [
-    app.platform,
-    app.type,
-    app.deviceType,
-    app.os,
-    app.system,
-    app.category,
-    app.mobileType
-  ]
-    .filter(Boolean)
-    .map(normalize);
+    item.platform,
+    item.type,
+    item.deviceType,
+    item.os,
+    item.system,
+    item.category,
+    item.mobileType,
+    item.name,
+    item.title,
+    item.description,
+    item.publisher,
+    item.company
+  ].filter(Boolean).join(" ").toLowerCase();
 }
 
-function matchesPlatform(app, aliases) {
-  const values = getPlatformValues(app);
+function belongs(item, aliases) {
+  const direct = [
+    item.platform,
+    item.type,
+    item.deviceType,
+    item.os,
+    item.system,
+    item.category,
+    item.mobileType
+  ].filter(Boolean).map(norm);
 
-  if (values.some((value) => aliases.includes(value))) {
-    return true;
-  }
+  if (direct.some((value) => aliases.includes(value))) return true;
 
-  // Compatibility for older saved records where the platform was stored in text.
-  const text = [
-    app.name,
-    app.title,
-    app.description,
-    app.platform,
-    app.type,
-    app.deviceType,
-    app.os,
-    app.system,
-    app.category
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  return aliases.some((alias) => text.includes(alias));
+  const text = textOf(item);
+  return aliases.some((alias) => text.includes(alias.toLowerCase()));
 }
 
 export default function AppsCategory() {
   const { type } = useParams();
-  const requested = normalize(type);
-  const meta =
-    PLATFORM_META[requested] || {
-      title: type || "אפליקציות",
-      icon: "📱",
-      aliases: [requested]
-    };
+  const requested = norm(type);
+  const meta = META[requested] || { title: type || "אפליקציות", icon: "📱", aliases: [requested] };
 
-  const [apps, setApps] = useState([]);
+  const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -97,79 +85,50 @@ export default function AppsCategory() {
   useEffect(() => {
     const controller = new AbortController();
 
-    async function loadApps() {
+    async function load() {
       try {
         setLoading(true);
         setError("");
 
-        const response = await fetch(API, {
-          signal: controller.signal
-        });
-
+        const response = await fetch(API, { signal: controller.signal });
         const data = await response.json().catch(() => []);
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "לא ניתן לטעון את מאגר האפליקציות"
-          );
+          throw new Error(data.message || "לא ניתן לטעון את מאגר האפליקציות הישן");
         }
 
-        setApps(Array.isArray(data) ? data : data.apps || []);
-      } catch (requestError) {
-        if (requestError.name === "AbortError") return;
-        setApps([]);
-        setError(
-          requestError.message || "לא ניתן לטעון את מאגר האפליקציות"
-        );
+        setItems(Array.isArray(data) ? data : data.apps || data.items || []);
+      } catch (err) {
+        if (err.name === "AbortError") return;
+        setItems([]);
+        setError(err.message || "לא ניתן לטעון אפליקציות");
       } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
-    loadApps();
-
+    load();
     return () => controller.abort();
   }, []);
 
   const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
+    const q = search.trim().toLowerCase();
 
-    return apps.filter((app) => {
-      if (!matchesPlatform(app, meta.aliases)) {
-        return false;
-      }
-
-      if (!query) {
-        return true;
-      }
-
-      const text = [
-        app.name,
-        app.title,
-        app.description,
-        app.publisher,
-        app.company
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      return text.includes(query);
+    return items.filter((item) => {
+      if (!belongs(item, meta.aliases)) return false;
+      return !q || textOf(item).includes(q);
     });
-  }, [apps, search, meta.aliases]);
+  }, [items, search, meta.aliases]);
 
   return (
     <main className="apps-category-page" dir="rtl">
-      <header className="apps-category-hero">
-        <span className="apps-category-icon" aria-hidden="true">
-          {meta.icon}
-        </span>
+      <AdminAccessButton />
 
+      <header className="apps-category-hero">
+        <span>{meta.icon}</span>
         <div>
           <h1>{meta.title}</h1>
-          <p>מוצגות רק אפליקציות ששויכו למערכת הזו.</p>
+          <p>נתונים מהמאגר הקיים של אפליקציות הסלולרי.</p>
         </div>
       </header>
 
@@ -177,86 +136,38 @@ export default function AppsCategory() {
         <input
           type="search"
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder={`🔎 חיפוש בתוך ${meta.title}...`}
         />
-
-        <Link to="/apps/mobile">
-          📱 חזרה לאפליקציות סלולרי
-        </Link>
+        <Link to="/apps/mobile">📱 חזרה לאפליקציות סלולרי</Link>
       </section>
 
-      {loading && (
-        <p className="apps-category-status">
-          טוען אפליקציות...
-        </p>
-      )}
-
-      {error && (
-        <p className="apps-category-status error">
-          {error}
-        </p>
-      )}
+      {loading && <p className="apps-category-status">טוען את הנתונים הישנים...</p>}
+      {error && <p className="apps-category-status error">{error}</p>}
 
       {!loading && !error && filtered.length === 0 && (
         <section className="apps-category-empty">
-          <h2>
-            {meta.icon} {meta.title}
-          </h2>
-          <p>
-            לא נמצאו כרגע אפליקציות ששויכו למערכת הזו.
-          </p>
+          <h2>{meta.icon} {meta.title}</h2>
+          <p>המאגר נטען, אבל לא נמצא פריט שמשויך לקטגוריה הזו.</p>
+          <p>אפשר להיכנס ל־⚙️ ניהול אפליקציות ולערוך את הפריט הקיים ולבחור Android או iPhone.</p>
         </section>
       )}
 
       <section className="apps-category-grid">
-        {filtered.map((app) => {
-          const image =
-            app.imageUrl ||
-            app.logoUrl ||
-            app.iconUrl ||
-            "";
-
-          const url =
-            app.url ||
-            app.websiteUrl ||
-            app.storeUrl ||
-            app.link ||
-            "";
+        {filtered.map((item) => {
+          const image = item.imageUrl || item.logoUrl || item.iconUrl || "";
+          const url = item.url || item.link || item.websiteUrl || item.storeUrl || item.downloadUrl || "";
 
           return (
-            <article
-              className="apps-category-card"
-              key={app._id || app.id || app.name || app.title}
-            >
+            <article className="apps-category-card" key={item._id || item.id || item.name || item.title}>
               <div className="apps-category-image">
-                {image ? (
-                  <img
-                    src={image}
-                    alt={app.name || app.title || ""}
-                    loading="lazy"
-                  />
-                ) : (
-                  <span aria-hidden="true">{meta.icon}</span>
-                )}
+                {image ? <img src={image} alt={item.name || item.title || ""} /> : <span>{meta.icon}</span>}
               </div>
 
               <div className="apps-category-card-body">
-                <h2>{app.name || app.title}</h2>
-
-                {app.description && (
-                  <p>{app.description}</p>
-                )}
-
-                {url && (
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    פתיחת האפליקציה / החנות
-                  </a>
-                )}
+                <h2>{item.name || item.title || "אפליקציה"}</h2>
+                {item.description && <p>{item.description}</p>}
+                {url && <a href={url} target="_blank" rel="noreferrer">פתיחת האפליקציה / החנות</a>}
               </div>
             </article>
           );
