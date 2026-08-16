@@ -10,7 +10,7 @@ import InterestingSites from "./pages/InterestingSites";
 import EventsHub from "./pages/EventsHub";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
-import Services from "./pages/Services";
+import Services from "./pages/Services";\nimport CategoryServices from "./pages/CategoryServices";
 import ServiceDetails from "./pages/ServiceDetails";
 import Government from "./pages/Government";
 import Shop from "./pages/Shop";
@@ -99,6 +99,11 @@ function App() {
               />
 
               <Route path="/services" element={<Services />} />
+              <Route path="/national-insurance" element={<CategoryServices />} />
+              <Route path="/health-services" element={<CategoryServices />} />
+              <Route path="/accessibility-services" element={<CategoryServices />} />
+              <Route path="/transport-services" element={<CategoryServices />} />
+              <Route path="/employment-services" element={<CategoryServices />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
 
               <Route path="/government" element={<Government />} />
