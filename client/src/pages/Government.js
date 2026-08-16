@@ -32,8 +32,8 @@ export default function Government() {
       <section className="gov-hero">
         <span aria-hidden="true">🏛️</span>
         <div>
-          <h1>משרדי ממשלה</h1>
-          <p>משרדי ממשלה, רשויות וגופים ציבוריים במקום אחד — לא עסקים נותני שירות.</p>
+          <h1>שירותי ממשלה</h1>
+          <p>משרדי ממשלה, רשויות וגופים ציבוריים במקום אחד.</p>
         </div>
       </section>
 
