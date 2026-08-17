@@ -172,7 +172,32 @@ export default function AdminApps() {
   }, [loadApps]);
 
   const legacyApps = useMemo(
-    () => apps.filter((item) => !getPlatform(item)),
+    () =>
+      apps.filter((item) => {
+        const p = getPlatform(item);
+        const raw = String(
+          item.platform ||
+          item.type ||
+          item.deviceType ||
+          item.os ||
+          item.system ||
+          item.mobileType ||
+          item.category ||
+          ""
+        ).trim().toLowerCase();
+
+        // Records from the old mobile repository often used "mobile"/"phone"
+        // or had no platform at all. Keep all of them in the legacy box.
+        return (
+          !p ||
+          raw === "mobile" ||
+          raw === "phone" ||
+          raw === "cellular" ||
+          raw === "smartphone" ||
+          raw === "סלולרי" ||
+          raw === "נייד"
+        );
+      }),
     [apps]
   );
 
@@ -344,6 +369,18 @@ export default function AdminApps() {
 
         <Link to="/admin">⚙️ חזרה לפורטל ניהול</Link>
       </header>
+
+      <button
+        type="button"
+        className="legacy-main-button"
+        onClick={() => {
+          setPlatform("legacy");
+          clearForm();
+        }}
+      >
+        📦 מאגר אפליקציות ישן
+        <span>{legacyApps.length} אפליקציות ממתינות לשיוך</span>
+      </button>
 
       <nav className="admin-apps-tabs admin-apps-tabs-six" aria-label="סוג אפליקציה">
         {TABS.map((tab) => (
