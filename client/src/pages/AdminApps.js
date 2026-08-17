@@ -5,12 +5,15 @@ import "./AdminApps.css";
 const API = "https://alonpc02026.onrender.com/api/mobile-apps";
 
 const TABS = [
+  { value: "legacy", label: "📦 מאגר אפליקציות ישן" },
   { value: "android", label: "🤖 Android / Galaxy" },
   { value: "ios", label: "🍎 iPhone / iOS" },
   { value: "windows", label: "🪟 Windows 10–11" },
   { value: "mac", label: "💻 Mac" },
   { value: "tv", label: "📺 טלוויזיה חכמה" }
 ];
+
+const KNOWN = ["android", "ios", "windows", "mac", "tv"];
 
 const EMPTY = {
   name: "",
@@ -21,24 +24,33 @@ const EMPTY = {
 
 function normalizePlatform(value) {
   const v = String(value || "").trim().toLowerCase();
-  if (["galaxy", "samsung", "אנדרואיד", "סמסונג"].includes(v)) return "android";
-  if (["iphone", "apple", "אייפון", "אפל"].includes(v)) return "ios";
-  if (["macos", "apple-mac"].includes(v)) return "mac";
-  if (["smarttv", "smart-tv", "television"].includes(v)) return "tv";
+
+  if (["android", "galaxy", "samsung", "אנדרואיד", "סמסונג"].includes(v)) return "android";
+  if (["ios", "iphone", "apple", "אייפון", "אפל"].includes(v)) return "ios";
+  if (["windows", "windows10", "windows11", "pc"].includes(v)) return "windows";
+  if (["mac", "macos", "apple-mac"].includes(v)) return "mac";
+  if (["tv", "smarttv", "smart-tv", "television", "טלוויזיה"].includes(v)) return "tv";
+
   return v;
 }
 
 function getPlatform(item) {
-  return normalizePlatform(
-    item.platform ||
-    item.type ||
-    item.deviceType ||
-    item.os ||
-    item.system ||
-    item.category ||
-    item.mobileType ||
-    ""
-  );
+  const values = [
+    item.platform,
+    item.type,
+    item.deviceType,
+    item.os,
+    item.system,
+    item.mobileType,
+    item.category
+  ].filter(Boolean);
+
+  for (const value of values) {
+    const normalized = normalizePlatform(value);
+    if (KNOWN.includes(normalized)) return normalized;
+  }
+
+  return "";
 }
 
 function getImage(item) {
@@ -65,20 +77,86 @@ function getLink(item) {
   );
 }
 
+function guessPlatform(item) {
+  const text = [
+    item.name,
+    item.title,
+    item.description,
+    getLink(item),
+    item.publisher,
+    item.company
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  if (
+    text.includes("apps.apple.com") ||
+    text.includes("app store") ||
+    text.includes("iphone") ||
+    text.includes("ios") ||
+    text.includes("אייפון") ||
+    text.includes("אפל")
+  ) return "ios";
+
+  if (
+    text.includes("play.google.com") ||
+    text.includes("google play") ||
+    text.includes("android") ||
+    text.includes("galaxy") ||
+    text.includes("samsung") ||
+    text.includes("אנדרואיד") ||
+    text.includes("סמסונג")
+  ) return "android";
+
+  return "";
+}
+
+function cleanPayload(item, targetPlatform) {
+  const name = item.name || item.title || "";
+  const imageUrl = getImage(item);
+  const link = getLink(item);
+
+  return {
+    ...item,
+    name,
+    title: name,
+    imageUrl,
+    logoUrl: imageUrl,
+    link,
+    url: link,
+    appUrl: link,
+    description: item.description || "",
+
+    // שיוך חדש. שומרים כמה שמות שדות כדי להיות תואמים למבנה הישן.
+    platform: targetPlatform,
+    type: targetPlatform,
+    deviceType: targetPlatform,
+    os: targetPlatform,
+    system: targetPlatform,
+    mobileType: targetPlatform,
+    category: targetPlatform,
+    active: item.active !== false
+  };
+}
+
 export default function AdminApps() {
-  const [platform, setPlatform] = useState("android");
+  const [platform, setPlatform] = useState("legacy");
   const [apps, setApps] = useState([]);
   const [form, setForm] = useState(EMPTY);
   const [editingId, setEditingId] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [movingId, setMovingId] = useState("");
 
   const loadApps = useCallback(async () => {
     try {
       setLoading(true);
+
       const response = await fetch(API);
       const data = await response.json().catch(() => []);
-      if (!response.ok) throw new Error(data.message || "טעינת האפליקציות נכשלה");
+
+      if (!response.ok) {
+        throw new Error(data.message || "טעינת האפליקציות נכשלה");
+      }
+
       setApps(Array.isArray(data) ? data : data.apps || data.items || []);
       setMessage("");
     } catch (error) {
@@ -93,10 +171,15 @@ export default function AdminApps() {
     loadApps();
   }, [loadApps]);
 
-  const visibleApps = useMemo(
-    () => apps.filter((item) => getPlatform(item) === platform),
-    [apps, platform]
+  const legacyApps = useMemo(
+    () => apps.filter((item) => !getPlatform(item)),
+    [apps]
   );
+
+  const visibleApps = useMemo(() => {
+    if (platform === "legacy") return legacyApps;
+    return apps.filter((item) => getPlatform(item) === platform);
+  }, [apps, platform, legacyApps]);
 
   function change(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -109,7 +192,10 @@ export default function AdminApps() {
 
   function startEdit(item) {
     const itemPlatform = getPlatform(item);
-    if (itemPlatform) setPlatform(itemPlatform);
+
+    if (itemPlatform) {
+      setPlatform(itemPlatform);
+    }
 
     setEditingId(item._id);
     setForm({
@@ -118,11 +204,54 @@ export default function AdminApps() {
       link: getLink(item),
       description: item.description || ""
     });
+
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function moveExisting(item, targetPlatform) {
+    const targetLabel =
+      targetPlatform === "ios" ? "iPhone / iOS" : "Android / Galaxy";
+
+    if (
+      !window.confirm(
+        `להעביר את "${item.name || item.title || "האפליקציה"}" אל ${targetLabel}?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setMovingId(item._id);
+      setMessage(`מעביר אל ${targetLabel}...`);
+
+      const response = await fetch(`${API}/${item._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cleanPayload(item, targetPlatform))
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || "העברת האפליקציה נכשלה");
+      }
+
+      setMessage(`✅ האפליקציה הועברה אל ${targetLabel}`);
+      await loadApps();
+    } catch (error) {
+      setMessage(`❌ ${error.message}`);
+    } finally {
+      setMovingId("");
+    }
   }
 
   async function save(event) {
     event.preventDefault();
+
+    if (platform === "legacy") {
+      setMessage("❌ להוספת אפליקציה חדשה יש לבחור Android, iPhone, Windows, Mac או TV");
+      return;
+    }
 
     if (!form.name.trim()) {
       setMessage("❌ חובה להזין שם אפליקציה");
@@ -146,12 +275,12 @@ export default function AdminApps() {
         url: form.link.trim(),
         appUrl: form.link.trim(),
         description: form.description.trim(),
-
-        // הסוג נקבע אוטומטית לפי הכפתור שנבחר — אין שדה נוסף בטופס.
         platform,
         type: platform,
         deviceType: platform,
         os: platform,
+        system: platform,
+        mobileType: platform,
         category: platform,
         active: true
       };
@@ -166,7 +295,10 @@ export default function AdminApps() {
       );
 
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.message || "השמירה נכשלה");
+
+      if (!response.ok) {
+        throw new Error(data.message || "השמירה נכשלה");
+      }
 
       setMessage(editingId ? "✅ האפליקציה עודכנה" : "✅ האפליקציה נוספה");
       clearForm();
@@ -182,9 +314,16 @@ export default function AdminApps() {
     }
 
     try {
-      const response = await fetch(`${API}/${item._id}`, { method: "DELETE" });
+      const response = await fetch(`${API}/${item._id}`, {
+        method: "DELETE"
+      });
+
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.message || "המחיקה נכשלה");
+
+      if (!response.ok) {
+        throw new Error(data.message || "המחיקה נכשלה");
+      }
+
       setMessage("🗑️ האפליקציה נמחקה");
       await loadApps();
     } catch (error) {
@@ -198,13 +337,15 @@ export default function AdminApps() {
         <div>
           <p>🔒 אזור מנהל</p>
           <h1>ניהול אפליקציות</h1>
-          <span>רק 4 פרטים: שם, תמונה, קישור ותיאור.</span>
+          <span>
+            אפליקציות ישנות אפשר להעביר בלחיצה ל־Android או ל־iPhone.
+          </span>
         </div>
 
         <Link to="/admin">⚙️ חזרה לפורטל ניהול</Link>
       </header>
 
-      <nav className="admin-apps-tabs" aria-label="סוג אפליקציה">
+      <nav className="admin-apps-tabs admin-apps-tabs-six" aria-label="סוג אפליקציה">
         {TABS.map((tab) => (
           <button
             type="button"
@@ -216,84 +357,103 @@ export default function AdminApps() {
             }}
           >
             {tab.label}
+            {tab.value === "legacy" && (
+              <span className="legacy-count">{legacyApps.length}</span>
+            )}
           </button>
         ))}
       </nav>
 
       {message && <div className="admin-apps-message">{message}</div>}
 
-      <form className="admin-apps-form" onSubmit={save}>
-        <h2>
-          {editingId ? "✏️ עריכת אפליקציה" : "➕ הוספת אפליקציה"} —{" "}
-          {TABS.find((tab) => tab.value === platform)?.label}
-        </h2>
+      {platform !== "legacy" && (
+        <form className="admin-apps-form" onSubmit={save}>
+          <h2>
+            {editingId ? "✏️ עריכת אפליקציה" : "➕ הוספת אפליקציה"} —{" "}
+            {TABS.find((tab) => tab.value === platform)?.label}
+          </h2>
 
-        <label>
-          <span>1. שם אפליקציה *</span>
-          <input
-            value={form.name}
-            onChange={(event) => change("name", event.target.value)}
-            placeholder="לדוגמה: WhatsApp"
-            required
-          />
-        </label>
-
-        <label>
-          <span>2. קישור תמונה</span>
-          <input
-            type="url"
-            value={form.imageUrl}
-            onChange={(event) => change("imageUrl", event.target.value)}
-            placeholder="https://..."
-          />
-        </label>
-
-        {form.imageUrl && (
-          <div className="admin-apps-image-preview">
-            <strong>תצוגה מקדימה:</strong>
-            <img
-              src={form.imageUrl}
-              alt="תצוגה מקדימה"
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
+          <label>
+            <span>1. שם אפליקציה *</span>
+            <input
+              value={form.name}
+              onChange={(event) => change("name", event.target.value)}
+              placeholder="לדוגמה: WhatsApp"
+              required
             />
-          </div>
-        )}
+          </label>
 
-        <label>
-          <span>3. קישור אפליקציה *</span>
-          <input
-            type="url"
-            value={form.link}
-            onChange={(event) => change("link", event.target.value)}
-            placeholder="https://..."
-            required
-          />
-        </label>
+          <label>
+            <span>2. קישור תמונה</span>
+            <input
+              type="url"
+              value={form.imageUrl}
+              onChange={(event) => change("imageUrl", event.target.value)}
+              placeholder="https://..."
+            />
+          </label>
 
-        <label>
-          <span>4. תיאור אפליקציה</span>
-          <textarea
-            rows="5"
-            value={form.description}
-            onChange={(event) => change("description", event.target.value)}
-            placeholder="תיאור קצר וברור..."
-          />
-        </label>
-
-        <div className="admin-apps-form-actions">
-          <button type="submit">
-            {editingId ? "💾 שמירת שינויים" : "➕ הוספת אפליקציה"}
-          </button>
-
-          {editingId && (
-            <button type="button" className="secondary" onClick={clearForm}>
-              ביטול עריכה
-            </button>
+          {form.imageUrl && (
+            <div className="admin-apps-image-preview">
+              <strong>תצוגה מקדימה:</strong>
+              <img
+                src={form.imageUrl}
+                alt="תצוגה מקדימה"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                }}
+              />
+            </div>
           )}
-        </div>
-      </form>
+
+          <label>
+            <span>3. קישור אפליקציה *</span>
+            <input
+              type="url"
+              value={form.link}
+              onChange={(event) => change("link", event.target.value)}
+              placeholder="https://..."
+              required
+            />
+          </label>
+
+          <label>
+            <span>4. תיאור אפליקציה</span>
+            <textarea
+              rows="5"
+              value={form.description}
+              onChange={(event) => change("description", event.target.value)}
+              placeholder="תיאור קצר וברור..."
+            />
+          </label>
+
+          <div className="admin-apps-form-actions">
+            <button type="submit">
+              {editingId ? "💾 שמירת שינויים" : "➕ הוספת אפליקציה"}
+            </button>
+
+            {editingId && (
+              <button type="button" className="secondary" onClick={clearForm}>
+                ביטול עריכה
+              </button>
+            )}
+          </div>
+        </form>
+      )}
+
+      {platform === "legacy" && (
+        <section className="legacy-help-box">
+          <h2>📦 מאגר אפליקציות ישן</h2>
+          <p>
+            כאן מופיעות אפליקציות שכבר נמצאות במאגר אבל עדיין לא שויכו למערכת.
+            אין צורך להקליד אותן מחדש.
+          </p>
+          <p>
+            לכל אפליקציה בחר: <strong>🤖 העבר ל־Android</strong> או{" "}
+            <strong>🍎 העבר ל־iPhone</strong>.
+          </p>
+        </section>
+      )}
 
       <section className="admin-apps-list">
         <h2>
@@ -304,13 +464,18 @@ export default function AdminApps() {
         {loading && <p>טוען...</p>}
 
         {!loading && visibleApps.length === 0 && (
-          <p className="admin-apps-empty">אין כרגע אפליקציות בתחום הזה.</p>
+          <p className="admin-apps-empty">
+            {platform === "legacy"
+              ? "מצוין — אין כרגע אפליקציות ישנות שממתינות לשיוך."
+              : "אין כרגע אפליקציות בתחום הזה."}
+          </p>
         )}
 
         <div className="admin-apps-cards">
           {visibleApps.map((item) => {
             const image = getImage(item);
             const link = getLink(item);
+            const guess = guessPlatform(item);
 
             return (
               <article className="admin-app-card" key={item._id}>
@@ -341,20 +506,56 @@ export default function AdminApps() {
 
                   {item.description && <p>{item.description}</p>}
 
+                  {platform === "legacy" && guess && (
+                    <div className="platform-suggestion">
+                      💡 נראה שזו אפליקציית{" "}
+                      <strong>
+                        {guess === "ios" ? "iPhone / iOS" : "Android / Galaxy"}
+                      </strong>
+                    </div>
+                  )}
+
                   {link && (
                     <a href={link} target="_blank" rel="noreferrer">
-                      🔗 פתיחת האפליקציה
+                      🔗 פתיחת הקישור הקיים
                     </a>
                   )}
 
-                  <div className="admin-app-card-actions">
-                    <button type="button" onClick={() => startEdit(item)}>
-                      ✏️ עריכה
-                    </button>
-                    <button type="button" className="danger" onClick={() => remove(item)}>
-                      🗑️ מחיקה
-                    </button>
-                  </div>
+                  {platform === "legacy" ? (
+                    <div className="legacy-move-actions">
+                      <button
+                        type="button"
+                        className={guess === "android" ? "suggested" : ""}
+                        disabled={movingId === item._id}
+                        onClick={() => moveExisting(item, "android")}
+                      >
+                        🤖 העבר ל־Android
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`move-ios ${guess === "ios" ? "suggested" : ""}`}
+                        disabled={movingId === item._id}
+                        onClick={() => moveExisting(item, "ios")}
+                      >
+                        🍎 העבר ל־iPhone
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="admin-app-card-actions">
+                      <button type="button" onClick={() => startEdit(item)}>
+                        ✏️ עריכה
+                      </button>
+
+                      <button
+                        type="button"
+                        className="danger"
+                        onClick={() => remove(item)}
+                      >
+                        🗑️ מחיקה
+                      </button>
+                    </div>
+                  )}
                 </div>
               </article>
             );

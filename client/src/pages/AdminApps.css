@@ -255,3 +255,105 @@
   .admin-apps-form-actions,
   .admin-app-card-actions { flex-direction: column; }
 }
+
+
+/* ===== Legacy apps transfer panel ===== */
+.admin-apps-tabs-six {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.admin-apps-tabs button {
+  position: relative;
+}
+
+.legacy-count {
+  min-width: 30px;
+  height: 30px;
+  margin-inline-start: 8px;
+  padding: 2px 8px;
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #b32033;
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 1000;
+}
+
+.legacy-help-box {
+  margin: 0 0 22px;
+  padding: 22px;
+  border: 3px solid #ffcf42 !important;
+  border-radius: 18px;
+  background: #4a3808 !important;
+  color: #fff !important;
+}
+
+.legacy-help-box h2 {
+  margin: 0 0 10px;
+  color: #fff !important;
+  font-size: 28px;
+}
+
+.legacy-help-box p {
+  color: #fff !important;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.platform-suggestion {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: 2px solid #f3c84a;
+  border-radius: 10px;
+  background: #3f330d;
+  color: #fff !important;
+  font-weight: 900;
+}
+
+.legacy-move-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.legacy-move-actions button {
+  min-height: 56px;
+  padding: 10px 12px;
+  border: 3px solid #fff;
+  border-radius: 12px;
+  background: #14874d;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.legacy-move-actions .move-ios {
+  background: #59677c;
+}
+
+.legacy-move-actions button.suggested {
+  outline: 5px solid #ffdc39;
+  outline-offset: 2px;
+}
+
+.legacy-move-actions button:disabled {
+  opacity: .58;
+  cursor: wait;
+}
+
+@media (max-width: 800px) {
+  .admin-apps-tabs-six {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-apps-tabs-six,
+  .legacy-move-actions {
+    grid-template-columns: 1fr;
+  }
+}
