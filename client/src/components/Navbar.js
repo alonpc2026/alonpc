@@ -6,6 +6,7 @@ import { useLanguage } from "../context/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 import "./Navbar.css";
+import "../AdminGlobal.css";
 
 function readUser() {
   try {

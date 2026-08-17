@@ -1,0 +1,82 @@
+
+/* ALONPC global admin accessibility theme — no white admin screens */
+body:has(main[class*="admin"]),
+body:has([class*="admin-portal"]),
+body:has([class*="admin-page"]) {
+  background: #061a38 !important;
+  color: #ffffff !important;
+}
+
+body:has(main[class*="admin"]) main[class*="admin"],
+body:has([class*="admin-portal"]) main,
+body:has([class*="admin-page"]) main {
+  min-height: 100vh !important;
+  background: linear-gradient(180deg, #082755 0%, #061a38 100%) !important;
+  color: #ffffff !important;
+}
+
+body:has(main[class*="admin"]) main[class*="admin"] section,
+body:has(main[class*="admin"]) main[class*="admin"] form,
+body:has(main[class*="admin"]) main[class*="admin"] article,
+body:has([class*="admin-portal"]) section,
+body:has([class*="admin-page"]) section {
+  background: #0c315f !important;
+  color: #ffffff !important;
+  border-color: #72b8ff !important;
+}
+
+body:has(main[class*="admin"]) main[class*="admin"] h1,
+body:has(main[class*="admin"]) main[class*="admin"] h2,
+body:has(main[class*="admin"]) main[class*="admin"] h3,
+body:has(main[class*="admin"]) main[class*="admin"] p,
+body:has(main[class*="admin"]) main[class*="admin"] label,
+body:has(main[class*="admin"]) main[class*="admin"] span,
+body:has(main[class*="admin"]) main[class*="admin"] strong,
+body:has([class*="admin-portal"]) h1,
+body:has([class*="admin-portal"]) h2,
+body:has([class*="admin-portal"]) h3,
+body:has([class*="admin-portal"]) p,
+body:has([class*="admin-portal"]) span,
+body:has([class*="admin-page"]) h1,
+body:has([class*="admin-page"]) h2,
+body:has([class*="admin-page"]) h3,
+body:has([class*="admin-page"]) p,
+body:has([class*="admin-page"]) span {
+  color: #ffffff !important;
+}
+
+body:has(main[class*="admin"]) input,
+body:has(main[class*="admin"]) textarea,
+body:has(main[class*="admin"]) select,
+body:has([class*="admin-portal"]) input,
+body:has([class*="admin-portal"]) textarea,
+body:has([class*="admin-portal"]) select,
+body:has([class*="admin-page"]) input,
+body:has([class*="admin-page"]) textarea,
+body:has([class*="admin-page"]) select {
+  background: #071f42 !important;
+  color: #ffffff !important;
+  border: 3px solid #70b7ff !important;
+  min-height: 52px;
+  font-size: 19px;
+}
+
+body:has(main[class*="admin"]) input::placeholder,
+body:has(main[class*="admin"]) textarea::placeholder,
+body:has([class*="admin-portal"]) input::placeholder,
+body:has([class*="admin-portal"]) textarea::placeholder,
+body:has([class*="admin-page"]) input::placeholder,
+body:has([class*="admin-page"]) textarea::placeholder {
+  color: #d8eaff !important;
+  opacity: 1 !important;
+}
+
+body:has(main[class*="admin"]) button,
+body:has(main[class*="admin"]) a,
+body:has([class*="admin-portal"]) button,
+body:has([class*="admin-portal"]) a,
+body:has([class*="admin-page"]) button,
+body:has([class*="admin-page"]) a {
+  font-size: 18px;
+  font-weight: 900;
+}
