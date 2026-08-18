@@ -11,9 +11,6 @@ const HOME_TRANSLATIONS = {
     heroTitle: "מרכז השירותים של ALONPC",
     heroSubtitle: "כל השירותים, החנות, המסמכים והסיוע במקום אחד.",
     searchPlaceholder: "חיפוש כפתור או שירות",
-    aiTitle: "🤖 מנוע בינה מלאכותית למען הנגישות",
-    aiPlaceholder: "מה תרצו לדעת בנושא נגישות?",
-    aiButton: "חיפוש",
     clear: "נקה",
     buttonsAria: "כל הכפתורים הראשיים",
     noResults: "לא נמצאו כפתורים מתאימים לחיפוש.",
@@ -23,33 +20,28 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "המספר מתעדכן ידנית על ידי מנהל האתר",
     buttons: {
       accessiblePortal: ["מרכז השירותים", "כל השירותים במקום אחד"],
-      government: ["משרדי ממשלה", "שירותים ממשלתיים, רשויות וגופים ציבוריים"],
+      government: ["משרדי ממשלה", "שירותים ממשלתיים וטפסים"],
       nationalInsurance: ["ביטוח לאומי", "קצבאות, זכויות וטפסים"],
       health: ["בריאות", "קופות חולים ושירותי רפואה"],
       accessibility: ["נגישות", "מידע וסיוע לאנשים עם מוגבלות"],
       transport: ["תחבורה", "תחבורה ציבורית וניידות"],
       employment: ["תעסוקה", "משרות, הכשרה וסיוע בעבודה"],
       documents: ["מסמכים", "טפסים, אישורים ומידע שימושי"],
-      shop: ["החנות של אלון", "מחשבים, ציוד ומוצרים נגישים"],
-      secondHand: ["לוח יד 2", "מוצרים יד שנייה"],
+      shop: ["חנות של אלון", "מחשבים, ציוד ומוצרים נגישים"],
+      secondHand: ["יד שנייה", "מוצרים יד שנייה"],
       booking: ["הזמנת שירות", "פתיחת בקשה לשירות או טיפול"],
-      events: ["אירועים נגישים", "בחירה בין אירועים רגילים לאירועים קבועים"],
+      events: ["לוח אירועים בישראל", "אירועים, הופעות, כנסים ופעילויות לפי חודשים"],
       interestingSites: ["אתרים מעניינים של אלון", "קישורים לאתרים מומלצים ושימושיים"],
-      apps: ["אפליקציות", "טלוויזיה חכמה, סלולרי, Windows ו-Mac"],
-      games: ["משחקים", "מחשב, Android, Apple וטלוויזיה חכמה"],
       about: ["אודות", "מידע על ALONPC"],
-      contact: ["צור קשר", "פנייה לאלון בכתב"]
+      contact: ["צור קשר", "פנייה לאלון בכתב"],
+      emergency: ["חירום", "משטרה • כבאות והצלה • מגן דוד אדום"]
     }
   },
-
   en: {
     accessibilityBadge: "♿ An accessible and clear website for everyone",
     heroTitle: "ALONPC Service Center",
     heroSubtitle: "All services, the shop, documents and assistance in one place.",
     searchPlaceholder: "Search for a button or service",
-    aiTitle: "🤖 Artificial Intelligence Engine for Accessibility",
-    aiPlaceholder: "What would you like to know about accessibility?",
-    aiButton: "Search",
     clear: "Clear",
     buttonsAria: "All main buttons",
     noResults: "No matching buttons were found.",
@@ -67,25 +59,20 @@ const HOME_TRANSLATIONS = {
       employment: ["Employment", "Jobs, training and work assistance"],
       documents: ["Documents", "Forms, certificates and useful information"],
       shop: ["Alon's Shop", "Computers, equipment and accessible products"],
-      secondHand: ["Second-Hand Board", "Second-hand products"],
+      secondHand: ["Second Hand", "Second-hand products"],
       booking: ["Book a Service", "Open a service or support request"],
-      events: ["Accessible Events", "Choose regular or permanent events"],
+      events: ["Events in Israel", "Events, shows, conferences and activities by month"],
       interestingSites: ["Alon's Interesting Sites", "Recommended and useful website links"],
-      apps: ["Apps", "Smart TV, mobile, Windows and Mac"],
-      games: ["Games", "Computer, Android, Apple and Smart TV"],
       about: ["About", "Information about ALONPC"],
-      contact: ["Contact", "Write to Alon"]
+      contact: ["Contact", "Write to Alon"],
+      emergency: ["Emergency", "Police • Fire and Rescue • Magen David Adom"]
     }
   },
-
   ru: {
     accessibilityBadge: "♿ Доступный и понятный сайт для всех",
     heroTitle: "Центр услуг ALONPC",
     heroSubtitle: "Все услуги, магазин, документы и помощь в одном месте.",
     searchPlaceholder: "Поиск кнопки или услуги",
-    aiTitle: "🤖 Искусственный интеллект для доступности",
-    aiPlaceholder: "Что вы хотите узнать о доступности?",
-    aiButton: "Поиск",
     clear: "Очистить",
     buttonsAria: "Все основные кнопки",
     noResults: "Подходящие кнопки не найдены.",
@@ -103,25 +90,20 @@ const HOME_TRANSLATIONS = {
       employment: ["Трудоустройство", "Работа, обучение и помощь в трудоустройстве"],
       documents: ["Документы", "Формы, справки и полезная информация"],
       shop: ["Магазин Алона", "Компьютеры, оборудование и доступные товары"],
-      secondHand: ["Доска б/у", "Подержанные товары"],
+      secondHand: ["Секонд-хенд", "Подержанные товары"],
       booking: ["Заказ услуги", "Открыть заявку на услугу или помощь"],
-      events: ["Доступные события", "Выберите обычные или постоянные события"],
+      events: ["События в Израиле", "События, концерты, конференции и мероприятия по месяцам"],
       interestingSites: ["Интересные сайты Алона", "Рекомендуемые и полезные ссылки"],
-      apps: ["Приложения", "Smart TV, мобильные, Windows и Mac"],
-      games: ["Игры", "Компьютер, Android, Apple и Smart TV"],
       about: ["О нас", "Информация об ALONPC"],
-      contact: ["Контакты", "Написать Алону"]
+      contact: ["Контакты", "Написать Алону"],
+      emergency: ["Экстренная помощь", "Полиция • Пожарно-спасательная служба • Маген Давид Адом"]
     }
   },
-
   ar: {
     accessibilityBadge: "♿ موقع واضح ومتاح للجميع",
     heroTitle: "مركز خدمات ALONPC",
     heroSubtitle: "جميع الخدمات والمتجر والمستندات والمساعدة في مكان واحد.",
     searchPlaceholder: "ابحث عن زر أو خدمة",
-    aiTitle: "🤖 محرك الذكاء الاصطناعي من أجل إمكانية الوصول",
-    aiPlaceholder: "ماذا تريد أن تعرف عن إمكانية الوصول؟",
-    aiButton: "بحث",
     clear: "مسح",
     buttonsAria: "جميع الأزرار الرئيسية",
     noResults: "لم يتم العثور على أزرار مطابقة.",
@@ -131,7 +113,7 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "يتم تحديث الرقم يدويًا بواسطة مدير الموقع",
     buttons: {
       accessiblePortal: ["مركز الخدمات", "جميع الخدمات في مكان واحد"],
-      government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],
+      government: ["الدوائر الحكومية", "خدمات حكومية ونماذج"],
       nationalInsurance: ["التأمين الوطني", "مخصصات وحقوق ونماذج"],
       health: ["الصحة", "صناديق المرضى والخدمات الطبية"],
       accessibility: ["إتاحة الوصول", "معلومات ومساعدة للأشخاص ذوي الإعاقة"],
@@ -139,25 +121,20 @@ const HOME_TRANSLATIONS = {
       employment: ["التوظيف", "وظائف وتدريب ومساعدة في العمل"],
       documents: ["المستندات", "نماذج وشهادات ومعلومات مفيدة"],
       shop: ["متجر ألون", "أجهزة كمبيوتر ومعدات ومنتجات متاحة"],
-      secondHand: ["لوحة مستعمل", "منتجات مستعملة"],
+      secondHand: ["مستعمل", "منتجات مستعملة"],
       booking: ["حجز خدمة", "فتح طلب خدمة أو مساعدة"],
-      events: ["فعاليات ميسّرة", "اختر بين الفعاليات العادية والثابتة"],
+      events: ["فعاليات في إسرائيل", "فعاليات وعروض ومؤتمرات وأنشطة حسب الأشهر"],
       interestingSites: ["مواقع ألون المميزة", "روابط لمواقع موصى بها ومفيدة"],
-      apps: ["التطبيقات", "تلفزيون ذكي، هاتف، Windows وMac"],
-      games: ["الألعاب", "كمبيوتر، Android، Apple وتلفزيون ذكي"],
       about: ["من نحن", "معلومات عن ALONPC"],
-      contact: ["اتصل بنا", "مراسلة ألون كتابيًا"]
+      contact: ["اتصل بنا", "مراسلة ألون كتابيًا"],
+      emergency: ["الطوارئ", "الشرطة • الإطفاء والإنقاذ • نجمة داود الحمراء"]
     }
   },
-
   am: {
     accessibilityBadge: "♿ ለሁሉም ተደራሽና ግልጽ የሆነ ድረ ገጽ",
     heroTitle: "የALONPC አገልግሎት ማዕከል",
     heroSubtitle: "ሁሉም አገልግሎቶች፣ ሱቅ፣ ሰነዶችና እርዳታ በአንድ ቦታ።",
     searchPlaceholder: "ቁልፍ ወይም አገልግሎት ፈልግ",
-    aiTitle: "🤖 ለተደራሽነት የሰው ሰራሽ ብልህነት ሞተር",
-    aiPlaceholder: "ስለ ተደራሽነት ምን ማወቅ ይፈልጋሉ?",
-    aiButton: "ፈልግ",
     clear: "አጽዳ",
     buttonsAria: "ሁሉም ዋና ቁልፎች",
     noResults: "ተዛማጅ ቁልፎች አልተገኙም።",
@@ -175,128 +152,19 @@ const HOME_TRANSLATIONS = {
       employment: ["ሥራ", "የሥራ ዕድሎች፣ ስልጠናና እርዳታ"],
       documents: ["ሰነዶች", "ቅጾች፣ ማረጋገጫዎችና ጠቃሚ መረጃ"],
       shop: ["የአሎን ሱቅ", "ኮምፒውተሮች፣ መሳሪያዎችና ተደራሽ ምርቶች"],
-      secondHand: ["የሁለተኛ እጅ ሰሌዳ", "ያገለገሉ ምርቶች"],
+      secondHand: ["ያገለገሉ ምርቶች", "ሁለተኛ እጅ ምርቶች"],
       booking: ["አገልግሎት ይዘዙ", "የአገልግሎት ወይም ድጋፍ ጥያቄ ይክፈቱ"],
-      events: ["ተደራሽ ዝግጅቶች", "መደበኛ ወይም ቋሚ ዝግጅት ይምረጡ"],
+      events: ["በእስራኤል ያሉ ዝግጅቶች", "ዝግጅቶች፣ ትርዒቶችና ጉባኤዎች በወር"],
       interestingSites: ["የአሎን ጠቃሚ ድረ ገጾች", "የሚመከሩና ጠቃሚ አገናኞች"],
-      apps: ["መተግበሪያዎች", "Smart TV፣ ሞባይል፣ Windows እና Mac"],
-      games: ["ጨዋታዎች", "ኮምፒውተር፣ Android፣ Apple እና Smart TV"],
       about: ["ስለ እኛ", "ስለ ALONPC መረጃ"],
-      contact: ["ያግኙን", "ለአሎን በጽሑፍ ይላኩ"]
-    }
-  },
-
-  fr: {
-    accessibilityBadge: "♿ Un site accessible et clair pour tous",
-    heroTitle: "Centre de services ALONPC",
-    heroSubtitle: "Tous les services, la boutique, les documents et l'assistance au même endroit.",
-    searchPlaceholder: "Rechercher un bouton ou un service",
-    aiTitle: "🤖 Intelligence artificielle au service de l'accessibilité",
-    aiPlaceholder: "Que souhaitez-vous savoir sur l'accessibilité ?",
-    aiButton: "Rechercher",
-    clear: "Effacer",
-    buttonsAria: "Tous les boutons principaux",
-    noResults: "Aucun bouton correspondant n'a été trouvé.",
-    quickContact: "Contact rapide",
-    writeToAlon: "Écrire à Alon",
-    visitorCounter: "Compteur de visiteurs",
-    visitorCounterNote: "Le nombre est mis à jour manuellement par l'administrateur du site",
-    buttons: {
-      accessiblePortal: ["Centre de services", "Tous les services au même endroit"],
-      government: ["Services gouvernementaux", "Services publics et formulaires"],
-      nationalInsurance: ["Assurance nationale", "Allocations, droits et formulaires"],
-      health: ["Santé", "Caisses de santé et services médicaux"],
-      accessibility: ["Accessibilité", "Informations et aide aux personnes handicapées"],
-      transport: ["Transports", "Transports publics et mobilité"],
-      employment: ["Emploi", "Offres d'emploi, formation et aide"],
-      documents: ["Documents", "Formulaires, certificats et informations utiles"],
-      shop: ["Boutique d'Alon", "Ordinateurs, équipements et produits accessibles"],
-      secondHand: ["Petites annonces d'occasion", "Produits d'occasion"],
-      booking: ["Réserver un service", "Ouvrir une demande de service ou d'aide"],
-      events: ["Événements accessibles", "Choisir entre événements réguliers ou permanents"],
-      interestingSites: ["Sites intéressants d'Alon", "Liens recommandés et utiles"],
-      apps: ["Applications", "Smart TV, mobile, Windows et Mac"],
-      games: ["Jeux", "Ordinateur, Android, Apple et Smart TV"],
-      about: ["À propos", "Informations sur ALONPC"],
-      contact: ["Contact", "Écrire à Alon"]
-    }
-  },
-
-  fil: {
-    accessibilityBadge: "♿ Accessible at malinaw na website para sa lahat",
-    heroTitle: "ALONPC Service Center",
-    heroSubtitle: "Lahat ng serbisyo, tindahan, dokumento at tulong sa iisang lugar.",
-    searchPlaceholder: "Maghanap ng button o serbisyo",
-    aiTitle: "🤖 Artificial Intelligence para sa Accessibility",
-    aiPlaceholder: "Ano ang gusto mong malaman tungkol sa accessibility?",
-    aiButton: "Maghanap",
-    clear: "Linisin",
-    buttonsAria: "Lahat ng pangunahing button",
-    noResults: "Walang nahanap na katugmang button.",
-    quickContact: "Mabilis na pakikipag-ugnayan",
-    writeToAlon: "Sumulat kay Alon",
-    visitorCounter: "Bilang ng mga bisita",
-    visitorCounterNote: "Manu-manong ina-update ng administrator ng site ang bilang",
-    buttons: {
-      accessiblePortal: ["Sentro ng Serbisyo", "Lahat ng serbisyo sa iisang lugar"],
-      government: ["Mga Tanggapan ng Pamahalaan", "Mga serbisyo at form ng pamahalaan"],
-      nationalInsurance: ["National Insurance", "Benepisyo, karapatan at mga form"],
-      health: ["Kalusugan", "Mga serbisyong medikal at health fund"],
-      accessibility: ["Accessibility", "Impormasyon at tulong para sa mga taong may kapansanan"],
-      transport: ["Transportasyon", "Pampublikong transportasyon at mobility"],
-      employment: ["Trabaho", "Mga trabaho, pagsasanay at tulong sa paghahanapbuhay"],
-      documents: ["Mga Dokumento", "Mga form, sertipiko at kapaki-pakinabang na impormasyon"],
-      shop: ["Tindahan ni Alon", "Mga computer, kagamitan at accessible na produkto"],
-      secondHand: ["Second-Hand Board", "Mga gamit na produkto"],
-      booking: ["Mag-book ng Serbisyo", "Magbukas ng kahilingan para sa serbisyo o tulong"],
-      events: ["Accessible na mga Event", "Pumili ng regular o permanenteng event"],
-      interestingSites: ["Mga Interesanteng Site ni Alon", "Mga inirerekomenda at kapaki-pakinabang na link"],
-      apps: ["Mga App", "Smart TV, mobile, Windows at Mac"],
-      games: ["Mga Laro", "Computer, Android, Apple at Smart TV"],
-      about: ["Tungkol sa Amin", "Impormasyon tungkol sa ALONPC"],
-      contact: ["Makipag-ugnayan", "Sumulat kay Alon"]
-    }
-  },
-
-  hi: {
-    accessibilityBadge: "♿ सभी के लिए सुलभ और स्पष्ट वेबसाइट",
-    heroTitle: "ALONPC सेवा केंद्र",
-    heroSubtitle: "सभी सेवाएँ, दुकान, दस्तावेज़ और सहायता एक ही स्थान पर।",
-    searchPlaceholder: "बटन या सेवा खोजें",
-    aiTitle: "🤖 सुगम्यता के लिए कृत्रिम बुद्धिमत्ता",
-    aiPlaceholder: "आप सुगम्यता के बारे में क्या जानना चाहते हैं?",
-    aiButton: "खोजें",
-    clear: "साफ़ करें",
-    buttonsAria: "सभी मुख्य बटन",
-    noResults: "कोई मिलते-जुलते बटन नहीं मिले।",
-    quickContact: "त्वरित संपर्क",
-    writeToAlon: "अलोन को लिखें",
-    visitorCounter: "आगंतुक काउंटर",
-    visitorCounterNote: "संख्या साइट व्यवस्थापक द्वारा मैन्युअल रूप से अपडेट की जाती है",
-    buttons: {
-      accessiblePortal: ["सेवा केंद्र", "सभी सेवाएँ एक ही स्थान पर"],
-      government: ["सरकारी कार्यालय", "सरकारी सेवाएँ और फ़ॉर्म"],
-      nationalInsurance: ["राष्ट्रीय बीमा", "भत्ते, अधिकार और फ़ॉर्म"],
-      health: ["स्वास्थ्य", "स्वास्थ्य कोष और चिकित्सा सेवाएँ"],
-      accessibility: ["सुगम्यता", "विकलांग लोगों के लिए जानकारी और सहायता"],
-      transport: ["परिवहन", "सार्वजनिक परिवहन और गतिशीलता"],
-      employment: ["रोज़गार", "नौकरियाँ, प्रशिक्षण और काम में सहायता"],
-      documents: ["दस्तावेज़", "फ़ॉर्म, प्रमाणपत्र और उपयोगी जानकारी"],
-      shop: ["अलोन की दुकान", "कंप्यूटर, उपकरण और सुलभ उत्पाद"],
-      secondHand: ["सेकंड-हैंड बोर्ड", "पुराने/प्रयुक्त उत्पाद"],
-      booking: ["सेवा बुक करें", "सेवा या सहायता अनुरोध खोलें"],
-      events: ["सुलभ कार्यक्रम", "नियमित या स्थायी कार्यक्रम चुनें"],
-      interestingSites: ["अलोन की उपयोगी साइटें", "अनुशंसित और उपयोगी लिंक"],
-      apps: ["ऐप्स", "Smart TV, मोबाइल, Windows और Mac"],
-      games: ["गेम्स", "कंप्यूटर, Android, Apple और Smart TV"],
-      about: ["हमारे बारे में", "ALONPC के बारे में जानकारी"],
-      contact: ["संपर्क", "अलोन को लिखें"]
+      contact: ["ያግኙን", "ለአሎን በጽሑፍ ይላኩ"],
+      emergency: ["ድንገተኛ አደጋ", "ፖሊስ • እሳትና ማዳን • ማጌን ዳቪድ አዶም"]
     }
   }
 };
 
-
 const BUTTON_DEFINITIONS = [
+  { key: "emergency", icon: "🚨", color: "emergency", path: "/emergency" },
   { key: "accessiblePortal", icon: "♿", color: "blue", path: "/accessible-portal" },
   { key: "government", icon: "🏛️", color: "navy", path: "/government" },
   { key: "nationalInsurance", icon: "🏦", color: "royal", path: "/services" },
@@ -308,10 +176,8 @@ const BUTTON_DEFINITIONS = [
   { key: "shop", icon: "🛒", color: "amber", path: "/shop" },
   { key: "secondHand", icon: "♻️", color: "teal", path: "/second-hand" },
   { key: "booking", icon: "🗓️", color: "pink", path: "/booking" },
-  { key: "events", icon: "📅", color: "purple", path: "/events" },
+  { key: "events", icon: "📅", color: "royal", path: "/israel-events" },
   { key: "interestingSites", icon: "🌐", color: "indigo", path: "/interesting-sites" },
-  { key: "apps", icon: "📱", color: "graffiti", path: "/apps" },
-  { key: "games", icon: "🎮", color: "games-graffiti", path: "/games" },
   { key: "about", icon: "ℹ️", color: "sky", path: "/about" },
   { key: "contact", icon: "📞", color: "red", path: "/contact" }
 ];
@@ -319,7 +185,6 @@ const BUTTON_DEFINITIONS = [
 function Home() {
   const { language, dir, locale } = useLanguage();
   const [search, setSearch] = useState("");
-  const [aiQuestion, setAiQuestion] = useState("");
 
   const text = HOME_TRANSLATIONS[language] || HOME_TRANSLATIONS.he;
 
@@ -344,19 +209,6 @@ function Home() {
         .includes(term)
     );
   }, [search, mainButtons, locale]);
-
-  function submitAccessibilitySearch(event) {
-    event.preventDefault();
-    const question = aiQuestion.trim();
-    if (!question) return;
-
-    const query = `${question} נגישות אנשים עם מוגבלות ישראל`;
-    window.open(
-      `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  }
 
   const arrow = dir === "rtl" ? "←" : "→";
 
@@ -390,29 +242,6 @@ function Home() {
               {text.clear}
             </button>
           </div>
-          <form
-            onSubmit={submitAccessibilitySearch}
-            className="home-ai-search"
-          >
-            <strong className="home-ai-graffiti-title">
-              {text.aiTitle}
-            </strong>
-            <div className="home-ai-search-row">
-              <input
-                type="search"
-                value={aiQuestion}
-                onChange={(event) => setAiQuestion(event.target.value)}
-                placeholder={text.aiPlaceholder}
-                aria-label={text.aiPlaceholder}
-              />
-              <button
-                type="submit"
-                className="home-ai-search-button"
-              >
-                {text.aiButton}
-              </button>
-            </div>
-          </form>
         </div>
       </section>
 

@@ -6,6 +6,7 @@ import { CartProvider } from "./context/CartContext";
 import { LanguageProvider } from "./context/LanguageContext";
 
 import Home from "./pages/Home";
+import Emergency from "./pages/Emergency";
 import InterestingSites from "./pages/InterestingSites";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
@@ -80,6 +81,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/emergency" element={<Emergency />} />
 
               {/* אתרים מעניינים של אלון */}
               <Route path="/interesting-sites" element={<InterestingSites />} />
@@ -108,7 +110,7 @@ function App() {
               <Route path="/documents" element={<Documents />} />
               <Route path="/booking" element={<ServiceBooking />} />
               <Route path="/apps" element={<AppsHub />} />
-              <Route path="/apps/mobile" element={<MobileApps />} />
+              <Route path="/apps/mobile" element={<AppsCategory />} />
               <Route path="/apps/:type" element={<AppsCategory />} />
               <Route path="/games" element={<GamesHub />} />
               <Route path="/games/:type" element={<GamesList />} />

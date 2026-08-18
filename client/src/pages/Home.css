@@ -545,3 +545,6 @@
   -webkit-text-stroke: 1px #111827;
   text-shadow: 3px 3px 0 #111827;
 }
+
+.home-main-button--emergency { background:linear-gradient(135deg,#b5121b,#e12632); border-color:#fff3a6; box-shadow:0 10px 28px rgba(120,0,0,.35); }
+.home-main-button--emergency:hover,.home-main-button--emergency:focus { outline:5px solid #ffe33b; outline-offset:3px; }
