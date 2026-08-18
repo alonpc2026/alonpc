@@ -21,7 +21,6 @@ import ServiceBooking from "./pages/ServiceBooking";
 import AppsHub from "./pages/AppsHub";
 import GamesHub from "./pages/GamesHub";
 import GamesList from "./pages/GamesList";
-import MobileApps from "./pages/MobileApps";
 import AppsCategory from "./pages/AppsCategory";
 
 import Login from "./pages/Login";
