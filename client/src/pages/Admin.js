@@ -112,6 +112,13 @@ const adminSections = [
     className: "admin-card-violet",
   },
   {
+    title: "ניהול קישורים לקבוצה בפייס",
+    description: "הוספה, עריכה ומחיקה של קישורים והערות לגולשים",
+    icon: "📘",
+    path: "/admin/facebook-group-links",
+    className: "admin-card-indigo",
+  },
+  {
     title: "ניהול אתרים מעניינים",
     description: "שם, לוגו, קישור, קטגוריה וצבעי פרסום נגישים",
     icon: "🌐",

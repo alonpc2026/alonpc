@@ -8,6 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./pages/Home";
 import Emergency from "./pages/Emergency";
 import InterestingSites from "./pages/InterestingSites";
+import FacebookGroupLinks from "./pages/FacebookGroupLinks";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
@@ -34,6 +35,7 @@ import AdminBookings from "./pages/AdminBookings";
 import AdminEvents from "./pages/AdminEvents";
 import AdminPermanentEvents from "./pages/AdminPermanentEvents";
 import AdminInterestingSites from "./pages/AdminInterestingSites";
+import AdminFacebookGroupLinks from "./pages/AdminFacebookGroupLinks";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
 import AdminBrands from "./pages/AdminBrands";
@@ -85,6 +87,7 @@ function App() {
 
               {/* אתרים מעניינים של אלון */}
               <Route path="/interesting-sites" element={<InterestingSites />} />
+              <Route path="/facebook-group-links" element={<FacebookGroupLinks />} />
 
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />
@@ -286,6 +289,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminInterestingSites />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/facebook-group-links"
+                element={
+                  <AdminRoute>
+                    <AdminFacebookGroupLinks />
                   </AdminRoute>
                 }
               />

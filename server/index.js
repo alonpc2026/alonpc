@@ -77,6 +77,7 @@ mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
 mountRoute("./routes/gameRoutes", "/api/games");
 mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
 mountRoute("./routes/emergencyContactRoutes", "/api/emergency-contacts");
+mountRoute("./routes/facebookGroupLinkRoutes", "/api/facebook-group-links");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {
