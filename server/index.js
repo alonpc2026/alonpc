@@ -74,9 +74,9 @@ mountRoute("./routes/permanentEventRoutes", "/api/permanent-events");
 mountRoute("./routes/governmentServiceRoutes", "/api/government-services");
 mountRoute("./routes/governmentServiceRoutes", "/api/government");
 mountRoute("./routes/mobileAppRoutes", "/api/mobile-apps");
-mountRoute("./routes/mobileAppRoutes", "/api/apps");
 mountRoute("./routes/gameRoutes", "/api/games");
 mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
+mountRoute("./routes/emergencyContactRoutes", "/api/emergency-contacts");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {
