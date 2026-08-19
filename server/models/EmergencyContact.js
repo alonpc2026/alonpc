@@ -4,15 +4,55 @@ const emergencyContactSchema = new mongoose.Schema(
   {
     key: {
       type: String,
-      enum: ["police", "mada", "fire"],
-      required: true,
-      unique: true,
-      index: true
+      trim: true,
+      default: ""
     },
+
+    // true for the three national emergency services; false for custom services.
+    isCore: {
+      type: Boolean,
+      default: false
+    },
+
+    name: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
+    address: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
+    imageUrl: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
+    phone: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
     accessiblePhone: {
       type: String,
-      default: "",
-      trim: true
+      trim: true,
+      default: ""
+    },
+
+    description: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
+    active: {
+      type: Boolean,
+      default: true
     }
   },
   {

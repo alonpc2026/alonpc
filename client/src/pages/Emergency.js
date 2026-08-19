@@ -4,54 +4,19 @@ import "./Emergency.css";
 
 const API = "https://alonpc02026.onrender.com/api/emergency-contacts";
 
-const EMERGENCY_TRANSLATIONS = {
-  he: {
-    title: "חירום", subtitle: "מספרי חירום בישראל",
-    warning: "במקרה חירום אמיתי פנו מיד לשירות החירום המתאים.",
-    police: "משטרה", fire: "כבאות והצלה", mada: "מגן דוד אדום", call: "חיוג",
-    accessiblePhone: "טלפון נגיש למוגבלי שמיעה",
-    policeNote: "משטרת ישראל", fireNote: "כבאות והצלה לישראל", madaNote: "שירותי רפואת חירום"
-  },
-  en: {
-    title: "Emergency", subtitle: "Emergency numbers in Israel",
-    warning: "In a real emergency, contact the appropriate emergency service immediately.",
-    police: "Police", fire: "Fire and Rescue", mada: "Magen David Adom", call: "Call",
-    accessiblePhone: "Accessible phone for people with hearing disabilities",
-    policeNote: "Israel Police", fireNote: "Israel Fire and Rescue Services", madaNote: "Emergency medical services"
-  },
-  ru: {
-    title: "Экстренная помощь", subtitle: "Экстренные номера в Израиле",
-    warning: "В экстренной ситуации немедленно обратитесь в соответствующую службу.",
-    police: "Полиция", fire: "Пожарно-спасательная служба", mada: "Маген Давид Адом", call: "Позвонить",
-    accessiblePhone: "Доступный номер для людей с нарушением слуха",
-    policeNote: "Полиция Израиля", fireNote: "Пожарно-спасательная служба Израиля", madaNote: "Экстренная медицинская помощь"
-  },
-  ar: {
-    title: "الطوارئ", subtitle: "أرقام الطوارئ في إسرائيل",
-    warning: "في حالة طوارئ حقيقية، اتصل فورًا بخدمة الطوارئ المناسبة.",
-    police: "الشرطة", fire: "الإطفاء والإنقاذ", mada: "نجمة داود الحمراء", call: "اتصال",
-    accessiblePhone: "هاتف متاح للأشخاص ذوي الإعاقة السمعية",
-    policeNote: "شرطة إسرائيل", fireNote: "خدمات الإطفاء والإنقاذ في إسرائيل", madaNote: "خدمات الطوارئ الطبية"
-  },
-  am: {
-    title: "ድንገተኛ አደጋ", subtitle: "በእስራኤል የድንገተኛ አደጋ ቁጥሮች",
-    warning: "በእውነተኛ ድንገተኛ አደጋ ጊዜ ተገቢውን የአደጋ ጊዜ አገልግሎት ወዲያውኑ ያነጋግሩ።",
-    police: "ፖሊስ", fire: "እሳትና ማዳን", mada: "ማጌን ዳቪድ አዶም", call: "ይደውሉ",
-    accessiblePhone: "ለመስማት እክል ላላቸው ሰዎች ተደራሽ ስልክ",
-    policeNote: "የእስራኤል ፖሊስ", fireNote: "የእስራኤል እሳትና ማዳን", madaNote: "የድንገተኛ ሕክምና አገልግሎት"
-  }
+const TEXT = {
+  he: { title:"חירום", subtitle:"שירותי חירום חשובים", accessible:"טלפון נגיש למוגבלי שמיעה", call:"חיוג", address:"כתובת" },
+  en: { title:"Emergency", subtitle:"Important emergency services", accessible:"Accessible phone for people with hearing disabilities", call:"Call", address:"Address" },
+  ru: { title:"Экстренная помощь", subtitle:"Важные экстренные службы", accessible:"Доступный номер для людей с нарушением слуха", call:"Позвонить", address:"Адрес" },
+  ar: { title:"الطوارئ", subtitle:"خدمات طوارئ مهمة", accessible:"هاتف متاح للأشخاص ذوي الإعاقة السمعية", call:"اتصال", address:"العنوان" },
+  am: { title:"ድንገተኛ አደጋ", subtitle:"አስፈላጊ የድንገተኛ አደጋ አገልግሎቶች", accessible:"ለመስማት እክል ላላቸው ሰዎች ተደራሽ ስልክ", call:"ይደውሉ", address:"አድራሻ" }
 };
-
-const SERVICES = [
-  { key: "police", note: "policeNote", icon: "👮", number: "100", className: "police" },
-  { key: "fire", note: "fireNote", icon: "🚒", number: "102", className: "fire" },
-  { key: "mada", note: "madaNote", icon: "🚑", number: "101", className: "mada" }
-];
 
 export default function Emergency() {
   const { language, dir } = useLanguage();
-  const text = EMERGENCY_TRANSLATIONS[language] || EMERGENCY_TRANSLATIONS.he;
-  const [accessiblePhones, setAccessiblePhones] = useState({});
+  const text = TEXT[language] || TEXT.he;
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -60,14 +25,15 @@ export default function Emergency() {
       try {
         const response = await fetch(API);
         const data = await response.json().catch(() => []);
-        if (!response.ok || !active) return;
 
-        const map = {};
-        for (const item of Array.isArray(data) ? data : []) {
-          map[item.key] = item.accessiblePhone || "";
+        if (!response.ok) {
+          throw new Error(data.message || "לא ניתן לטעון שירותי חירום");
         }
-        setAccessiblePhones(map);
-      } catch {}
+
+        if (active) setItems(Array.isArray(data) ? data : []);
+      } catch (err) {
+        if (active) setError(err.message || "לא ניתן לטעון שירותי חירום");
+      }
     }
 
     load();
@@ -78,36 +44,55 @@ export default function Emergency() {
     <main className="emergency-page" dir={dir}>
       <header className="emergency-hero">
         <span className="emergency-hero-icon">🚨</span>
-        <div><h1>{text.title}</h1><p>{text.subtitle}</p></div>
+        <div>
+          <h1>{text.title}</h1>
+          <p>{text.subtitle}</p>
+        </div>
       </header>
 
-      <div className="emergency-warning">{text.warning}</div>
+      {error && <div className="emergency-warning">{error}</div>}
 
       <section className="emergency-grid">
-        {SERVICES.map((service) => {
-          const accessiblePhone = accessiblePhones[service.key] || "";
-
-          return (
-            <article className={`emergency-card emergency-card--${service.className}`} key={service.key}>
-              <span className="emergency-card-icon">{service.icon}</span>
-              <h2>{text[service.key]}</h2>
-              <p>{text[service.note]}</p>
-              <strong className="emergency-number">{service.number}</strong>
-
-              <a href={`tel:${service.number}`}>📞 {text.call} {service.number}</a>
-
-              {accessiblePhone && (
-                <div className="accessible-public-phone">
-                  <span>♿📱 {text.accessiblePhone}</span>
-                  <strong>{accessiblePhone}</strong>
-                  <a href={`tel:${accessiblePhone.replace(/[^\d+]/g, "")}`}>
-                    📞 {text.call} {accessiblePhone}
-                  </a>
-                </div>
+        {items.map((item) => (
+          <article
+            className={`emergency-card ${item.isCore ? "emergency-card--core" : "emergency-card--custom"}`}
+            key={item._id}
+          >
+            <div className="emergency-public-image">
+              {item.imageUrl ? (
+                <img src={item.imageUrl} alt={item.name} />
+              ) : (
+                <span>🚨</span>
               )}
-            </article>
-          );
-        })}
+            </div>
+
+            <h2>{item.name}</h2>
+
+            {item.description && <p>{item.description}</p>}
+
+            <strong className="emergency-number">{item.phone}</strong>
+
+            <a href={`tel:${String(item.phone).replace(/[^\d+]/g, "")}`}>
+              📞 {text.call} {item.phone}
+            </a>
+
+            {item.address && (
+              <div className="emergency-extra-line">
+                📍 <strong>{text.address}:</strong> {item.address}
+              </div>
+            )}
+
+            {item.accessiblePhone && (
+              <div className="accessible-public-phone">
+                <span>♿📱 {text.accessible}</span>
+                <strong>{item.accessiblePhone}</strong>
+                <a href={`tel:${String(item.accessiblePhone).replace(/[^\d+]/g, "")}`}>
+                  📞 {text.call} {item.accessiblePhone}
+                </a>
+              </div>
+            )}
+          </article>
+        ))}
       </section>
     </main>
   );

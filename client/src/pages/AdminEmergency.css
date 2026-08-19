@@ -17,3 +17,107 @@
   background:#08786d;color:#fff;font-size:18px;font-weight:900;cursor:pointer;
 }
 .save-accessible-phone:disabled{opacity:.65;cursor:wait}
+
+
+.admin-emergency-add-form,
+.admin-emergency-list{
+  margin-top:22px;
+  padding:22px;
+  border:3px solid #6fb8ff;
+  border-radius:18px;
+  background:#0b2c57;
+  color:#fff;
+}
+.admin-emergency-add-form h2,
+.admin-emergency-list h2{color:#fff}
+.admin-emergency-add-form form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.admin-emergency-add-form label{
+  display:grid;
+  gap:7px;
+  color:#fff;
+  font-weight:900;
+}
+.admin-emergency-add-form input,
+.admin-emergency-add-form textarea{
+  min-height:52px;
+  padding:10px 12px;
+  border:3px solid #76bbff;
+  border-radius:11px;
+  background:#061a38;
+  color:#fff;
+  font-size:18px;
+}
+.admin-emergency-add-form textarea{min-height:110px}
+.admin-emergency-add-form .wide{grid-column:1/-1}
+.emergency-image-preview{
+  padding:12px;
+  border:3px dashed #7fc4ff;
+  border-radius:14px;
+  text-align:center;
+}
+.emergency-image-preview img{
+  width:min(300px,100%);
+  height:180px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#061a38;
+}
+.admin-emergency-form-actions{
+  display:flex;
+  gap:10px;
+}
+.admin-emergency-form-actions button,
+.custom-emergency-actions button{
+  min-height:50px;
+  padding:10px 16px;
+  border:3px solid #fff;
+  border-radius:11px;
+  background:#08786d;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+}
+.admin-emergency-form-actions .secondary{background:#59449a}
+.custom-emergency-actions .danger{background:#a8212d}
+.admin-emergency-card.custom{background:#0e4770}
+.admin-emergency-card.core{background:#6c1e27}
+.emergency-admin-image{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  border-radius:14px;
+  background:#061a38;
+}
+.emergency-admin-fallback{
+  height:180px;
+  display:grid;
+  place-items:center;
+  font-size:72px;
+  background:#061a38;
+  border-radius:14px;
+}
+.core-badge{
+  display:inline-block;
+  margin:6px 0;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#ffe05a;
+  color:#172033!important;
+  font-weight:900;
+}
+.custom-emergency-details p{color:#fff}
+.custom-emergency-actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+@media(max-width:700px){
+  .admin-emergency-add-form form{grid-template-columns:1fr}
+  .admin-emergency-add-form .wide{grid-column:auto}
+  .admin-emergency-form-actions,
+  .custom-emergency-actions{flex-direction:column}
+}
