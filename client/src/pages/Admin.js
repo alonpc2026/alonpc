@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import "./Admin.css";
+import "./AdminEmergencyPortalFix.css";
 
 const adminSections = [
+  {
+    title: "🚨 ניהול חירום",
+    description: "משטרה 100 • מגן דוד אדום 101 • כבאות והצלה 102",
+    icon: "🚨",
+    path: "/admin/emergency",
+    className: "admin-card-red",
+  },
+
   {
     title: "ניהול מוצרים וחנות",
     description: "הוספה, עריכה, מחיקה, מחירים, מלאי ותמונות",
@@ -97,7 +106,7 @@ const adminSections = [
   },
   {
     title: "ניהול אירועים קבועים",
-    description: "פשוט: שם אתר, תמונה וקישור לאתר",
+    description: "מקומות קבועים, שעות פעילות, מסמכים ופרטי נגישות",
     icon: "📌",
     path: "/admin/permanent-events",
     className: "admin-card-violet",

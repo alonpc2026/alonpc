@@ -49,6 +49,7 @@ import AdminStatistics from "./pages/AdminStatistics";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
 import AdminGames from "./pages/AdminGames";
+import AdminEmergency from "./pages/AdminEmergency";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -313,6 +314,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminGames />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/emergency"
+                element={
+                  <AdminRoute>
+                    <AdminEmergency />
                   </AdminRoute>
                 }
               />

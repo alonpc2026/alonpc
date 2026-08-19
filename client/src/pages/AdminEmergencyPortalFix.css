@@ -1,0 +1,8 @@
+
+/* Keep the emergency management card highly visible in the admin portal */
+.admin-portal-card[href="#/admin/emergency"],
+.admin-portal-card[href="/admin/emergency"] {
+  background: linear-gradient(135deg, #b30f1c, #e42a36) !important;
+  border-color: #fff4a3 !important;
+  box-shadow: 0 0 0 4px #ffd83d, 0 10px 26px rgba(0,0,0,.32) !important;
+}
