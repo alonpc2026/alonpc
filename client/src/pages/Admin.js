@@ -112,6 +112,13 @@ const adminSections = [
     className: "admin-card-violet",
   },
   {
+    title: "ניהול יהדות",
+    description: "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים",
+    icon: "✡️",
+    path: "/admin/judaism",
+    className: "admin-card-indigo",
+  },
+  {
     title: "ניהול קישורים לקבוצה בפייס",
     description: "הוספה, עריכה ומחיקה של קישורים והערות לגולשים",
     icon: "📘",

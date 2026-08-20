@@ -78,14 +78,8 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "חובה להזין טלפון" });
     }
 
-    // IMPORTANT:
-    // A previous database index may still enforce uniqueness on "key".
-    // Therefore every custom emergency service gets its own unique key.
-    const customKey =
-      `custom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-
     const item = await EmergencyContact.create({
-      key: customKey,
+      key: "",
       isCore: false,
       name,
       address: String(req.body.address || "").trim(),
@@ -99,17 +93,7 @@ router.post("/", async (req, res) => {
     res.status(201).json(item);
   } catch (error) {
     console.error("Create emergency contact error:", error);
-
-    if (error?.code === 11000) {
-      return res.status(409).json({
-        message: "נוצרה התנגשות במסד הנתונים. נסה שוב."
-      });
-    }
-
-    res.status(500).json({
-      message: "לא ניתן להוסיף שירות חירום",
-      detail: error.message
-    });
+    res.status(500).json({ message: "לא ניתן להוסיף שירות חירום" });
   }
 });
 
@@ -128,6 +112,7 @@ router.put("/:idOrKey", async (req, res) => {
     }
 
     if (item.isCore) {
+      // Core services keep their fixed national phone numbers and names.
       item.accessiblePhone = String(req.body.accessiblePhone || "").trim();
       item.address = String(req.body.address || item.address || "").trim();
       item.imageUrl = String(req.body.imageUrl || item.imageUrl || "").trim();
@@ -144,7 +129,6 @@ router.put("/:idOrKey", async (req, res) => {
       if (!item.name) {
         return res.status(400).json({ message: "חובה להזין שם שירות" });
       }
-
       if (!item.phone) {
         return res.status(400).json({ message: "חובה להזין טלפון" });
       }
@@ -167,9 +151,7 @@ router.delete("/:id", async (req, res) => {
     }
 
     if (item.isCore) {
-      return res.status(400).json({
-        message: "לא ניתן למחוק שירות חירום לאומי קבוע"
-      });
+      return res.status(400).json({ message: "לא ניתן למחוק שירות חירום לאומי קבוע" });
     }
 
     await item.deleteOne();

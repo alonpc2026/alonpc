@@ -9,6 +9,11 @@ import Home from "./pages/Home";
 import Emergency from "./pages/Emergency";
 import InterestingSites from "./pages/InterestingSites";
 import FacebookGroupLinks from "./pages/FacebookGroupLinks";
+import Judaism from "./pages/Judaism";
+import JudaismTorahLessons from "./pages/JudaismTorahLessons";
+import JudaismHelp from "./pages/JudaismHelp";
+import JudaismStudyMaterial from "./pages/JudaismStudyMaterial";
+import JudaismEvents from "./pages/JudaismEvents";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
@@ -36,6 +41,7 @@ import AdminEvents from "./pages/AdminEvents";
 import AdminPermanentEvents from "./pages/AdminPermanentEvents";
 import AdminInterestingSites from "./pages/AdminInterestingSites";
 import AdminFacebookGroupLinks from "./pages/AdminFacebookGroupLinks";
+import AdminJudaism from "./pages/AdminJudaism";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
 import AdminBrands from "./pages/AdminBrands";
@@ -88,6 +94,11 @@ function App() {
               {/* אתרים מעניינים של אלון */}
               <Route path="/interesting-sites" element={<InterestingSites />} />
               <Route path="/facebook-group-links" element={<FacebookGroupLinks />} />
+              <Route path="/judaism" element={<Judaism />} />
+              <Route path="/judaism/torah-lessons" element={<JudaismTorahLessons />} />
+              <Route path="/judaism/help" element={<JudaismHelp />} />
+              <Route path="/judaism/study-material" element={<JudaismStudyMaterial />} />
+              <Route path="/judaism/events" element={<JudaismEvents />} />
 
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />
@@ -298,6 +309,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminFacebookGroupLinks />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/judaism"
+                element={
+                  <AdminRoute>
+                    <AdminJudaism />
                   </AdminRoute>
                 }
               />

@@ -78,6 +78,7 @@ mountRoute("./routes/gameRoutes", "/api/games");
 mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
 mountRoute("./routes/emergencyContactRoutes", "/api/emergency-contacts");
 mountRoute("./routes/facebookGroupLinkRoutes", "/api/facebook-group-links");
+mountRoute("./routes/judaismContentRoutes", "/api/judaism-content");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {
