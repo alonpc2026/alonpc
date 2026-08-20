@@ -10,6 +10,7 @@ const EMPTY = {
   imageUrl: "",
   phone: "",
   emergencyRequestUrl: "",
+  specialContactUrl: "",
   emergencyHours: "",
   accessiblePhone: "",
   description: "",
@@ -63,6 +64,7 @@ export default function AdminEmergency() {
       imageUrl: item.imageUrl || "",
       phone: item.phone || "",
       emergencyRequestUrl: item.emergencyRequestUrl || "",
+      specialContactUrl: item.specialContactUrl || "",
       emergencyHours: item.emergencyHours || "",
       accessiblePhone: item.accessiblePhone || "",
       description: item.description || "",
@@ -124,6 +126,7 @@ export default function AdminEmergency() {
         body: JSON.stringify({
           accessiblePhone: item.accessiblePhone || "",
           emergencyRequestUrl: item.emergencyRequestUrl || "",
+          specialContactUrl: item.specialContactUrl || "",
           emergencyHours: item.emergencyHours || "",
           address: item.address || "",
           imageUrl: item.imageUrl || "",
@@ -245,6 +248,16 @@ export default function AdminEmergency() {
           </label>
 
           <label>
+            <span>♿ 🔗 קישור למוקד – פנייה מיוחדת</span>
+            <input
+              type="url"
+              value={form.specialContactUrl}
+              onChange={(e) => change("specialContactUrl", e.target.value)}
+              placeholder="https://..."
+            />
+          </label>
+
+          <label>
             <span>🕐 שעות פנייה בחירום</span>
             <input
               value={form.emergencyHours}
@@ -336,6 +349,18 @@ export default function AdminEmergency() {
                       value={item.emergencyRequestUrl || ""}
                       onChange={(e) =>
                         updateItemLocal(item._id, "emergencyRequestUrl", e.target.value)
+                      }
+                      placeholder="https://..."
+                    />
+                  </label>
+
+                  <label className="accessible-phone-field">
+                    <span>♿ 🔗 קישור למוקד – פנייה מיוחדת</span>
+                    <input
+                      type="url"
+                      value={item.specialContactUrl || ""}
+                      onChange={(e) =>
+                        updateItemLocal(item._id, "specialContactUrl", e.target.value)
                       }
                       placeholder="https://..."
                     />

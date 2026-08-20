@@ -5,8 +5,8 @@ import "./Emergency.css";
 const API = "https://alonpc02026.onrender.com/api/emergency-contacts";
 
 const TEXT = {
-  he: { title:"חירום", subtitle:"שירותי חירום חשובים", accessible:"טלפון נגיש למוגבלי שמיעה", call:"חיוג", address:"כתובת", request:"פנייה בחירום", hours:"שעות פנייה בחירום" },
-  en: { title:"Emergency", subtitle:"Important emergency services", accessible:"Accessible phone for people with hearing disabilities", call:"Call", address:"Address", request:"Emergency request", hours:"Emergency contact hours" },
+  he: { title:"חירום", subtitle:"שירותי חירום חשובים", accessible:"טלפון נגיש למוגבלי שמיעה", call:"חיוג", address:"כתובת", request:"פנייה בחירום", special:"פנייה מיוחדת למוקד", hours:"שעות פנייה בחירום" },
+  en: { title:"Emergency", subtitle:"Important emergency services", accessible:"Accessible phone for people with hearing disabilities", call:"Call", address:"Address", request:"Emergency request", special:"Special contact request", hours:"Emergency contact hours" },
   ru: { title:"Экстренная помощь", subtitle:"Важные экстренные службы", accessible:"Доступный номер для людей с нарушением слуха", call:"Позвонить", address:"Адрес", request:"Экстренное обращение", hours:"Часы экстренного обращения" },
   ar: { title:"الطوارئ", subtitle:"خدمات طوارئ مهمة", accessible:"هاتف متاح للأشخاص ذوي الإعاقة السمعية", call:"اتصال", address:"العنوان", request:"طلب طوارئ", hours:"ساعات طلب الطوارئ" },
   am: { title:"ድንገተኛ አደጋ", subtitle:"አስፈላጊ የድንገተኛ አደጋ አገልግሎቶች", accessible:"ለመስማት እክል ላላቸው ሰዎች ተደራሽ ስልክ", call:"ይደውሉ", address:"አድራሻ", request:"የድንገተኛ ጊዜ ጥያቄ", hours:"የድንገተኛ ጊዜ መገናኛ ሰዓት" }
@@ -93,6 +93,17 @@ export default function Emergency() {
                 rel="noreferrer"
               >
                 🔗 {text.request}
+              </a>
+            )}
+
+            {item.specialContactUrl && (
+              <a
+                className="emergency-special-link"
+                href={item.specialContactUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                ♿ 🔗 {text.special || "פנייה מיוחדת למוקד"}
               </a>
             )}
 

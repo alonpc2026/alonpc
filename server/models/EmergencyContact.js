@@ -44,6 +44,12 @@ const emergencyContactSchema = new mongoose.Schema(
       default: ""
     },
 
+    specialContactUrl: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
     emergencyHours: {
       type: String,
       trim: true,

@@ -9,6 +9,7 @@ const DEFAULTS = [
     name: "משטרה",
     phone: "100",
     emergencyRequestUrl: "",
+    specialContactUrl: "",
     emergencyHours: "24/7",
     accessiblePhone: "",
     address: "",
@@ -22,6 +23,7 @@ const DEFAULTS = [
     name: "מגן דוד אדום",
     phone: "101",
     emergencyRequestUrl: "",
+    specialContactUrl: "",
     emergencyHours: "24/7",
     accessiblePhone: "",
     address: "",
@@ -35,6 +37,7 @@ const DEFAULTS = [
     name: "כבאות והצלה",
     phone: "102",
     emergencyRequestUrl: "",
+    specialContactUrl: "",
     emergencyHours: "24/7",
     accessiblePhone: "",
     address: "",
@@ -98,6 +101,7 @@ router.post("/", async (req, res) => {
       imageUrl: String(req.body.imageUrl || "").trim(),
       phone,
       emergencyRequestUrl,
+      specialContactUrl: String(req.body.specialContactUrl || "").trim(),
       emergencyHours: String(req.body.emergencyHours || "").trim(),
       accessiblePhone: String(req.body.accessiblePhone || "").trim(),
       description: String(req.body.description || "").trim(),
@@ -139,6 +143,7 @@ router.put("/:idOrKey", async (req, res) => {
       // Core services keep their fixed national phone numbers and names.
       item.accessiblePhone = String(req.body.accessiblePhone || "").trim();
       item.emergencyRequestUrl = String(req.body.emergencyRequestUrl || "").trim();
+      item.specialContactUrl = String(req.body.specialContactUrl || "").trim();
       item.emergencyHours = String(req.body.emergencyHours || "").trim();
       item.address = String(req.body.address || item.address || "").trim();
       item.imageUrl = String(req.body.imageUrl || item.imageUrl || "").trim();
@@ -149,6 +154,7 @@ router.put("/:idOrKey", async (req, res) => {
       item.imageUrl = String(req.body.imageUrl || "").trim();
       item.phone = String(req.body.phone || "").trim();
       item.emergencyRequestUrl = String(req.body.emergencyRequestUrl || "").trim();
+      item.specialContactUrl = String(req.body.specialContactUrl || "").trim();
       item.emergencyHours = String(req.body.emergencyHours || "").trim();
       item.accessiblePhone = String(req.body.accessiblePhone || "").trim();
       item.description = String(req.body.description || "").trim();
