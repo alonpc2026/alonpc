@@ -8,6 +8,8 @@ const DEFAULTS = [
     isCore: true,
     name: "משטרה",
     phone: "100",
+    emergencyRequestUrl: "",
+    emergencyHours: "24/7",
     accessiblePhone: "",
     address: "",
     imageUrl: "",
@@ -19,6 +21,8 @@ const DEFAULTS = [
     isCore: true,
     name: "מגן דוד אדום",
     phone: "101",
+    emergencyRequestUrl: "",
+    emergencyHours: "24/7",
     accessiblePhone: "",
     address: "",
     imageUrl: "",
@@ -30,6 +34,8 @@ const DEFAULTS = [
     isCore: true,
     name: "כבאות והצלה",
     phone: "102",
+    emergencyRequestUrl: "",
+    emergencyHours: "24/7",
     accessiblePhone: "",
     address: "",
     imageUrl: "",
@@ -69,13 +75,16 @@ router.post("/", async (req, res) => {
   try {
     const name = String(req.body.name || "").trim();
     const phone = String(req.body.phone || "").trim();
+    const emergencyRequestUrl = String(req.body.emergencyRequestUrl || "").trim();
 
     if (!name) {
       return res.status(400).json({ message: "חובה להזין שם שירות" });
     }
 
-    if (!phone) {
-      return res.status(400).json({ message: "חובה להזין טלפון" });
+    if (!phone && !emergencyRequestUrl) {
+      return res.status(400).json({
+        message: "חובה להזין לפחות טלפון או קישור לפנייה בחירום"
+      });
     }
 
     const item = await EmergencyContact.create({
@@ -85,6 +94,8 @@ router.post("/", async (req, res) => {
       address: String(req.body.address || "").trim(),
       imageUrl: String(req.body.imageUrl || "").trim(),
       phone,
+      emergencyRequestUrl,
+      emergencyHours: String(req.body.emergencyHours || "").trim(),
       accessiblePhone: String(req.body.accessiblePhone || "").trim(),
       description: String(req.body.description || "").trim(),
       active: req.body.active !== false
@@ -114,6 +125,8 @@ router.put("/:idOrKey", async (req, res) => {
     if (item.isCore) {
       // Core services keep their fixed national phone numbers and names.
       item.accessiblePhone = String(req.body.accessiblePhone || "").trim();
+      item.emergencyRequestUrl = String(req.body.emergencyRequestUrl || "").trim();
+      item.emergencyHours = String(req.body.emergencyHours || "").trim();
       item.address = String(req.body.address || item.address || "").trim();
       item.imageUrl = String(req.body.imageUrl || item.imageUrl || "").trim();
       item.description = String(req.body.description || item.description || "").trim();
@@ -122,6 +135,8 @@ router.put("/:idOrKey", async (req, res) => {
       item.address = String(req.body.address || "").trim();
       item.imageUrl = String(req.body.imageUrl || "").trim();
       item.phone = String(req.body.phone || "").trim();
+      item.emergencyRequestUrl = String(req.body.emergencyRequestUrl || "").trim();
+      item.emergencyHours = String(req.body.emergencyHours || "").trim();
       item.accessiblePhone = String(req.body.accessiblePhone || "").trim();
       item.description = String(req.body.description || "").trim();
       item.active = req.body.active !== false;
@@ -129,8 +144,10 @@ router.put("/:idOrKey", async (req, res) => {
       if (!item.name) {
         return res.status(400).json({ message: "חובה להזין שם שירות" });
       }
-      if (!item.phone) {
-        return res.status(400).json({ message: "חובה להזין טלפון" });
+      if (!item.phone && !item.emergencyRequestUrl) {
+        return res.status(400).json({
+          message: "חובה להזין לפחות טלפון או קישור לפנייה בחירום"
+        });
       }
     }
 

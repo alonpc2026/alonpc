@@ -9,6 +9,8 @@ const EMPTY = {
   address: "",
   imageUrl: "",
   phone: "",
+  emergencyRequestUrl: "",
+  emergencyHours: "",
   accessiblePhone: "",
   description: "",
   active: true
@@ -60,6 +62,8 @@ export default function AdminEmergency() {
       address: item.address || "",
       imageUrl: item.imageUrl || "",
       phone: item.phone || "",
+      emergencyRequestUrl: item.emergencyRequestUrl || "",
+      emergencyHours: item.emergencyHours || "",
       accessiblePhone: item.accessiblePhone || "",
       description: item.description || "",
       active: item.active !== false
@@ -75,8 +79,8 @@ export default function AdminEmergency() {
       return;
     }
 
-    if (!form.phone.trim()) {
-      setMessage("❌ חובה להזין טלפון");
+    if (!form.phone.trim() && !form.emergencyRequestUrl.trim()) {
+      setMessage("❌ חובה להזין לפחות טלפון או קישור לפנייה בחירום");
       return;
     }
 
@@ -119,6 +123,8 @@ export default function AdminEmergency() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accessiblePhone: item.accessiblePhone || "",
+          emergencyRequestUrl: item.emergencyRequestUrl || "",
+          emergencyHours: item.emergencyHours || "",
           address: item.address || "",
           imageUrl: item.imageUrl || "",
           description: item.description || ""
@@ -175,7 +181,7 @@ export default function AdminEmergency() {
         <div>
           <p>🔒 אזור מנהל</p>
           <h1>🚨 ניהול חירום</h1>
-          <span>אפשר להוסיף שירותי חירום נוספים עם שם, כתובת, תמונה וטלפון.</span>
+          <span>אפשר להוסיף שירותי חירום עם טלפון או עם קישור ישיר לפנייה בחירום.</span>
         </div>
 
         <div className="admin-emergency-top-actions">
@@ -220,12 +226,30 @@ export default function AdminEmergency() {
           </label>
 
           <label>
-            <span>טלפון *</span>
+            <span>טלפון</span>
             <input
               value={form.phone}
               onChange={(e) => change("phone", e.target.value)}
               placeholder="04-0000000"
-              required
+            />
+          </label>
+
+          <label>
+            <span>🔗 קישור לפנייה בחירום</span>
+            <input
+              type="url"
+              value={form.emergencyRequestUrl}
+              onChange={(e) => change("emergencyRequestUrl", e.target.value)}
+              placeholder="https://..."
+            />
+          </label>
+
+          <label>
+            <span>🕐 שעות פנייה בחירום</span>
+            <input
+              value={form.emergencyHours}
+              onChange={(e) => change("emergencyHours", e.target.value)}
+              placeholder="לדוגמה: 24/7 או א׳–ה׳ 08:00–22:00"
             />
           </label>
 
@@ -306,6 +330,29 @@ export default function AdminEmergency() {
                   </label>
 
                   <label className="accessible-phone-field">
+                    <span>🔗 קישור לפנייה בחירום</span>
+                    <input
+                      type="url"
+                      value={item.emergencyRequestUrl || ""}
+                      onChange={(e) =>
+                        updateItemLocal(item._id, "emergencyRequestUrl", e.target.value)
+                      }
+                      placeholder="https://..."
+                    />
+                  </label>
+
+                  <label className="accessible-phone-field">
+                    <span>🕐 שעות פנייה בחירום</span>
+                    <input
+                      value={item.emergencyHours || ""}
+                      onChange={(e) =>
+                        updateItemLocal(item._id, "emergencyHours", e.target.value)
+                      }
+                      placeholder="לדוגמה: 24/7"
+                    />
+                  </label>
+
+                  <label className="accessible-phone-field">
                     <span>כתובת</span>
                     <input
                       value={item.address || ""}
@@ -337,6 +384,14 @@ export default function AdminEmergency() {
                 <div className="custom-emergency-details">
                   {item.address && <p>📍 {item.address}</p>}
                   {item.accessiblePhone && <p>♿📱 {item.accessiblePhone}</p>}
+                  {item.emergencyRequestUrl && (
+                    <p>
+                      🔗 <a href={item.emergencyRequestUrl} target="_blank" rel="noreferrer">
+                        קישור לפנייה בחירום
+                      </a>
+                    </p>
+                  )}
+                  {item.emergencyHours && <p>🕐 שעות פנייה בחירום: {item.emergencyHours}</p>}
                   {item.description && <p>{item.description}</p>}
 
                   <div className="custom-emergency-actions">

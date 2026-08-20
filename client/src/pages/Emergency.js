@@ -5,11 +5,11 @@ import "./Emergency.css";
 const API = "https://alonpc02026.onrender.com/api/emergency-contacts";
 
 const TEXT = {
-  he: { title:"חירום", subtitle:"שירותי חירום חשובים", accessible:"טלפון נגיש למוגבלי שמיעה", call:"חיוג", address:"כתובת" },
-  en: { title:"Emergency", subtitle:"Important emergency services", accessible:"Accessible phone for people with hearing disabilities", call:"Call", address:"Address" },
-  ru: { title:"Экстренная помощь", subtitle:"Важные экстренные службы", accessible:"Доступный номер для людей с нарушением слуха", call:"Позвонить", address:"Адрес" },
-  ar: { title:"الطوارئ", subtitle:"خدمات طوارئ مهمة", accessible:"هاتف متاح للأشخاص ذوي الإعاقة السمعية", call:"اتصال", address:"العنوان" },
-  am: { title:"ድንገተኛ አደጋ", subtitle:"አስፈላጊ የድንገተኛ አደጋ አገልግሎቶች", accessible:"ለመስማት እክል ላላቸው ሰዎች ተደራሽ ስልክ", call:"ይደውሉ", address:"አድራሻ" }
+  he: { title:"חירום", subtitle:"שירותי חירום חשובים", accessible:"טלפון נגיש למוגבלי שמיעה", call:"חיוג", address:"כתובת", request:"פנייה בחירום", hours:"שעות פנייה בחירום" },
+  en: { title:"Emergency", subtitle:"Important emergency services", accessible:"Accessible phone for people with hearing disabilities", call:"Call", address:"Address", request:"Emergency request", hours:"Emergency contact hours" },
+  ru: { title:"Экстренная помощь", subtitle:"Важные экстренные службы", accessible:"Доступный номер для людей с нарушением слуха", call:"Позвонить", address:"Адрес", request:"Экстренное обращение", hours:"Часы экстренного обращения" },
+  ar: { title:"الطوارئ", subtitle:"خدمات طوارئ مهمة", accessible:"هاتف متاح للأشخاص ذوي الإعاقة السمعية", call:"اتصال", address:"العنوان", request:"طلب طوارئ", hours:"ساعات طلب الطوارئ" },
+  am: { title:"ድንገተኛ አደጋ", subtitle:"አስፈላጊ የድንገተኛ አደጋ አገልግሎቶች", accessible:"ለመስማት እክል ላላቸው ሰዎች ተደራሽ ስልክ", call:"ይደውሉ", address:"አድራሻ", request:"የድንገተኛ ጊዜ ጥያቄ", hours:"የድንገተኛ ጊዜ መገናኛ ሰዓት" }
 };
 
 export default function Emergency() {
@@ -70,11 +70,31 @@ export default function Emergency() {
 
             {item.description && <p>{item.description}</p>}
 
-            <strong className="emergency-number">{item.phone}</strong>
+            {item.phone && (
+              <>
+                <strong className="emergency-number">{item.phone}</strong>
+                <a href={`tel:${String(item.phone).replace(/[^\d+]/g, "")}`}>
+                  📞 {text.call} {item.phone}
+                </a>
+              </>
+            )}
 
-            <a href={`tel:${String(item.phone).replace(/[^\d+]/g, "")}`}>
-              📞 {text.call} {item.phone}
-            </a>
+            {item.emergencyHours && (
+              <div className="emergency-hours">
+                🕐 {text.hours || "שעות פנייה בחירום"}: {item.emergencyHours}
+              </div>
+            )}
+
+            {item.emergencyRequestUrl && (
+              <a
+                className="emergency-request-link"
+                href={item.emergencyRequestUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                🔗 {text.request}
+              </a>
+            )}
 
             {item.address && (
               <div className="emergency-extra-line">

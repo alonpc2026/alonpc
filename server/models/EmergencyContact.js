@@ -38,6 +38,18 @@ const emergencyContactSchema = new mongoose.Schema(
       default: ""
     },
 
+    emergencyRequestUrl: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
+    emergencyHours: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
     accessiblePhone: {
       type: String,
       trim: true,
