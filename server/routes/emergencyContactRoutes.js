@@ -87,8 +87,11 @@ router.post("/", async (req, res) => {
       });
     }
 
+    const customKey =
+      `custom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
     const item = await EmergencyContact.create({
-      key: "",
+      key: customKey,
       isCore: false,
       name,
       address: String(req.body.address || "").trim(),
@@ -104,7 +107,17 @@ router.post("/", async (req, res) => {
     res.status(201).json(item);
   } catch (error) {
     console.error("Create emergency contact error:", error);
-    res.status(500).json({ message: "לא ניתן להוסיף שירות חירום" });
+
+    if (error?.code === 11000) {
+      return res.status(409).json({
+        message: "התנגשות במסד הנתונים. נסה שוב לאחר רענון."
+      });
+    }
+
+    res.status(500).json({
+      message: "לא ניתן להוסיף שירות חירום",
+      detail: error.message
+    });
   }
 });
 
