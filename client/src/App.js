@@ -14,6 +14,7 @@ import JudaismTorahLessons from "./pages/JudaismTorahLessons";
 import JudaismHelp from "./pages/JudaismHelp";
 import JudaismStudyMaterial from "./pages/JudaismStudyMaterial";
 import JudaismEvents from "./pages/JudaismEvents";
+import WhatsAppStickers from "./pages/WhatsAppStickers";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
 import Services from "./pages/Services";
@@ -42,6 +43,7 @@ import AdminPermanentEvents from "./pages/AdminPermanentEvents";
 import AdminInterestingSites from "./pages/AdminInterestingSites";
 import AdminFacebookGroupLinks from "./pages/AdminFacebookGroupLinks";
 import AdminJudaism from "./pages/AdminJudaism";
+import AdminWhatsAppStickers from "./pages/AdminWhatsAppStickers";
 import AdminServiceCategories from "./pages/AdminServiceCategories";
 import AdminProductCategories from "./pages/AdminProductCategories";
 import AdminBrands from "./pages/AdminBrands";
@@ -99,6 +101,7 @@ function App() {
               <Route path="/judaism/help" element={<JudaismHelp />} />
               <Route path="/judaism/study-material" element={<JudaismStudyMaterial />} />
               <Route path="/judaism/events" element={<JudaismEvents />} />
+              <Route path="/whatsapp-stickers" element={<WhatsAppStickers />} />
 
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />
@@ -318,6 +321,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminJudaism />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/whatsapp-stickers"
+                element={
+                  <AdminRoute>
+                    <AdminWhatsAppStickers />
                   </AdminRoute>
                 }
               />

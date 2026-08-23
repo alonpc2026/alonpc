@@ -112,6 +112,13 @@ const adminSections = [
     className: "admin-card-violet",
   },
   {
+    title: "ניהול מדבקות WhatsApp",
+    description: "קטגוריות, תיאור, תמונת מדבקה, סמל ושיתוף ל־WhatsApp",
+    icon: "💬",
+    path: "/admin/whatsapp-stickers",
+    className: "admin-card-green",
+  },
+  {
     title: "ניהול יהדות",
     description: "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים",
     icon: "✡️",

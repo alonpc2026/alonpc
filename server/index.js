@@ -79,6 +79,7 @@ mountRoute("./routes/interestingSiteRoutes", "/api/interesting-sites");
 mountRoute("./routes/emergencyContactRoutes", "/api/emergency-contacts");
 mountRoute("./routes/facebookGroupLinkRoutes", "/api/facebook-group-links");
 mountRoute("./routes/judaismContentRoutes", "/api/judaism-content");
+mountRoute("./routes/whatsappStickerRoutes", "/api/whatsapp-stickers");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {

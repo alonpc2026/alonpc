@@ -41,7 +41,8 @@ const HOME_TRANSLATIONS = {
       contact: ["צור קשר", "פנייה לאלון בכתב"],
       emergency: ["חירום", "משטרה, מד״א, כבאות ושירותי חירום"],
       facebookLinks: ["קישורים מעניינים לקבוצה בפייס", "קישורים והערות שהגולש מחליט בעצמו אם מתאימים לו"],
-      judaism: ["יהדות", "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים"]
+      judaism: ["יהדות", "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים"],
+      whatsappStickers: ["מדבקות WhatsApp", "גלריית מדבקות מוכנות לפי קטגוריה"]
     }
   },
 
@@ -80,7 +81,8 @@ const HOME_TRANSLATIONS = {
       contact: ["Contact", "Write to Alon"],
       emergency: ["Emergency", "Police, MDA, Fire and other emergency services"],
       facebookLinks: ["Interesting links for the Facebook group", "Links and notes; each visitor decides whether they are useful"],
-      judaism: ["Judaism", "Accessible Torah lessons, Jewish help, study material and events"]
+      judaism: ["Judaism", "Accessible Torah lessons, Jewish help, study material and events"],
+      whatsappStickers: ["WhatsApp Stickers", "Ready-made sticker gallery by category"]
     }
   },
 
@@ -119,7 +121,8 @@ const HOME_TRANSLATIONS = {
       contact: ["Контакты", "Написать Алону"],
       emergency: ["Экстренная помощь", "Полиция, МАДА, пожарные и другие службы"],
       facebookLinks: ["Интересные ссылки для группы Facebook", "Ссылки и заметки; каждый посетитель решает сам"],
-      judaism: ["Иудаизм", "Доступные уроки Торы, помощь, учебные материалы и события"]
+      judaism: ["Иудаизм", "Доступные уроки Торы, помощь, учебные материалы и события"],
+      whatsappStickers: ["Стикеры WhatsApp", "Галерея готовых стикеров по категориям"]
     }
   },
 
@@ -158,7 +161,8 @@ const HOME_TRANSLATIONS = {
       contact: ["اتصل بنا", "مراسلة ألون كتابيًا"],
       emergency: ["الطوارئ", "الشرطة ونجمة داود الحمراء والإطفاء وخدمات أخرى"],
       facebookLinks: ["روابط مفيدة لمجموعة فيسبوك", "روابط وملاحظات؛ يقرر الزائر بنفسه إن كانت مناسبة"],
-      judaism: ["اليهودية", "دروس توراة ميسّرة، مساعدة، مواد تعليمية وفعاليات"]
+      judaism: ["اليهودية", "دروس توراة ميسّرة، مساعدة، مواد تعليمية وفعاليات"],
+      whatsappStickers: ["ملصقات WhatsApp", "معرض ملصقات جاهزة حسب الفئة"]
     }
   },
 
@@ -197,7 +201,8 @@ const HOME_TRANSLATIONS = {
       contact: ["ያግኙን", "ለአሎን በጽሑፍ ይላኩ"],
       emergency: ["ድንገተኛ አደጋ", "ፖሊስ፣ ማዳ፣ እሳትና ሌሎች የአደጋ ጊዜ አገልግሎቶች"],
       facebookLinks: ["ለFacebook ቡድን ጠቃሚ አገናኞች", "አገናኞችና ማስታወሻዎች፤ ጎብኚው ራሱ ይወስናል"],
-      judaism: ["ይሁዲነት", "ተደራሽ የቶራ ትምህርቶች፣ እርዳታ፣ የትምህርት ቁሳቁስና ዝግጅቶች"]
+      judaism: ["ይሁዲነት", "ተደራሽ የቶራ ትምህርቶች፣ እርዳታ፣ የትምህርት ቁሳቁስና ዝግጅቶች"],
+      whatsappStickers: ["የWhatsApp ስቲከሮች", "በምድብ የተዘጋጁ የስቲከር ማዕከል"]
     }
   },
 
@@ -236,7 +241,8 @@ const HOME_TRANSLATIONS = {
       contact: ["Contact", "Écrire à Alon"],
       emergency: ["Urgence", "Police, MDA, pompiers et autres services d’urgence"],
       facebookLinks: ["Liens intéressants pour le groupe Facebook", "Liens et notes; chaque visiteur décide s’ils lui conviennent"],
-      judaism: ["Judaïsme", "Cours de Torah accessibles, aide, matériel d’étude et événements"]
+      judaism: ["Judaïsme", "Cours de Torah accessibles, aide, matériel d’étude et événements"],
+      whatsappStickers: ["Stickers WhatsApp", "Galerie de stickers prêts par catégorie"]
     }
   },
 
@@ -275,7 +281,8 @@ const HOME_TRANSLATIONS = {
       contact: ["Makipag-ugnayan", "Sumulat kay Alon"],
       emergency: ["Emergency", "Police, MDA, bumbero at iba pang emergency service"],
       facebookLinks: ["Mga interesanteng link para sa Facebook group", "Mga link at tala; ang bisita ang magpapasya kung kapaki-pakinabang"],
-      judaism: ["Judaism", "Accessible Torah lessons, tulong, study materials at events"]
+      judaism: ["Judaism", "Accessible Torah lessons, tulong, study materials at events"],
+      whatsappStickers: ["WhatsApp Stickers", "Handang sticker gallery ayon sa kategorya"]
     }
   },
 
@@ -314,7 +321,8 @@ const HOME_TRANSLATIONS = {
       contact: ["संपर्क", "अलोन को लिखें"],
       emergency: ["आपातकाल", "पुलिस, MDA, अग्निशमन और अन्य आपात सेवाएँ"],
       facebookLinks: ["Facebook समूह के लिए रोचक लिंक", "लिंक और टिप्पणियाँ; उपयोगी हैं या नहीं, यह आगंतुक तय करेगा"],
-      judaism: ["यहूदी धर्म", "सुलभ तोरा कक्षाएँ, सहायता, अध्ययन सामग्री और कार्यक्रम"]
+      judaism: ["यहूदी धर्म", "सुलभ तोरा कक्षाएँ, सहायता, अध्ययन सामग्री और कार्यक्रम"],
+      whatsappStickers: ["WhatsApp स्टिकर", "श्रेणी के अनुसार तैयार स्टिकर गैलरी"]
     }
   }
 };
@@ -336,6 +344,7 @@ const BUTTON_DEFINITIONS = [
   { key: "emergency", icon: "🚨", color: "red", path: "/emergency" },
   { key: "facebookLinks", icon: "📘", color: "royal", path: "/facebook-group-links" },
   { key: "judaism", icon: "✡️", color: "purple", path: "/judaism" },
+  { key: "whatsappStickers", icon: "💬", color: "green", path: "/whatsapp-stickers" },
   { key: "interestingSites", icon: "🌐", color: "indigo", path: "/interesting-sites" },
   { key: "apps", icon: "📱", color: "graffiti", path: "/apps" },
   { key: "games", icon: "🎮", color: "games-graffiti", path: "/games" },
