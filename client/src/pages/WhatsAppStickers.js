@@ -9,91 +9,191 @@ const TEXT = {
     title: "גלריית מדבקות WhatsApp",
     subtitle: "מדבקות מוכנות לפי קטגוריה",
     all: "כל הקטגוריות",
-    copy: "העתק קישור למדבקה",
+    whatsapp: "שלח ל־WhatsApp",
+    download: "הורד מדבקה",
+    copy: "העתק קישור",
     copied: "הקישור הועתק",
-    whatsapp: "שלח ל־WhatsApp שלי",
     openImage: "פתח תמונה",
     noItems: "אין כרגע מדבקות בקטגוריה הזו.",
-    shareFallback: "התמונה הורדה למכשיר. אפשר לצרף אותה ב־WhatsApp."
+    preparing: "מכין את המדבקה לשיתוף...",
+    shareSuccess: "המדבקה נפתחה בחלון השיתוף.",
+    shareFallback: "הדפדפן לא מאפשר לשלוח תמונה ישירות. המדבקה הורדה למכשיר ו־WhatsApp ייפתח לצירוף ידני.",
+    shareCancelled: "השיתוף בוטל.",
+    shareFailed: "לא ניתן לשתף את המדבקה. אפשר להוריד אותה ולצרף ידנית ב־WhatsApp."
   },
   en: {
     title: "WhatsApp Sticker Gallery",
     subtitle: "Ready-made stickers by category",
     all: "All categories",
-    copy: "Copy sticker link",
+    whatsapp: "Send to WhatsApp",
+    download: "Download sticker",
+    copy: "Copy link",
     copied: "Link copied",
-    whatsapp: "Send to my WhatsApp",
     openImage: "Open image",
     noItems: "No stickers in this category yet.",
-    shareFallback: "The image was saved to your device. You can attach it in WhatsApp."
+    preparing: "Preparing the sticker for sharing...",
+    shareSuccess: "The sticker opened in the share panel.",
+    shareFallback: "Your browser cannot send the image directly. The sticker was downloaded and WhatsApp will open so you can attach it manually.",
+    shareCancelled: "Sharing was cancelled.",
+    shareFailed: "The sticker could not be shared. Download it and attach it manually in WhatsApp."
   },
   ru: {
     title: "Галерея стикеров WhatsApp",
     subtitle: "Готовые стикеры по категориям",
     all: "Все категории",
+    whatsapp: "Отправить в WhatsApp",
+    download: "Скачать стикер",
     copy: "Скопировать ссылку",
     copied: "Ссылка скопирована",
-    whatsapp: "Отправить в мой WhatsApp",
     openImage: "Открыть изображение",
     noItems: "В этой категории пока нет стикеров.",
-    shareFallback: "Изображение сохранено. Теперь его можно прикрепить в WhatsApp."
+    preparing: "Подготовка стикера к отправке...",
+    shareSuccess: "Стикер открыт в меню отправки.",
+    shareFallback: "Браузер не может отправить изображение напрямую. Стикер скачан, а WhatsApp откроется для ручного прикрепления.",
+    shareCancelled: "Отправка отменена.",
+    shareFailed: "Не удалось поделиться стикером. Скачайте его и прикрепите вручную в WhatsApp."
   },
   ar: {
     title: "معرض ملصقات WhatsApp",
     subtitle: "ملصقات جاهزة حسب الفئة",
     all: "كل الفئات",
-    copy: "نسخ رابط الملصق",
+    whatsapp: "إرسال إلى WhatsApp",
+    download: "تنزيل الملصق",
+    copy: "نسخ الرابط",
     copied: "تم نسخ الرابط",
-    whatsapp: "إرسال إلى WhatsApp الخاص بي",
     openImage: "فتح الصورة",
     noItems: "لا توجد ملصقات في هذه الفئة حاليًا.",
-    shareFallback: "تم حفظ الصورة على جهازك. يمكنك إرفاقها في WhatsApp."
+    preparing: "جارٍ تجهيز الملصق للمشاركة...",
+    shareSuccess: "تم فتح الملصق في نافذة المشاركة.",
+    shareFallback: "المتصفح لا يسمح بإرسال الصورة مباشرة. تم تنزيل الملصق وسيتم فتح WhatsApp لإرفاقه يدويًا.",
+    shareCancelled: "تم إلغاء المشاركة.",
+    shareFailed: "تعذرت مشاركة الملصق. نزّله ثم أرفقه يدويًا في WhatsApp."
   },
   am: {
     title: "የWhatsApp ስቲከር ማዕከል",
     subtitle: "በምድብ የተዘጋጁ ስቲከሮች",
     all: "ሁሉም ምድቦች",
-    copy: "የስቲከር አገናኝ ቅዳ",
-    copied: "አገናኙ ተቀድቷል",
     whatsapp: "ወደ WhatsApp ላክ",
+    download: "ስቲከር አውርድ",
+    copy: "አገናኝ ቅዳ",
+    copied: "አገናኙ ተቀድቷል",
     openImage: "ምስል ክፈት",
     noItems: "በዚህ ምድብ ስቲከር የለም።",
-    shareFallback: "ምስሉ በመሣሪያዎ ላይ ተቀምጧል። በWhatsApp ማያያዝ ይችላሉ።"
+    preparing: "ስቲከሩ ለመጋራት እየተዘጋጀ ነው...",
+    shareSuccess: "ስቲከሩ በማጋሪያ መስኮት ተከፍቷል።",
+    shareFallback: "አሳሹ ምስሉን በቀጥታ መላክ አይችልም። ስቲከሩ ወርዷል፣ WhatsApp ይከፈታል።",
+    shareCancelled: "ማጋራት ተሰርዟል።",
+    shareFailed: "ስቲከሩን ማጋራት አልተቻለም። አውርደው በWhatsApp በእጅ ያያይዙት።"
   },
   fr: {
     title: "Galerie de stickers WhatsApp",
     subtitle: "Stickers prêts par catégorie",
     all: "Toutes les catégories",
-    copy: "Copier le lien du sticker",
+    whatsapp: "Envoyer vers WhatsApp",
+    download: "Télécharger le sticker",
+    copy: "Copier le lien",
     copied: "Lien copié",
-    whatsapp: "Envoyer vers mon WhatsApp",
     openImage: "Ouvrir l’image",
     noItems: "Aucun sticker dans cette catégorie.",
-    shareFallback: "L’image a été enregistrée. Vous pouvez maintenant la joindre dans WhatsApp."
+    preparing: "Préparation du sticker pour le partage...",
+    shareSuccess: "Le sticker a été ouvert dans le panneau de partage.",
+    shareFallback: "Le navigateur ne peut pas envoyer l’image directement. Le sticker a été téléchargé et WhatsApp va s’ouvrir pour l’ajouter manuellement.",
+    shareCancelled: "Le partage a été annulé.",
+    shareFailed: "Impossible de partager le sticker. Téléchargez-le puis joignez-le manuellement dans WhatsApp."
   },
   fil: {
     title: "WhatsApp Sticker Gallery",
     subtitle: "Handang stickers ayon sa kategorya",
     all: "Lahat ng kategorya",
-    copy: "Kopyahin ang sticker link",
+    whatsapp: "Ipadala sa WhatsApp",
+    download: "I-download ang sticker",
+    copy: "Kopyahin ang link",
     copied: "Nakopya ang link",
-    whatsapp: "Ipadala sa WhatsApp ko",
     openImage: "Buksan ang larawan",
     noItems: "Wala pang sticker sa kategoryang ito.",
-    shareFallback: "Na-save ang larawan. Maaari mo na itong i-attach sa WhatsApp."
+    preparing: "Inihahanda ang sticker para sa pag-share...",
+    shareSuccess: "Binuksan ang sticker sa share panel.",
+    shareFallback: "Hindi kayang ipadala ng browser ang larawan nang direkta. Na-download ang sticker at bubuksan ang WhatsApp para ma-attach mo ito.",
+    shareCancelled: "Kinansela ang pag-share.",
+    shareFailed: "Hindi ma-share ang sticker. I-download ito at i-attach nang manu-mano sa WhatsApp."
   },
   hi: {
     title: "WhatsApp स्टिकर गैलरी",
     subtitle: "श्रेणी के अनुसार तैयार स्टिकर",
     all: "सभी श्रेणियाँ",
-    copy: "स्टिकर लिंक कॉपी करें",
+    whatsapp: "WhatsApp पर भेजें",
+    download: "स्टिकर डाउनलोड करें",
+    copy: "लिंक कॉपी करें",
     copied: "लिंक कॉपी हो गया",
-    whatsapp: "मेरे WhatsApp पर भेजें",
     openImage: "चित्र खोलें",
     noItems: "इस श्रेणी में अभी कोई स्टिकर नहीं है।",
-    shareFallback: "चित्र डिवाइस पर सहेजा गया है। अब इसे WhatsApp में संलग्न कर सकते हैं।"
+    preparing: "स्टिकर साझा करने के लिए तैयार किया जा रहा है...",
+    shareSuccess: "स्टिकर शेयर पैनल में खुल गया।",
+    shareFallback: "ब्राउज़र चित्र सीधे नहीं भेज सकता। स्टिकर डाउनलोड हो गया है और WhatsApp खुलेगा ताकि आप इसे मैन्युअल रूप से जोड़ सकें।",
+    shareCancelled: "साझा करना रद्द कर दिया गया।",
+    shareFailed: "स्टिकर साझा नहीं हो सका। इसे डाउनलोड करें और WhatsApp में मैन्युअल रूप से जोड़ें।"
   }
 };
+
+function safeFileName(value = "sticker") {
+  return String(value || "sticker")
+    .replace(/[\\/:*?"<>|]+/g, "-")
+    .replace(/\s+/g, " ")
+    .trim() || "sticker";
+}
+
+function extensionForMime(mime = "") {
+  if (mime.includes("webp")) return "webp";
+  if (mime.includes("jpeg") || mime.includes("jpg")) return "jpg";
+  if (mime.includes("gif")) return "gif";
+  return "png";
+}
+
+async function imageUrlToFile(imageUrl, title) {
+  if (!imageUrl) return null;
+
+  if (imageUrl.startsWith("data:image/")) {
+    const match = imageUrl.match(/^data:([^;]+);base64,(.+)$/);
+    if (!match) return null;
+
+    const mime = match[1];
+    const binary = atob(match[2]);
+    const bytes = new Uint8Array(binary.length);
+
+    for (let i = 0; i < binary.length; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    return new File(
+      [bytes],
+      `${safeFileName(title)}.${extensionForMime(mime)}`,
+      { type: mime }
+    );
+  }
+
+  const response = await fetch(imageUrl);
+  if (!response.ok) throw new Error("image-fetch-failed");
+
+  const blob = await response.blob();
+  const mime = blob.type || "image/png";
+
+  return new File(
+    [blob],
+    `${safeFileName(title)}.${extensionForMime(mime)}`,
+    { type: mime }
+  );
+}
+
+function downloadFile(file) {
+  const url = URL.createObjectURL(file);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = file.name;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
 
 export default function WhatsAppStickers() {
   const { language, dir } = useLanguage();
@@ -102,6 +202,8 @@ export default function WhatsAppStickers() {
   const [items, setItems] = useState([]);
   const [category, setCategory] = useState("");
   const [copiedId, setCopiedId] = useState("");
+  const [status, setStatus] = useState("");
+  const [busyId, setBusyId] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -133,83 +235,75 @@ export default function WhatsAppStickers() {
       await navigator.clipboard.writeText(item.stickerImageUrl);
       setCopiedId(item._id);
       setTimeout(() => setCopiedId(""), 1800);
-    } catch {}
-  }
-
-  async function dataUrlToFile(dataUrl, title) {
-    const match = String(dataUrl).match(/^data:([^;]+);base64,(.+)$/);
-    if (!match) return null;
-
-    const mime = match[1];
-    const binary = atob(match[2]);
-    const bytes = new Uint8Array(binary.length);
-
-    for (let i = 0; i < binary.length; i += 1) {
-      bytes[i] = binary.charCodeAt(i);
+    } catch {
+      setStatus(text.shareFailed);
     }
-
-    const ext =
-      mime === "image/webp" ? "webp" :
-      mime === "image/jpeg" ? "jpg" :
-      mime === "image/gif" ? "gif" : "png";
-
-    return new File(
-      [bytes],
-      `${String(title || "sticker").replace(/[\\/:*?"<>|]+/g, "-")}.${ext}`,
-      { type: mime }
-    );
   }
 
-  async function sendToWhatsApp(item) {
+  async function downloadSticker(item) {
+    try {
+      setBusyId(item._id);
+      setStatus(text.preparing);
+
+      const file = await imageUrlToFile(item.stickerImageUrl, item.title);
+      if (!file) throw new Error("file-not-created");
+
+      downloadFile(file);
+      setStatus("");
+    } catch {
+      setStatus(text.shareFailed);
+    } finally {
+      setBusyId("");
+    }
+  }
+
+  async function shareSticker(item) {
     const caption = item.whatsappText || item.description || item.title || "";
 
-    if (String(item.stickerImageUrl || "").startsWith("data:image/")) {
-      try {
-        const file = await dataUrlToFile(item.stickerImageUrl, item.title);
+    try {
+      setBusyId(item._id);
+      setStatus(text.preparing);
 
-        if (
-          file &&
-          navigator.share &&
-          (!navigator.canShare || navigator.canShare({ files: [file] }))
-        ) {
-          await navigator.share({
-            files: [file],
-            text: caption
-          });
-          return;
-        }
+      const file = await imageUrlToFile(item.stickerImageUrl, item.title);
+      if (!file) throw new Error("file-not-created");
 
-        if (file) {
-          const objectUrl = URL.createObjectURL(file);
-          const a = document.createElement("a");
-          a.href = objectUrl;
-          a.download = file.name;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
-        }
-
-        window.alert(text.shareFallback);
-        window.open(
-          `https://wa.me/?text=${encodeURIComponent(caption)}`,
-          "_blank",
-          "noopener,noreferrer"
+      const canShareFile =
+        typeof navigator.share === "function" &&
+        (
+          typeof navigator.canShare !== "function" ||
+          navigator.canShare({ files: [file] })
         );
-        return;
-      } catch {
-        window.alert(text.shareFallback);
-        return;
+
+      if (canShareFile) {
+        try {
+          await navigator.share({
+            title: item.title || "WhatsApp Sticker",
+            text: caption,
+            files: [file]
+          });
+          setStatus(text.shareSuccess);
+          return;
+        } catch (error) {
+          if (error?.name === "AbortError") {
+            setStatus(text.shareCancelled);
+            return;
+          }
+        }
       }
+
+      downloadFile(file);
+      setStatus(text.shareFallback);
+
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(caption)}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    } catch {
+      setStatus(text.shareFailed);
+    } finally {
+      setBusyId("");
     }
-
-    const message = [caption, item.stickerImageUrl].filter(Boolean).join("\n");
-
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(message)}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
   }
 
   return (
@@ -221,6 +315,12 @@ export default function WhatsAppStickers() {
           <p>{text.subtitle}</p>
         </div>
       </header>
+
+      {status && (
+        <section className="wa-stickers-status" role="status">
+          {status}
+        </section>
+      )}
 
       <section className="wa-stickers-categories">
         <button
@@ -264,21 +364,46 @@ export default function WhatsAppStickers() {
             </div>
 
             <div className="wa-sticker-image-wrap">
-              <img src={item.stickerImageUrl} alt={item.description || item.title} />
+              <img
+                src={item.stickerImageUrl}
+                alt={item.description || item.title}
+                loading="lazy"
+              />
             </div>
 
             {item.description && <p>{item.description}</p>}
 
             <div className="wa-sticker-actions">
-              <button type="button" onClick={() => sendToWhatsApp(item)}>
-                💬 {text.whatsapp}
+              <button
+                type="button"
+                disabled={busyId === item._id}
+                onClick={() => shareSticker(item)}
+              >
+                💬 {busyId === item._id ? text.preparing : text.whatsapp}
               </button>
 
-              <button type="button" className="secondary" onClick={() => copySticker(item)}>
+              <button
+                type="button"
+                className="download"
+                disabled={busyId === item._id}
+                onClick={() => downloadSticker(item)}
+              >
+                ⬇️ {text.download}
+              </button>
+
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => copySticker(item)}
+              >
                 📋 {copiedId === item._id ? text.copied : text.copy}
               </button>
 
-              <a href={item.stickerImageUrl} target="_blank" rel="noreferrer">
+              <a
+                href={item.stickerImageUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 🖼️ {text.openImage}
               </a>
             </div>
