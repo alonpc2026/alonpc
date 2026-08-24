@@ -30,10 +30,26 @@ function fileNameWithoutExtension(name = "") {
 router.get("/", async (req, res) => {
   try {
     const filter = req.query.admin === "true" ? {} : { active: true };
-    const items = await WhatsAppSticker.find(filter).sort({
-      category: 1,
-      createdAt: -1
+
+    // Do not sort in MongoDB here.
+    // Sticker documents may contain large image data, and server-side sorting
+    // can exceed MongoDB's 32MB in-memory sort limit.
+    const items = await WhatsAppSticker.find(filter).lean();
+
+    // Sort after retrieval in Node.js instead.
+    items.sort((a, b) => {
+      const categoryCompare = String(a.category || "").localeCompare(
+        String(b.category || ""),
+        "he"
+      );
+
+      if (categoryCompare !== 0) return categoryCompare;
+
+      const aTime = new Date(a.createdAt || 0).getTime();
+      const bTime = new Date(b.createdAt || 0).getTime();
+      return bTime - aTime;
     });
+
     res.json(items);
   } catch (error) {
     console.error("Load WhatsApp stickers error:", error);
