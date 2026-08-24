@@ -13,7 +13,8 @@ const TEXT = {
     copied: "הקישור הועתק",
     whatsapp: "שלח ל־WhatsApp שלי",
     openImage: "פתח תמונה",
-    noItems: "אין כרגע מדבקות בקטגוריה הזו."
+    noItems: "אין כרגע מדבקות בקטגוריה הזו.",
+    shareFallback: "התמונה הורדה למכשיר. אפשר לצרף אותה ב־WhatsApp."
   },
   en: {
     title: "WhatsApp Sticker Gallery",
@@ -23,7 +24,8 @@ const TEXT = {
     copied: "Link copied",
     whatsapp: "Send to my WhatsApp",
     openImage: "Open image",
-    noItems: "No stickers in this category yet."
+    noItems: "No stickers in this category yet.",
+    shareFallback: "The image was saved to your device. You can attach it in WhatsApp."
   },
   ru: {
     title: "Галерея стикеров WhatsApp",
@@ -33,7 +35,8 @@ const TEXT = {
     copied: "Ссылка скопирована",
     whatsapp: "Отправить в мой WhatsApp",
     openImage: "Открыть изображение",
-    noItems: "В этой категории пока нет стикеров."
+    noItems: "В этой категории пока нет стикеров.",
+    shareFallback: "Изображение сохранено. Теперь его можно прикрепить в WhatsApp."
   },
   ar: {
     title: "معرض ملصقات WhatsApp",
@@ -43,7 +46,8 @@ const TEXT = {
     copied: "تم نسخ الرابط",
     whatsapp: "إرسال إلى WhatsApp الخاص بي",
     openImage: "فتح الصورة",
-    noItems: "لا توجد ملصقات في هذه الفئة حاليًا."
+    noItems: "لا توجد ملصقات في هذه الفئة حاليًا.",
+    shareFallback: "تم حفظ الصورة على جهازك. يمكنك إرفاقها في WhatsApp."
   },
   am: {
     title: "የWhatsApp ስቲከር ማዕከል",
@@ -53,7 +57,8 @@ const TEXT = {
     copied: "አገናኙ ተቀድቷል",
     whatsapp: "ወደ WhatsApp ላክ",
     openImage: "ምስል ክፈት",
-    noItems: "በዚህ ምድብ ስቲከር የለም።"
+    noItems: "በዚህ ምድብ ስቲከር የለም።",
+    shareFallback: "ምስሉ በመሣሪያዎ ላይ ተቀምጧል። በWhatsApp ማያያዝ ይችላሉ።"
   },
   fr: {
     title: "Galerie de stickers WhatsApp",
@@ -63,7 +68,8 @@ const TEXT = {
     copied: "Lien copié",
     whatsapp: "Envoyer vers mon WhatsApp",
     openImage: "Ouvrir l’image",
-    noItems: "Aucun sticker dans cette catégorie."
+    noItems: "Aucun sticker dans cette catégorie.",
+    shareFallback: "L’image a été enregistrée. Vous pouvez maintenant la joindre dans WhatsApp."
   },
   fil: {
     title: "WhatsApp Sticker Gallery",
@@ -73,7 +79,8 @@ const TEXT = {
     copied: "Nakopya ang link",
     whatsapp: "Ipadala sa WhatsApp ko",
     openImage: "Buksan ang larawan",
-    noItems: "Wala pang sticker sa kategoryang ito."
+    noItems: "Wala pang sticker sa kategoryang ito.",
+    shareFallback: "Na-save ang larawan. Maaari mo na itong i-attach sa WhatsApp."
   },
   hi: {
     title: "WhatsApp स्टिकर गैलरी",
@@ -83,7 +90,8 @@ const TEXT = {
     copied: "लिंक कॉपी हो गया",
     whatsapp: "मेरे WhatsApp पर भेजें",
     openImage: "चित्र खोलें",
-    noItems: "इस श्रेणी में अभी कोई स्टिकर नहीं है।"
+    noItems: "इस श्रेणी में अभी कोई स्टिकर नहीं है।",
+    shareFallback: "चित्र डिवाइस पर सहेजा गया है। अब इसे WhatsApp में संलग्न कर सकते हैं।"
   }
 };
 
@@ -128,11 +136,74 @@ export default function WhatsAppStickers() {
     } catch {}
   }
 
-  function sendToWhatsApp(item) {
-    const message = [
-      item.whatsappText || item.description || item.title,
-      item.stickerImageUrl
-    ].filter(Boolean).join("\n");
+  async function dataUrlToFile(dataUrl, title) {
+    const match = String(dataUrl).match(/^data:([^;]+);base64,(.+)$/);
+    if (!match) return null;
+
+    const mime = match[1];
+    const binary = atob(match[2]);
+    const bytes = new Uint8Array(binary.length);
+
+    for (let i = 0; i < binary.length; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    const ext =
+      mime === "image/webp" ? "webp" :
+      mime === "image/jpeg" ? "jpg" :
+      mime === "image/gif" ? "gif" : "png";
+
+    return new File(
+      [bytes],
+      `${String(title || "sticker").replace(/[\\/:*?"<>|]+/g, "-")}.${ext}`,
+      { type: mime }
+    );
+  }
+
+  async function sendToWhatsApp(item) {
+    const caption = item.whatsappText || item.description || item.title || "";
+
+    if (String(item.stickerImageUrl || "").startsWith("data:image/")) {
+      try {
+        const file = await dataUrlToFile(item.stickerImageUrl, item.title);
+
+        if (
+          file &&
+          navigator.share &&
+          (!navigator.canShare || navigator.canShare({ files: [file] }))
+        ) {
+          await navigator.share({
+            files: [file],
+            text: caption
+          });
+          return;
+        }
+
+        if (file) {
+          const objectUrl = URL.createObjectURL(file);
+          const a = document.createElement("a");
+          a.href = objectUrl;
+          a.download = file.name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+        }
+
+        window.alert(text.shareFallback);
+        window.open(
+          `https://wa.me/?text=${encodeURIComponent(caption)}`,
+          "_blank",
+          "noopener,noreferrer"
+        );
+        return;
+      } catch {
+        window.alert(text.shareFallback);
+        return;
+      }
+    }
+
+    const message = [caption, item.stickerImageUrl].filter(Boolean).join("\n");
 
     window.open(
       `https://wa.me/?text=${encodeURIComponent(message)}`,
