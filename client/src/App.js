@@ -104,6 +104,7 @@ function App() {
               <Route path="/whatsapp-stickers" element={<WhatsAppStickers />} />
 
               <Route path="/israel-events" element={<IsraelEvents />} />
+              <Route path="/events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />
 
               <Route
@@ -379,3 +380,4 @@ function App() {
 }
 
 export default App;
+
