@@ -37,7 +37,11 @@ router.get("/", async (req, res) => {
     res.json(items);
   } catch (error) {
     console.error("Load WhatsApp stickers error:", error);
-    res.status(500).json({ message: "לא ניתן לטעון מדבקות" });
+    res.status(500).json({
+      message: "לא ניתן לטעון מדבקות",
+      detail: error.message,
+      code: error.code || ""
+    });
   }
 });
 
