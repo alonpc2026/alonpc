@@ -19,6 +19,16 @@ export default function AdminWhatsAppStickers() {
   const [form, setForm] = useState(EMPTY);
   const [editingId, setEditingId] = useState("");
   const [message, setMessage] = useState("");
+  const [bulkFiles, setBulkFiles] = useState([]);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState("");
+  const [bulk, setBulk] = useState({
+    category: "",
+    description: "",
+    iconImageUrl: "",
+    whatsappText: "",
+    active: true
+  });
 
   const load = useCallback(async () => {
     try {
@@ -103,6 +113,83 @@ export default function AdminWhatsAppStickers() {
     }
   }
 
+
+  function changeBulk(field, value) {
+    setBulk((current) => ({ ...current, [field]: value }));
+  }
+
+  function chooseBulkFiles(event) {
+    const files = Array.from(event.target.files || []).filter((file) =>
+      ["image/png", "image/jpeg", "image/webp", "image/gif"].includes(file.type)
+    );
+
+    setBulkFiles(files);
+    setBulkProgress(
+      files.length
+        ? `נבחרו ${files.length} תמונות`
+        : "לא נבחרו תמונות"
+    );
+  }
+
+  async function uploadBulk(event) {
+    event.preventDefault();
+
+    if (!bulk.category.trim()) {
+      setMessage("❌ חובה להזין קטגוריה לקבוצה");
+      return;
+    }
+
+    if (!bulkFiles.length) {
+      setMessage("❌ יש לבחור תיקייה או מספר תמונות");
+      return;
+    }
+
+    try {
+      setBulkUploading(true);
+      setMessage("");
+      setBulkProgress(`מעלה ${bulkFiles.length} תמונות...`);
+
+      const formData = new FormData();
+      formData.append("category", bulk.category.trim());
+      formData.append("description", bulk.description.trim());
+      formData.append("iconImageUrl", bulk.iconImageUrl.trim());
+      formData.append("whatsappText", bulk.whatsappText.trim());
+      formData.append("active", String(bulk.active));
+
+      bulkFiles.forEach((file) => {
+        formData.append("images", file, file.webkitRelativePath || file.name);
+      });
+
+      const response = await fetch(`${API}/bulk-upload`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || "העלאת קבוצת המדבקות נכשלה");
+      }
+
+      setMessage(`✅ ${data.message || `${bulkFiles.length} מדבקות נוספו`}`);
+      setBulkProgress("ההעלאה הסתיימה בהצלחה");
+      setBulkFiles([]);
+      setBulk({
+        category: "",
+        description: "",
+        iconImageUrl: "",
+        whatsappText: "",
+        active: true
+      });
+      await load();
+    } catch (error) {
+      setMessage(`❌ ${error.message}`);
+      setBulkProgress("ההעלאה נכשלה");
+    } finally {
+      setBulkUploading(false);
+    }
+  }
+
   return (
     <main className="admin-wa-page" dir="rtl">
       <header className="admin-wa-header">
@@ -120,7 +207,123 @@ export default function AdminWhatsAppStickers() {
 
       {message && <div className="admin-wa-message">{message}</div>}
 
+
+      <section className="admin-wa-bulk">
+        <div className="admin-wa-bulk-title">
+          <div>
+            <h2>📁 העלאת קבוצה / תיקיית מדבקות</h2>
+            <p>
+              בחר קטגוריה אחת, ואז בחר תיקייה שלמה או מספר תמונות יחד.
+              שם כל מדבקה יילקח אוטומטית משם הקובץ.
+            </p>
+          </div>
+        </div>
+
+        <form className="admin-wa-bulk-form" onSubmit={uploadBulk}>
+          <label>
+            <span>קטגוריה לקבוצה *</span>
+            <input
+              value={bulk.category}
+              onChange={(e) => changeBulk("category", e.target.value)}
+              placeholder="לדוגמה: ברכות / חגים / בוקר טוב"
+              required
+            />
+          </label>
+
+          <label>
+            <span>תיאור משותף לכל התמונות</span>
+            <textarea
+              rows="3"
+              value={bulk.description}
+              onChange={(e) => changeBulk("description", e.target.value)}
+              placeholder="אפשר להשאיר ריק"
+            />
+          </label>
+
+          <label>
+            <span>קישור תמונת סמל משותפת לקטגוריה</span>
+            <input
+              type="url"
+              value={bulk.iconImageUrl}
+              onChange={(e) => changeBulk("iconImageUrl", e.target.value)}
+              placeholder="https://..."
+            />
+          </label>
+
+          <label>
+            <span>טקסט משותף לשיתוף ב־WhatsApp</span>
+            <textarea
+              rows="3"
+              value={bulk.whatsappText}
+              onChange={(e) => changeBulk("whatsappText", e.target.value)}
+              placeholder="אפשר להשאיר ריק"
+            />
+          </label>
+
+          <div className="admin-wa-bulk-pickers">
+            <label className="admin-wa-file-button">
+              <span>📁 בחירת תיקייה שלמה</span>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                multiple
+                webkitdirectory=""
+                directory=""
+                onChange={chooseBulkFiles}
+              />
+            </label>
+
+            <label className="admin-wa-file-button secondary">
+              <span>🖼️ בחירת כמה תמונות</span>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                multiple
+                onChange={chooseBulkFiles}
+              />
+            </label>
+          </div>
+
+          <div className="admin-wa-bulk-status">
+            <strong>{bulkProgress || "טרם נבחרו תמונות"}</strong>
+
+            {bulkFiles.length > 0 && (
+              <div className="admin-wa-bulk-file-list">
+                {bulkFiles.slice(0, 12).map((file) => (
+                  <span key={`${file.name}-${file.size}`}>
+                    {file.webkitRelativePath || file.name}
+                  </span>
+                ))}
+                {bulkFiles.length > 12 && (
+                  <span>ועוד {bulkFiles.length - 12} תמונות...</span>
+                )}
+              </div>
+            )}
+          </div>
+
+          <label className="admin-wa-check">
+            <input
+              type="checkbox"
+              checked={bulk.active}
+              onChange={(e) => changeBulk("active", e.target.checked)}
+            />
+            <span>להציג את כל הקבוצה באתר</span>
+          </label>
+
+          <button
+            type="submit"
+            className="admin-wa-bulk-upload-button"
+            disabled={bulkUploading}
+          >
+            {bulkUploading
+              ? "⏳ מעלה את קבוצת המדבקות..."
+              : `📤 העלאת ${bulkFiles.length || ""} מדבקות`}
+          </button>
+        </form>
+      </section>
+
       <form className="admin-wa-form" onSubmit={save}>
+        <h2>➕ הוספת מדבקה בודדת</h2>
         <label>
           <span>קטגוריה *</span>
           <input

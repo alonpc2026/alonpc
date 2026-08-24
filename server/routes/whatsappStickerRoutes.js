@@ -1,6 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const WhatsAppSticker = require("../models/WhatsAppSticker");
+const multer = require("multer");
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    files: 80,
+    fileSize: 3 * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    const allowed = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+    if (!allowed.includes(file.mimetype)) {
+      return cb(new Error("מותר להעלות רק PNG, JPG, WEBP או GIF"));
+    }
+    cb(null, true);
+  }
+});
+
+function fileNameWithoutExtension(name = "") {
+  return String(name)
+    .replace(/\\/g, "/")
+    .split("/")
+    .pop()
+    .replace(/\.[^.]+$/, "")
+    .trim();
+}
 
 router.get("/", async (req, res) => {
   try {
@@ -13,6 +38,58 @@ router.get("/", async (req, res) => {
   } catch (error) {
     console.error("Load WhatsApp stickers error:", error);
     res.status(500).json({ message: "לא ניתן לטעון מדבקות" });
+  }
+});
+
+
+router.post("/bulk-upload", upload.array("images", 80), async (req, res) => {
+  try {
+    const category = String(req.body.category || "").trim();
+    const description = String(req.body.description || "").trim();
+    const iconImageUrl = String(req.body.iconImageUrl || "").trim();
+    const whatsappText = String(req.body.whatsappText || "").trim();
+    const active = String(req.body.active || "true") !== "false";
+    const files = Array.isArray(req.files) ? req.files : [];
+
+    if (!category) {
+      return res.status(400).json({ message: "חובה להזין קטגוריה" });
+    }
+
+    if (!files.length) {
+      return res.status(400).json({ message: "לא נבחרו תמונות להעלאה" });
+    }
+
+    const docs = files.map((file, index) => {
+      const mime = file.mimetype || "image/png";
+      const dataUrl = `data:${mime};base64,${file.buffer.toString("base64")}`;
+      const title =
+        fileNameWithoutExtension(file.originalname) ||
+        `מדבקה ${index + 1}`;
+
+      return {
+        category,
+        title,
+        description,
+        stickerImageUrl: dataUrl,
+        iconImageUrl,
+        whatsappText,
+        active
+      };
+    });
+
+    const created = await WhatsAppSticker.insertMany(docs);
+
+    res.status(201).json({
+      message: `${created.length} מדבקות נוספו בהצלחה`,
+      count: created.length,
+      items: created
+    });
+  } catch (error) {
+    console.error("Bulk WhatsApp sticker upload error:", error);
+    res.status(500).json({
+      message: "לא ניתן להעלות את קבוצת המדבקות",
+      detail: error.message
+    });
   }
 });
 
