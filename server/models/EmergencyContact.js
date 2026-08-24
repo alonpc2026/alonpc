@@ -62,6 +62,12 @@ const emergencyContactSchema = new mongoose.Schema(
       default: ""
     },
 
+    whatsappPhone: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+
     description: {
       type: String,
       trim: true,

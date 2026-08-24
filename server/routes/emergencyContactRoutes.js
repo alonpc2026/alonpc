@@ -104,6 +104,7 @@ router.post("/", async (req, res) => {
       specialContactUrl: String(req.body.specialContactUrl || "").trim(),
       emergencyHours: String(req.body.emergencyHours || "").trim(),
       accessiblePhone: String(req.body.accessiblePhone || "").trim(),
+      whatsappPhone: String(req.body.whatsappPhone || "").trim(),
       description: String(req.body.description || "").trim(),
       active: req.body.active !== false
     });
@@ -142,6 +143,7 @@ router.put("/:idOrKey", async (req, res) => {
     if (item.isCore) {
       // Core services keep their fixed national phone numbers and names.
       item.accessiblePhone = String(req.body.accessiblePhone || "").trim();
+      item.whatsappPhone = String(req.body.whatsappPhone || "").trim();
       item.emergencyRequestUrl = String(req.body.emergencyRequestUrl || "").trim();
       item.specialContactUrl = String(req.body.specialContactUrl || "").trim();
       item.emergencyHours = String(req.body.emergencyHours || "").trim();

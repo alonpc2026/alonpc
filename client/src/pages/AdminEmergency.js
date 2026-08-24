@@ -13,6 +13,7 @@ const EMPTY = {
   specialContactUrl: "",
   emergencyHours: "",
   accessiblePhone: "",
+  whatsappPhone: "",
   description: "",
   active: true
 };
@@ -67,6 +68,7 @@ export default function AdminEmergency() {
       specialContactUrl: item.specialContactUrl || "",
       emergencyHours: item.emergencyHours || "",
       accessiblePhone: item.accessiblePhone || "",
+      whatsappPhone: item.whatsappPhone || "",
       description: item.description || "",
       active: item.active !== false
     });
@@ -125,6 +127,7 @@ export default function AdminEmergency() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accessiblePhone: item.accessiblePhone || "",
+          whatsappPhone: item.whatsappPhone || "",
           emergencyRequestUrl: item.emergencyRequestUrl || "",
           specialContactUrl: item.specialContactUrl || "",
           emergencyHours: item.emergencyHours || "",
@@ -343,6 +346,17 @@ export default function AdminEmergency() {
                   </label>
 
                   <label className="accessible-phone-field">
+                    <span>💬 מספר WhatsApp ישיר למוקד</span>
+                    <input
+                      value={item.whatsappPhone || ""}
+                      onChange={(e) =>
+                        updateItemLocal(item._id, "whatsappPhone", e.target.value)
+                      }
+                      placeholder="052-1234567"
+                    />
+                  </label>
+
+                  <label className="accessible-phone-field">
                     <span>🔗 קישור לפנייה בחירום</span>
                     <input
                       type="url"
@@ -409,6 +423,7 @@ export default function AdminEmergency() {
                 <div className="custom-emergency-details">
                   {item.address && <p>📍 {item.address}</p>}
                   {item.accessiblePhone && <p>♿📱 {item.accessiblePhone}</p>}
+                  {item.whatsappPhone && <p>💬 WhatsApp: {item.whatsappPhone}</p>}
                   {item.emergencyRequestUrl && (
                     <p>
                       🔗 <a href={item.emergencyRequestUrl} target="_blank" rel="noreferrer">
