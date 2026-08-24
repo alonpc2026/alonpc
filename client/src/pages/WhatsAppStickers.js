@@ -14,6 +14,7 @@ const TEXT = {
     copy: "העתק קישור",
     copied: "הקישור הועתק",
     openImage: "פתח תמונה",
+    loading: "אנא המתן לטעינת המדבקות...",
     noItems: "אין כרגע מדבקות בקטגוריה הזו.",
     preparing: "מכין את המדבקה לשיתוף...",
     shareSuccess: "המדבקה נפתחה בחלון השיתוף.",
@@ -30,6 +31,7 @@ const TEXT = {
     copy: "Copy link",
     copied: "Link copied",
     openImage: "Open image",
+    loading: "Please wait while the stickers are loading...",
     noItems: "No stickers in this category yet.",
     preparing: "Preparing the sticker for sharing...",
     shareSuccess: "The sticker opened in the share panel.",
@@ -46,6 +48,7 @@ const TEXT = {
     copy: "Скопировать ссылку",
     copied: "Ссылка скопирована",
     openImage: "Открыть изображение",
+    loading: "Пожалуйста, подождите, стикеры загружаются...",
     noItems: "В этой категории пока нет стикеров.",
     preparing: "Подготовка стикера к отправке...",
     shareSuccess: "Стикер открыт в меню отправки.",
@@ -62,6 +65,7 @@ const TEXT = {
     copy: "نسخ الرابط",
     copied: "تم نسخ الرابط",
     openImage: "فتح الصورة",
+    loading: "يرجى الانتظار أثناء تحميل الملصقات...",
     noItems: "لا توجد ملصقات في هذه الفئة حاليًا.",
     preparing: "جارٍ تجهيز الملصق للمشاركة...",
     shareSuccess: "تم فتح الملصق في نافذة المشاركة.",
@@ -78,6 +82,7 @@ const TEXT = {
     copy: "አገናኝ ቅዳ",
     copied: "አገናኙ ተቀድቷል",
     openImage: "ምስል ክፈት",
+    loading: "እባክዎ ስቲከሮቹ እስኪጫኑ ድረስ ይጠብቁ...",
     noItems: "በዚህ ምድብ ስቲከር የለም።",
     preparing: "ስቲከሩ ለመጋራት እየተዘጋጀ ነው...",
     shareSuccess: "ስቲከሩ በማጋሪያ መስኮት ተከፍቷል።",
@@ -94,6 +99,7 @@ const TEXT = {
     copy: "Copier le lien",
     copied: "Lien copié",
     openImage: "Ouvrir l’image",
+    loading: "Veuillez patienter pendant le chargement des stickers...",
     noItems: "Aucun sticker dans cette catégorie.",
     preparing: "Préparation du sticker pour le partage...",
     shareSuccess: "Le sticker a été ouvert dans le panneau de partage.",
@@ -110,6 +116,7 @@ const TEXT = {
     copy: "Kopyahin ang link",
     copied: "Nakopya ang link",
     openImage: "Buksan ang larawan",
+    loading: "Mangyaring maghintay habang nilo-load ang mga sticker...",
     noItems: "Wala pang sticker sa kategoryang ito.",
     preparing: "Inihahanda ang sticker para sa pag-share...",
     shareSuccess: "Binuksan ang sticker sa share panel.",
@@ -126,6 +133,7 @@ const TEXT = {
     copy: "लिंक कॉपी करें",
     copied: "लिंक कॉपी हो गया",
     openImage: "चित्र खोलें",
+    loading: "कृपया स्टिकर लोड होने तक प्रतीक्षा करें...",
     noItems: "इस श्रेणी में अभी कोई स्टिकर नहीं है।",
     preparing: "स्टिकर साझा करने के लिए तैयार किया जा रहा है...",
     shareSuccess: "स्टिकर शेयर पैनल में खुल गया।",
@@ -200,6 +208,7 @@ export default function WhatsAppStickers() {
   const text = TEXT[language] || TEXT.he;
 
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("");
   const [copiedId, setCopiedId] = useState("");
   const [status, setStatus] = useState("");
@@ -208,6 +217,8 @@ export default function WhatsAppStickers() {
   useEffect(() => {
     let active = true;
 
+    setLoading(true);
+
     fetch(API)
       .then((r) => r.json())
       .then((data) => {
@@ -215,6 +226,9 @@ export default function WhatsAppStickers() {
       })
       .catch(() => {
         if (active) setItems([]);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
 
     return () => { active = false; };
@@ -343,11 +357,17 @@ export default function WhatsAppStickers() {
         ))}
       </section>
 
-      {filtered.length === 0 && (
+      {loading && (
+        <section className="wa-stickers-empty" role="status">
+          ⏳ {text.loading}
+        </section>
+      )}
+
+      {!loading && filtered.length === 0 && (
         <section className="wa-stickers-empty">{text.noItems}</section>
       )}
 
-      <section className="wa-stickers-grid">
+      {!loading && <section className="wa-stickers-grid">
         {filtered.map((item) => (
           <article className="wa-sticker-card" key={item._id}>
             <div className="wa-sticker-card-head">
@@ -409,7 +429,7 @@ export default function WhatsAppStickers() {
             </div>
           </article>
         ))}
-      </section>
+      </section>}
     </main>
   );
 }
