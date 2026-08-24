@@ -1,0 +1,95 @@
+warning: in the working copy of 'client/src/pages/Home.js', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/client/src/pages/Home.js b/client/src/pages/Home.js[m
+[1mindex 2a62553..1517b3c 100644[m
+[1m--- a/client/src/pages/Home.js[m
+[1m+++ b/client/src/pages/Home.js[m
+[36m@@ -33,7 +33,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["החנות של אלון", "מחשבים, ציוד ומוצרים נגישים"],[m
+       secondHand: ["לוח יד 2", "מוצרים יד שנייה"],[m
+       booking: ["הזמנת שירות", "פתיחת בקשה לשירות או טיפול"],[m
+[31m-      events: ["אירועים נגישים", "בחירה בין אירועים רגילים לאירועים קבועים"],[m
+[32m+[m[32m      events: ["אירועים רגילים", "אירועים עם תאריך ושעה"],[m
+[32m+[m[32m      permanentEvents: ["אירועים קבועים", "מקומות ואירועים קבועים עם שעות פעילות"],[m
+       interestingSites: ["אתרים מעניינים של אלון", "קישורים לאתרים מומלצים ושימושיים"],[m
+       apps: ["אפליקציות", "טלוויזיה חכמה, סלולרי, Windows ו-Mac"],[m
+       games: ["משחקים", "מחשב, Android, Apple וטלוויזיה חכמה"],[m
+[36m@@ -73,7 +74,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["Alon's Shop", "Computers, equipment and accessible products"],[m
+       secondHand: ["Second-Hand Board", "Second-hand products"],[m
+       booking: ["Book a Service", "Open a service or support request"],[m
+[31m-      events: ["Accessible Events", "Choose regular or permanent events"],[m
+[32m+[m[32m      events: ["Regular Events", "Events with a date and time"],[m
+[32m+[m[32m      permanentEvents: ["Permanent Events", "Permanent places and recurring events"],[m
+       interestingSites: ["Alon's Interesting Sites", "Recommended and useful website links"],[m
+       apps: ["Apps", "Smart TV, mobile, Windows and Mac"],[m
+       games: ["Games", "Computer, Android, Apple and Smart TV"],[m
+[36m@@ -113,7 +115,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["Магазин Алона", "Компьютеры, оборудование и доступные товары"],[m
+       secondHand: ["Доска б/у", "Подержанные товары"],[m
+       booking: ["Заказ услуги", "Открыть заявку на услугу или помощь"],[m
+[31m-      events: ["Доступные события", "Выберите обычные или постоянные события"],[m
+[32m+[m[32m      events: ["Обычные события", "События с датой и временем"],[m
+[32m+[m[32m      permanentEvents: ["Постоянные события", "Постоянные места и регулярные события"],[m
+       interestingSites: ["Интересные сайты Алона", "Рекомендуемые и полезные ссылки"],[m
+       apps: ["Приложения", "Smart TV, мобильные, Windows и Mac"],[m
+       games: ["Игры", "Компьютер, Android, Apple и Smart TV"],[m
+[36m@@ -153,7 +156,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["متجر ألون", "أجهزة كمبيوتر ومعدات ومنتجات متاحة"],[m
+       secondHand: ["لوحة مستعمل", "منتجات مستعملة"],[m
+       booking: ["حجز خدمة", "فتح طلب خدمة أو مساعدة"],[m
+[31m-      events: ["فعاليات ميسّرة", "اختر بين الفعاليات العادية والثابتة"],[m
+[32m+[m[32m      events: ["فعاليات عادية", "فعاليات بتاريخ ووقت"],[m
+[32m+[m[32m      permanentEvents: ["فعاليات ثابتة", "أماكن وفعاليات ثابتة أو متكررة"],[m
+       interestingSites: ["مواقع ألون المميزة", "روابط لمواقع موصى بها ومفيدة"],[m
+       apps: ["التطبيقات", "تلفزيون ذكي، هاتف، Windows وMac"],[m
+       games: ["الألعاب", "كمبيوتر، Android، Apple وتلفزيون ذكي"],[m
+[36m@@ -193,7 +197,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["የአሎን ሱቅ", "ኮምፒውተሮች፣ መሳሪያዎችና ተደራሽ ምርቶች"],[m
+       secondHand: ["የሁለተኛ እጅ ሰሌዳ", "ያገለገሉ ምርቶች"],[m
+       booking: ["አገልግሎት ይዘዙ", "የአገልግሎት ወይም ድጋፍ ጥያቄ ይክፈቱ"],[m
+[31m-      events: ["ተደራሽ ዝግጅቶች", "መደበኛ ወይም ቋሚ ዝግጅት ይምረጡ"],[m
+[32m+[m[32m      events: ["መደበኛ ዝግጅቶች", "ቀንና ሰዓት ያላቸው ዝግጅቶች"],[m
+[32m+[m[32m      permanentEvents: ["ቋሚ ዝግጅቶች", "ቋሚ ቦታዎችና ተደጋጋሚ ዝግጅቶች"],[m
+       interestingSites: ["የአሎን ጠቃሚ ድረ ገጾች", "የሚመከሩና ጠቃሚ አገናኞች"],[m
+       apps: ["መተግበሪያዎች", "Smart TV፣ ሞባይል፣ Windows እና Mac"],[m
+       games: ["ጨዋታዎች", "ኮምፒውተር፣ Android፣ Apple እና Smart TV"],[m
+[36m@@ -233,7 +238,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["Boutique d'Alon", "Ordinateurs, équipements et produits accessibles"],[m
+       secondHand: ["Petites annonces d'occasion", "Produits d'occasion"],[m
+       booking: ["Réserver un service", "Ouvrir une demande de service ou d'aide"],[m
+[31m-      events: ["Événements accessibles", "Choisir entre événements réguliers ou permanents"],[m
+[32m+[m[32m      events: ["Événements réguliers", "Événements avec date et heure"],[m
+[32m+[m[32m      permanentEvents: ["Événements permanents", "Lieux permanents et événements récurrents"],[m
+       interestingSites: ["Sites intéressants d'Alon", "Liens recommandés et utiles"],[m
+       apps: ["Applications", "Smart TV, mobile, Windows et Mac"],[m
+       games: ["Jeux", "Ordinateur, Android, Apple et Smart TV"],[m
+[36m@@ -273,7 +279,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["Tindahan ni Alon", "Mga computer, kagamitan at accessible na produkto"],[m
+       secondHand: ["Second-Hand Board", "Mga gamit na produkto"],[m
+       booking: ["Mag-book ng Serbisyo", "Magbukas ng kahilingan para sa serbisyo o tulong"],[m
+[31m-      events: ["Accessible na mga Event", "Pumili ng regular o permanenteng event"],[m
+[32m+[m[32m      events: ["Regular na mga Event", "Mga event na may petsa at oras"],[m
+[32m+[m[32m      permanentEvents: ["Permanenteng mga Event", "Mga permanenteng lugar at paulit-ulit na event"],[m
+       interestingSites: ["Mga Interesanteng Site ni Alon", "Mga inirerekomenda at kapaki-pakinabang na link"],[m
+       apps: ["Mga App", "Smart TV, mobile, Windows at Mac"],[m
+       games: ["Mga Laro", "Computer, Android, Apple at Smart TV"],[m
+[36m@@ -313,7 +320,8 @@[m [mconst HOME_TRANSLATIONS = {[m
+       shop: ["अलोन की दुकान", "कंप्यूटर, उपकरण और सुलभ उत्पाद"],[m
+       secondHand: ["सेकंड-हैंड बोर्ड", "पुराने/प्रयुक्त उत्पाद"],[m
+       booking: ["सेवा बुक करें", "सेवा या सहायता अनुरोध खोलें"],[m
+[31m-      events: ["सुलभ कार्यक्रम", "नियमित या स्थायी कार्यक्रम चुनें"],[m
+[32m+[m[32m      events: ["नियमित कार्यक्रम", "तारीख और समय वाले कार्यक्रम"],[m
+[32m+[m[32m      permanentEvents: ["स्थायी कार्यक्रम", "स्थायी स्थान और नियमित रूप से होने वाले कार्यक्रम"],[m
+       interestingSites: ["अलोन की उपयोगी साइटें", "अनुशंसित और उपयोगी लिंक"],[m
+       apps: ["ऐप्स", "Smart TV, मोबाइल, Windows और Mac"],[m
+       games: ["गेम्स", "कंप्यूटर, Android, Apple और Smart TV"],[m
+[36m@@ -340,7 +348,8 @@[m [mconst BUTTON_DEFINITIONS = [[m
+   { key: "shop", icon: "🛒", color: "amber", path: "/shop" },[m
+   { key: "secondHand", icon: "♻️", color: "teal", path: "/second-hand" },[m
+   { key: "booking", icon: "🗓️", color: "pink", path: "/booking" },[m
+[31m-  { key: "events", icon: "📅", color: "purple", path: "/events" },[m
+[32m+[m[32m  { key: "events", icon: "📅", color: "purple", path: "/israel-events" },[m
+[32m+[m[32m  { key: "permanentEvents", icon: "📌", color: "purple", path: "/permanent-events" },[m
+   { key: "emergency", icon: "🚨", color: "red", path: "/emergency" },[m
+   { key: "facebookLinks", icon: "📘", color: "royal", path: "/facebook-group-links" },[m
+   { key: "judaism", icon: "✡️", color: "purple", path: "/judaism" },[m

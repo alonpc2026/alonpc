@@ -1,0 +1,104 @@
+.admin-sign-courses-page{
+  max-width:1200px;
+  min-height:100vh;
+  margin:auto;
+  padding:30px 18px 70px;
+  background:linear-gradient(180deg,#071f43,#06172f);
+  color:#fff;
+}
+.admin-sign-courses-page *{box-sizing:border-box}
+.admin-sign-courses-page header,
+.admin-sign-form,
+.admin-sign-list{
+  padding:22px;
+  border:3px solid #8fc8ff;
+  border-radius:18px;
+  background:#0b2d5a;
+}
+.admin-sign-courses-page header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+}
+.admin-sign-top-actions{display:flex;gap:10px;flex-wrap:wrap}
+.admin-sign-top-actions a{
+  min-height:46px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  border:3px solid #fff;
+  border-radius:10px;
+  background:#08786d;
+  color:#fff!important;
+  font-weight:900;
+  text-decoration:none;
+}
+.admin-sign-message{
+  margin:16px 0;
+  padding:14px;
+  border:3px solid #ffd34d;
+  border-radius:12px;
+  background:#4b3909;
+  font-weight:900;
+  text-align:center;
+}
+.admin-sign-form{
+  display:grid;
+  gap:14px;
+  margin-top:20px;
+}
+.admin-sign-form label{display:grid;gap:6px;font-weight:900}
+.admin-sign-form input{
+  min-height:50px;
+  padding:10px;
+  border:3px solid #7db9f2;
+  border-radius:10px;
+  background:#061a38;
+  color:#fff;
+  font-size:17px;
+}
+.admin-sign-check{display:flex!important;align-items:center;gap:10px}
+.admin-sign-check input{width:22px;height:22px;min-height:0}
+.admin-sign-actions,.admin-sign-card-actions{display:flex;gap:10px}
+.admin-sign-actions button,.admin-sign-card-actions button{
+  min-height:46px;
+  padding:10px 14px;
+  border:3px solid #fff;
+  border-radius:10px;
+  background:#08786d;
+  color:#fff;
+  font-weight:900;
+}
+.admin-sign-actions .secondary{background:#5d4b98}
+.admin-sign-card-actions .danger{background:#a5222f}
+.admin-sign-preview img{
+  width:min(320px,100%);
+  height:200px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:12px;
+}
+.admin-sign-list{margin-top:20px}
+.admin-sign-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+.admin-sign-grid article{
+  padding:16px;
+  border:3px solid #78beff;
+  border-radius:16px;
+  background:#08254d;
+}
+.admin-sign-grid article>img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:12px;
+}
+@media(max-width:700px){
+  .admin-sign-courses-page header{flex-direction:column;align-items:stretch}
+  .admin-sign-actions,.admin-sign-card-actions{flex-direction:column}
+}
