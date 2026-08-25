@@ -1,218 +1,72 @@
-import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./AdminSignLanguageCourses.css";
+import { useEffect, useState } from "react";
 
-const API = "https://alonpc02026.onrender.com/api/sign-language-courses";
+const API="https://alonpc02026.onrender.com/api/sign-language-courses";
+const empty={name:"",category:"",city:"חיפה",startDate:"",endDate:"",place:"",address:"",phone:"",link:"",imageUrl:"",description:"",active:true};
 
-const EMPTY = {
-  placeName: "",
-  address: "",
-  imageUrl: "",
-  city: "",
-  phone: "",
-  startDate: "",
-  active: true
-};
+export default function AdminSignLanguageCourses(){
+  const [rows,setRows]=useState([]);
+  const [form,setForm]=useState(empty);
+  const [editId,setEditId]=useState("");
 
-export default function AdminSignLanguageCourses() {
-  const [items, setItems] = useState([]);
-  const [form, setForm] = useState(EMPTY);
-  const [editingId, setEditingId] = useState("");
-  const [message, setMessage] = useState("");
+  const load=()=>fetch(API).then(r=>r.json()).then(d=>setRows(Array.isArray(d)?d:[]));
+  useEffect(()=>{load()},[]);
 
-  const load = useCallback(async () => {
-    try {
-      const r = await fetch(`${API}?admin=true`);
-      const data = await r.json().catch(() => []);
-      if (!r.ok) throw new Error(data.message || "טעינת הקורסים נכשלה");
-      setItems(Array.isArray(data) ? data : []);
-    } catch (error) {
-      setMessage(`❌ ${error.message}`);
-    }
-  }, []);
+  const change=e=>{
+    const {name,value,type,checked}=e.target;
+    setForm(f=>({...f,[name]:type==="checkbox"?checked:value}));
+  };
 
-  useEffect(() => { load(); }, [load]);
-
-  function change(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
-  }
-
-  function clear() {
-    setEditingId("");
-    setForm(EMPTY);
-  }
-
-  function edit(item) {
-    setEditingId(item._id);
-    setForm({
-      placeName: item.placeName || "",
-      address: item.address || "",
-      imageUrl: item.imageUrl || "",
-      city: item.city || "",
-      phone: item.phone || "",
-      startDate: item.startDate || "",
-      active: item.active !== false
+  async function save(e){
+    e.preventDefault();
+    const r=await fetch(editId?`${API}/${editId}`:API,{
+      method:editId?"PUT":"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(form)
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const d=await r.json();
+    if(!r.ok) return alert(d.message || "לא ניתן לשמור");
+    setForm(empty); setEditId(""); load();
   }
 
-  async function save(event) {
-    event.preventDefault();
-
-    if (!form.placeName.trim()) {
-      setMessage("❌ חובה להזין שם מקום");
-      return;
-    }
-
-    try {
-      const r = await fetch(editingId ? `${API}/${editingId}` : API, {
-        method: editingId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
-
-      const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.message || "השמירה נכשלה");
-
-      setMessage(editingId ? "✅ הקורס עודכן" : "✅ הקורס נוסף");
-      clear();
-      await load();
-    } catch (error) {
-      setMessage(`❌ ${error.message}`);
-    }
+  function edit(x){
+    setEditId(x._id);
+    setForm({...empty,...x});
+    window.scrollTo({top:0,behavior:"smooth"});
   }
 
-  async function remove(item) {
-    if (!window.confirm(`למחוק את "${item.placeName}"?`)) return;
-
-    try {
-      const r = await fetch(`${API}/${item._id}`, { method: "DELETE" });
-      const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.message || "המחיקה נכשלה");
-      setMessage("🗑️ הקורס נמחק");
-      await load();
-    } catch (error) {
-      setMessage(`❌ ${error.message}`);
-    }
+  async function remove(id){
+    if(!window.confirm("למחוק את הקורס?")) return;
+    await fetch(`${API}/${id}`,{method:"DELETE"});
+    load();
   }
 
-  return (
-    <main className="admin-sign-courses-page" dir="rtl">
-      <header>
-        <div>
-          <p>🔒 אזור מנהל</p>
-          <h1>🤟 ניהול קורס שפת סימנים</h1>
-        </div>
-        <div className="admin-sign-top-actions">
-          <Link to="/sign-language-courses">👁️ תצוגה באתר</Link>
-          <Link to="/admin">⚙️ חזרה לניהול</Link>
-        </div>
-      </header>
+  return <main dir="rtl" style={{maxWidth:1100,margin:"auto",padding:20}}>
+    <h1>🤟 ניהול קורס שפת סימנים ישראלי</h1>
+    <form onSubmit={save} style={{display:"grid",gap:12}}>
+      <label>שם קורס *<input required name="name" value={form.name} onChange={change}/></label>
+      <label>קטגוריה<input name="category" placeholder="מתחילים / מתקדמים / ילדים..." value={form.category} onChange={change}/></label>
+      <label>עיר *<input required name="city" list="course-cities" value={form.city} onChange={change}/></label>
+      <datalist id="course-cities"><option value="חיפה"/><option value="תל אביב"/><option value="ירושלים"/></datalist>
+      <label>תאריך התחלה *<input required type="date" name="startDate" value={form.startDate} onChange={change}/></label>
+      <label>תאריך סיום<input type="date" name="endDate" value={form.endDate} onChange={change}/></label>
+      <label>שם מקום<input name="place" value={form.place} onChange={change}/></label>
+      <label>כתובת<input name="address" value={form.address} onChange={change}/></label>
+      <label>טלפון<input name="phone" value={form.phone} onChange={change}/></label>
+      <label>קישור<input type="url" name="link" value={form.link} onChange={change}/></label>
+      <label>כתובת תמונה<input type="url" name="imageUrl" value={form.imageUrl} onChange={change}/></label>
+      <label>תיאור<textarea name="description" value={form.description} onChange={change}/></label>
+      <label><input type="checkbox" name="active" checked={form.active} onChange={change}/> פעיל</label>
+      <button type="submit">{editId?"שמור שינויים":"הוסף קורס"}</button>
+      {editId && <button type="button" onClick={()=>{setEditId("");setForm(empty)}}>ביטול עריכה</button>}
+    </form>
 
-      {message && <div className="admin-sign-message">{message}</div>}
-
-      <form className="admin-sign-form" onSubmit={save}>
-        <label>
-          <span>שם מקום *</span>
-          <input
-            value={form.placeName}
-            onChange={(e) => change("placeName", e.target.value)}
-            required
-          />
-        </label>
-
-        <label>
-          <span>כתובת</span>
-          <input
-            value={form.address}
-            onChange={(e) => change("address", e.target.value)}
-          />
-        </label>
-
-        <label>
-          <span>קישור תמונה</span>
-          <input
-            type="url"
-            value={form.imageUrl}
-            onChange={(e) => change("imageUrl", e.target.value)}
-            placeholder="https://..."
-          />
-        </label>
-
-        <label>
-          <span>עיר</span>
-          <input
-            value={form.city}
-            onChange={(e) => change("city", e.target.value)}
-          />
-        </label>
-
-        <label>
-          <span>טלפון</span>
-          <input
-            value={form.phone}
-            onChange={(e) => change("phone", e.target.value)}
-          />
-        </label>
-
-        <label>
-          <span>תחילת קורס</span>
-          <input
-            type="date"
-            value={form.startDate}
-            onChange={(e) => change("startDate", e.target.value)}
-          />
-        </label>
-
-        {form.imageUrl && (
-          <div className="admin-sign-preview">
-            <img src={form.imageUrl} alt="" />
-          </div>
-        )}
-
-        <label className="admin-sign-check">
-          <input
-            type="checkbox"
-            checked={form.active}
-            onChange={(e) => change("active", e.target.checked)}
-          />
-          <span>להציג באתר</span>
-        </label>
-
-        <div className="admin-sign-actions">
-          <button type="submit">
-            {editingId ? "💾 שמירת שינויים" : "➕ הוספת קורס"}
-          </button>
-
-          {editingId && (
-            <button type="button" className="secondary" onClick={clear}>
-              ביטול
-            </button>
-          )}
-        </div>
-      </form>
-
-      <section className="admin-sign-list">
-        <h2>קורסים קיימים</h2>
-
-        <div className="admin-sign-grid">
-          {items.map((item) => (
-            <article key={item._id}>
-              {item.imageUrl && <img src={item.imageUrl} alt={item.placeName} />}
-              <h3>{item.placeName}</h3>
-              {item.city && <p>🏙️ {item.city}</p>}
-              {item.address && <p>📍 {item.address}</p>}
-              {item.phone && <p>📞 {item.phone}</p>}
-              {item.startDate && <p>📅 {item.startDate}</p>}
-
-              <div className="admin-sign-card-actions">
-                <button type="button" onClick={() => edit(item)}>✏️ עריכה</button>
-                <button type="button" className="danger" onClick={() => remove(item)}>🗑️ מחיקה</button>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
+    <hr/>
+    <h2>כל הקורסים</h2>
+    {rows.map(x=><article key={x._id} style={{border:"2px solid #315f91",borderRadius:12,padding:14,margin:"10px 0"}}>
+      <h3>{x.name}</h3>
+      <p>{x.category || "ללא קטגוריה"} | {x.city} | {x.startDate}{x.endDate?` עד ${x.endDate}`:""}</p>
+      <button onClick={()=>edit(x)}>✏️ עריכה</button>{" "}
+      <button onClick={()=>remove(x._id)}>🗑️ מחיקה</button>
+    </article>)}
+  </main>;
 }

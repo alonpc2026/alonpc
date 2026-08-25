@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 
-const signLanguageCourseSchema = new mongoose.Schema(
-  {
-    placeName: { type: String, required: true, trim: true },
-    address: { type: String, default: "", trim: true },
-    imageUrl: { type: String, default: "", trim: true },
-    city: { type: String, default: "", trim: true },
-    phone: { type: String, default: "", trim: true },
-    startDate: { type: String, default: "", trim: true },
-    active: { type: Boolean, default: true }
-  },
-  { timestamps: true, collection: "sign_language_courses" }
-);
+const schema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  category: { type: String, default: "", trim: true },
+  city: { type: String, required: true, trim: true },
+  startDate: { type: String, required: true },
+  endDate: { type: String, default: "" },
+  place: { type: String, default: "" },
+  address: { type: String, default: "" },
+  phone: { type: String, default: "" },
+  link: { type: String, default: "" },
+  imageUrl: { type: String, default: "" },
+  description: { type: String, default: "" },
+  active: { type: Boolean, default: true }
+}, { timestamps: true });
 
-module.exports =
-  mongoose.models.SignLanguageCourse ||
-  mongoose.model("SignLanguageCourse", signLanguageCourseSchema);
+module.exports = mongoose.models.SignLanguageCourse ||
+  mongoose.model("SignLanguageCourse", schema);

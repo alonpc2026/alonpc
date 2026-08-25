@@ -1,92 +1,40 @@
-const express = require("express");
-const router = express.Router();
-const SignLanguageCourse = require("../models/SignLanguageCourse");
+const router = require("express").Router();
+const Course = require("../models/SignLanguageCourse");
 
-router.get("/", async (req, res) => {
+router.get("/", async (req,res)=>{
   try {
-    const filter = req.query.admin === "true" ? {} : { active: true };
-    const items = await SignLanguageCourse.find(filter).lean();
-
-    items.sort((a, b) =>
-      String(a.startDate || "").localeCompare(String(b.startDate || ""))
-    );
-
-    res.json(items);
-  } catch (error) {
-    console.error("Load sign language courses error:", error);
-    res.status(500).json({
-      message: "לא ניתן לטעון קורסי שפת סימנים",
-      detail: error.message
-    });
+    const rows = await Course.find({}).sort({ startDate: 1, createdAt: -1 }).lean();
+    res.json(rows);
+  } catch(e) {
+    res.status(500).json({message:"לא ניתן לטעון קורסים", detail:e.message});
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req,res)=>{
   try {
-    const placeName = String(req.body.placeName || "").trim();
-
-    if (!placeName) {
-      return res.status(400).json({ message: "חובה להזין שם מקום" });
-    }
-
-    const item = await SignLanguageCourse.create({
-      placeName,
-      address: String(req.body.address || "").trim(),
-      imageUrl: String(req.body.imageUrl || "").trim(),
-      city: String(req.body.city || "").trim(),
-      phone: String(req.body.phone || "").trim(),
-      startDate: String(req.body.startDate || "").trim(),
-      active: req.body.active !== false
-    });
-
-    res.status(201).json(item);
-  } catch (error) {
-    console.error("Create sign language course error:", error);
-    res.status(500).json({
-      message: "לא ניתן להוסיף קורס",
-      detail: error.message
-    });
+    const row = await Course.create(req.body);
+    res.status(201).json(row);
+  } catch(e) {
+    res.status(400).json({message:"לא ניתן להוסיף קורס", detail:e.message});
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req,res)=>{
   try {
-    const placeName = String(req.body.placeName || "").trim();
-
-    if (!placeName) {
-      return res.status(400).json({ message: "חובה להזין שם מקום" });
-    }
-
-    const item = await SignLanguageCourse.findByIdAndUpdate(
-      req.params.id,
-      {
-        placeName,
-        address: String(req.body.address || "").trim(),
-        imageUrl: String(req.body.imageUrl || "").trim(),
-        city: String(req.body.city || "").trim(),
-        phone: String(req.body.phone || "").trim(),
-        startDate: String(req.body.startDate || "").trim(),
-        active: req.body.active !== false
-      },
-      { new: true, runValidators: true }
-    );
-
-    if (!item) return res.status(404).json({ message: "הקורס לא נמצא" });
-    res.json(item);
-  } catch (error) {
-    console.error("Update sign language course error:", error);
-    res.status(500).json({ message: "לא ניתן לעדכן קורס" });
+    const row = await Course.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true});
+    if(!row) return res.status(404).json({message:"הקורס לא נמצא"});
+    res.json(row);
+  } catch(e) {
+    res.status(400).json({message:"לא ניתן לעדכן קורס", detail:e.message});
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req,res)=>{
   try {
-    const item = await SignLanguageCourse.findByIdAndDelete(req.params.id);
-    if (!item) return res.status(404).json({ message: "הקורס לא נמצא" });
-    res.json({ message: "הקורס נמחק" });
-  } catch (error) {
-    console.error("Delete sign language course error:", error);
-    res.status(500).json({ message: "לא ניתן למחוק קורס" });
+    await Course.findByIdAndDelete(req.params.id);
+    res.json({success:true});
+  } catch(e) {
+    res.status(400).json({message:"לא ניתן למחוק קורס", detail:e.message});
   }
 });
 
