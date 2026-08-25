@@ -51,7 +51,11 @@ function normalizeEvent(eventItem = {}) {
   };
 }
 
-function AdminEvents() {
+
+function yesNo(value) {
+  return value ? "יש" : "אין";
+}
+\nfunction AdminEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -715,7 +719,21 @@ function AdminEvents() {
                         ` · ${normalizedEvent.location}`}
                     </p>
 
-                    {normalizedEvent.description && (
+
+                    <div className="admin-event-accessibility">
+                      <h4>נגישות באירוע</h4>
+
+                      <div className={normalizedEvent.accessibility?.signLanguage ? "has" : "none"}>
+                        <span>🤟 תרגום שפת סימנים</span>
+                        <strong>{yesNo(normalizedEvent.accessibility?.signLanguage)}</strong>
+                      </div>
+
+                      <div className={normalizedEvent.accessibility?.captions ? "has" : "none"}>
+                        <span>💬 כתוביות</span>
+                        <strong>{yesNo(normalizedEvent.accessibility?.captions)}</strong>
+                      </div>
+                    </div>
+\n                    {normalizedEvent.description && (
                       <p className="admin-event-description">
                         {
                           normalizedEvent.description
