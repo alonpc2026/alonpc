@@ -9,22 +9,22 @@ const {
   deleteEvent,
 } = require("../controllers/eventController");
 
-// אם יש אצלך middleware של התחברות מנהל,
-// אפשר להוסיף אותו לנתיבי POST / PUT / DELETE בהמשך.
+// כל האירועים לניהול:
+// חשוב שהנתיב /admin יופיע לפני /:id,
+// אחרת Express מפרש את המילה "admin" כאילו היא מזהה אירוע.
+router.get("/admin", getEvents);
 
-// קבלת כל האירועים
+// רשימת אירועים ציבורית
 router.get("/", getEvents);
 
-// קבלת אירוע אחד לפי מזהה
+// אירוע אחד לפי מזהה
 router.get("/:id", getEventById);
 
-// יצירת אירוע חדש
+// יצירת אירוע
 router.post("/", createEvent);
 
-// עדכון אירוע קיים
+// עדכון אירוע
 router.put("/:id", updateEvent);
-
-// תמיכה גם בעדכון חלקי
 router.patch("/:id", updateEvent);
 
 // מחיקת אירוע
