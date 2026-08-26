@@ -58,6 +58,7 @@ import AdminDocuments from "./pages/AdminDocuments";
 import AdminUploads from "./pages/AdminUploads";
 import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
+import AdminUsageStats from "./pages/AdminUsageStats";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
 import AdminGames from "./pages/AdminGames";
@@ -262,6 +263,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminSettings />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/usage-stats"
+                element={
+                  <AdminRoute>
+                    <AdminUsageStats />
                   </AdminRoute>
                 }
               />
