@@ -64,9 +64,11 @@ function Navbar() {
     <header className="alonpc-navbar" dir={dir}>
       <div className="alonpc-navbar__top">
         <Link to="/" className="alonpc-brand" onClick={closeMenu}>
-          <span className="alonpc-brand__logo" aria-hidden="true">
-            A
-          </span>
+          <img
+            className="alonpc-brand__logo"
+            src="/alon-profile.png"
+            alt="ALONPC"
+          />
 
           <span className="alonpc-brand__content">
             <strong>ALONPC</strong>
