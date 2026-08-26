@@ -45,7 +45,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["קישורים מעניינים לקבוצה בפייס", "קישורים והערות שהגולש מחליט בעצמו אם מתאימים לו"],
       judaism: ["יהדות", "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים"],
       whatsappStickers: ["מדבקות WhatsApp", "גלריית מדבקות מוכנות לפי קטגוריה"],
-      signLanguageCourses: ["קורס שפת סימנים ישראלי", "קורסים לפי עיר, תאריך ושעה"]
+      signLanguageCourses: ["קורס שפת סימנים ישראלי", "קורסים לפי עיר, תאריך ושעה"],
+      splitTv: ["TV חי מסך מפוצל", "צפייה בכמה ערוצי טלוויזיה בשידור חי במסך אחד"]
     }
   },
 
@@ -87,7 +88,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Interesting links for the Facebook group", "Links and notes; each visitor decides whether they are useful"],
       judaism: ["Judaism", "Accessible Torah lessons, Jewish help, study material and events"],
       whatsappStickers: ["WhatsApp Stickers", "Ready-made sticker gallery by category"],
-      signLanguageCourses: ["Israeli Sign Language Course", "Courses by city, date and time"]
+      signLanguageCourses: ["Israeli Sign Language Course", "Courses by city, date and time"],
+      splitTv: ["Live TV Split Screen", "Watch multiple live TV channels on one screen"]
     }
   },
 
@@ -129,7 +131,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Интересные ссылки для группы Facebook", "Ссылки и заметки; каждый посетитель решает сам"],
       judaism: ["Иудаизм", "Доступные уроки Торы, помощь, учебные материалы и события"],
       whatsappStickers: ["Стикеры WhatsApp", "Галерея готовых стикеров по категориям"],
-      signLanguageCourses: ["Курс израильского языка жестов", "Курсы по городу, дате и времени"]
+      signLanguageCourses: ["Курс израильского языка жестов", "Курсы по городу, дате и времени"],
+      splitTv: ["Прямой эфир ТВ — разделённый экран", "Смотрите несколько телеканалов в прямом эфире на одном экране"]
     }
   },
 
@@ -171,7 +174,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["روابط مفيدة لمجموعة فيسبوك", "روابط وملاحظات؛ يقرر الزائر بنفسه إن كانت مناسبة"],
       judaism: ["اليهودية", "دروس توراة ميسّرة، مساعدة، مواد تعليمية وفعاليات"],
       whatsappStickers: ["ملصقات WhatsApp", "معرض ملصقات جاهزة حسب الفئة"],
-      signLanguageCourses: ["دورة لغة الإشارة الإسرائيلية", "دورات حسب المدينة والتاريخ والوقت"]
+      signLanguageCourses: ["دورة لغة الإشارة الإسرائيلية", "دورات حسب المدينة والتاريخ والوقت"],
+      splitTv: ["تلفزيون مباشر بشاشة مقسمة", "شاهد عدة قنوات تلفزيونية مباشرة في شاشة واحدة"]
     }
   },
 
@@ -213,7 +217,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["ለFacebook ቡድን ጠቃሚ አገናኞች", "አገናኞችና ማስታወሻዎች፤ ጎብኚው ራሱ ይወስናል"],
       judaism: ["ይሁዲነት", "ተደራሽ የቶራ ትምህርቶች፣ እርዳታ፣ የትምህርት ቁሳቁስና ዝግጅቶች"],
       whatsappStickers: ["የWhatsApp ስቲከሮች", "በምድብ የተዘጋጁ የስቲከር ማዕከል"],
-      signLanguageCourses: ["የእስራኤል የምልክት ቋንቋ ኮርስ", "ኮርሶች በከተማ፣ ቀን እና ሰዓት"]
+      signLanguageCourses: ["የእስራኤል የምልክት ቋንቋ ኮርስ", "ኮርሶች በከተማ፣ ቀን እና ሰዓት"],
+      splitTv: ["ቀጥታ TV የተከፈለ ማያ", "ብዙ የቀጥታ TV ቻናሎችን በአንድ ማያ ይመልከቱ"]
     }
   },
 
@@ -255,7 +260,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Liens intéressants pour le groupe Facebook", "Liens et notes; chaque visiteur décide s’ils lui conviennent"],
       judaism: ["Judaïsme", "Cours de Torah accessibles, aide, matériel d’étude et événements"],
       whatsappStickers: ["Stickers WhatsApp", "Galerie de stickers prêts par catégorie"],
-      signLanguageCourses: ["Cours de langue des signes israélienne", "Cours par ville, date et heure"]
+      signLanguageCourses: ["Cours de langue des signes israélienne", "Cours par ville, date et heure"],
+      splitTv: ["TV en direct en écran partagé", "Regardez plusieurs chaînes TV en direct sur un seul écran"]
     }
   },
 
@@ -297,7 +303,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Mga interesanteng link para sa Facebook group", "Mga link at tala; ang bisita ang magpapasya kung kapaki-pakinabang"],
       judaism: ["Judaism", "Accessible Torah lessons, tulong, study materials at events"],
       whatsappStickers: ["WhatsApp Stickers", "Handang sticker gallery ayon sa kategorya"],
-      signLanguageCourses: ["Kurso sa Israeli Sign Language", "Mga kurso ayon sa lungsod, petsa at oras"]
+      signLanguageCourses: ["Kurso sa Israeli Sign Language", "Mga kurso ayon sa lungsod, petsa at oras"],
+      splitTv: ["Live TV Split Screen", "Manood ng maraming live TV channel sa iisang screen"]
     }
   },
 
@@ -339,7 +346,8 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Facebook समूह के लिए रोचक लिंक", "लिंक और टिप्पणियाँ; उपयोगी हैं या नहीं, यह आगंतुक तय करेगा"],
       judaism: ["यहूदी धर्म", "सुलभ तोरा कक्षाएँ, सहायता, अध्ययन सामग्री और कार्यक्रम"],
       whatsappStickers: ["WhatsApp स्टिकर", "श्रेणी के अनुसार तैयार स्टिकर गैलरी"],
-      signLanguageCourses: ["इज़राइली सांकेतिक भाषा पाठ्यक्रम", "शहर, तारीख और समय के अनुसार पाठ्यक्रम"]
+      signLanguageCourses: ["इज़राइली सांकेतिक भाषा पाठ्यक्रम", "शहर, तारीख और समय के अनुसार पाठ्यक्रम"],
+      splitTv: ["लाइव TV स्प्लिट स्क्रीन", "एक स्क्रीन पर कई लाइव TV चैनल देखें"]
     }
   }
 };
@@ -364,6 +372,7 @@ const BUTTON_DEFINITIONS = [
   { key: "judaism", icon: "✡️", color: "purple", path: "/judaism" },
   { key: "whatsappStickers", icon: "💬", color: "green", path: "/whatsapp-stickers" },
   { key: "signLanguageCourses", icon: "🤟", color: "green", path: "/sign-language-courses" },
+  { key: "splitTv", icon: "📺", color: "royal", externalUrl: "https://split-tv.org/?utm_source=chatgpt.com" },
   { key: "interestingSites", icon: "🌐", color: "indigo", path: "/interesting-sites" },
   { key: "apps", icon: "📱", color: "graffiti", path: "/apps" },
   { key: "games", icon: "🎮", color: "games-graffiti", path: "/games" },
@@ -503,27 +512,44 @@ function Home() {
       </section>
 
       <section className="home-main-buttons" aria-label={text.buttonsAria}>
-        {filteredButtons.map((button) => (
-          <Link
-            key={button.key}
-            to={button.path}
-            onClick={() => trackMainButton(button)}
-            className={`home-main-button home-main-button--${button.color}`}
-          >
-            <span className="home-main-button-icon" aria-hidden="true">
-              {button.icon}
-            </span>
+        {filteredButtons.map((button) => {
+          const content = (
+            <>
+              <span className="home-main-button-icon" aria-hidden="true">{button.icon}</span>
+              <span className="home-main-button-text">
+                <strong>{button.title}</strong>
+                <small>{button.subtitle}</small>
+              </span>
+              <span className="home-main-button-arrow" aria-hidden="true">{arrow}</span>
+            </>
+          );
 
-            <span className="home-main-button-text">
-              <strong>{button.title}</strong>
-              <small>{button.subtitle}</small>
-            </span>
+          if (button.externalUrl) {
+            return (
+              <a
+                key={button.key}
+                href={button.externalUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => trackMainButton(button)}
+                className={`home-main-button home-main-button--${button.color}`}
+              >
+                {content}
+              </a>
+            );
+          }
 
-            <span className="home-main-button-arrow" aria-hidden="true">
-              {arrow}
-            </span>
-          </Link>
-        ))}
+          return (
+            <Link
+              key={button.key}
+              to={button.path}
+              onClick={() => trackMainButton(button)}
+              className={`home-main-button home-main-button--${button.color}`}
+            >
+              {content}
+            </Link>
+          );
+        })}
       </section>
 
       {filteredButtons.length === 0 && (
