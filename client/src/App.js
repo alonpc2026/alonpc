@@ -17,6 +17,7 @@ import JudaismEvents from "./pages/JudaismEvents";
 import WhatsAppStickers from "./pages/WhatsAppStickers";
 import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
+import SignLanguageCourses from "./pages/SignLanguageCourses";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
 import Government from "./pages/Government";
@@ -40,6 +41,7 @@ import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
 import AdminEvents from "./pages/AdminEvents";
 import AdminPermanentEvents from "./pages/AdminPermanentEvents";
+import AdminSignLanguageCourses from "./pages/AdminSignLanguageCourses";
 import AdminInterestingSites from "./pages/AdminInterestingSites";
 import AdminFacebookGroupLinks from "./pages/AdminFacebookGroupLinks";
 import AdminJudaism from "./pages/AdminJudaism";
@@ -106,6 +108,7 @@ function App() {
               <Route path="/israel-events" element={<IsraelEvents />} />
               <Route path="/events" element={<IsraelEvents />} />
               <Route path="/permanent-events" element={<PermanentEvents />} />
+              <Route path="/sign-language-courses" element={<SignLanguageCourses />} />
 
               <Route
                 path="/admin/government"
@@ -298,6 +301,15 @@ function App() {
                 }
               />
 
+
+              <Route
+                path="/admin/sign-language-courses"
+                element={
+                  <AdminRoute>
+                    <AdminSignLanguageCourses />
+                  </AdminRoute>
+                }
+              />
 
               <Route
                 path="/admin/interesting-sites"
