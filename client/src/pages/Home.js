@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import "./Home.css";
 
-const MANUAL_VISITOR_COUNT = 12580;
+const VISITOR_API = "https://alonpc02026.onrender.com/api/visitors";
+const USAGE_API = "https://alonpc02026.onrender.com/api/usage-stats";
 
 const HOME_TRANSLATIONS = {
   he: {
@@ -20,7 +21,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "יצירת קשר מהירה",
     writeToAlon: "כתבו לאלון",
     visitorCounter: "מונה מבקרים",
-    visitorCounterNote: "המספר מתעדכן ידנית על ידי מנהל האתר",
+    visitorCounterNote: "המונה מתעדכן אוטומטית",
     buttons: {
       accessiblePortal: ["מרכז השירותים", "כל השירותים במקום אחד"],
       government: ["משרדי ממשלה", "שירותים ממשלתיים וטפסים"],
@@ -44,7 +45,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["קישורים מעניינים לקבוצה בפייס", "קישורים והערות שהגולש מחליט בעצמו אם מתאימים לו"],
       judaism: ["יהדות", "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים"],
       whatsappStickers: ["מדבקות WhatsApp", "גלריית מדבקות מוכנות לפי קטגוריה"],
-      signLanguageCourses: ["קורס שפת סימנים ישראלי", "קורסים לפי עיר, קטגוריה ותאריך"]
+      signLanguageCourses: ["קורס שפת סימנים ישראלי", "קורסים לפי עיר, תאריך ושעה"]
     }
   },
 
@@ -62,7 +63,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "Quick contact",
     writeToAlon: "Write to Alon",
     visitorCounter: "Visitor counter",
-    visitorCounterNote: "The number is updated manually by the site administrator",
+    visitorCounterNote: "The counter updates automatically",
     buttons: {
       accessiblePortal: ["Service Center", "All services in one place"],
       government: ["Government Offices", "Government services and forms"],
@@ -86,7 +87,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Interesting links for the Facebook group", "Links and notes; each visitor decides whether they are useful"],
       judaism: ["Judaism", "Accessible Torah lessons, Jewish help, study material and events"],
       whatsappStickers: ["WhatsApp Stickers", "Ready-made sticker gallery by category"],
-      signLanguageCourses: ["Israeli Sign Language Course", "Courses by city, category and date"]
+      signLanguageCourses: ["Israeli Sign Language Course", "Courses by city, date and time"]
     }
   },
 
@@ -104,7 +105,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "Быстрая связь",
     writeToAlon: "Написать Алону",
     visitorCounter: "Счётчик посетителей",
-    visitorCounterNote: "Число обновляется администратором сайта вручную",
+    visitorCounterNote: "Счётчик обновляется автоматически",
     buttons: {
       accessiblePortal: ["Центр услуг", "Все услуги в одном месте"],
       government: ["Государственные учреждения", "Государственные услуги и формы"],
@@ -128,7 +129,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Интересные ссылки для группы Facebook", "Ссылки и заметки; каждый посетитель решает сам"],
       judaism: ["Иудаизм", "Доступные уроки Торы, помощь, учебные материалы и события"],
       whatsappStickers: ["Стикеры WhatsApp", "Галерея готовых стикеров по категориям"],
-      signLanguageCourses: ["Курс израильского языка жестов", "Курсы по городу, категории и дате"]
+      signLanguageCourses: ["Курс израильского языка жестов", "Курсы по городу, дате и времени"]
     }
   },
 
@@ -146,7 +147,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "اتصال سريع",
     writeToAlon: "اكتب إلى ألون",
     visitorCounter: "عداد الزوار",
-    visitorCounterNote: "يتم تحديث الرقم يدويًا بواسطة مدير الموقع",
+    visitorCounterNote: "يتم تحديث العداد تلقائيًا",
     buttons: {
       accessiblePortal: ["مركز الخدمات", "جميع الخدمات في مكان واحد"],
       government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],
@@ -170,7 +171,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["روابط مفيدة لمجموعة فيسبوك", "روابط وملاحظات؛ يقرر الزائر بنفسه إن كانت مناسبة"],
       judaism: ["اليهودية", "دروس توراة ميسّرة، مساعدة، مواد تعليمية وفعاليات"],
       whatsappStickers: ["ملصقات WhatsApp", "معرض ملصقات جاهزة حسب الفئة"],
-      signLanguageCourses: ["دورة لغة الإشارة الإسرائيلية", "دورات حسب المدينة والفئة والتاريخ"]
+      signLanguageCourses: ["دورة لغة الإشارة الإسرائيلية", "دورات حسب المدينة والتاريخ والوقت"]
     }
   },
 
@@ -188,7 +189,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "ፈጣን ግንኙነት",
     writeToAlon: "ለአሎን ይጻፉ",
     visitorCounter: "የጎብኚዎች ቆጣሪ",
-    visitorCounterNote: "ቁጥሩ በድረ ገጹ አስተዳዳሪ በእጅ ይዘምናል",
+    visitorCounterNote: "ቆጣሪው በራስ-ሰር ይዘምናል",
     buttons: {
       accessiblePortal: ["የአገልግሎት ማዕከል", "ሁሉም አገልግሎቶች በአንድ ቦታ"],
       government: ["የመንግስት ቢሮዎች", "የመንግስት አገልግሎቶችና ቅጾች"],
@@ -212,7 +213,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["ለFacebook ቡድን ጠቃሚ አገናኞች", "አገናኞችና ማስታወሻዎች፤ ጎብኚው ራሱ ይወስናል"],
       judaism: ["ይሁዲነት", "ተደራሽ የቶራ ትምህርቶች፣ እርዳታ፣ የትምህርት ቁሳቁስና ዝግጅቶች"],
       whatsappStickers: ["የWhatsApp ስቲከሮች", "በምድብ የተዘጋጁ የስቲከር ማዕከል"],
-      signLanguageCourses: ["የእስራኤል የምልክት ቋንቋ ኮርስ", "ኮርሶች በከተማ፣ ምድብ እና ቀን"]
+      signLanguageCourses: ["የእስራኤል የምልክት ቋንቋ ኮርስ", "ኮርሶች በከተማ፣ ቀን እና ሰዓት"]
     }
   },
 
@@ -230,7 +231,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "Contact rapide",
     writeToAlon: "Écrire à Alon",
     visitorCounter: "Compteur de visiteurs",
-    visitorCounterNote: "Le nombre est mis à jour manuellement par l'administrateur du site",
+    visitorCounterNote: "Le compteur se met à jour automatiquement",
     buttons: {
       accessiblePortal: ["Centre de services", "Tous les services au même endroit"],
       government: ["Services gouvernementaux", "Services publics et formulaires"],
@@ -254,7 +255,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Liens intéressants pour le groupe Facebook", "Liens et notes; chaque visiteur décide s’ils lui conviennent"],
       judaism: ["Judaïsme", "Cours de Torah accessibles, aide, matériel d’étude et événements"],
       whatsappStickers: ["Stickers WhatsApp", "Galerie de stickers prêts par catégorie"],
-      signLanguageCourses: ["Cours de langue des signes israélienne", "Cours par ville, catégorie et date"]
+      signLanguageCourses: ["Cours de langue des signes israélienne", "Cours par ville, date et heure"]
     }
   },
 
@@ -272,7 +273,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "Mabilis na pakikipag-ugnayan",
     writeToAlon: "Sumulat kay Alon",
     visitorCounter: "Bilang ng mga bisita",
-    visitorCounterNote: "Manu-manong ina-update ng administrator ng site ang bilang",
+    visitorCounterNote: "Awtomatikong nag-a-update ang bilang",
     buttons: {
       accessiblePortal: ["Sentro ng Serbisyo", "Lahat ng serbisyo sa iisang lugar"],
       government: ["Mga Tanggapan ng Pamahalaan", "Mga serbisyo at form ng pamahalaan"],
@@ -296,7 +297,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Mga interesanteng link para sa Facebook group", "Mga link at tala; ang bisita ang magpapasya kung kapaki-pakinabang"],
       judaism: ["Judaism", "Accessible Torah lessons, tulong, study materials at events"],
       whatsappStickers: ["WhatsApp Stickers", "Handang sticker gallery ayon sa kategorya"],
-      signLanguageCourses: ["Kurso sa Israeli Sign Language", "Mga kurso ayon sa lungsod, kategorya at petsa"]
+      signLanguageCourses: ["Kurso sa Israeli Sign Language", "Mga kurso ayon sa lungsod, petsa at oras"]
     }
   },
 
@@ -314,7 +315,7 @@ const HOME_TRANSLATIONS = {
     quickContact: "त्वरित संपर्क",
     writeToAlon: "अलोन को लिखें",
     visitorCounter: "आगंतुक काउंटर",
-    visitorCounterNote: "संख्या साइट व्यवस्थापक द्वारा मैन्युअल रूप से अपडेट की जाती है",
+    visitorCounterNote: "काउंटर अपने आप अपडेट होता है",
     buttons: {
       accessiblePortal: ["सेवा केंद्र", "सभी सेवाएँ एक ही स्थान पर"],
       government: ["सरकारी कार्यालय", "सरकारी सेवाएँ और फ़ॉर्म"],
@@ -338,7 +339,7 @@ const HOME_TRANSLATIONS = {
       facebookLinks: ["Facebook समूह के लिए रोचक लिंक", "लिंक और टिप्पणियाँ; उपयोगी हैं या नहीं, यह आगंतुक तय करेगा"],
       judaism: ["यहूदी धर्म", "सुलभ तोरा कक्षाएँ, सहायता, अध्ययन सामग्री और कार्यक्रम"],
       whatsappStickers: ["WhatsApp स्टिकर", "श्रेणी के अनुसार तैयार स्टिकर गैलरी"],
-      signLanguageCourses: ["इज़राइली सांकेतिक भाषा पाठ्यक्रम", "शहर, श्रेणी और तारीख के अनुसार पाठ्यक्रम"]
+      signLanguageCourses: ["इज़राइली सांकेतिक भाषा पाठ्यक्रम", "शहर, तारीख और समय के अनुसार पाठ्यक्रम"]
     }
   }
 };
@@ -374,6 +375,7 @@ function Home() {
   const { language, dir, locale } = useLanguage();
   const [search, setSearch] = useState("");
   const [aiQuestion, setAiQuestion] = useState("");
+  const [visitorCount, setVisitorCount] = useState(null);
 
   const text = HOME_TRANSLATIONS[language] || HOME_TRANSLATIONS.he;
 
@@ -398,6 +400,36 @@ function Home() {
         .includes(term)
     );
   }, [search, mainButtons, locale]);
+
+
+  useEffect(() => {
+    let active = true;
+    async function updateVisitorCounter() {
+      try {
+        const counted = sessionStorage.getItem("alonpcVisitorCounted");
+        const response = await fetch(VISITOR_API, { method: counted ? "GET" : "POST" });
+        const data = await response.json();
+        if (response.ok && typeof data.count === "number" && active) {
+          setVisitorCount(data.count);
+          if (!counted) sessionStorage.setItem("alonpcVisitorCounted", "1");
+        }
+      } catch (error) { console.error("Visitor counter error:", error); }
+    }
+    async function trackVisit() {
+      try {
+        if (sessionStorage.getItem("alonpcUsageVisitCounted")) return;
+        sessionStorage.setItem("alonpcUsageVisitCounted", "1");
+        await fetch(`${USAGE_API}/track`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ eventType: "visit", key: "site", label: "כניסה לאתר" }) });
+      } catch (error) { console.error("Usage tracking error:", error); }
+    }
+    updateVisitorCounter();
+    trackVisit();
+    return () => { active = false; };
+  }, []);
+
+  function trackMainButton(button) {
+    fetch(`${USAGE_API}/track`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ eventType: "click", key: button.key, label: button.title }) }).catch(() => {});
+  }
 
   function submitAccessibilitySearch(event) {
     event.preventDefault();
@@ -475,6 +507,7 @@ function Home() {
           <Link
             key={button.key}
             to={button.path}
+            onClick={() => trackMainButton(button)}
             className={`home-main-button home-main-button--${button.color}`}
           >
             <span className="home-main-button-icon" aria-hidden="true">
@@ -526,7 +559,7 @@ function Home() {
 
         <div className="visitor-counter-content">
           <span>{text.visitorCounter}</span>
-          <strong>{MANUAL_VISITOR_COUNT.toLocaleString(locale)}</strong>
+          <strong>{typeof visitorCount === "number" ? visitorCount.toLocaleString(locale) : "..."}</strong>
           <small>{text.visitorCounterNote}</small>
         </div>
       </section>
