@@ -24,7 +24,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "המונה מתעדכן אוטומטית",
     buttons: {
       accessiblePortal: ["מרכז השירותים", "כל השירותים במקום אחד"],
-      government: ["משרדי ממשלה", "שירותים ממשלתיים וטפסים"],
+      government: ["משרדי ממשלה", "שירותים ממשלתיים וטפסים"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["ביטוח לאומי", "קצבאות, זכויות וטפסים"],
       health: ["בריאות", "קופות חולים ושירותי רפואה"],
       accessibility: ["נגישות", "מידע וסיוע לאנשים עם מוגבלות"],
@@ -66,7 +67,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "The counter updates automatically",
     buttons: {
       accessiblePortal: ["Service Center", "All services in one place"],
-      government: ["Government Offices", "Government services and forms"],
+      government: ["Government Offices", "Government services and forms"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["National Insurance", "Allowances, rights and forms"],
       health: ["Health", "Health funds and medical services"],
       accessibility: ["Accessibility", "Information and assistance for people with disabilities"],
@@ -108,7 +110,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "Счётчик обновляется автоматически",
     buttons: {
       accessiblePortal: ["Центр услуг", "Все услуги в одном месте"],
-      government: ["Государственные учреждения", "Государственные услуги и формы"],
+      government: ["Государственные учреждения", "Государственные услуги и формы"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["Национальное страхование", "Пособия, права и формы"],
       health: ["Здоровье", "Больничные кассы и медицинские услуги"],
       accessibility: ["Доступность", "Информация и помощь людям с инвалидностью"],
@@ -150,7 +153,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "يتم تحديث العداد تلقائيًا",
     buttons: {
       accessiblePortal: ["مركز الخدمات", "جميع الخدمات في مكان واحد"],
-      government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],
+      government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["التأمين الوطني", "مخصصات وحقوق ونماذج"],
       health: ["الصحة", "صناديق المرضى والخدمات الطبية"],
       accessibility: ["إتاحة الوصول", "معلومات ومساعدة للأشخاص ذوي الإعاقة"],
@@ -192,7 +196,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "ቆጣሪው በራስ-ሰር ይዘምናል",
     buttons: {
       accessiblePortal: ["የአገልግሎት ማዕከል", "ሁሉም አገልግሎቶች በአንድ ቦታ"],
-      government: ["የመንግስት ቢሮዎች", "የመንግስት አገልግሎቶችና ቅጾች"],
+      government: ["የመንግስት ቢሮዎች", "የመንግስት አገልግሎቶችና ቅጾች"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["ብሔራዊ መድን", "ድጎማዎች፣ መብቶችና ቅጾች"],
       health: ["ጤና", "የጤና ድርጅቶችና የሕክምና አገልግሎቶች"],
       accessibility: ["ተደራሽነት", "ለአካል ጉዳተኞች መረጃና እርዳታ"],
@@ -234,7 +239,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "Le compteur se met à jour automatiquement",
     buttons: {
       accessiblePortal: ["Centre de services", "Tous les services au même endroit"],
-      government: ["Services gouvernementaux", "Services publics et formulaires"],
+      government: ["Services gouvernementaux", "Services publics et formulaires"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["Assurance nationale", "Allocations, droits et formulaires"],
       health: ["Santé", "Caisses de santé et services médicaux"],
       accessibility: ["Accessibilité", "Informations et aide aux personnes handicapées"],
@@ -276,7 +282,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "Awtomatikong nag-a-update ang bilang",
     buttons: {
       accessiblePortal: ["Sentro ng Serbisyo", "Lahat ng serbisyo sa iisang lugar"],
-      government: ["Mga Tanggapan ng Pamahalaan", "Mga serbisyo at form ng pamahalaan"],
+      government: ["Mga Tanggapan ng Pamahalaan", "Mga serbisyo at form ng pamahalaan"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["National Insurance", "Benepisyo, karapatan at mga form"],
       health: ["Kalusugan", "Mga serbisyong medikal at health fund"],
       accessibility: ["Accessibility", "Impormasyon at tulong para sa mga taong may kapansanan"],
@@ -318,7 +325,8 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "काउंटर अपने आप अपडेट होता है",
     buttons: {
       accessiblePortal: ["सेवा केंद्र", "सभी सेवाएँ एक ही स्थान पर"],
-      government: ["सरकारी कार्यालय", "सरकारी सेवाएँ और फ़ॉर्म"],
+      government: ["सरकारी कार्यालय", "सरकारी सेवाएँ और फ़ॉर्म"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+
       nationalInsurance: ["राष्ट्रीय बीमा", "भत्ते, अधिकार और फ़ॉर्म"],
       health: ["स्वास्थ्य", "स्वास्थ्य कोष और चिकित्सा सेवाएँ"],
       accessibility: ["सुगम्यता", "विकलांग लोगों के लिए जानकारी और सहायता"],
@@ -348,6 +356,7 @@ const HOME_TRANSLATIONS = {
 const BUTTON_DEFINITIONS = [
   { key: "accessiblePortal", icon: "♿", color: "blue", path: "/accessible-portal" },
   { key: "government", icon: "🏛️", color: "navy", path: "/government" },
+  { key: "splitTv", icon: "📺", color: "royal", path: "https://split-tv.org/?utm_source=chatgpt.com", external: true },
   { key: "nationalInsurance", icon: "🏦", color: "royal", path: "/national-insurance" },
   { key: "health", icon: "❤️", color: "green", path: "/health" },
   { key: "accessibility", icon: "♿", color: "cyan", path: "/services" },
