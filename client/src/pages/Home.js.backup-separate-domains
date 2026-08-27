@@ -348,10 +348,10 @@ const HOME_TRANSLATIONS = {
 const BUTTON_DEFINITIONS = [
   { key: "accessiblePortal", icon: "♿", color: "blue", path: "/accessible-portal" },
   { key: "government", icon: "🏛️", color: "navy", path: "/government" },
-  { key: "nationalInsurance", icon: "🏦", color: "royal", path: "/national-insurance" },
-  { key: "health", icon: "❤️", color: "green", path: "/health" },
+  { key: "nationalInsurance", icon: "🏦", color: "royal", path: "/services" },
+  { key: "health", icon: "❤️", color: "green", path: "/services" },
   { key: "accessibility", icon: "♿", color: "cyan", path: "/services" },
-  { key: "transport", icon: "🚗", color: "lime", path: "/transport" },
+  { key: "transport", icon: "🚗", color: "lime", path: "/services" },
   { key: "employment", icon: "💼", color: "purple", path: "/employment" },
   { key: "documents", icon: "📄", color: "orange", path: "/documents" },
   { key: "shop", icon: "🛒", color: "amber", path: "/shop" },

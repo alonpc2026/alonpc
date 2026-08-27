@@ -67,12 +67,6 @@ import AdminEmergency from "./pages/AdminEmergency";
 
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Transport from "./pages/Transport";
-import Health from "./pages/Health";
-import NationalInsurance from "./pages/NationalInsurance";
-import AdminTransport from "./pages/AdminTransport";
-import AdminHealth from "./pages/AdminHealth";
-import AdminNationalInsurance from "./pages/AdminNationalInsurance";
 
 function readStoredUser() {
   try {
@@ -137,9 +131,6 @@ function App() {
               />
 
               <Route path="/services" element={<Services />} />
-              <Route path="/transport" element={<Transport />} />
-              <Route path="/health" element={<Health />} />
-              <Route path="/national-insurance" element={<NationalInsurance />} />
               <Route path="/employment" element={<Employment />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
 
@@ -413,7 +404,4 @@ function App() {
 }
 
 export default App;
-<Route path="/admin/transport" element={<AdminRoute><AdminTransport /></AdminRoute>} />
-              <Route path="/admin/health" element={<AdminRoute><AdminHealth /></AdminRoute>} />
-              <Route path="/admin/national-insurance" element={<AdminRoute><AdminNationalInsurance /></AdminRoute>} />
-              
+

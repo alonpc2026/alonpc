@@ -3,9 +3,6 @@ import "./Admin.css";
 import "./AdminEmergencyPortalFix.css";
 
 const adminSections = [
-  {title:"🚗 ניהול תחבורה",description:"לוגו, שם, טלפון, WhatsApp וקישור",icon:"⚙️",path:"/admin/transport",className:"admin-card-purple"},
-  {title:"❤️ ניהול בריאות",description:"לוגו, שם, טלפון, WhatsApp וקישור",icon:"⚙️",path:"/admin/health",className:"admin-card-purple"},
-  {title:"🏦 ניהול ביטוח לאומי",description:"לוגו, שם, טלפון, WhatsApp וקישור",icon:"⚙️",path:"/admin/national-insurance",className:"admin-card-purple"},
   {
     title: "🤟 ניהול קורס שפת סימנים ישראלי",
     description: "שם קורס, עיר, מיקום, תאריך, שעה, כמות מקומות וקישור לתמונה",

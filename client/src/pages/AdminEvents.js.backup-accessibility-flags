@@ -55,7 +55,7 @@ function normalizeEvent(eventItem = {}) {
 function yesNo(value) {
   return value ? "יש" : "אין";
 }
-\nfunction AdminEvents() {
+function AdminEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
