@@ -6,6 +6,8 @@ const schema=new mongoose.Schema({
   source:{type:String,default:""},
   link:{type:String,default:""},
   imageUrl:{type:String,default:""},
+  manufactureDate:{type:String,default:""},
+  price:{type:String,default:""},
   active:{type:Boolean,default:true}
 },{timestamps:true});
 module.exports=mongoose.models.HealthProduct||mongoose.model("HealthProduct",schema);

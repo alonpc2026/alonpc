@@ -2,7 +2,10 @@ import {useEffect,useState} from "react";
 import "./AdminDomainDirectory.css";
 
 const API="https://alonpc02026.onrender.com/api/health-products";
-const EMPTY={title:"",description:"",category:"warning",source:"",link:"",imageUrl:"",active:true};
+const EMPTY={
+  title:"",description:"",category:"warning",source:"",link:"",
+  imageUrl:"",manufactureDate:"",price:"",active:true
+};
 
 const CATEGORY_OPTIONS=[
   ["warning","⚠️ אזהרת מוצרים"],
@@ -25,7 +28,6 @@ export default function AdminHealthProducts(){
       setItems(Array.isArray(d)?d:[]);
     }catch(e){setMsg("❌ "+e.message)}
   }
-
   useEffect(()=>{load()},[]);
 
   function ch(e){
@@ -43,95 +45,89 @@ export default function AdminHealthProducts(){
       });
       const d=await r.json();
       if(!r.ok) throw Error(d.message||"לא ניתן לשמור");
-      setForm(EMPTY);
-      setId("");
-      setMsg("✅ נשמר בהצלחה");
-      load();
+      setForm(EMPTY); setId(""); setMsg("✅ נשמר בהצלחה"); load();
     }catch(e){setMsg("❌ "+e.message)}
   }
 
   async function del(x){
     if(!window.confirm("למחוק?")) return;
-    await fetch(`${API}/${x}`,{method:"DELETE"});
-    load();
+    await fetch(`${API}/${x}`,{method:"DELETE"}); load();
   }
 
   function edit(x){
     setId(x._id);
     setForm({
-      title:x.title||"",
-      description:x.description||"",
-      category:x.category||"warning",
-      source:x.source||"",
-      link:x.link||"",
-      imageUrl:x.imageUrl||"",
-      active:x.active!==false
+      title:x.title||"",description:x.description||"",
+      category:x.category||"warning",source:x.source||"",link:x.link||"",
+      imageUrl:x.imageUrl||"",manufactureDate:x.manufactureDate||"",
+      price:x.price||"",active:x.active!==false
     });
     window.scrollTo({top:0,behavior:"smooth"});
   }
 
-  return (
-    <main className="domain-admin" dir="rtl">
-      <h1>❤️ ניהול מידע ומוצרים בבריאות</h1>
+  const warning=form.category==="warning";
+  const ali=form.category==="aliexpress";
 
-      <form className="domain-form" onSubmit={save}>
-        <label>כותרת *
-          <input required name="title" value={form.title} onChange={ch}/>
-        </label>
+  return <main className="domain-admin" dir="rtl">
+    <h1>❤️ ניהול מידע ומוצרים בבריאות</h1>
 
-        <label>קטגוריה *
-          <select name="category" value={form.category} onChange={ch}>
-            {CATEGORY_OPTIONS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
-          </select>
-        </label>
+    <form className="domain-form" onSubmit={save}>
+      <label>קטגוריה *
+        <select name="category" value={form.category} onChange={ch}>
+          {CATEGORY_OPTIONS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+        </select>
+      </label>
 
-        <label className="wide">תיאור
-          <textarea name="description" value={form.description} onChange={ch} rows="5"/>
-        </label>
+      <label>שם מוצר *
+        <input required name="title" value={form.title} onChange={ch}/>
+      </label>
 
-        <label>מקור / חברה
-          <input name="source" value={form.source} onChange={ch}/>
-        </label>
+      <label className="wide">קישור לתמונה
+        <input type="url" name="imageUrl" value={form.imageUrl} onChange={ch} placeholder="https://..."/>
+      </label>
 
-        <label>קישור
-          <input type="url" name="link" value={form.link} onChange={ch} placeholder="https://"/>
-        </label>
+      {!ali&&<label className="wide">{warning?"פירוט אזהרה":"פירוט מוצר"}
+        <textarea name="description" value={form.description} onChange={ch} rows="5"/>
+      </label>}
 
-        <label className="wide">קישור לתמונה
-          <input type="url" name="imageUrl" value={form.imageUrl} onChange={ch} placeholder="https://..."/>
-        </label>
+      {warning&&<label>תאריך ייצור
+        <input type="date" name="manufactureDate" value={form.manufactureDate} onChange={ch}/>
+      </label>}
 
-        <label className="active">
-          <input type="checkbox" name="active" checked={form.active} onChange={ch}/>
-          פעיל ומוצג באתר
-        </label>
+      {ali&&<label>מחיר
+        <input name="price" value={form.price} onChange={ch} placeholder="לדוגמה: ₪49.90"/>
+      </label>}
 
-        <div className="actions">
-          <button type="submit">{id?"💾 שמור שינויים":"➕ הוסף פריט"}</button>
-          {id&&<button type="button" onClick={()=>{setId("");setForm(EMPTY)}}>ביטול</button>}
-        </div>
-      </form>
+      {ali&&<label>קישור למוצר באליאקספרס
+        <input type="url" name="link" value={form.link} onChange={ch} placeholder="https://..."/>
+      </label>}
 
-      {msg&&<p className="msg">{msg}</p>}
+      <label className="active">
+        <input type="checkbox" name="active" checked={form.active} onChange={ch}/>
+        פעיל ומוצג באתר
+      </label>
 
-      <section>
-        {items.map(x=>(
-          <article className="admin-card" key={x._id}>
-            <div className="admin-logo">
-              {x.imageUrl?<img src={x.imageUrl} alt={x.title}/>:<span>🩺</span>}
-            </div>
-            <div>
-              <h3>{x.title}</h3>
-              <p>{CATEGORY_OPTIONS.find(([v])=>v===x.category)?.[1]||x.category}</p>
-              {x.source&&<p>{x.source}</p>}
-            </div>
-            <div className="card-actions">
-              <button onClick={()=>edit(x)}>✏️ עריכה</button>
-              <button onClick={()=>del(x._id)}>🗑️ מחיקה</button>
-            </div>
-          </article>
-        ))}
-      </section>
-    </main>
-  );
+      <div className="actions">
+        <button type="submit">{id?"💾 שמור שינויים":"➕ הוסף מוצר"}</button>
+        {id&&<button type="button" onClick={()=>{setId("");setForm(EMPTY)}}>ביטול</button>}
+      </div>
+    </form>
+
+    {msg&&<p className="msg">{msg}</p>}
+
+    <section>{items.map(x=><article className="admin-card" key={x._id}>
+      <div className="admin-logo">{x.imageUrl?<img src={x.imageUrl} alt={x.title}/>:<span>🩺</span>}</div>
+      <div>
+        <h3>{x.title}</h3>
+        <p>{CATEGORY_OPTIONS.find(([v])=>v===x.category)?.[1]||x.category}</p>
+        {x.description&&<p>{x.description}</p>}
+        {x.manufactureDate&&<p><b>תאריך ייצור:</b> {x.manufactureDate}</p>}
+        {x.price&&<p><b>מחיר:</b> {x.price}</p>}
+      </div>
+      <div className="card-actions">
+        <button onClick={()=>edit(x)}>✏️ עריכה</button>
+        <button onClick={()=>del(x._id)}>🗑️ מחיקה</button>
+      </div>
+    </article>)}</section>
+  </main>;
 }
