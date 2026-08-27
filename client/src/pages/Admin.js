@@ -3,6 +3,13 @@ import "./Admin.css";
 import "./AdminEmergencyPortalFix.css";
 
 const adminSections = [
+  {
+    title: "❤️ ניהול מידע ומוצרים בבריאות",
+    description: "אזהרות, מוצרים חדשים, מומלצים ומוצרים מאליאקספרס",
+    icon: "❤️",
+    path: "/admin/health-products",
+    className: "admin-card-red",
+  },
   {title:"💼 ניהול תעסוקה",description:"לוגו, שם עסק, טלפון, WhatsApp וקישור לעסק",icon:"💼",path:"/admin/employment",className:"admin-card-purple"},
   {title:"🚗 ניהול תחבורה",description:"לוגו, שם, טלפון, WhatsApp וקישור",icon:"⚙️",path:"/admin/transport",className:"admin-card-purple"},
   {title:"❤️ ניהול בריאות",description:"לוגו, שם, טלפון, WhatsApp וקישור",icon:"⚙️",path:"/admin/health",className:"admin-card-purple"},

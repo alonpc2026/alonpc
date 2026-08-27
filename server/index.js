@@ -87,6 +87,7 @@ mountRoute("./routes/employmentRoutes", "/api/employment");
 mountRoute("./routes/transportDirectoryRoutes", "/api/transport");
 mountRoute("./routes/healthDirectoryRoutes", "/api/health-directory");
 mountRoute("./routes/nationalInsuranceDirectoryRoutes", "/api/national-insurance-directory");
+mountRoute("./routes/healthProductRoutes", "/api/health-products");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {

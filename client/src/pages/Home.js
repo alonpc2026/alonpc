@@ -28,6 +28,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["ביטוח לאומי", "קצבאות, זכויות וטפסים"],
       health: ["בריאות", "קופות חולים ושירותי רפואה"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["נגישות", "מידע וסיוע לאנשים עם מוגבלות"],
       transport: ["תחבורה", "תחבורה ציבורית וניידות"],
       employment: ["תעסוקה", "משרות, הכשרה וסיוע בעבודה"],
@@ -71,6 +72,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["National Insurance", "Allowances, rights and forms"],
       health: ["Health", "Health funds and medical services"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["Accessibility", "Information and assistance for people with disabilities"],
       transport: ["Transportation", "Public transportation and mobility"],
       employment: ["Employment", "Jobs, training and work assistance"],
@@ -114,6 +116,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["Национальное страхование", "Пособия, права и формы"],
       health: ["Здоровье", "Больничные кассы и медицинские услуги"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["Доступность", "Информация и помощь людям с инвалидностью"],
       transport: ["Транспорт", "Общественный транспорт и мобильность"],
       employment: ["Трудоустройство", "Работа, обучение и помощь в трудоустройстве"],
@@ -157,6 +160,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["التأمين الوطني", "مخصصات وحقوق ونماذج"],
       health: ["الصحة", "صناديق المرضى والخدمات الطبية"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["إتاحة الوصول", "معلومات ومساعدة للأشخاص ذوي الإعاقة"],
       transport: ["المواصلات", "المواصلات العامة والتنقل"],
       employment: ["التوظيف", "وظائف وتدريب ومساعدة في العمل"],
@@ -200,6 +204,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["ብሔራዊ መድን", "ድጎማዎች፣ መብቶችና ቅጾች"],
       health: ["ጤና", "የጤና ድርጅቶችና የሕክምና አገልግሎቶች"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["ተደራሽነት", "ለአካል ጉዳተኞች መረጃና እርዳታ"],
       transport: ["ትራንስፖርት", "የህዝብ መጓጓዣና እንቅስቃሴ"],
       employment: ["ሥራ", "የሥራ ዕድሎች፣ ስልጠናና እርዳታ"],
@@ -243,6 +248,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["Assurance nationale", "Allocations, droits et formulaires"],
       health: ["Santé", "Caisses de santé et services médicaux"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["Accessibilité", "Informations et aide aux personnes handicapées"],
       transport: ["Transports", "Transports publics et mobilité"],
       employment: ["Emploi", "Offres d'emploi, formation et aide"],
@@ -286,6 +292,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["National Insurance", "Benepisyo, karapatan at mga form"],
       health: ["Kalusugan", "Mga serbisyong medikal at health fund"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["Accessibility", "Impormasyon at tulong para sa mga taong may kapansanan"],
       transport: ["Transportasyon", "Pampublikong transportasyon at mobility"],
       employment: ["Trabaho", "Mga trabaho, pagsasanay at tulong sa paghahanapbuhay"],
@@ -329,6 +336,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["राष्ट्रीय बीमा", "भत्ते, अधिकार और फ़ॉर्म"],
       health: ["स्वास्थ्य", "स्वास्थ्य कोष और चिकित्सा सेवाएँ"],
+      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
       accessibility: ["सुगम्यता", "विकलांग लोगों के लिए जानकारी और सहायता"],
       transport: ["परिवहन", "सार्वजनिक परिवहन और गतिशीलता"],
       employment: ["रोज़गार", "नौकरियाँ, प्रशिक्षण और काम में सहायता"],
@@ -359,6 +367,7 @@ const BUTTON_DEFINITIONS = [
   { key: "splitTv", icon: "📺", color: "royal", path: "https://split-tv.org/?utm_source=chatgpt.com", external: true },
   { key: "nationalInsurance", icon: "🏦", color: "royal", path: "/national-insurance" },
   { key: "health", icon: "❤️", color: "green", path: "/health" },
+  { key: "importantInfo", icon: "ℹ️", color: "amber", path: "/important-info" },
   { key: "accessibility", icon: "♿", color: "cyan", path: "/services" },
   { key: "transport", icon: "🚗", color: "lime", path: "/transport" },
   { key: "employment", icon: "💼", color: "purple", path: "/employment" },

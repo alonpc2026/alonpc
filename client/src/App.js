@@ -75,6 +75,9 @@ import AdminHealth from "./pages/AdminHealth";
 import AdminNationalInsurance from "./pages/AdminNationalInsurance";
 
 import AdminUsageStats from "./pages/AdminUsageStats";
+import ImportantInfo from "./pages/ImportantInfo";
+import HealthProductList from "./pages/HealthProductList";
+import AdminHealthProducts from "./pages/AdminHealthProducts";
 function readStoredUser() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -409,6 +412,9 @@ function App() {
               <Route path="/admin/health" element={<AdminRoute><AdminHealth /></AdminRoute>} />
               <Route path="/admin/national-insurance" element={<AdminRoute><AdminNationalInsurance /></AdminRoute>} />
               <Route path="/admin/usage-stats" element={<AdminRoute><AdminUsageStats /></AdminRoute>} />
+              <Route path="/important-info" element={<ImportantInfo />} />
+              <Route path="/health/:type" element={<HealthProductList />} />
+              <Route path="/admin/health-products" element={<AdminRoute><AdminHealthProducts /></AdminRoute>} />
 </Routes>
           </div>
         </HashRouter>
