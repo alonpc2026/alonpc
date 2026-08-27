@@ -28,7 +28,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["ביטוח לאומי", "קצבאות, זכויות וטפסים"],
       health: ["בריאות", "קופות חולים ושירותי רפואה"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["נגישות", "מידע וסיוע לאנשים עם מוגבלות"],
       transport: ["תחבורה", "תחבורה ציבורית וניידות"],
       employment: ["תעסוקה", "משרות, הכשרה וסיוע בעבודה"],
@@ -68,11 +68,12 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "The counter updates automatically",
     buttons: {
       accessiblePortal: ["Service Center", "All services in one place"],
-      government: ["Government Offices", "Government services and forms"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+      government: ["Government Offices", "Government services and forms"],
+      splitTv: ["📺 Live TV – Split Screen", "Watch several channels on one screen"],
 
       nationalInsurance: ["National Insurance", "Allowances, rights and forms"],
       health: ["Health", "Health funds and medical services"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["Accessibility", "Information and assistance for people with disabilities"],
       transport: ["Transportation", "Public transportation and mobility"],
       employment: ["Employment", "Jobs, training and work assistance"],
@@ -112,11 +113,12 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "Счётчик обновляется автоматически",
     buttons: {
       accessiblePortal: ["Центр услуг", "Все услуги в одном месте"],
-      government: ["Государственные учреждения", "Государственные услуги и формы"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+      government: ["Государственные учреждения", "Государственные услуги и формы"],
+      splitTv: ["📺 Прямой эфир – разделённый экран", "Несколько телеканалов на одном экране"],
 
       nationalInsurance: ["Национальное страхование", "Пособия, права и формы"],
       health: ["Здоровье", "Больничные кассы и медицинские услуги"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["Доступность", "Информация и помощь людям с инвалидностью"],
       transport: ["Транспорт", "Общественный транспорт и мобильность"],
       employment: ["Трудоустройство", "Работа, обучение и помощь в трудоустройстве"],
@@ -156,11 +158,12 @@ const HOME_TRANSLATIONS = {
     visitorCounterNote: "يتم تحديث العداد تلقائيًا",
     buttons: {
       accessiblePortal: ["مركز الخدمات", "جميع الخدمات في مكان واحد"],
-      government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
+      government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],
+      splitTv: ["📺 تلفزيون مباشر – شاشة مقسمة", "مشاهدة عدة قنوات على شاشة واحدة"],
 
       nationalInsurance: ["التأمين الوطني", "مخصصات وحقوق ونماذج"],
       health: ["الصحة", "صناديق المرضى والخدمات الطبية"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["إتاحة الوصول", "معلومات ومساعدة للأشخاص ذوي الإعاقة"],
       transport: ["المواصلات", "المواصلات العامة والتنقل"],
       employment: ["التوظيف", "وظائف وتدريب ومساعدة في العمل"],
@@ -204,7 +207,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["ብሔራዊ መድን", "ድጎማዎች፣ መብቶችና ቅጾች"],
       health: ["ጤና", "የጤና ድርጅቶችና የሕክምና አገልግሎቶች"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["ተደራሽነት", "ለአካል ጉዳተኞች መረጃና እርዳታ"],
       transport: ["ትራንስፖርት", "የህዝብ መጓጓዣና እንቅስቃሴ"],
       employment: ["ሥራ", "የሥራ ዕድሎች፣ ስልጠናና እርዳታ"],
@@ -248,7 +251,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["Assurance nationale", "Allocations, droits et formulaires"],
       health: ["Santé", "Caisses de santé et services médicaux"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["Accessibilité", "Informations et aide aux personnes handicapées"],
       transport: ["Transports", "Transports publics et mobilité"],
       employment: ["Emploi", "Offres d'emploi, formation et aide"],
@@ -292,7 +295,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["National Insurance", "Benepisyo, karapatan at mga form"],
       health: ["Kalusugan", "Mga serbisyong medikal at health fund"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["Accessibility", "Impormasyon at tulong para sa mga taong may kapansanan"],
       transport: ["Transportasyon", "Pampublikong transportasyon at mobility"],
       employment: ["Trabaho", "Mga trabaho, pagsasanay at tulong sa paghahanapbuhay"],
@@ -336,7 +339,7 @@ const HOME_TRANSLATIONS = {
 
       nationalInsurance: ["राष्ट्रीय बीमा", "भत्ते, अधिकार और फ़ॉर्म"],
       health: ["स्वास्थ्य", "स्वास्थ्य कोष और चिकित्सा सेवाएँ"],
-      importantInfo: ["מידע חשוב לדעת", "מידע חשוב, אזהרות ועדכונים שימושיים"],
+      importantInfo: ["Important Information", "Important information, warnings and useful updates"],
       accessibility: ["सुगम्यता", "विकलांग लोगों के लिए जानकारी और सहायता"],
       transport: ["परिवहन", "सार्वजनिक परिवहन और गतिशीलता"],
       employment: ["रोज़गार", "नौकरियाँ, प्रशिक्षण और काम में सहायता"],
@@ -521,27 +524,46 @@ function Home() {
       </section>
 
       <section className="home-main-buttons" aria-label={text.buttonsAria}>
-        {filteredButtons.map((button) => (
-          <Link
-            key={button.key}
-            to={button.path}
-            onClick={() => trackMainButton(button)}
-            className={`home-main-button home-main-button--${button.color}`}
-          >
-            <span className="home-main-button-icon" aria-hidden="true">
-              {button.icon}
-            </span>
+        {filteredButtons.map((button) => {
+          const content = (
+            <>
+              <span className="home-main-button-icon" aria-hidden="true">
+                {button.icon}
+              </span>
 
-            <span className="home-main-button-text">
-              <strong>{button.title}</strong>
-              <small>{button.subtitle}</small>
-            </span>
+              <span className="home-main-button-text">
+                <strong>{button.title}</strong>
+                <small>{button.subtitle}</small>
+              </span>
 
-            <span className="home-main-button-arrow" aria-hidden="true">
-              {arrow}
-            </span>
-          </Link>
-        ))}
+              <span className="home-main-button-arrow" aria-hidden="true">
+                {arrow}
+              </span>
+            </>
+          );
+
+          return button.external ? (
+            <a
+              key={button.key}
+              href={button.path}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackMainButton(button)}
+              className={`home-main-button home-main-button--${button.color}`}
+            >
+              {content}
+            </a>
+          ) : (
+            <Link
+              key={button.key}
+              to={button.path}
+              onClick={() => trackMainButton(button)}
+              className={`home-main-button home-main-button--${button.color}`}
+            >
+              {content}
+            </Link>
+          );
+        })}
       </section>
 
       {filteredButtons.length === 0 && (
