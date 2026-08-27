@@ -83,6 +83,7 @@ mountRoute("./routes/whatsappStickerRoutes", "/api/whatsapp-stickers");
 mountRoute("./routes/visitorRoutes", "/api/visitors");
 mountRoute("./routes/signLanguageCourseRoutes", "/api/sign-language-courses");
 mountRoute("./routes/usageStatRoutes", "/api/usage-stats");
+mountRoute("./routes/employmentRoutes", "/api/employment");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {
