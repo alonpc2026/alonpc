@@ -1,0 +1,6 @@
+# ALONPC - force the main HTML shell to refresh after each deploy
+/
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
