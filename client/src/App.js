@@ -404,7 +404,10 @@ function App() {
                   </AdminRoute>
                 }
               />
-            </Routes>
+                          <Route path="/admin/transport" element={<AdminRoute><AdminTransport /></AdminRoute>} />
+              <Route path="/admin/health" element={<AdminRoute><AdminHealth /></AdminRoute>} />
+              <Route path="/admin/national-insurance" element={<AdminRoute><AdminNationalInsurance /></AdminRoute>} />
+</Routes>
           </div>
         </HashRouter>
       </CartProvider>
@@ -413,7 +416,3 @@ function App() {
 }
 
 export default App;
-<Route path="/admin/transport" element={<AdminRoute><AdminTransport /></AdminRoute>} />
-              <Route path="/admin/health" element={<AdminRoute><AdminHealth /></AdminRoute>} />
-              <Route path="/admin/national-insurance" element={<AdminRoute><AdminNationalInsurance /></AdminRoute>} />
-              
