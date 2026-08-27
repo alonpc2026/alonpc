@@ -5,18 +5,19 @@ import "./AdminEmergencyPortalFix.css";
 const adminSections = [
   {
     title: "🤟 ניהול קורס שפת סימנים ישראלי",
-    description: "שם קורס, קטגוריה, עיר, תאריך, מקום, כתובת, טלפון, תמונה וקישור",
+    description: "שם קורס, עיר, מיקום, תאריך, שעה, כמות מקומות וקישור לתמונה",
     icon: "🤟",
     path: "/admin/sign-language-courses",
     className: "admin-card-green",
   },
   {
     title: "📊 סטטיסטיקת האתר",
-    description: "כניסות היום, 7 ימים ו־30 ימים + מספר כניסות לכל תחום",
+    description: "כניסות היום, 7 ימים ו־30 ימים + לאיזה תחום נכנסו",
     icon: "📊",
     path: "/admin/usage-stats",
     className: "admin-card-violet",
   },
+
   {
     title: "🚨 ניהול חירום",
     description: "משטרה 100 • מגן דוד אדום 101 • כבאות והצלה 102",

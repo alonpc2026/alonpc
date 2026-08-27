@@ -19,6 +19,7 @@ import IsraelEvents from "./pages/IsraelEvents";
 import PermanentEvents from "./pages/PermanentEvents";
 import SignLanguageCourses from "./pages/SignLanguageCourses";
 import Services from "./pages/Services";
+import Employment from "./pages/Employment";
 import ServiceDetails from "./pages/ServiceDetails";
 import Government from "./pages/Government";
 import Shop from "./pages/Shop";
@@ -36,6 +37,7 @@ import Dashboard from "./pages/Dashboard";
 
 import Admin from "./pages/Admin";
 import AdminGovernment from "./pages/AdminGovernment";
+import AdminEmployment from "./pages/AdminEmployment";
 import AdminShop from "./pages/AdminShop";
 import ProductDetails from "./pages/ProductDetails";
 import AdminBookings from "./pages/AdminBookings";
@@ -58,7 +60,6 @@ import AdminDocuments from "./pages/AdminDocuments";
 import AdminUploads from "./pages/AdminUploads";
 import AdminSettings from "./pages/AdminSettings";
 import AdminStatistics from "./pages/AdminStatistics";
-import AdminUsageStats from "./pages/AdminUsageStats";
 import AdminBackup from "./pages/AdminBackup";
 import AdminApps from "./pages/AdminApps";
 import AdminGames from "./pages/AdminGames";
@@ -112,6 +113,15 @@ function App() {
               <Route path="/sign-language-courses" element={<SignLanguageCourses />} />
 
               <Route
+                path="/admin/employment"
+                element={
+                  <AdminRoute>
+                    <AdminEmployment />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
                 path="/admin/government"
                 element={
                   <AdminRoute>
@@ -121,6 +131,7 @@ function App() {
               />
 
               <Route path="/services" element={<Services />} />
+              <Route path="/employment" element={<Employment />} />
               <Route path="/service/:id" element={<ServiceDetails />} />
 
               <Route path="/government" element={<Government />} />
@@ -263,15 +274,6 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminSettings />
-                  </AdminRoute>
-                }
-              />
-
-              <Route
-                path="/admin/usage-stats"
-                element={
-                  <AdminRoute>
-                    <AdminUsageStats />
                   </AdminRoute>
                 }
               />
