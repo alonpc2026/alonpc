@@ -285,7 +285,7 @@ export default function AdminSignLanguageCourses() {
             <img
               src={form.imageUrl}
               alt="תצוגה מקדימה של הקורס"
-              style={{width:"100%",maxWidth:"420px",maxHeight:"260px",objectFit:"contain",marginTop:"10px",borderRadius:"12px"}}
+              style={{width:"100%",maxWidth:"520px",maxHeight:"340px",objectFit:"contain",marginTop:"10px",borderRadius:"12px"}}
             />
           </div>
         )}
@@ -364,7 +364,7 @@ export default function AdminSignLanguageCourses() {
             <img
               src={course.imageUrl}
               alt={course.name}
-              style={{width:"100%",maxWidth:"320px",maxHeight:"210px",objectFit:"contain",borderRadius:"12px",marginBottom:"12px"}}
+              style={{width:"100%",maxWidth:"450px",maxHeight:"300px",objectFit:"contain",borderRadius:"12px",marginBottom:"12px"}}
             />
           )}
 
