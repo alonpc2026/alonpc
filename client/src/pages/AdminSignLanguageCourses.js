@@ -278,6 +278,18 @@ export default function AdminSignLanguageCourses() {
           />
         </label>
 
+        {form.imageUrl && (
+          <div style={{gridColumn:"1 / -1",border:"2px dashed #4676a8",borderRadius:"14px",padding:"12px",textAlign:"center"}}>
+            <strong>תצוגה מקדימה של תמונת הקורס</strong>
+            <br />
+            <img
+              src={form.imageUrl}
+              alt="תצוגה מקדימה של הקורס"
+              style={{width:"100%",maxWidth:"420px",maxHeight:"260px",objectFit:"contain",marginTop:"10px",borderRadius:"12px"}}
+            />
+          </div>
+        )}
+
         <label>
           קישור להרשמה / מידע
           <input
@@ -348,6 +360,14 @@ export default function AdminSignLanguageCourses() {
             marginBottom: "12px",
           }}
         >
+          {course.imageUrl && (
+            <img
+              src={course.imageUrl}
+              alt={course.name}
+              style={{width:"100%",maxWidth:"320px",maxHeight:"210px",objectFit:"contain",borderRadius:"12px",marginBottom:"12px"}}
+            />
+          )}
+
           <h3>{course.name}</h3>
 
           <p>
