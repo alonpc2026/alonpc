@@ -6,10 +6,10 @@ const mobileAppSchema = new mongoose.Schema(
     title: { type: String, trim: true, default: "" },
     description: { type: String, trim: true, default: "" },
 
-    // mobile | tv | windows | mac
+    // mobile (legacy) | android | ios | tv | windows | mac
     type: {
       type: String,
-      enum: ["mobile", "tv", "windows", "mac"],
+      enum: ["mobile", "android", "ios", "tv", "windows", "mac"],
       default: "mobile",
       index: true,
     },
@@ -28,10 +28,7 @@ const mobileAppSchema = new mongoose.Schema(
     active: { type: Boolean, default: true },
     order: { type: Number, default: 0 },
   },
-  {
-    timestamps: true,
-    strict: false,
-  }
+  { timestamps: true, strict: false }
 );
 
 module.exports =
