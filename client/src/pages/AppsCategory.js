@@ -17,23 +17,16 @@ function norm(value) {
 }
 
 function getPlatform(item) {
-  const values = [
-    item.platform, item.deviceType, item.os, item.system,
-    item.category, item.mobileType, item.type
-  ].map(norm).filter(Boolean);
+  const raw = norm(
+    item.platform || item.type || item.deviceType || item.os ||
+    item.system || item.category || item.mobileType || ""
+  );
 
-  for (const raw of values) {
-    if (["android","galaxy","samsung","אנדרואיד","סמסונג"].includes(raw)) return "android";
-    if (["ios","iphone","apple","אייפון","אפל"].includes(raw)) return "ios";
-    if (["windows","windows10","windows11","pc"].includes(raw)) return "windows";
-    if (["mac","macos","apple-mac"].includes(raw)) return "mac";
-    if (["tv","smarttv","smart-tv","television","טלוויזיה"].includes(raw)) return "tv";
-  }
-
-  if (item.hasAndroid === true || item.androidUrl) return "android";
-  if (item.hasIphone === true || item.iphoneUrl || item.iosUrl) return "ios";
-
-  return "";
+  if (["galaxy","samsung","אנדרואיד","סמסונג"].includes(raw)) return "android";
+  if (["iphone","apple","אייפון","אפל"].includes(raw)) return "ios";
+  if (["macos","apple-mac"].includes(raw)) return "mac";
+  if (["smarttv","smart-tv","television","טלוויזיה"].includes(raw)) return "tv";
+  return raw;
 }
 
 function getImage(item) {
@@ -53,7 +46,9 @@ function getLink(item) {
 export default function AppsCategory() {
   const { type } = useParams();
   const requested = norm(type);
-  const meta = META[requested] || { title: type || "אפליקציות", icon: "📱" };
+  const meta = requested === "mobile"
+    ? { title: "אפליקציות סלולרי", icon: "📱" }
+    : (META[requested] || { title: type || "אפליקציות", icon: "📱" });
 
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
@@ -93,7 +88,12 @@ export default function AppsCategory() {
     const q = search.trim().toLowerCase();
 
     return items.filter((item) => {
-      if (getPlatform(item) !== requested) return false;
+      const platform = getPlatform(item);
+      if (requested === "mobile") {
+        if (!["android", "ios"].includes(platform)) return false;
+      } else if (platform !== requested) {
+        return false;
+      }
 
       const text = [
         item.name, item.title, item.description
@@ -120,7 +120,9 @@ export default function AppsCategory() {
           onChange={(event) => setSearch(event.target.value)}
           placeholder={`🔎 חיפוש בתוך ${meta.title}...`}
         />
-        <Link to="/apps/mobile">📱 חזרה לאפליקציות סלולרי</Link>
+        {requested !== "mobile" && (
+          <Link to="/apps/mobile">📱 חזרה לאפליקציות סלולרי</Link>
+        )}
       </section>
 
       {loading && <p className="apps-category-status">טוען...</p>}
