@@ -23,6 +23,10 @@ const EMPTY_FORM = {
   description: "",
   website: "",
   imageUrl: "",
+  paymentType: "free",
+  price: "",
+  transcription: false,
+  captions: false,
   active: true,
 };
 
@@ -48,6 +52,10 @@ function normalizeEvent(eventItem = {}) {
       "",
     endTime: eventItem.endTime || "",
     allDay: eventItem.allDay === true,
+    paymentType: eventItem.paymentType === "paid" ? "paid" : "free",
+    price: eventItem.price ?? "",
+    transcription: eventItem.accessibility?.transcription === true,
+    captions: eventItem.accessibility?.captions === true,
   };
 }
 
@@ -205,6 +213,10 @@ function AdminEvents() {
       description: event.description,
       website: event.website,
       imageUrl: event.imageUrl,
+      paymentType: event.paymentType === "paid" ? "paid" : "free",
+      price: event.price ?? "",
+      transcription: event.accessibility?.transcription === true,
+      captions: event.accessibility?.captions === true,
       active: event.active,
     });
 
@@ -266,6 +278,9 @@ function AdminEvents() {
         description: form.description.trim(),
         website: form.website.trim(),
         imageUrl: form.imageUrl.trim(),
+        paymentType: form.paymentType,
+        price: form.paymentType === "paid" ? Number(form.price) : 0,
+        accessibility: { transcription: form.transcription, captions: form.captions },
         active: form.active,
 
         date: form.startDate,
@@ -548,6 +563,23 @@ function AdminEvents() {
             </div>
           )}
 
+          <div className="admin-events-form-row">
+            <label>מחיר האירוע
+              <select name="paymentType" value={form.paymentType} onChange={handleChange}>
+                <option value="free">חינם</option><option value="paid">תשלום</option>
+              </select>
+            </label>
+            {form.paymentType === "paid" && <label>מחיר ₪<input type="number" min="0" name="price" value={form.price} onChange={handleChange} required /></label>}
+          </div>
+          <div className="admin-events-form-row">
+            <label>תמלול
+              <select value={form.transcription ? "yes" : "no"} onChange={(e)=>setForm(c=>({...c,transcription:e.target.value==="yes"}))}><option value="no">לא</option><option value="yes">כן</option></select>
+            </label>
+            <label>כתוביות
+              <select value={form.captions ? "yes" : "no"} onChange={(e)=>setForm(c=>({...c,captions:e.target.value==="yes"}))}><option value="no">לא</option><option value="yes">כן</option></select>
+            </label>
+          </div>
+
           <label className="admin-events-checkbox">
             <input
               type="checkbox"
@@ -720,6 +752,9 @@ function AdminEvents() {
                     </p>
 
 
+                    <p>💰 {normalizedEvent.paymentType === "paid" ? `${normalizedEvent.price ?? 0} ₪` : "חינם"}</p>
+                    <p>📝 תמלול: {normalizedEvent.accessibility?.transcription ? "כן" : "לא"}</p>
+                    <p>💬 כתוביות: {normalizedEvent.accessibility?.captions ? "כן" : "לא"}</p>
                     <div className="admin-event-accessibility">
                       <h4>נגישות באירוע</h4>
 

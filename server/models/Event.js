@@ -83,6 +83,13 @@ const eventSchema = new mongoose.Schema(
       default: false,
     },
 
+    paymentType: { type: String, enum: ["free", "paid"], default: "free" },
+    price: { type: Number, min: 0, default: 0 },
+    accessibility: {
+      transcription: { type: Boolean, default: false },
+      captions: { type: Boolean, default: false },
+    },
+
     active: {
       type: Boolean,
       default: true,
