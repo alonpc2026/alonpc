@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./Tourism.css";
 
 const API = "https://alonpc02026.onrender.com/api/tourism";
@@ -43,7 +43,7 @@ export default function AdminTourism({ scope }) {
 
   const categories = isWorld ? WORLD_CATEGORIES : ISRAEL_CATEGORIES;
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
       const response = await fetch(`${API}?scope=${scope}`);
       const data = await response.json();
@@ -51,13 +51,13 @@ export default function AdminTourism({ scope }) {
     } catch {
       setMessage("לא ניתן לטעון את הנתונים.");
     }
-  }
+  }, [scope]);
 
   useEffect(() => {
     setForm(emptyForm(scope));
     setEditingId("");
     load();
-  }, [scope]);
+  }, [scope, load]);
 
   function change(name, value) {
     setForm((prev) => ({ ...prev, [name]: value }));
