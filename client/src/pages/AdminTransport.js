@@ -1,8 +1,9 @@
+import AdminTransportNotices from "./AdminTransportNotices";
 import {useEffect,useState} from "react";
 import "./AdminDomainDirectory.css";
 const API="https://alonpc02026.onrender.com/api/transport",EMPTY={businessName:"",phone:"",whatsapp:"",businessUrl:"",logoUrl:"",active:true};
 export default function Page(){
- const [items,setItems]=useState([]),[form,setForm]=useState(EMPTY),[id,setId]=useState(""),[msg,setMsg]=useState("");
+ const [items,setItems]=useState([]),[form,setForm]=useState(EMPTY),[id,setId]=useState(""),[msg,setMsg]=useState(""),[showNotices,setShowNotices]=useState(false);
  async function load(){try{const r=await fetch(API),d=await r.json();if(!r.ok)throw Error(d.message||"לא ניתן לטעון");setItems(Array.isArray(d)?d:[])}catch(e){setMsg("❌ "+e.message)}}
  useEffect(()=>{load()},[]);
  function ch(e){const{name,value,type,checked}=e.target;setForm(o=>({...o,[name]:type==="checkbox"?checked:value}))}

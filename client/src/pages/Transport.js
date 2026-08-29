@@ -3,8 +3,11 @@ import "./DomainDirectory.css";
 const API="https://alonpc02026.onrender.com/api/transport";
 function wa(v){return String(v||"").replace(/\D/g,"");}
 export default function Page(){
- const [items,setItems]=useState([]),[error,setError]=useState("");
- useEffect(()=>{fetch(API).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.message||"לא ניתן לטעון");return d}).then(d=>setItems(Array.isArray(d)?d.filter(x=>x.active!==false):[])).catch(e=>setError(e.message))},[]);
+ const [items,setItems]=useState([]),[notices,setNotices]=useState([]),[error,setError]=useState("");
+ useEffect(()=>{
+  fetch(API).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.message||"לא ניתן לטעון");return d}).then(d=>setItems(Array.isArray(d)?d.filter(x=>x.active!==false):[])).catch(e=>setError(e.message));
+  fetch("https://alonpc02026.onrender.com/api/transport-notices").then(r=>r.json()).then(d=>setNotices(Array.isArray(d)?d.filter(x=>x.active!==false):[])).catch(()=>{});
+ },[]);
  return <main className="domain-page" dir="rtl">
   <h1>🚗 תחבורה</h1>
   {error&&<p>❌ {error}</p>}
