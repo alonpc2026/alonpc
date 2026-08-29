@@ -78,6 +78,10 @@ import AdminUsageStats from "./pages/AdminUsageStats";
 import ImportantInfo from "./pages/ImportantInfo";
 import HealthProductList from "./pages/HealthProductList";
 import AdminHealthProducts from "./pages/AdminHealthProducts";
+import WorldTourism from "./pages/WorldTourism";
+import WorldTourismCountry from "./pages/WorldTourismCountry";
+import IsraelTourism from "./pages/IsraelTourism";
+import AdminTourism from "./pages/AdminTourism";
 function readStoredUser() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -158,6 +162,9 @@ function App() {
               <Route path="/apps" element={<AppsHub />} />
               <Route path="/apps/mobile" element={<AppsCategory />} />
               <Route path="/apps/:type" element={<AppsCategory />} />
+              <Route path="/tourism-world" element={<WorldTourism />} />
+              <Route path="/tourism-world/:countryName" element={<WorldTourismCountry />} />
+              <Route path="/tourism-israel" element={<IsraelTourism />} />
               <Route path="/games" element={<GamesHub />} />
               <Route path="/games/:type" element={<GamesList />} />
 
@@ -415,6 +422,9 @@ function App() {
               <Route path="/important-info" element={<ImportantInfo />} />
               <Route path="/health/:type" element={<HealthProductList />} />
               <Route path="/admin/health-products" element={<AdminRoute><AdminHealthProducts /></AdminRoute>} />
+              <Route path="/admin/tourism-world" element={<AdminRoute><AdminTourism scope="world" /></AdminRoute>} />
+              <Route path="/admin/tourism-israel" element={<AdminRoute><AdminTourism scope="israel" /></AdminRoute>} />
+
 </Routes>
           </div>
         </HashRouter>

@@ -1,0 +1,37 @@
+.tourism-page{max-width:1180px;margin:0 auto;padding:28px 16px 60px;direction:rtl}
+.tourism-hero{padding:26px;border-radius:22px;background:linear-gradient(135deg,#eef9ff,#f7fff4);margin-bottom:22px;border:1px solid #d9e8ee}
+.tourism-hero h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)}
+.tourism-hero p{margin:0;font-size:18px}
+.tourism-country-grid,.tourism-item-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.tourism-country-card,.tourism-item-card{background:#fff;border:2px solid #e3e7ec;border-radius:18px;padding:18px;text-decoration:none;color:inherit;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.tourism-country-card:hover,.tourism-item-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.10)}
+.tourism-flag{font-size:54px;display:block;margin-bottom:10px}
+.tourism-flag-img{width:72px;height:48px;object-fit:cover;border-radius:7px;border:1px solid #ccc;display:block;margin-bottom:10px}
+.tourism-country-card strong{display:block;font-size:24px}
+.tourism-country-card small{font-size:15px;color:#555}
+.tourism-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.tourism-tab{border:0;border-radius:999px;padding:12px 18px;font-size:17px;font-weight:700;cursor:pointer;background:#eef2f6}
+.tourism-tab.active{background:#173b6c;color:#fff}
+.tourism-section{margin-top:24px}
+.tourism-section h2{font-size:25px}
+.tourism-item-image{width:100%;height:165px;object-fit:cover;border-radius:12px;margin-bottom:12px}
+.tourism-item-card h3{margin:4px 0 8px;font-size:21px}
+.tourism-item-card p{white-space:pre-wrap;line-height:1.55}
+.tourism-city{font-weight:700}
+.tourism-link{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:10px;background:#0b65c2;color:#fff;text-decoration:none;font-weight:700}
+.tourism-empty{padding:28px;text-align:center;background:#fff;border:2px dashed #ccd3da;border-radius:16px}
+.tourism-back{display:inline-block;margin-bottom:14px;text-decoration:none;font-weight:700}
+.tourism-admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;background:#fff;padding:18px;border-radius:18px;border:1px solid #ddd}
+.tourism-admin-form label{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.tourism-admin-form input,.tourism-admin-form select,.tourism-admin-form textarea{font:inherit;padding:11px;border:1px solid #bfc7d0;border-radius:10px}
+.tourism-admin-form textarea{min-height:110px}
+.tourism-admin-full{grid-column:1/-1}
+.tourism-admin-actions{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+.tourism-admin-actions button{padding:11px 18px;border:0;border-radius:10px;font-weight:700;cursor:pointer}
+.tourism-save{background:#177245;color:white}
+.tourism-cancel{background:#e5e7eb}
+.tourism-admin-list{margin-top:22px}
+.tourism-admin-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:15px;background:#fff;border:1px solid #ddd;border-radius:14px;margin-bottom:10px}
+.tourism-admin-row-actions{display:flex;gap:7px}
+.tourism-admin-row-actions button{padding:8px 11px;border:0;border-radius:8px;cursor:pointer}
+@media(max-width:700px){.tourism-admin-form{grid-template-columns:1fr}.tourism-admin-full{grid-column:auto}.tourism-admin-actions{grid-column:auto}.tourism-admin-row{grid-template-columns:1fr}}

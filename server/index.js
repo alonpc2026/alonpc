@@ -87,7 +87,9 @@ mountRoute("./routes/employmentRoutes", "/api/employment");
 mountRoute("./routes/transportDirectoryRoutes", "/api/transport");
 mountRoute("./routes/healthDirectoryRoutes", "/api/health-directory");
 mountRoute("./routes/nationalInsuranceDirectoryRoutes", "/api/national-insurance-directory");
-mountRoute("./routes/healthProductRoutes", "/api/health-products");\nmountRoute("./routes/transportNoticeRoutes", "/api/transport-notices");
+mountRoute("./routes/healthProductRoutes", "/api/health-products");
+mountRoute("./routes/transportNoticeRoutes", "/api/transport-notices");
+mountRoute("./routes/tourismRoutes", "/api/tourism");
 
 /* נתיב שלא נמצא */
 app.use((req, res) => {

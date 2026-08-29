@@ -173,6 +173,21 @@ const adminSections = [
     className: "admin-card-yellow",
   },
   {
+    title: "🌍 ניהול תיירות עולם",
+    description: "מדינות ודגלים, אפליקציות, מידע ומקומות מעניינים",
+    icon: "🌍",
+    path: "/admin/tourism-world",
+    className: "admin-card-cyan",
+  },
+  {
+    title: "🇮🇱 ניהול תיירות בארץ",
+    description: "אפליקציות, מסעדות, בתי קפה, מזון מהיר ומקומות מעניינים",
+    icon: "🇮🇱",
+    path: "/admin/tourism-israel",
+    className: "admin-card-green",
+  },
+
+  {
     title: "ניהול כל האפליקציות",
     description: "ניהול אפליקציות סלולרי, טלוויזיה חכמה, Windows 10-11 ו-Mac",
     icon: "📱",
