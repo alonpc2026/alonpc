@@ -10,7 +10,16 @@ export default function Page(){
  },[]);
  return <main className="domain-page" dir="rtl">
   <h1>🚗 תחבורה</h1>
-  {error&&<p>❌ {error}</p>}
+  {notices.length>0&&<section style={{margin:"18px 0"}}>
+   <h2>📢 הודעות חשובות</h2>
+   {notices.map(n=><article key={n._id} style={{border:"2px solid #d6a800",borderRadius:"12px",padding:"14px",marginBottom:"10px"}}>
+    <h3>{n.title||"הודעה חשובה"}</h3>
+    {n.date&&<p>📅 {n.date}</p>}
+    {n.description&&<p>{n.description}</p>}
+    {(n.link||n.infoUrl)&&<a href={n.link||n.infoUrl} target="_blank" rel="noreferrer">🔗 מידע נוסף</a>}
+   </article>)}
+  </section>}
+   {error&&<p>❌ {error}</p>}
   {!error&&items.length===0&&<p>אין כרגע שירותי תחבורה.</p>}
   <section className="domain-grid">
    {items.map(x=><article className="domain-card" key={x._id}>
