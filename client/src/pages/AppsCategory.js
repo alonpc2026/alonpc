@@ -17,16 +17,23 @@ function norm(value) {
 }
 
 function getPlatform(item) {
-  const raw = norm(
-    item.platform || item.type || item.deviceType || item.os ||
-    item.system || item.category || item.mobileType || ""
-  );
+  const values = [
+    item.platform, item.deviceType, item.os, item.system,
+    item.category, item.mobileType, item.type
+  ].map(norm).filter(Boolean);
 
-  if (["galaxy","samsung","אנדרואיד","סמסונג"].includes(raw)) return "android";
-  if (["iphone","apple","אייפון","אפל"].includes(raw)) return "ios";
-  if (["macos","apple-mac"].includes(raw)) return "mac";
-  if (["smarttv","smart-tv","television","טלוויזיה"].includes(raw)) return "tv";
-  return raw;
+  for (const raw of values) {
+    if (["android","galaxy","samsung","אנדרואיד","סמסונג"].includes(raw)) return "android";
+    if (["ios","iphone","apple","אייפון","אפל"].includes(raw)) return "ios";
+    if (["windows","windows10","windows11","pc"].includes(raw)) return "windows";
+    if (["mac","macos","apple-mac"].includes(raw)) return "mac";
+    if (["tv","smarttv","smart-tv","television","טלוויזיה"].includes(raw)) return "tv";
+  }
+
+  if (item.hasAndroid === true || item.androidUrl) return "android";
+  if (item.hasIphone === true || item.iphoneUrl || item.iosUrl) return "ios";
+
+  return "";
 }
 
 function getImage(item) {
