@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminShop.css";
 
 const API =
@@ -51,6 +52,7 @@ const EMPTY_FORM = {
 };
 
 function AdminShop() {
+  const navigate = useNavigate();
   let user = null;
 
   try {
@@ -149,6 +151,20 @@ function AdminShop() {
       .filter(Boolean);
   };
 
+  const forceFreshLogin = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    window.dispatchEvent(new Event("alonpc-auth-change"));
+
+    navigate("/login", {
+      replace: true,
+      state: {
+        message: "פג תוקף ההתחברות. נא להתחבר מחדש כמנהל ואז לחזור לניהול החנות.",
+      },
+    });
+  };
+
   const saveProduct = async () => {
     if (!form.name.trim()) {
       setMessage("❌ נא למלא שם מוצר");
@@ -213,7 +229,12 @@ function AdminShop() {
         }
       );
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
+
+      if (response.status === 401 || response.status === 403) {
+        forceFreshLogin();
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(
@@ -316,7 +337,12 @@ function AdminShop() {
         headers: authHeaders(),
       });
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
+
+      if (response.status === 401 || response.status === 403) {
+        forceFreshLogin();
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(
