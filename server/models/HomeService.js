@@ -17,6 +17,8 @@ const homeServiceSchema = new mongoose.Schema(
         "מנעולן",
         "חשמלאי",
         "שיפוץ",
+  "אינסטלטור",
+  "תיקון רכב",
       ],
     },
     region: {

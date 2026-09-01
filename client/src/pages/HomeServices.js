@@ -20,6 +20,8 @@ const SERVICE_TYPES = [
   "מנעולן",
   "חשמלאי",
   "שיפוץ",
+  "אינסטלטור",
+  "תיקון רכב",
 ];
 
 function imageSrc(value) {
