@@ -1,0 +1,129 @@
+.home-services-page{
+  max-width:1180px;
+  margin:0 auto;
+  padding:28px 16px 60px;
+  min-height:100vh;
+  color:#172033;
+  background:linear-gradient(180deg,#eef8ff 0%,#fffdf2 100%);
+}
+.home-services-hero{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  padding:26px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#075985,#0ea5e9 50%,#16a34a);
+  color:#fff;
+  box-shadow:0 10px 26px rgba(0,0,0,.17);
+}
+.home-services-hero.admin{background:linear-gradient(135deg,#4c1d95,#7c3aed,#2563eb)}
+.home-services-hero-icon{font-size:64px}
+.home-services-hero h1{margin:0 0 8px;font-size:clamp(30px,5vw,46px);color:#fff}
+.home-services-hero p{margin:0;font-size:19px;font-weight:700;line-height:1.5}
+.home-services-region-box{margin-top:22px;padding:20px;border-radius:20px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.09)}
+.home-services-region-box h2{margin-top:0}
+.home-services-region-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.home-services-region-buttons button{
+  min-height:62px;border:3px solid #2563eb;border-radius:16px;background:#dbeafe;
+  color:#172033;font-size:21px;font-weight:900;cursor:pointer
+}
+.home-services-region-buttons button.active{background:#172554;color:#fff;border-color:#facc15}
+.home-services-filter{margin:18px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-weight:800}
+.home-services-filter select{min-width:250px;padding:12px;border:2px solid #2563eb;border-radius:12px;background:#fff;font-size:17px}
+.home-services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.home-service-card{overflow:hidden;border-radius:20px;background:#fff;border:2px solid #cbd5e1;box-shadow:0 8px 20px rgba(0,0,0,.11)}
+.home-service-card img,.home-service-placeholder{width:100%;height:210px;object-fit:cover;background:#e0f2fe}
+.home-service-placeholder{display:flex;align-items:center;justify-content:center;font-size:80px}
+.home-service-card-body{padding:18px}
+.home-service-type{display:inline-block;background:#facc15;border-radius:999px;padding:7px 12px;font-weight:900}
+.home-service-card h2{margin:12px 0 8px}
+.home-service-region{font-weight:800;color:#1d4ed8}
+.home-service-description{line-height:1.55}
+.home-service-price{font-size:18px}
+.home-service-phone{display:block;text-align:center;text-decoration:none;background:#15803d;color:#fff;padding:12px;border-radius:12px;font-weight:900;font-size:18px}
+.home-services-empty,.home-services-message{margin-top:22px;padding:20px;border-radius:16px;background:#fef3c7;font-weight:800}
+.home-services-admin-form{
+  margin-top:22px;padding:22px;border-radius:20px;background:#fff;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;
+  box-shadow:0 7px 20px rgba(0,0,0,.1)
+}
+.home-services-admin-form label{display:flex;flex-direction:column;gap:7px;font-weight:900}
+.home-services-admin-form input,.home-services-admin-form select,.home-services-admin-form textarea{
+  padding:12px;border:2px solid #94a3b8;border-radius:11px;background:#fff;color:#111827;font:inherit
+}
+.home-services-admin-form .full{grid-column:1/-1}
+.home-services-upload{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.home-services-upload label{flex:1}
+.home-services-upload button,.home-services-admin-actions button{
+  padding:12px 18px;border:0;border-radius:11px;background:#2563eb;color:#fff;font-weight:900;cursor:pointer
+}
+.home-services-admin-actions{display:flex;gap:10px;flex-wrap:wrap}
+.home-services-admin-actions button[type="submit"]{background:#15803d}
+.home-services-admin-actions .cancel{background:#f59e0b;color:#111827}
+.home-services-active{flex-direction:row!important;align-items:center}
+.home-services-active input{width:22px;height:22px}
+.home-services-admin-preview img{max-width:300px;max-height:220px;object-fit:contain;border-radius:14px;border:2px solid #cbd5e1}
+.home-services-admin-list{margin-top:24px}
+.home-services-admin-row{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;
+  margin-bottom:10px;padding:15px;border-radius:14px;background:#e0f2fe;border:2px solid #38bdf8
+}
+.home-services-admin-row strong,.home-services-admin-row span{display:block}
+.home-services-admin-row div:last-child{display:flex;gap:8px;flex-wrap:wrap}
+.home-services-admin-row button{padding:9px 12px;border:0;border-radius:9px;background:#2563eb;color:#fff;font-weight:800}
+.home-services-admin-row button.delete{background:#dc2626}
+@media(max-width:700px){
+  .home-services-hero{align-items:flex-start}
+  .home-services-region-buttons{grid-template-columns:1fr}
+  .home-services-admin-form{grid-template-columns:1fr}
+  .home-services-admin-form .full{grid-column:auto}
+  .home-services-admin-row{align-items:flex-start;flex-direction:column}
+}
+
+
+/* Extra accessibility contrast */
+.home-services-page{
+  background:linear-gradient(180deg,#dbeafe 0%,#fef3c7 48%,#dcfce7 100%) !important;
+  color:#111827 !important;
+}
+.home-services-page h1,
+.home-services-page h2,
+.home-services-page h3,
+.home-services-page p,
+.home-services-page label{
+  color:inherit;
+}
+.home-services-region-box,
+.home-services-admin-form{
+  background:#e0f2fe !important;
+  border:3px solid #0284c7 !important;
+  color:#111827 !important;
+}
+.home-service-card{
+  background:#fff7ed !important;
+  border:3px solid #fb923c !important;
+  color:#111827 !important;
+}
+.home-service-card-body,
+.home-service-card-body h2,
+.home-service-card-body p{
+  color:#111827 !important;
+}
+.home-services-filter select,
+.home-services-admin-form input,
+.home-services-admin-form select,
+.home-services-admin-form textarea{
+  background:#ffffff !important;
+  color:#111827 !important;
+  border:2px solid #1d4ed8 !important;
+}
+.home-services-empty{
+  background:#fde68a !important;
+  color:#713f12 !important;
+  border:3px solid #ca8a04 !important;
+}
+.home-services-message{
+  background:#dbeafe !important;
+  color:#172554 !important;
+  border:3px solid #2563eb !important;
+}

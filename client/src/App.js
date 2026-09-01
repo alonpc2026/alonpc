@@ -82,6 +82,8 @@ import WorldTourism from "./pages/WorldTourism";
 import WorldTourismCountry from "./pages/WorldTourismCountry";
 import IsraelTourism from "./pages/IsraelTourism";
 import AdminTourism from "./pages/AdminTourism";
+import HomeServices from "./pages/HomeServices";
+import AdminHomeServices from "./pages/AdminHomeServices";
 function readStoredUser() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -109,6 +111,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/home-services" element={<HomeServices />} />
               <Route path="/emergency" element={<Emergency />} />
 
               {/* אתרים מעניינים של אלון */}
@@ -144,6 +147,14 @@ function App() {
                 }
               />
 
+                            <Route
+                path="/admin/home-services"
+                element={
+                  <AdminRoute>
+                    <AdminHomeServices />
+                  </AdminRoute>
+                }
+              />
               <Route path="/services" element={<Services />} />
               <Route path="/transport" element={<Transport />} />
               <Route path="/health" element={<Health />} />

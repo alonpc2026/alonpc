@@ -92,6 +92,8 @@ mountRoute("./routes/transportNoticeRoutes", "/api/transport-notices");
 mountRoute("./routes/tourismRoutes", "/api/tourism");
 
 /* נתיב שלא נמצא */
+mountRoute("./routes/homeServiceRoutes", "/api/home-services");
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,

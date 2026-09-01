@@ -23,6 +23,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "מונה מבקרים",
     visitorCounterNote: "המונה מתעדכן אוטומטית",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["מרכז השירותים", "כל השירותים במקום אחד"],
       government: ["משרדי ממשלה", "שירותים ממשלתיים וטפסים"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
 
@@ -69,6 +70,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "Visitor counter",
     visitorCounterNote: "The counter updates automatically",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["Service Center", "All services in one place"],
       government: ["Government Offices", "Government services and forms"],
       splitTv: ["📺 Live TV – Split Screen", "Watch several channels on one screen"],
@@ -116,6 +118,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "Счётчик посетителей",
     visitorCounterNote: "Счётчик обновляется автоматически",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["Центр услуг", "Все услуги в одном месте"],
       government: ["Государственные учреждения", "Государственные услуги и формы"],
       splitTv: ["📺 Прямой эфир – разделённый экран", "Несколько телеканалов на одном экране"],
@@ -163,6 +166,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "عداد الزوار",
     visitorCounterNote: "يتم تحديث العداد تلقائيًا",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["مركز الخدمات", "جميع الخدمات في مكان واحد"],
       government: ["الجهات الحكومية", "خدمات حكومية ونماذج"],
       splitTv: ["📺 تلفزيون مباشر – شاشة مقسمة", "مشاهدة عدة قنوات على شاشة واحدة"],
@@ -210,6 +214,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "የጎብኚዎች ቆጣሪ",
     visitorCounterNote: "ቆጣሪው በራስ-ሰር ይዘምናል",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["የአገልግሎት ማዕከል", "ሁሉም አገልግሎቶች በአንድ ቦታ"],
       government: ["የመንግስት ቢሮዎች", "የመንግስት አገልግሎቶችና ቅጾች"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
 
@@ -256,6 +261,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "Compteur de visiteurs",
     visitorCounterNote: "Le compteur se met à jour automatiquement",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["Centre de services", "Tous les services au même endroit"],
       government: ["Services gouvernementaux", "Services publics et formulaires"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
 
@@ -302,6 +308,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "Bilang ng mga bisita",
     visitorCounterNote: "Awtomatikong nag-a-update ang bilang",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["Sentro ng Serbisyo", "Lahat ng serbisyo sa iisang lugar"],
       government: ["Mga Tanggapan ng Pamahalaan", "Mga serbisyo at form ng pamahalaan"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
 
@@ -348,6 +355,7 @@ const HOME_TRANSLATIONS = {
     visitorCounter: "आगंतुक काउंटर",
     visitorCounterNote: "काउंटर अपने आप अपडेट होता है",
     buttons: {
+      homeServices: ["שירות לבית", "מטפלת חירום, דוגסיטר, קאטסיטר, מנקה, גינה, ביביסיטר, מנעולן, חשמלאי ושיפוץ לפי אזור"],
       accessiblePortal: ["सेवा केंद्र", "सभी सेवाएँ एक ही स्थान पर"],
       government: ["सरकारी कार्यालय", "सरकारी सेवाएँ और फ़ॉर्म"],      splitTv: ["📺 TV חי – מסך מפוצל", "צפייה במספר ערוצים במסך אחד"],
 
@@ -381,6 +389,7 @@ const HOME_TRANSLATIONS = {
 
 
 const BUTTON_DEFINITIONS = [
+  { key: "homeServices", icon: "🏠", color: "cyan", path: "/home-services" },
   { key: "accessiblePortal", icon: "♿", color: "blue", path: "/accessible-portal" },
   { key: "government", icon: "🏛️", color: "navy", path: "/government" },
   { key: "splitTv", icon: "📺", color: "royal", path: "https://split-tv.org/?utm_source=chatgpt.com", external: true },

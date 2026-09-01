@@ -4,6 +4,13 @@ import "./AdminEmergencyPortalFix.css";
 
 const adminSections = [
   {
+    title: "🏠 ניהול שירות לבית",
+    description: "שם, טלפון, מחיר לשעה, אזור, סוג שירות ותמונה",
+    icon: "🏠",
+    path: "/admin/home-services",
+    className: "admin-card-blue",
+  },
+  {
     title: "❤️ ניהול מידע ומוצרים בבריאות",
     description: "אזהרות, מוצרים חדשים, מומלצים ומוצרים מאליאקספרס",
     icon: "❤️",
