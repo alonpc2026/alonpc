@@ -395,7 +395,7 @@ const BUTTON_DEFINITIONS = [
   { key: "splitTv", icon: "📺", color: "royal", path: "https://split-tv.org/?utm_source=chatgpt.com", external: true },
   { key: "nationalInsurance", icon: "🏦", color: "royal", path: "/national-insurance" },
   { key: "health", icon: "❤️", color: "green", path: "/health" },
-  { key: "importantInfo", icon: "ℹ️", color: "amber", path: "/important-info" },
+
   { key: "accessibility", icon: "♿", color: "cyan", path: "/services" },
   { key: "transport", icon: "🚗", color: "lime", path: "/transport" },
   { key: "employment", icon: "💼", color: "purple", path: "/employment" },
