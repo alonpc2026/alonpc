@@ -1,0 +1,6 @@
+const express=require("express"),router=express.Router(),AccessibleBeach=require("../models/AccessibleBeach"),auth=require("../middleware/auth"),admin=require("../middleware/admin");
+router.get("/",async(req,res)=>{try{const f={};if(req.query.active==="true")f.active=true;res.json(await AccessibleBeach.find(f).sort({city:1,name:1}))}catch(e){res.status(500).json({message:e.message})}});
+router.post("/",auth,admin,async(req,res)=>{try{res.status(201).json(await AccessibleBeach.create(req.body))}catch(e){res.status(400).json({message:e.message})}});
+router.put("/:id",auth,admin,async(req,res)=>{try{const x=await AccessibleBeach.findByIdAndUpdate(req.params.id,req.body,{new:true,runValidators:true});if(!x)return res.status(404).json({message:"Not found"});res.json(x)}catch(e){res.status(400).json({message:e.message})}});
+router.delete("/:id",auth,admin,async(req,res)=>{try{const x=await AccessibleBeach.findByIdAndDelete(req.params.id);if(!x)return res.status(404).json({message:"Not found"});res.json({message:"Deleted"})}catch(e){res.status(400).json({message:e.message})}});
+module.exports=router;

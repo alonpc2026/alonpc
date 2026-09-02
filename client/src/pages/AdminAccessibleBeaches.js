@@ -1,0 +1,17 @@
+import { useCallback,useEffect,useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./AccessibleBeaches.css";
+const API_BASE=process.env.REACT_APP_API_BASE||"https://alonpc02026.onrender.com/api",API=`${API_BASE}/accessible-beaches`;
+const EMPTY={name:"",city:"",wheelchairAccessible:true,active:true};
+const headers=()=>({"Content-Type":"application/json",...(localStorage.getItem("token")?{Authorization:`Bearer ${localStorage.getItem("token")}`}:{})});
+export default function AdminAccessibleBeaches(){
+ const navigate=useNavigate(),[items,setItems]=useState([]),[form,setForm]=useState(EMPTY),[editingId,setEditingId]=useState(""),[message,setMessage]=useState("");
+ const login=useCallback(()=>{localStorage.removeItem("token");localStorage.removeItem("user");navigate("/login",{replace:true})},[navigate]);
+ const load=useCallback(async()=>{try{const r=await fetch(API),d=await r.json().catch(()=>[]);if(!r.ok)throw new Error(d.message||"לא ניתן לטעון");setItems(Array.isArray(d)?d:[])}catch(e){setMessage(`❌ ${e.message}`)}},[]);
+ useEffect(()=>{load()},[load]);
+ async function save(e){e.preventDefault();if(!form.name.trim()||!form.city.trim()){setMessage("❌ חובה למלא שם חוף ועיר");return}try{const r=await fetch(editingId?`${API}/${editingId}`:API,{method:editingId?"PUT":"POST",headers:headers(),body:JSON.stringify(form)}),d=await r.json().catch(()=>({}));if(r.status===401||r.status===403){login();return}if(!r.ok)throw new Error(d.message||"לא ניתן לשמור");setMessage(editingId?"✅ החוף עודכן":"✅ החוף נוסף");setEditingId("");setForm(EMPTY);await load()}catch(e){setMessage(`❌ ${e.message}`)}}
+ async function remove(id){if(!window.confirm("למחוק את החוף?"))return;const r=await fetch(`${API}/${id}`,{method:"DELETE",headers:headers()});if(r.status===401||r.status===403){login();return}if(r.ok){setMessage("🗑️ החוף נמחק");load()}}
+ return <main className="beaches-page" dir="rtl"><section className="beaches-hero admin"><span>⚙️🏖️♿</span><div><h1>ניהול חופים נגישים</h1><p>שם החוף, עיר ונגישות לכיסא גלגלים</p></div></section>
+ <form className="beaches-admin-form" onSubmit={save}><label>שם החוף *<input value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/></label><label>עיר *<input value={form.city} onChange={e=>setForm({...form,city:e.target.value})}/></label><label className="check"><input type="checkbox" checked={form.wheelchairAccessible} onChange={e=>setForm({...form,wheelchairAccessible:e.target.checked})}/>נגיש לכיסא גלגלים</label><label className="check"><input type="checkbox" checked={form.active} onChange={e=>setForm({...form,active:e.target.checked})}/>הצג באתר</label><div className="actions"><button type="submit">{editingId?"💾 שמור עריכה":"➕ הוסף חוף"}</button>{editingId&&<button type="button" className="cancel" onClick={()=>{setEditingId("");setForm(EMPTY)}}>ביטול</button>}</div></form>
+ {message&&<p className="beaches-message">{message}</p>}<section className="beaches-admin-list"><h2>חופים קיימים</h2>{items.map(x=><article className="beaches-admin-row" key={x._id}><div><strong>{x.name}</strong><span>📍 {x.city} | {x.wheelchairAccessible?"♿ נגיש":"לא מסומן כנגיש"}</span></div><div><button type="button" onClick={()=>{setEditingId(x._id);setForm({name:x.name||"",city:x.city||"",wheelchairAccessible:x.wheelchairAccessible!==false,active:x.active!==false});window.scrollTo({top:0,behavior:"smooth"})}}>✏️ ערוך</button><button type="button" className="delete" onClick={()=>remove(x._id)}>🗑️ מחק</button></div></article>)}</section></main>
+}

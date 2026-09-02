@@ -94,6 +94,8 @@ mountRoute("./routes/tourismRoutes", "/api/tourism");
 /* נתיב שלא נמצא */
 mountRoute("./routes/homeServiceRoutes", "/api/home-services");
 
+mountRoute("./routes/accessibleBeachRoutes", "/api/accessible-beaches");
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,

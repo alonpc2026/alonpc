@@ -3,6 +3,7 @@ import "./Admin.css";
 import "./AdminEmergencyPortalFix.css";
 
 const adminSections = [
+  { title: "🏖️♿ ניהול חופים נגישים", description: "שם החוף, עיר ונגישות לכיסא גלגלים", icon: "🏖️", path: "/admin/accessible-beaches", className: "admin-card-blue" },
   {
     title: "🏠 ניהול שירות לבית",
     description: "שם, טלפון, מחיר לשעה, אזור, סוג שירות ותמונה",

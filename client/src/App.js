@@ -84,6 +84,8 @@ import IsraelTourism from "./pages/IsraelTourism";
 import AdminTourism from "./pages/AdminTourism";
 import HomeServices from "./pages/HomeServices";
 import AdminHomeServices from "./pages/AdminHomeServices";
+import AccessibleBeaches from "./pages/AccessibleBeaches";
+import AdminAccessibleBeaches from "./pages/AdminAccessibleBeaches";
 function readStoredUser() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -111,6 +113,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/accessible-beaches" element={<AccessibleBeaches />} />
               <Route path="/home-services" element={<HomeServices />} />
               <Route path="/emergency" element={<Emergency />} />
 
@@ -155,6 +158,7 @@ function App() {
                   </AdminRoute>
                 }
               />
+                            <Route path="/admin/accessible-beaches" element={<AdminRoute><AdminAccessibleBeaches /></AdminRoute>} />
               <Route path="/services" element={<Services />} />
               <Route path="/transport" element={<Transport />} />
               <Route path="/health" element={<Health />} />
