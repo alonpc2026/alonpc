@@ -46,7 +46,7 @@ export default function HealthProductList(){
               <h2>{x.title}</h2>
               {x.description&&<p>{x.description}</p>}
               {x.source&&<p><b>מקור / חברה:</b> {x.source}</p>}
-              {x.link&&<a href={x.link} target="_blank" rel="noreferrer">🔗 מידע נוסף</a>}
+              {x.link&&<a href={x.link} target="_blank" rel="noreferrer">🌐 מעבר לאתר / מידע נוסף</a>}
             </div>
           </article>
         ))}

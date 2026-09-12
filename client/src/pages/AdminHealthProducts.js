@@ -98,9 +98,9 @@ export default function AdminHealthProducts(){
         <input name="price" value={form.price} onChange={ch} placeholder="לדוגמה: ₪49.90"/>
       </label>}
 
-      {ali&&<label>קישור למוצר באליאקספרס
+      <label className="wide">{ali?"קישור למוצר באליאקספרס":warning?"כתובת קישור לאתר / מקור האזהרה":"כתובת קישור לאתר / מידע נוסף"}
         <input type="url" name="link" value={form.link} onChange={ch} placeholder="https://..."/>
-      </label>}
+      </label>
 
       <label className="active">
         <input type="checkbox" name="active" checked={form.active} onChange={ch}/>
