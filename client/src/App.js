@@ -1,3 +1,4 @@
+﻿import MobileApps from "./pages/MobileApps";
 import "./App.css";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 
@@ -175,7 +176,7 @@ function App() {
               <Route path="/documents" element={<Documents />} />
               <Route path="/booking" element={<ServiceBooking />} />
               <Route path="/apps" element={<AppsHub />} />
-              <Route path="/apps/mobile" element={<AppsCategory />} />
+              <Route path="/apps/mobile" element={<MobileApps />} />} />} />
               <Route path="/apps/:type" element={<AppsCategory />} />
               <Route path="/tourism-world" element={<WorldTourism />} />
               <Route path="/tourism-world/:countryName" element={<WorldTourismCountry />} />
@@ -449,3 +450,5 @@ function App() {
 }
 
 export default App;
+
+
