@@ -28,6 +28,7 @@ const EMPTY_FORM = {
   transcription: false,
   captions: false,
   active: true,
+  accessibility: { captions: false, signLanguage: false },
 };
 
 function getToken() {
@@ -193,6 +194,16 @@ function AdminEvents() {
     });
   }
 
+  function handleAccessibilityChange(e) {
+    const { name, checked } = e.target;
+    setForm((current) => ({
+      ...current,
+      accessibility: {
+        ...(current.accessibility || {}),
+        [name]: checked,
+      },
+    }));
+  }
   function resetForm() {
     setEditingId("");
     setForm(EMPTY_FORM);
@@ -218,6 +229,7 @@ function AdminEvents() {
       transcription: event.accessibility?.transcription === true,
       captions: event.accessibility?.captions === true,
       active: event.active,
+      accessibility: { captions: event.accessibility?.captions === true, signLanguage: event.accessibility?.signLanguage === true, ...(event.accessibility || {}) },
     });
 
     window.scrollTo({
@@ -283,6 +295,7 @@ function AdminEvents() {
         accessibility: { transcription: form.transcription, captions: form.captions },
         active: form.active,
 
+        accessibility: { ...(form.accessibility || {}), captions: form.accessibility?.captions === true, signLanguage: form.accessibility?.signLanguage === true },
         date: form.startDate,
         time: form.allDay
           ? ""
@@ -580,6 +593,27 @@ function AdminEvents() {
             </label>
           </div>
 
+          <div className="admin-events-form-row">
+            <label className="admin-events-checkbox">
+              <input
+                type="checkbox"
+                name="captions"
+                checked={form.accessibility?.captions === true}
+                onChange={handleAccessibilityChange}
+              />
+              💬 כתוביות: {form.accessibility?.captions ? "כן" : "לא"}
+            </label>
+
+            <label className="admin-events-checkbox">
+              <input
+                type="checkbox"
+                name="signLanguage"
+                checked={form.accessibility?.signLanguage === true}
+                onChange={handleAccessibilityChange}
+              />
+              🤟 שפת הסימנים: {form.accessibility?.signLanguage ? "כן" : "לא"}
+            </label>
+          </div>
           <label className="admin-events-checkbox">
             <input
               type="checkbox"
