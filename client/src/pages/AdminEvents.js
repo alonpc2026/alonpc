@@ -194,16 +194,6 @@ function AdminEvents() {
     });
   }
 
-  function handleAccessibilityChange(e) {
-    const { name, checked } = e.target;
-    setForm((current) => ({
-      ...current,
-      accessibility: {
-        ...(current.accessibility || {}),
-        [name]: checked,
-      },
-    }));
-  }
   function resetForm() {
     setEditingId("");
     setForm(EMPTY_FORM);
@@ -292,10 +282,8 @@ function AdminEvents() {
         imageUrl: form.imageUrl.trim(),
         paymentType: form.paymentType,
         price: form.paymentType === "paid" ? Number(form.price) : 0,
-        accessibility: { transcription: form.transcription, captions: form.captions },
+        accessibility: { transcription: form.transcription, captions: form.captions, signLanguage: form.accessibility?.signLanguage === true, ...(form.accessibility || {}) },
         active: form.active,
-
-        accessibility: { ...(form.accessibility || {}), captions: form.accessibility?.captions === true, signLanguage: form.accessibility?.signLanguage === true },
         date: form.startDate,
         time: form.allDay
           ? ""
@@ -431,187 +419,43 @@ function AdminEvents() {
             />
           </label>
 
-          <div className="admin-events-form-row">
-            <label>
-              תאריך התחלה *
-
-              <input
-                type="date"
-                name="startDate"
-                value={form.startDate}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              תאריך סיום *
-
-              <input
-                type="date"
-                name="endDate"
-                value={form.endDate}
-                min={
-                  form.startDate ||
-                  undefined
-                }
-                onChange={handleChange}
-                required
-              />
-            </label>
-          </div>
-
-          <label className="admin-events-checkbox">
-            <input
-              type="checkbox"
-              name="allDay"
-              checked={form.allDay}
-              onChange={handleChange}
-            />
-
-            אירוע של כל היום
-          </label>
-
-          {!form.allDay && (
-            <div className="admin-events-form-row">
-              <label>
-                שעת התחלה
-
-                <input
-                  type="time"
-                  name="startTime"
-                  value={form.startTime}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                שעת סיום
-
-                <input
-                  type="time"
-                  name="endTime"
-                  value={form.endTime}
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
-          )}
-
-          <div className="admin-events-form-row">
-            <label>
-              עיר
-
-              <input
-                type="text"
-                name="city"
-                value={form.city}
-                onChange={handleChange}
-                maxLength="120"
-                placeholder="לדוגמה: חיפה"
-              />
-            </label>
-
-            <label>
-              מקום
-
-              <input
-                type="text"
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                maxLength="250"
-                placeholder="שם האולם, המתנ״ס או הכתובת"
-              />
-            </label>
-          </div>
-
-          <label>
-            תיאור האירוע
-
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows="6"
-              maxLength="5000"
-              placeholder="פרטים מלאים על האירוע"
-            />
-          </label>
-
-          <label>
-            קישור לאתר האירוע
-
-            <input
-              type="url"
-              name="website"
-              value={form.website}
-              onChange={handleChange}
-              placeholder="https://"
-            />
-          </label>
-
-          <label>
-            קישור לתמונת האירוע
-
-            <input
-              type="url"
-              name="imageUrl"
-              value={form.imageUrl}
-              onChange={handleChange}
-              placeholder="https://"
-            />
-          </label>
-
-          {form.imageUrl && (
-            <div className="admin-events-image-preview">
-              <span>
-                תצוגה מקדימה:
-              </span>
-
-              <img
-                src={form.imageUrl}
-                alt="תצוגה מקדימה של תמונת האירוע"
-              />
-            </div>
-          )}
-
-          <div className="admin-events-form-row">
-            <label>מחיר האירוע
-              <select name="paymentType" value={form.paymentType} onChange={handleChange}>
-                <option value="free">חינם</option><option value="paid">תשלום</option>
+                    <div className="admin-events-form-row">
+            <label>תמלול
+              <select
+                value={form.transcription ? "yes" : "no"}
+                onChange={(e) => setForm((c) => ({ ...c, transcription: e.target.value === "yes" }))}
+              >
+                <option value="no">לא</option>
+                <option value="yes">כן</option>
               </select>
             </label>
-            {form.paymentType === "paid" && <label>מחיר ₪<input type="number" min="0" name="price" value={form.price} onChange={handleChange} required /></label>}
-          </div>
-          <div className="admin-events-form-row">
-            <label>תמלול
-              <select value={form.transcription ? "yes" : "no"} onChange={(e)=>setForm(c=>({...c,transcription:e.target.value==="yes"}))}><option value="no">לא</option><option value="yes">כן</option></select>
-            </label>
+
             <label>כתוביות
-              <select value={form.captions ? "yes" : "no"} onChange={(e)=>setForm(c=>({...c,captions:e.target.value==="yes"}))}><option value="no">לא</option><option value="yes">כן</option></select>
-            </label>
-          </div>
-
-          <div className="admin-events-form-row">
-            <label className="admin-events-checkbox">
-              <input
-                type="checkbox"
-                name="captions"
-                checked={form.accessibility?.captions === true}
-                onChange={handleAccessibilityChange}
-              />
-              💬 כתוביות: {form.accessibility?.captions ? "כן" : "לא"}
+              <select
+                value={form.captions ? "yes" : "no"}
+                onChange={(e) => setForm((c) => ({ ...c, captions: e.target.value === "yes" }))}
+              >
+                <option value="no">לא</option>
+                <option value="yes">כן</option>
+              </select>
             </label>
 
-            <label className="admin-events-checkbox">
-              <input
-                type="checkbox"
-                name="signLanguage"
-                checked={form.accessibility?.signLanguage === true}
-                onChange={handleAccessibilityChange}
-              />
-              🤟 שפת הסימנים: {form.accessibility?.signLanguage ? "כן" : "לא"}
+            <label>שפת הסימנים
+              <select
+                value={form.accessibility?.signLanguage ? "yes" : "no"}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    accessibility: {
+                      ...(c.accessibility || {}),
+                      signLanguage: e.target.value === "yes",
+                    },
+                  }))
+                }
+              >
+                <option value="no">לא</option>
+                <option value="yes">כן</option>
+              </select>
             </label>
           </div>
           <label className="admin-events-checkbox">
