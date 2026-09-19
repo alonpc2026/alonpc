@@ -87,6 +87,9 @@ import HomeServices from "./pages/HomeServices";
 import AdminHomeServices from "./pages/AdminHomeServices";
 import AccessibleBeaches from "./pages/AccessibleBeaches";
 import HebrewForRussian from "./pages/HebrewForRussian";
+import LRStudentAuth from "./pages/LRStudentAuth";
+import LRLearn from "./pages/LRLearn";
+import AdminLRStudents from "./pages/AdminLRStudents";
 import AdminAccessibleBeaches from "./pages/AdminAccessibleBeaches";
 function readStoredUser() {
   try {
@@ -185,7 +188,9 @@ function App() {
               <Route path="/games" element={<GamesHub />} />
               <Route path="/games/:type" element={<GamesList />} />
 
-              <Route path="/learn-hebrew-russian" element={<HebrewForRussian />} />
+              <Route path="/learn-hebrew-russian" element={<LRStudentAuth />} />
+              <Route path="/learn-hebrew-russian/course" element={<LRLearn />} />
+              <Route path="/admin/lr-students" element={<AdminRoute><AdminLRStudents /></AdminRoute>} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
