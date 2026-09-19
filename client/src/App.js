@@ -86,6 +86,7 @@ import AdminTourism from "./pages/AdminTourism";
 import HomeServices from "./pages/HomeServices";
 import AdminHomeServices from "./pages/AdminHomeServices";
 import AccessibleBeaches from "./pages/AccessibleBeaches";
+import HebrewForRussian from "./pages/HebrewForRussian";
 import AdminAccessibleBeaches from "./pages/AdminAccessibleBeaches";
 function readStoredUser() {
   try {
@@ -184,6 +185,7 @@ function App() {
               <Route path="/games" element={<GamesHub />} />
               <Route path="/games/:type" element={<GamesList />} />
 
+              <Route path="/learn-hebrew-russian" element={<HebrewForRussian />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
