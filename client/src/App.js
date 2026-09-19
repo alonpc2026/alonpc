@@ -86,7 +86,6 @@ import AdminTourism from "./pages/AdminTourism";
 import HomeServices from "./pages/HomeServices";
 import AdminHomeServices from "./pages/AdminHomeServices";
 import AccessibleBeaches from "./pages/AccessibleBeaches";
-import HebrewForRussian from "./pages/HebrewForRussian";
 import LRStudentAuth from "./pages/LRStudentAuth";
 import LRLearn from "./pages/LRLearn";
 import AdminLRStudents from "./pages/AdminLRStudents";
@@ -122,7 +121,7 @@ function App() {
               <Route path="/home-services" element={<HomeServices />} />
               <Route path="/emergency" element={<Emergency />} />
 
-              {/* אתרים מעניינים של אלון */}
+              {/* ׳׳×׳¨׳™׳ ׳׳¢׳ ׳™׳™׳ ׳™׳ ׳©׳ ׳׳׳•׳ */}
               <Route path="/interesting-sites" element={<InterestingSites />} />
               <Route path="/facebook-group-links" element={<FacebookGroupLinks />} />
               <Route path="/judaism" element={<Judaism />} />
