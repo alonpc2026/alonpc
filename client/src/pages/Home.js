@@ -458,7 +458,7 @@ const BUTTON_DEFINITIONS = [
 ];
 
 function Home() {
-  const [homeGreeting, setHomeGreeting] = useState(null);
+  const [homeGreeting, setHomeGreeting] = useState({enabled:true,title:"ברכה מיוחדת",messages:{he:"ברוכים הבאים למרכז השירותים של ALONPC"}});
   const { language, dir, locale } = useLanguage();
   const [search, setSearch] = useState("");
   const [aiQuestion, setAiQuestion] = useState("");
@@ -518,7 +518,7 @@ function Home() {
     fetch(GREETING_API)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => setHomeGreeting(data && data.enabled ? data : null))
-      .catch(() => setHomeGreeting(null));
+      .catch(()=>setHomeGreeting({enabled:true,title:"ברכה מיוחדת",messages:{he:"ברוכים הבאים למרכז השירותים של ALONPC"}}));
   }, []);
 
   function trackMainButton(button) {
