@@ -95,12 +95,10 @@ mountRoute("./routes/tourismRoutes", "/api/tourism");
 mountRoute("./routes/homeServiceRoutes", "/api/home-services");
 
 mountRoute("./routes/accessibleBeachRoutes", "/api/accessible-beaches");
-mountRoute("./routes/lrStudentRoutes, /api/lr-students);
-
 mountRoute("./routes/homeGreetingRoutes", "/api/home-greeting");
-mountRoute("./routes/sportLinkRoutes", "/api/sport-links");
+mountRoute("./routes/lrStudentRoutes", "/api/lr-students");
 mountRoute("./routes/rhStudentRoutes", "/api/rh-students");
-
+mountRoute("./routes/sportLinkRoutes", "/api/sport-links");
 app.use((req, res) => {
   res.status(404).json({
     success: false,
