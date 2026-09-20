@@ -211,6 +211,20 @@ const adminSections = [
     className: "admin-card-violet",
   },
 {
+    title: "⚽ ניהול ספורט",
+    description: "ניהול תוצאות ספורט, קישורים רגילים ואפליקציות ספורט",
+    icon: "⚽",
+    path: "/admin/sport",
+    className: "admin-card-green",
+  },
+  {
+    title: "🇷🇺 תלמידי לימוד רוסית",
+    description: "צפייה בתלמידים, שלב לימוד, התקדמות וציון",
+    icon: "🇷🇺",
+    path: "/admin/rh-students",
+    className: "admin-card-violet",
+  },
+{
     title: "הגדרות האתר",
     description: "פרטי קשר, טקסטים והגדרות כלליות",
     icon: "⚙️",

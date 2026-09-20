@@ -90,6 +90,12 @@ import LRStudentAuth from "./pages/LRStudentAuth";
 import LRLearn from "./pages/LRLearn";
 import AdminLRStudents from "./pages/AdminLRStudents";
 import AdminAccessibleBeaches from "./pages/AdminAccessibleBeaches";
+
+import Sport from "./pages/Sport";
+import AdminSport from "./pages/AdminSport";
+import RHStudentAuth from "./pages/RHStudentAuth";
+import RHLearn from "./pages/RHLearn";
+import AdminRHStudents from "./pages/AdminRHStudents";
 function readStoredUser() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -447,6 +453,12 @@ function App() {
               <Route path="/admin/tourism-world" element={<AdminRoute><AdminTourism scope="world" /></AdminRoute>} />
               <Route path="/admin/tourism-israel" element={<AdminRoute><AdminTourism scope="israel" /></AdminRoute>} />
 
+
+        <Route path="/sport" element={<Sport />} />
+        <Route path="/learn-russian-hebrew" element={<RHStudentAuth />} />
+        <Route path="/learn-russian-hebrew/course" element={<RHLearn />} />
+        <Route path="/admin/sport" element={<AdminRoute><AdminSport /></AdminRoute>} />
+        <Route path="/admin/rh-students" element={<AdminRoute><AdminRHStudents /></AdminRoute>} />
 </Routes>
           </div>
         </HashRouter>

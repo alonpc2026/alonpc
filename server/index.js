@@ -97,6 +97,9 @@ mountRoute("./routes/homeServiceRoutes", "/api/home-services");
 mountRoute("./routes/accessibleBeachRoutes", "/api/accessible-beaches");
 mountRoute("./routes/lrStudentRoutes, /api/lr-students);
 
+mountRoute("./routes/sportLinkRoutes", "/api/sport-links");
+mountRoute("./routes/rhStudentRoutes", "/api/rh-students");
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,

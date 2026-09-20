@@ -52,6 +52,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["יהדות", "שיעורי תורה נגישים, עזרה ביהדות, חומר לימוד ואירועים"],
       whatsappStickers: ["מדבקות WhatsApp", "גלריית מדבקות מוכנות לפי קטגוריה"],
       hebrewRussian: ["לימוד עברית לדוברי רוסית", "מהאלף־בית ועד מילים, משפטים ומבחנים"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["קורס שפת סימנים ישראלי", "קורסים לפי עיר, תאריך ושעה"]
     }
   },
@@ -102,6 +104,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["Judaism", "Accessible Torah lessons, Jewish help, study material and events"],
       whatsappStickers: ["WhatsApp Stickers", "Ready-made sticker gallery by category"],
       hebrewRussian: ["Hebrew for Russian Speakers", "Alphabet, words, sentences and quizzes"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["Israeli Sign Language Course", "Courses by city, date and time"]
     }
   },
@@ -152,6 +156,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["Иудаизм", "Доступные уроки Торы, помощь, учебные материалы и события"],
       whatsappStickers: ["Стикеры WhatsApp", "Галерея готовых стикеров по категориям"],
       hebrewRussian: ["Иврит для русскоязычных", "Алфавит, слова, фразы и тесты"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["Курс израильского языка жестов", "Курсы по городу, дате и времени"]
     }
   },
@@ -202,6 +208,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["اليهودية", "دروس توراة ميسّرة، مساعدة، مواد تعليمية وفعاليات"],
       whatsappStickers: ["ملصقات WhatsApp", "معرض ملصقات جاهزة حسب الفئة"],
       hebrewRussian: ["تعلم العبرية للناطقين بالروسية", "الأبجدية والكلمات والجمل والاختبارات"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["دورة لغة الإشارة الإسرائيلية", "دورات حسب المدينة والتاريخ والوقت"]
     }
   },
@@ -251,6 +259,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["ይሁዲነት", "ተደራሽ የቶራ ትምህርቶች፣ እርዳታ፣ የትምህርት ቁሳቁስና ዝግጅቶች"],
       whatsappStickers: ["የWhatsApp ስቲከሮች", "በምድብ የተዘጋጁ የስቲከር ማዕከል"],
       hebrewRussian: ["ለሩሲያኛ ተናጋሪዎች የዕብራይስጥ ትምህርት", "ፊደላት፣ ቃላት፣ ዓረፍተ ነገሮች እና ፈተናዎች"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["የእስራኤል የምልክት ቋንቋ ኮርስ", "ኮርሶች በከተማ፣ ቀን እና ሰዓት"]
     }
   },
@@ -300,6 +310,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["Judaïsme", "Cours de Torah accessibles, aide, matériel d’étude et événements"],
       whatsappStickers: ["Stickers WhatsApp", "Galerie de stickers prêts par catégorie"],
       hebrewRussian: ["Hébreu pour russophones", "Alphabet, mots, phrases et tests"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["Cours de langue des signes israélienne", "Cours par ville, date et heure"]
     }
   },
@@ -349,6 +361,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["Judaism", "Accessible Torah lessons, tulong, study materials at events"],
       whatsappStickers: ["WhatsApp Stickers", "Handang sticker gallery ayon sa kategorya"],
       hebrewRussian: ["Hebrew para sa nagsasalita ng Russian", "Alpabeto, salita, pangungusap at pagsusulit"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["Kurso sa Israeli Sign Language", "Mga kurso ayon sa lungsod, petsa at oras"]
     }
   },
@@ -398,6 +412,8 @@ const HOME_TRANSLATIONS = {
       judaism: ["यहूदी धर्म", "सुलभ तोरा कक्षाएँ, सहायता, अध्ययन सामग्री और कार्यक्रम"],
       whatsappStickers: ["WhatsApp स्टिकर", "श्रेणी के अनुसार तैयार स्टिकर गैलरी"],
       hebrewRussian: ["रूसी भाषियों के लिए हिब्रू", "वर्णमाला, शब्द, वाक्य और परीक्षाएँ"],
+      sport: ["ספורט", "⚽ תוצאות, קישורים ואפליקציות ספורט"],
+      russianHebrew: ["לימוד רוסית לדוברי עברית", "אותיות, מילים, משפטים, תרגול ומבחנים"],
       signLanguageCourses: ["इज़राइली सांकेतिक भाषा पाठ्यक्रम", "शहर, तारीख और समय के अनुसार पाठ्यक्रम"]
     }
   }
@@ -433,6 +449,8 @@ const BUTTON_DEFINITIONS = [
   { key: "worldTourism", icon: "🌍", color: "cyan", path: "/tourism-world" },
   { key: "israelTourism", icon: "🇮🇱", color: "green", path: "/tourism-israel" },
   { key: "games", icon: "🎮", color: "games-graffiti", path: "/games" },
+  { key: "sport", icon: "⚽", color: "green", path: "/sport" },
+  { key: "russianHebrew", icon: "🇷🇺🇮🇱", color: "purple", path: "/learn-russian-hebrew" },
   { key: "about", icon: "ℹ️", color: "sky", path: "/about" },
   { key: "contact", icon: "📞", color: "red", path: "/contact" }
 ];
