@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import "./Home.css";
+import "./GreetingBanner.css";
 
 const VISITOR_API = "https://alonpc02026.onrender.com/api/visitors";
 const USAGE_API = "https://alonpc02026.onrender.com/api/usage-stats";
+const GREETING_API = "https://alonpc02026.onrender.com/api/home-greeting";
 
 const HOME_TRANSLATIONS = {
   he: {
@@ -456,6 +458,7 @@ const BUTTON_DEFINITIONS = [
 ];
 
 function Home() {
+  const [homeGreeting, setHomeGreeting] = useState(null);
   const { language, dir, locale } = useLanguage();
   const [search, setSearch] = useState("");
   const [aiQuestion, setAiQuestion] = useState("");
@@ -509,6 +512,13 @@ function Home() {
     updateVisitorCounter();
     trackVisit();
     return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    fetch(GREETING_API)
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => setHomeGreeting(data && data.enabled ? data : null))
+      .catch(() => setHomeGreeting(null));
   }, []);
 
   function trackMainButton(button) {
@@ -585,6 +595,26 @@ function Home() {
           </form>
         </div>
       </section>
+
+      {homeGreeting && (() => {
+        const languageKey = HOME_TRANSLATIONS[language] ? language : "he";
+        const greetingText =
+          homeGreeting.messages?.[languageKey] ||
+          homeGreeting.messages?.he ||
+          "";
+        if (!greetingText) return null;
+        return (
+          <section className="home-greeting-banner" aria-label="ברכה">
+            <div className="home-greeting-shine" aria-hidden="true">✨</div>
+            <div className="home-greeting-content">
+              <span className="home-greeting-label">ALONPC • ברכות</span>
+              <h2>{homeGreeting.title || "ברכה מיוחדת"}</h2>
+              <p>{greetingText}</p>
+            </div>
+            <div className="home-greeting-icon" aria-hidden="true">🎉</div>
+          </section>
+        );
+      })()}
 
       <section className="home-main-buttons" aria-label={text.buttonsAria}>
         {filteredButtons.map((button) => {

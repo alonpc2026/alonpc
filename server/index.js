@@ -97,6 +97,7 @@ mountRoute("./routes/homeServiceRoutes", "/api/home-services");
 mountRoute("./routes/accessibleBeachRoutes", "/api/accessible-beaches");
 mountRoute("./routes/lrStudentRoutes, /api/lr-students);
 
+mountRoute("./routes/homeGreetingRoutes", "/api/home-greeting");
 mountRoute("./routes/sportLinkRoutes", "/api/sport-links");
 mountRoute("./routes/rhStudentRoutes", "/api/rh-students");
 

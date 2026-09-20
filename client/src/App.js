@@ -96,6 +96,7 @@ import AdminSport from "./pages/AdminSport";
 import RHStudentAuth from "./pages/RHStudentAuth";
 import RHLearn from "./pages/RHLearn";
 import AdminRHStudents from "./pages/AdminRHStudents";
+import AdminHomeGreeting from "./pages/AdminHomeGreeting";
 function readStoredUser() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -459,7 +460,9 @@ function App() {
         <Route path="/learn-russian-hebrew/course" element={<RHLearn />} />
         <Route path="/admin/sport" element={<AdminRoute><AdminSport /></AdminRoute>} />
         <Route path="/admin/rh-students" element={<AdminRoute><AdminRHStudents /></AdminRoute>} />
-</Routes>
+
+        <Route path="/admin/home-greeting" element={<AdminRoute><AdminHomeGreeting /></AdminRoute>} />
+      </Routes>
           </div>
         </HashRouter>
       </CartProvider>
