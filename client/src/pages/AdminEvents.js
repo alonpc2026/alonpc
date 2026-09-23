@@ -419,7 +419,84 @@ function AdminEvents() {
             />
           </label>
 
-                    <div className="admin-events-form-row">
+          <div className="admin-events-form-row">
+            <label>
+              תאריך התחלה *
+              <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
+            </label>
+            <label>
+              תאריך סיום *
+              <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+            </label>
+          </div>
+
+          <label className="admin-events-checkbox">
+            <input type="checkbox" name="allDay" checked={form.allDay} onChange={handleChange} />
+            אירוע של יום שלם
+          </label>
+
+          {!form.allDay && (
+            <div className="admin-events-form-row">
+              <label>
+                שעת התחלה
+                <input type="time" name="startTime" value={form.startTime} onChange={handleChange} />
+              </label>
+              <label>
+                שעת סיום
+                <input type="time" name="endTime" value={form.endTime} onChange={handleChange} />
+              </label>
+            </div>
+          )}
+
+          <div className="admin-events-form-row">
+            <label>
+              עיר
+              <input type="text" name="city" value={form.city} onChange={handleChange} placeholder="לדוגמה: חיפה" />
+            </label>
+            <label>
+              מיקום / שם המקום
+              <input type="text" name="location" value={form.location} onChange={handleChange} placeholder="לדוגמה: היכל התרבות, רחוב הנשיא 100" />
+            </label>
+          </div>
+
+          <label>
+            תיאור האירוע
+            <textarea name="description" value={form.description} onChange={handleChange} rows="5" placeholder="פרטים מלאים על האירוע" />
+          </label>
+
+          <label>
+            קישור לאתר / הרשמה לאירוע
+            <input type="url" name="website" value={form.website} onChange={handleChange} placeholder="https://..." />
+          </label>
+
+          <label>
+            קישור לתמונת האירוע
+            <input type="url" name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="https://.../event.jpg" />
+          </label>
+
+          {form.imageUrl && (
+            <div style={{ margin: "12px 0", textAlign: "center" }}>
+              <img src={form.imageUrl} alt="תצוגה מקדימה" style={{ maxWidth: "360px", width: "100%", borderRadius: "14px" }} />
+            </div>
+          )}
+
+          <div className="admin-events-form-row">
+            <label>
+              תשלום
+              <select name="paymentType" value={form.paymentType} onChange={handleChange}>
+                <option value="free">חינם</option>
+                <option value="paid">בתשלום</option>
+              </select>
+            </label>
+            {form.paymentType === "paid" && (
+              <label>
+                מחיר ₪
+                <input type="number" min="0" step="0.01" name="price" value={form.price} onChange={handleChange} />
+              </label>
+            )}
+          </div>
+
+          <div className="admin-events-form-row">
             <label>תמלול
               <select
                 value={form.transcription ? "yes" : "no"}
