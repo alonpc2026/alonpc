@@ -141,8 +141,8 @@ export default function Emergency() {
               <div className="accessible-public-phone">
                 <span>♿📱 {text.accessible}</span>
                 <strong>{item.accessiblePhone}</strong>
-                <a href={`tel:${String(item.accessiblePhone).replace(/[^\d+]/g, "")}`}>
-                  📞 {text.call} {item.accessiblePhone}
+                <a className="emergency-whatsapp-link" href={`https://wa.me/${normalizeWhatsAppPhone(item.accessiblePhone)}`} target="_blank" rel="noreferrer">
+                  💬 WhatsApp ישיר
                 </a>
               </div>
             )}
