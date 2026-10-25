@@ -629,3 +629,54 @@
 @media(prefers-reduced-motion:reduce){.home-main-button{transition:none!important}.home-main-button:hover{transform:none!important}}
 
 /* ALONPC CARTOON THEME END */
+
+/* ALONPC ONE-LAYOUT FIX v1: replace layered white card with one coherent hero */
+.home-page .home-hero {
+  position:relative!important; display:block!important; width:100%!important;
+  max-width:1500px!important; min-height:0!important;
+  margin:0 auto 28px!important; padding:clamp(190px,25vw,370px) 0 0!important;
+  background:none!important; border:0!important; border-radius:0!important;
+  box-shadow:none!important; overflow:visible!important;
+}
+.home-page .home-hero::before {
+  content:""; position:absolute; top:0; left:0; right:0;
+  height:clamp(190px,25vw,370px); display:block;
+  background-image:url('./alonpc-illustrated-header.webp');
+  background-repeat:no-repeat; background-size:100% auto; background-position:center top;
+  border:4px solid #fff; border-radius:25px;
+  box-shadow:0 8px 0 #0b5b9c,0 14px 25px #073e7660;
+  pointer-events:none;
+}
+.home-page .home-hero-content {
+  width:100%!important; max-width:1100px!important; margin:22px auto 0!important;
+  padding:0 12px!important; background:transparent!important; border:0!important;
+  border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important;
+  color:#092448!important;
+}
+/* Keep meaningful headings available to screen readers without duplicating image lettering. */
+.home-page .home-hero-content>.home-accessibility-badge,
+.home-page .home-hero-content>h1,
+.home-page .home-hero-content>p {
+  position:absolute!important; width:1px!important; height:1px!important;
+  padding:0!important; margin:-1px!important; overflow:hidden!important;
+  clip:rect(0,0,0,0)!important; white-space:nowrap!important;
+  border:0!important;
+}
+.home-page .home-search {max-width:920px!important;margin:0 auto!important;}
+.home-page .home-ai-search {max-width:920px!important;margin:20px auto 0!important;
+  background:linear-gradient(135deg,#0a417b,#146bb3)!important;}
+.home-page .home-ai-graffiti-title {color:#fff200!important;-webkit-text-stroke:0!important;
+  text-shadow:1px 2px #041d40!important;}
+.home-page .home-main-buttons {margin-top:18px!important;}
+@media(max-width:750px) {
+ .home-page .home-hero {padding-top:clamp(165px,36vw,260px)!important;}
+ .home-page .home-hero::before {height:clamp(165px,36vw,260px)!important;
+   background-size:auto 100%!important;background-position:center top!important;}
+ .home-page .home-hero-content {margin-top:16px!important;padding:0 4px!important;}
+}
+@media(max-width:450px){
+ .home-page .home-hero {padding-top:170px!important;}
+ .home-page .home-hero::before {height:170px!important;border-radius:16px!important;}
+ .home-page .home-search {gap:5px!important;padding:6px!important;}
+ .home-page .home-search button {min-width:65px!important;}
+}
