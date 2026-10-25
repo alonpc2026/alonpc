@@ -548,3 +548,25 @@
 
 .home-main-button--emergency { background:linear-gradient(135deg,#b5121b,#e12632); border-color:#fff3a6; box-shadow:0 10px 28px rgba(120,0,0,.35); }
 .home-main-button--emergency:hover,.home-main-button--emergency:focus { outline:5px solid #ffe33b; outline-offset:3px; }
+
+/* Cartoon portal - large accessible controls */
+.home-page {background:linear-gradient(180deg,#83d8ff 0%,#e7f9ff 29%,#e6f8e0 100%);color:#102a51;}
+.home-hero-content {background:linear-gradient(145deg,#fff,#e3f7ff);border:5px solid #163c71;border-radius:36px;box-shadow:0 10px 0 #163c71,0 18px 26px #153b7040;color:#102a51;}
+.home-accessibility-badge {background:#ffe66c;border:3px solid #173f70;}
+.home-hero h1 {color:#0c3567;text-shadow:none;}
+.home-search {border:4px solid #143d70;box-shadow:0 6px 0 #143d70;}
+.home-main-buttons {gap:22px;}
+.home-main-button {position:relative;min-height:155px;padding:22px;border:5px solid #183b6b;border-radius:35px;box-shadow:0 9px 0 #173b6a,0 17px 22px #173b6a40;text-shadow:none;}
+.home-main-button:hover,.home-main-button:focus-visible {transform:translateY(-3px);box-shadow:0 12px 0 #173b6a,0 20px 24px #173b6a40;}
+.home-main-button-icon {width:82px;min-width:82px;height:82px;font-size:45px;border:4px solid #153b6c;border-radius:26px;box-shadow:0 4px 0 #123a65;}
+.home-main-button-text strong {font-size:clamp(25px,2.1vw,32px);font-weight:900;}
+.home-main-button-text small {font-size:clamp(17px,1.3vw,20px);line-height:1.5;}
+.home-main-button-arrow {font-size:35px;}
+.home-main-button--blue,.home-main-button--navy,.home-main-button--royal {background:#1467ba;}
+.home-main-button--green,.home-main-button--lime,.home-main-button--teal {background:#08764c;}
+.home-main-button--purple,.home-main-button--violet,.home-main-button--indigo {background:#6c3ca5;}
+.home-main-button--orange,.home-main-button--amber {background:#9e5109;}
+.home-main-button--red,.home-main-button--pink {background:#a02d4a;}
+.home-main-button--cyan,.home-main-button--sky {background:#086c89;}
+.home-contact-strip a {border:4px solid #163b6b;border-radius:24px;box-shadow:0 6px 0 #163b6b;}
+@media(max-width:560px){.home-main-button{min-height:135px;padding:15px}.home-main-button-icon{width:65px;min-width:65px;height:65px;font-size:36px}.home-main-button-text strong{font-size:24px}}
