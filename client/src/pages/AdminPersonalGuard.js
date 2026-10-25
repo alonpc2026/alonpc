@@ -1,0 +1,8 @@
+import React,{useEffect,useState} from "react";
+import "./PersonalGuard.css";
+const API="https://alonpc02026.onrender.com/api/personal-guard";
+export default function AdminPersonalGuard(){
+ const [items,setItems]=useState([]),[page,setPage]=useState(1),[pages,setPages]=useState(0),[total,setTotal]=useState(0),[error,setError]=useState(""),[loading,setLoading]=useState(true);
+ useEffect(()=>{let active=true;setLoading(true);const token=localStorage.getItem("token");fetch(API+"/registrations?page="+page,{headers:{Authorization:"Bearer "+token},cache:"no-store"}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.message||"שגיאה");return d;}).then(d=>{if(active){setItems(d.items||[]);setPages(d.pages||0);setTotal(d.total||0);setError("");}}).catch(e=>{if(active)setError(e.message)}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[page]);
+ return <main className="guard-page" dir="rtl"><section className="guard-card guard-admin"><h1>🛡️ לקוחות המגן האישי</h1><p>סה״כ מצטרפים: {total}</p>{loading&&<p>טוען...</p>}{error&&<p role="alert">{error}</p>}<div className="guard-table-wrap"><table><thead><tr><th>מס׳ מצטרף</th><th>שם פרטי</th><th>שם משפחה</th><th>כתובת</th><th>טלפון</th><th>שם בנק</th><th>תאריך</th></tr></thead><tbody>{items.map(x=><tr key={x._id}><td>{x.number}</td><td>{x.firstName}</td><td>{x.lastName}</td><td>{x.address}</td><td>{x.phone}</td><td>{x.bank}</td><td>{new Date(x.createdAt).toLocaleDateString("he-IL")}</td></tr>)}</tbody></table></div><div className="guard-pages"><button disabled={page<=1} onClick={()=>setPage(p=>p-1)}>הקודם</button><span>עמוד {page} מתוך {Math.max(1,pages)}</span><button disabled={page>=pages} onClick={()=>setPage(p=>p+1)}>הבא</button></div></section></main>;
+}

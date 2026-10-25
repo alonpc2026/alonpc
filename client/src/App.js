@@ -1,3 +1,5 @@
+import PersonalGuard from "./pages/PersonalGuard";
+import AdminPersonalGuard from "./pages/AdminPersonalGuard";
 import MobileApps from "./pages/MobileApps";
 import "./App.css";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -124,6 +126,8 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/personal-guard" element={<PersonalGuard />} />
+              <Route path="/admin/personal-guard" element={<AdminRoute><AdminPersonalGuard /></AdminRoute>} />
               <Route path="/accessible-beaches" element={<AccessibleBeaches />} />
               <Route path="/home-services" element={<HomeServices />} />
               <Route path="/emergency" element={<Emergency />} />

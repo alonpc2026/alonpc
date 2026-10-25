@@ -3,6 +3,7 @@ import "./Admin.css";
 import "./AdminEmergencyPortalFix.css";
 
 const adminSections = [
+  { title: "🛡️ לקוחות המגן האישי", description: "הרשמות מוקדמות לפי מספר מצטרף", icon: "🛡️", path: "/admin/personal-guard", className: "admin-card-blue" },
   {
     title: "🎉 ניהול ברכות בדף הבית",
     description: "כתיבת ברכה גדולה ומודגשת עם טקסט נפרד לכל שפה",

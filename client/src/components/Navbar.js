@@ -138,6 +138,8 @@ function Navbar() {
           <span>{t("home")}</span>
         </NavLink>
 
+        <NavLink to="/personal-guard" className={navClass("guard")} onClick={closeMenu}><span className="alonpc-nav-item__icon" aria-hidden="true">🛡️</span><span>המגן האישי של ALON123</span></NavLink>
+
         <NavLink to="/services" className={navClass("services")} onClick={closeMenu}>
           <span className="alonpc-nav-item__icon" aria-hidden="true">🏢</span>
           <span>{ui.services}</span>

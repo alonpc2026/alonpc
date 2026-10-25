@@ -1,0 +1,706 @@
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { Link } from "react-router-dom";
+import "./AdminEvents.css";
+
+const API_BASE =
+  process.env.REACT_APP_API_BASE ||
+  "https://alonpc02026.onrender.com/api";
+
+const EMPTY_FORM = {
+  title: "",
+  startDate: "",
+  endDate: "",
+  startTime: "",
+  endTime: "",
+  allDay: false,
+  city: "",
+  location: "",
+  description: "",
+  website: "",
+  imageUrl: "",
+  paymentType: "free",
+  price: "",
+  transcription: false,
+  captions: false,
+  active: true,
+  accessibility: { captions: false, signLanguage: false },
+};
+
+function getToken() {
+  return localStorage.getItem("token") || "";
+}
+
+function normalizeEvent(eventItem = {}) {
+  return {
+    ...eventItem,
+    startDate:
+      eventItem.startDate ||
+      eventItem.date ||
+      "",
+    endDate:
+      eventItem.endDate ||
+      eventItem.startDate ||
+      eventItem.date ||
+      "",
+    startTime:
+      eventItem.startTime ||
+      eventItem.time ||
+      "",
+    endTime: eventItem.endTime || "",
+    allDay: eventItem.allDay === true,
+    paymentType: eventItem.paymentType === "paid" ? "paid" : "free",
+    price: eventItem.price ?? "",
+    transcription: eventItem.accessibility?.transcription === true,
+    captions: eventItem.accessibility?.captions === true,
+  };
+}
+
+
+function yesNo(value) {
+  return value ? "יש" : "אין";
+}
+function AdminEvents() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [monthFilter, setMonthFilter] =
+    useState("");
+  const [form, setForm] =
+    useState(EMPTY_FORM);
+
+  const apiRequest = useCallback(
+    async (path = "", options = {}) => {
+      const response = await fetch(
+        `${API_BASE}/events${path}`,
+        {
+          ...options,
+          headers: {
+            "Content-Type":
+              "application/json",
+            Authorization:
+              `Bearer ${getToken()}`,
+            ...(options.headers || {}),
+          },
+        }
+      );
+
+      const data = await response
+        .json()
+        .catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+            "הפעולה נכשלה"
+        );
+      }
+
+      return data;
+    },
+    []
+  );
+
+  const loadEvents = useCallback(
+    async () => {
+      setLoading(true);
+
+      try {
+        const data =
+          await apiRequest("/admin");
+
+        const list = Array.isArray(data)
+          ? data
+          : data.events || [];
+
+        setEvents(
+          list.map(normalizeEvent)
+        );
+        setError("");
+      } catch (err) {
+        setError(err.message);
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [apiRequest]
+  );
+
+  useEffect(() => {
+    loadEvents();
+  }, [loadEvents]);
+  const filteredEvents = useMemo(() => {
+    const text = search.trim().toLowerCase();
+
+    return [...events]
+      .filter((event) => {
+        const searchText = `${event.title} ${event.city} ${event.location} ${event.description}`
+          .toLowerCase();
+
+        const okSearch =
+          !text || searchText.includes(text);
+
+        const okMonth =
+          !monthFilter ||
+          event.startDate.startsWith(monthFilter) ||
+          event.endDate.startsWith(monthFilter);
+
+        return okSearch && okMonth;
+      })
+      .sort((a, b) =>
+        `${a.startDate} ${a.startTime}`.localeCompare(
+          `${b.startDate} ${b.startTime}`
+        )
+      );
+  }, [events, search, monthFilter]);
+
+  function handleChange(e) {
+    const { name, value, checked, type } = e.target;
+
+    setForm((current) => {
+      const next = {
+        ...current,
+        [name]:
+          type === "checkbox"
+            ? checked
+            : value,
+      };
+
+      if (
+        name === "startDate" &&
+        !current.endDate
+      ) {
+        next.endDate = value;
+      }
+
+      if (
+        name === "allDay" &&
+        checked
+      ) {
+        next.startTime = "";
+        next.endTime = "";
+      }
+
+      return next;
+    });
+  }
+
+  function resetForm() {
+    setEditingId("");
+    setForm(EMPTY_FORM);
+  }
+
+  function startEdit(event) {
+    setEditingId(event._id);
+
+    setForm({
+      title: event.title,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      allDay: event.allDay,
+      city: event.city,
+      location: event.location,
+      description: event.description,
+      website: event.website,
+      imageUrl: event.imageUrl,
+      paymentType: event.paymentType === "paid" ? "paid" : "free",
+      price: event.price ?? "",
+      transcription: event.accessibility?.transcription === true,
+      captions: event.accessibility?.captions === true,
+      active: event.active,
+      accessibility: { captions: event.accessibility?.captions === true, signLanguage: event.accessibility?.signLanguage === true, ...(event.accessibility || {}) },
+    });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }  async function handleSubmit(e) {
+    e.preventDefault();
+
+    setSaving(true);
+    setMessage("");
+    setError("");
+
+    try {
+      if (!form.title.trim()) {
+        throw new Error("יש למלא שם אירוע");
+      }
+
+      if (!form.startDate) {
+        throw new Error("יש למלא תאריך התחלה");
+      }
+
+      if (!form.endDate) {
+        throw new Error("יש למלא תאריך סיום");
+      }
+
+      if (form.endDate < form.startDate) {
+        throw new Error(
+          "תאריך הסיום לא יכול להיות לפני תאריך ההתחלה"
+        );
+      }
+
+      if (
+        !form.allDay &&
+        form.startDate === form.endDate &&
+        form.startTime &&
+        form.endTime &&
+        form.endTime < form.startTime
+      ) {
+        throw new Error(
+          "שעת הסיום לא יכולה להיות לפני שעת ההתחלה"
+        );
+      }
+
+      const payload = {
+        title: form.title.trim(),
+        startDate: form.startDate,
+        endDate: form.endDate,
+        startTime: form.allDay
+          ? ""
+          : form.startTime,
+        endTime: form.allDay
+          ? ""
+          : form.endTime,
+        allDay: form.allDay,
+        city: form.city.trim(),
+        location: form.location.trim(),
+        description: form.description.trim(),
+        website: form.website.trim(),
+        imageUrl: form.imageUrl.trim(),
+        paymentType: form.paymentType,
+        price: form.paymentType === "paid" ? Number(form.price) : 0,
+        accessibility: { transcription: form.transcription, captions: form.captions, signLanguage: form.accessibility?.signLanguage === true, ...(form.accessibility || {}) },
+        active: form.active,
+        date: form.startDate,
+        time: form.allDay
+          ? ""
+          : form.startTime,
+      };
+
+      const path = editingId
+        ? `/${editingId}`
+        : "";
+
+      const method = editingId
+        ? "PUT"
+        : "POST";
+
+      await apiRequest(path, {
+        method,
+        body: JSON.stringify(payload),
+      });
+
+      setMessage(
+        editingId
+          ? "האירוע עודכן בהצלחה"
+          : "האירוע נוסף בהצלחה"
+      );
+
+      resetForm();
+
+      await loadEvents();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function removeEvent(eventItem) {
+    const approved = window.confirm(
+      `האם למחוק את האירוע "${eventItem.title}"?`
+    );
+
+    if (!approved) {
+      return;
+    }
+
+    setMessage("");
+    setError("");
+
+    try {
+      await apiRequest(
+        `/${eventItem._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      setMessage("האירוע נמחק בהצלחה");
+
+      if (editingId === eventItem._id) {
+        resetForm();
+      }
+
+      await loadEvents();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  return (
+    <main
+      className="admin-events-page"
+      dir="rtl"
+    >
+      <section className="admin-events-header">
+        <div>
+          <p>🔒 אזור מנהל</p>
+
+          <h1>ניהול אירועים</h1>
+
+          <span>
+            הוספה, עריכה ומחיקה של אירועים,
+            כולל אירועים של יום אחד או מספר ימים.
+          </span>
+        </div>
+
+        <div className="admin-events-header-actions">
+          <Link to="/israel-events">
+            צפייה בלוח האירועים
+          </Link>
+
+          <Link to="/admin">
+            חזרה לפורטל הניהול
+          </Link>
+        </div>
+      </section>
+
+      {message && (
+        <div
+          className="admin-events-message"
+          role="status"
+        >
+          {message}
+        </div>
+      )}
+
+      {error && (
+        <div
+          className="admin-events-message admin-events-error"
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      <section className="admin-events-form-card">
+        <h2>
+          {editingId
+            ? "עריכת אירוע"
+            : "הוספת אירוע חדש"}
+        </h2>
+
+        <form onSubmit={handleSubmit}>
+          <label>
+            שם האירוע *
+
+            <input
+              type="text"
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              required
+              maxLength="180"
+              placeholder="לדוגמה: הרצאה מיוחדת בחיפה"
+            />
+          </label>
+
+                    <div className="admin-events-form-row">
+            <label>תמלול
+              <select
+                value={form.transcription ? "yes" : "no"}
+                onChange={(e) => setForm((c) => ({ ...c, transcription: e.target.value === "yes" }))}
+              >
+                <option value="no">לא</option>
+                <option value="yes">כן</option>
+              </select>
+            </label>
+
+            <label>כתוביות
+              <select
+                value={form.captions ? "yes" : "no"}
+                onChange={(e) => setForm((c) => ({ ...c, captions: e.target.value === "yes" }))}
+              >
+                <option value="no">לא</option>
+                <option value="yes">כן</option>
+              </select>
+            </label>
+
+            <label>שפת הסימנים
+              <select
+                value={form.accessibility?.signLanguage ? "yes" : "no"}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    accessibility: {
+                      ...(c.accessibility || {}),
+                      signLanguage: e.target.value === "yes",
+                    },
+                  }))
+                }
+              >
+                <option value="no">לא</option>
+                <option value="yes">כן</option>
+              </select>
+            </label>
+          </div>
+          <label className="admin-events-checkbox">
+            <input
+              type="checkbox"
+              name="active"
+              checked={form.active}
+              onChange={handleChange}
+            />
+
+            אירוע פעיל ומוצג באתר
+          </label>
+
+          <div className="admin-events-form-actions">
+            <button
+              type="submit"
+              disabled={saving}
+            >
+              {saving
+                ? "שומר..."
+                : editingId
+                ? "שמירת השינויים"
+                : "הוספת האירוע"}
+            </button>
+
+            {editingId && (
+              <button
+                type="button"
+                className="secondary"
+                onClick={resetForm}
+                disabled={saving}
+              >
+                ביטול עריכה
+              </button>
+            )}
+          </div>
+        </form>
+      </section>      <section className="admin-events-list-card">
+        <div className="admin-events-tools">
+          <h2>
+            כל האירועים ({filteredEvents.length})
+          </h2>
+
+          <input
+            type="search"
+            value={search}
+            onChange={(event) =>
+              setSearch(event.target.value)
+            }
+            placeholder="חיפוש לפי שם, עיר, מקום או תיאור"
+          />
+
+          <input
+            type="month"
+            value={monthFilter}
+            onChange={(event) =>
+              setMonthFilter(event.target.value)
+            }
+            aria-label="סינון לפי חודש"
+          />
+
+          {(search || monthFilter) && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setMonthFilter("");
+              }}
+            >
+              ניקוי סינון
+            </button>
+          )}
+        </div>
+
+        {loading ? (
+          <p className="admin-events-empty">
+            טוען אירועים...
+          </p>
+        ) : filteredEvents.length === 0 ? (
+          <p className="admin-events-empty">
+            לא נמצאו אירועים.
+          </p>
+        ) : (
+          <div className="admin-events-grid">
+            {filteredEvents.map((eventItem) => {
+              const normalizedEvent =
+                normalizeEvent(eventItem);
+
+              const dateText =
+                normalizedEvent.endDate &&
+                normalizedEvent.endDate !==
+                  normalizedEvent.startDate
+                  ? `${normalizedEvent.startDate} עד ${normalizedEvent.endDate}`
+                  : normalizedEvent.startDate;
+
+              let timeText = "ללא שעה";
+
+              if (normalizedEvent.allDay) {
+                timeText = "כל היום";
+              } else if (
+                normalizedEvent.startTime &&
+                normalizedEvent.endTime
+              ) {
+                timeText = `${normalizedEvent.startTime} עד ${normalizedEvent.endTime}`;
+              } else if (
+                normalizedEvent.startTime
+              ) {
+                timeText =
+                  normalizedEvent.startTime;
+              } else if (
+                normalizedEvent.endTime
+              ) {
+                timeText =
+                  normalizedEvent.endTime;
+              }
+
+              return (
+                <article
+                  key={normalizedEvent._id}
+                  className="admin-event-card"
+                >
+                  {normalizedEvent.imageUrl && (
+                    <img
+                      src={
+                        normalizedEvent.imageUrl
+                      }
+                      alt={
+                        normalizedEvent.title
+                      }
+                      loading="lazy"
+                    />
+                  )}
+
+                  <div className="admin-event-card-content">
+                    <div className="admin-event-card-top">
+                      <strong>
+                        {normalizedEvent.title}
+                      </strong>
+
+                      <span
+                        className={
+                          normalizedEvent.active !==
+                          false
+                            ? "active"
+                            : "hidden"
+                        }
+                      >
+                        {normalizedEvent.active !==
+                        false
+                          ? "מוצג"
+                          : "מוסתר"}
+                      </span>
+                    </div>
+
+                    <p>
+                      📅{" "}
+                      {dateText ||
+                        "ללא תאריך"}
+                    </p>
+
+                    <p>
+                      🕒 {timeText}
+                    </p>
+
+                    <p>
+                      📍{" "}
+                      {normalizedEvent.city ||
+                        "ללא עיר"}
+
+                      {normalizedEvent.location &&
+                        ` · ${normalizedEvent.location}`}
+                    </p>
+
+
+                    <p>💰 {normalizedEvent.paymentType === "paid" ? `${normalizedEvent.price ?? 0} ₪` : "חינם"}</p>
+                    <p>📝 תמלול: {normalizedEvent.accessibility?.transcription ? "כן" : "לא"}</p>
+                    <p>💬 כתוביות: {normalizedEvent.accessibility?.captions ? "כן" : "לא"}</p>
+                    <div className="admin-event-accessibility">
+                      <h4>נגישות באירוע</h4>
+
+                      <div className={normalizedEvent.accessibility?.signLanguage ? "has" : "none"}>
+                        <span>🤟 תרגום שפת סימנים</span>
+                        <strong>{yesNo(normalizedEvent.accessibility?.signLanguage)}</strong>
+                      </div>
+
+                      <div className={normalizedEvent.accessibility?.captions ? "has" : "none"}>
+                        <span>💬 כתוביות</span>
+                        <strong>{yesNo(normalizedEvent.accessibility?.captions)}</strong>
+                      </div>
+                    </div>
+\n                    {normalizedEvent.description && (
+                      <p className="admin-event-description">
+                        {
+                          normalizedEvent.description
+                        }
+                      </p>
+                    )}
+
+                    {normalizedEvent.website && (
+                      <p>
+                        <a
+                          href={
+                            normalizedEvent.website
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          מעבר לאתר האירוע
+                        </a>
+                      </p>
+                    )}
+
+                    <div className="admin-event-card-actions">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          startEdit(
+                            normalizedEvent
+                          )
+                        }
+                      >
+                        עריכה
+                      </button>
+
+                      <button
+                        type="button"
+                        className="danger"
+                        onClick={() =>
+                          removeEvent(
+                            normalizedEvent
+                          )
+                        }
+                      >
+                        מחיקה
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}
+
+export default AdminEvents;

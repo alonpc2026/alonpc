@@ -64,6 +64,7 @@ function mountRoute(routePath, urlPath) {
   כך השרת לא יקרוס בגלל קובץ נתיב שחסר.
 */
 mountRoute("./routes/authRoutes", "/api/auth");
+mountRoute("./routes/personalGuardRoutes", "/api/personal-guard");
 mountRoute("./routes/serviceRoutes", "/api/services");
 mountRoute("./routes/uploadRoutes", "/api/upload");
 mountRoute("./routes/productRoutes", "/api/products");
