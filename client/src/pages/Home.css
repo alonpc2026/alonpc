@@ -570,3 +570,62 @@
 .home-main-button--cyan,.home-main-button--sky {background:#086c89;}
 .home-contact-strip a {border:4px solid #163b6b;border-radius:24px;box-shadow:0 6px 0 #163b6b;}
 @media(max-width:560px){.home-main-button{min-height:135px;padding:15px}.home-main-button-icon{width:65px;min-width:65px;height:65px;font-size:36px}.home-main-button-text strong{font-size:24px}}
+
+/* ALONPC illustrated, accessible landscape theme – additive styling */
+.home-page{width:100%;max-width:none;overflow-x:hidden;color:#092449;background:radial-gradient(circle at 85% 4%,#fff8a8 0 38px,transparent 40px),radial-gradient(ellipse at 17% 7%,#ffffffc7 0 75px,transparent 77px),radial-gradient(ellipse at 70% 13%,#ffffffb0 0 90px,transparent 92px),linear-gradient(180deg,#52c4ff 0%,#c6f1ff 28%,#92df6b 29%,#5ebf58 40%,#c8f3ff 60%,#6ccc5a 100%)!important;background-attachment:fixed!important}
+.home-hero{max-width:1480px!important}
+.home-hero-content{background:linear-gradient(135deg,#ffffffee,#ecfaffee)!important;border:5px solid #ffffff!important;border-radius:36px!important;box-shadow:0 12px 0 #2079ad,0 18px 35px #0c457744!important;color:#082c66!important}
+.home-hero h1{color:#08265b!important;text-shadow:2px 3px 0 #b0d8ff;font-weight:900!important}
+.home-hero p{color:#123f6b!important;font-weight:750!important}
+.home-main-buttons{max-width:1480px!important;gap:20px!important}
+.home-main-button{position:relative;min-height:165px!important;border:6px solid white!important;border-radius:38px!important;box-shadow:0 9px 0 #15426b77,0 16px 24px #124c7d44!important;color:#091b3c!important;overflow:hidden;isolation:isolate;background-image:linear-gradient(160deg,#ffffff55,transparent 48%,#00000012)!important}
+.home-main-button::after{content:"";position:absolute;inset:0 0 auto;height:43%;background:linear-gradient(#ffffff70,#ffffff00);pointer-events:none;z-index:-1}
+.home-main-button-icon{background:#ffffffee!important;border:3px solid #0b2d5b!important;border-radius:23px!important;width:74px!important;height:74px!important;font-size:42px!important;box-shadow:0 4px 0 #113d6a55}
+.home-main-button-text strong{font-size:clamp(22px,2vw,30px)!important;line-height:1.18!important;color:#081c3d!important;text-shadow:1px 2px #ffffffaa}
+.home-main-button-text small{font-size:clamp(16px,1.2vw,19px)!important;color:#153659!important;font-weight:700!important}
+.home-main-button-arrow{color:#08234c!important}
+.home-main-button--blue,.home-main-button--navy,.home-main-button--royal{background-color:#60b3ff!important}
+.home-main-button--green,.home-main-button--lime,.home-main-button--teal{background-color:#48dc8b!important}
+.home-main-button--purple,.home-main-button--violet,.home-main-button--indigo{background-color:#c084f6!important}
+.home-main-button--orange,.home-main-button--amber{background-color:#ffc15b!important}
+.home-main-button--red,.home-main-button--pink,.home-main-button--emergency{background-color:#ff7979!important}
+.home-main-button--cyan,.home-main-button--sky{background-color:#83d7ff!important}
+.home-main-button:focus-visible{outline:5px solid #102b60!important;outline-offset:4px}
+@media(max-width:850px){.home-page{padding:16px 12px 36px!important}.home-main-buttons{grid-template-columns:repeat(2,minmax(0,1fr))!important}.home-main-button{min-height:145px!important;padding:14px!important;border-radius:25px!important}.home-main-button-icon{width:56px!important;height:56px!important;font-size:30px!important}}
+@media(max-width:580px){.home-main-buttons{grid-template-columns:1fr!important}.home-main-button{min-height:110px!important}.home-hero-content{padding:20px 12px!important}}
+@media(prefers-reduced-motion:reduce){.home-main-button{transition:none!important}.home-main-button:hover{transform:none!important}}
+
+/* ALONPC CARTOON THEME START */
+/* ALONPC visual theme – functional React buttons remain clickable. */
+.home-page {width:100%!important;max-width:none!important;margin:0!important;padding:20px clamp(12px,2vw,30px) 50px!important;background:linear-gradient(180deg,#2aa9ef 0%,#b4eaff 35%,#e4f8ff 76%,#b7edc5 100%)!important;color:#092448!important;font-family:Arial,"Noto Sans Hebrew",sans-serif!important;}
+.home-hero {width:100%!important;max-width:1500px!important;min-height:400px!important;border:5px solid #fff!important;border-radius:34px!important;margin:0 auto 25px!important;background-image:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.16)),url('./alonpc-illustrated-header.webp')!important;background-size:cover!important;background-position:center top!important;box-shadow:0 14px 0 #0c5391,0 22px 34px #06376466!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;overflow:hidden!important;}
+.home-hero-content {width:min(900px,96%)!important;margin:125px auto 18px!important;padding:18px 20px!important;background:rgba(255,255,255,.93)!important;border:3px solid #fff!important;border-radius:25px!important;box-shadow:0 8px 22px #002b5b66!important;color:#062d61!important;backdrop-filter:blur(5px);}
+.home-hero h1 {font-size:clamp(28px,3vw,48px)!important;color:#072c63!important;text-shadow:none!important;}
+.home-hero p {font-size:clamp(17px,1.5vw,23px)!important;color:#10385b!important;margin:8px 0 14px!important;}
+.home-accessibility-badge {background:#083878!important;color:white!important;font-size:clamp(15px,1.4vw,19px)!important;margin-bottom:8px!important;}
+.home-search {border:3px solid #06438d!important;box-shadow:0 4px 0 #94c8ef!important;}
+.home-search input {font-size:clamp(19px,1.7vw,24px)!important;}
+.home-main-buttons {width:100%!important;max-width:1500px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.home-main-button {min-width:0!important;min-height:162px!important;border:5px solid white!important;border-radius:33px!important;padding:15px!important;box-shadow:0 9px 0 #10447666,0 15px 24px #0d407a55!important;color:#071e41!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:7px!important;text-decoration:none!important;background-image:linear-gradient(180deg,#ffffff99 0%,#ffffff20 47%,#00000013 100%)!important;}
+.home-main-button-icon {width:75px!important;height:75px!important;min-width:75px!important;display:grid!important;place-items:center!important;border-radius:22px!important;background:#ffffffed!important;border:3px solid #0d3c78!important;font-size:42px!important;line-height:1!important;box-shadow:0 4px 0 #06396855!important;}
+.home-main-button-text {align-items:center!important;min-width:0!important;}
+.home-main-button-text strong {font-size:clamp(21px,1.85vw,29px)!important;line-height:1.16!important;color:#081b3d!important;text-shadow:1px 1px #fff!important;}
+.home-main-button-text small {font-size:clamp(15px,1.1vw,18px)!important;color:#153558!important;}
+.home-main-button-arrow {display:none!important;}
+.home-main-button--blue,.home-main-button--navy,.home-main-button--royal {background-color:#53b6ff!important;}
+.home-main-button--green,.home-main-button--lime,.home-main-button--teal {background-color:#38d996!important;}
+.home-main-button--purple,.home-main-button--violet,.home-main-button--indigo {background-color:#ba80ef!important;}
+.home-main-button--orange,.home-main-button--amber {background-color:#ffb75e!important;}
+.home-main-button--red,.home-main-button--pink,.home-main-button--emergency {background-color:#ff7578!important;}
+.home-main-button--cyan,.home-main-button--sky {background-color:#79d5ff!important;}
+.home-main-button:focus-visible,.home-search input:focus-visible {outline:5px solid #001e5c!important;outline-offset:4px!important;}
+.home-main-button:hover {transform:translateY(-3px)!important;filter:brightness(1.04)!important;}
+.home-ai-search {max-width:780px!important;margin:12px auto 0!important;}
+.home-ai-graffiti-title {color:#07356c!important;}
+.home-contact-strip {max-width:1500px!important;}
+@media(max-width:1050px){.home-main-buttons{grid-template-columns:repeat(3,minmax(0,1fr))!important}.home-hero{min-height:340px!important}.home-hero-content{margin-top:100px!important}}
+@media(max-width:750px){.home-main-buttons{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}.home-hero{min-height:330px!important;background-position:center top!important}.home-hero-content{margin-top:115px!important;padding:12px!important}.home-main-button{min-height:145px!important;padding:10px!important}.home-main-button-icon{width:60px!important;min-width:60px!important;height:60px!important;font-size:32px!important}.home-main-button-text strong{font-size:20px!important}}
+@media(max-width:450px){.home-page{padding:10px 8px 30px!important}.home-hero{border-radius:20px!important;min-height:310px!important}.home-main-buttons{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.home-main-button{border-radius:20px!important;min-height:132px!important}.home-main-button-text strong{font-size:17px!important}.home-main-button-text small{font-size:13px!important}.home-search input{min-width:0!important;font-size:17px!important}}
+@media(prefers-reduced-motion:reduce){.home-main-button{transition:none!important}.home-main-button:hover{transform:none!important}}
+
+/* ALONPC CARTOON THEME END */
