@@ -470,8 +470,8 @@ function Home() {
     () =>
       BUTTON_DEFINITIONS.map((button) => ({
         ...button,
-        title: text.buttons[button.key][0],
-        subtitle: text.buttons[button.key][1]
+        title: (text.buttons[button.key] || HOME_TRANSLATIONS.he.buttons[button.key] || [button.key, ""])[0],
+        subtitle: (text.buttons[button.key] || HOME_TRANSLATIONS.he.buttons[button.key] || [button.key, ""])[1]
       })),
     [text]
   );
@@ -543,6 +543,7 @@ function Home() {
   return (
     <main className="home-page" dir={dir}>
       <section className="home-hero">
+        <div className="home-hero-art" aria-hidden="true" />
         <div className="home-hero-content">
           <span className="home-accessibility-badge">
             {text.accessibilityBadge}
