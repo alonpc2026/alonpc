@@ -112,6 +112,10 @@ function Navbar() {
         </div>
 
         <div className="alonpc-navbar__controls">
+          <NavLink to="/personal-guard" className="alonpc-guard-top" onClick={closeMenu}>
+            <span aria-hidden="true">🛡️</span>
+            <span>המגן האישי של ALON123</span>
+          </NavLink>
           <div className="alonpc-language">
             <LanguageSwitcher />
           </div>
@@ -137,8 +141,6 @@ function Navbar() {
           <span className="alonpc-nav-item__icon" aria-hidden="true">🏠</span>
           <span>{t("home")}</span>
         </NavLink>
-
-        <NavLink to="/personal-guard" className={navClass("guard")} onClick={closeMenu}><span className="alonpc-nav-item__icon" aria-hidden="true">🛡️</span><span>המגן האישי של ALON123</span></NavLink>
 
         <NavLink to="/services" className={navClass("services")} onClick={closeMenu}>
           <span className="alonpc-nav-item__icon" aria-hidden="true">🏢</span>

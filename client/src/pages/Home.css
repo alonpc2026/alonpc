@@ -604,3 +604,22 @@
 }
 @media (max-width:360px) {.home-page {padding-inline:5px;}.home-main-buttons {gap:6px;}.home-main-button {padding:7px 3px;}.home-main-button-text strong {font-size:13px;}.home-main-button-text small {font-size:11px;}}
 @media (prefers-reduced-motion:reduce) {.home-main-button {transition:none;}.home-main-button:hover {transform:none;}}
+
+
+/* Cartoon cards, responsive widths and clear reading order */
+.home-page {overflow-x:clip;}
+.home-page img {max-width:100%;height:auto;}
+.home-hero,.home-hero-content,.home-main-buttons,.home-ai-search,.home-search {min-width:0;max-width:100%;}
+.home-main-button {background-image:linear-gradient(155deg,rgba(255,255,255,.22),transparent 48%,rgba(0,0,0,.15));background-blend-mode:screen;border:3px solid #fff;box-shadow:0 5px 0 #163f70,0 9px 18px rgba(0,0,0,.2);}
+.home-main-button-icon {border:2px solid #133a6a;box-shadow:0 3px 0 rgba(0,0,0,.2);}
+.home-main-button:focus-visible,.home-search input:focus-visible,.home-search button:focus-visible {outline:4px solid #ffdc39;outline-offset:3px;}
+@media(max-width:700px){.home-hero-art{background-size:contain;background-position:center;}.home-search{grid-template-columns:auto minmax(0,1fr);}.home-search input{min-width:0;}.home-main-buttons{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:380px){.home-main-buttons{grid-template-columns:minmax(0,1fr);}}
+
+/* ALONPC accessible illustrated theme: additive overrides */
+@media (prefers-reduced-motion: reduce) {
+  .home-page *, .alonpc-navbar *, .apps-page * {animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+}
+@media (forced-colors: active) {
+  .home-main-button,.alonpc-nav-item,.app-card {border:2px solid ButtonText;forced-color-adjust:auto;}
+}

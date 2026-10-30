@@ -1,3 +1,4 @@
+import AccessibilityPanel from "./components/AccessibilityPanel";
 import PersonalGuard from "./pages/PersonalGuard";
 import AdminPersonalGuard from "./pages/AdminPersonalGuard";
 import MobileApps from "./pages/MobileApps";
@@ -123,6 +124,7 @@ function App() {
         <HashRouter>
           <div className="app">
             <Navbar />
+            <AccessibilityPanel />
 
             <Routes>
               <Route path="/" element={<Home />} />

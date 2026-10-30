@@ -278,3 +278,23 @@
  .app-card-content p{font-size:18px;line-height:1.55;}
  .app-download-buttons a{width:100%;}
 }
+
+
+/* Image above, description below, readable cartoon cards */
+.apps-page,.apps-hero,.apps-tools,.apps-grid,.app-card,.app-card-content{min-width:0;max-width:100%;}
+.apps-page{overflow-x:clip;}
+.app-card{background:linear-gradient(180deg,#f6fbff,#fff);box-shadow:0 6px 0 #b5c9e7,0 12px 20px rgba(0,0,0,.12);}
+.app-image-wrap{order:0;background:linear-gradient(150deg,#d5eeff,#f4faff);}
+.app-card-content{order:1;}
+.app-card-content p{overflow-wrap:anywhere;}
+.apps-tools input{min-width:0;width:100%;}
+.apps-page a:focus-visible,.apps-page button:focus-visible,.apps-page input:focus-visible{outline:4px solid #e6a900;outline-offset:3px;}
+@media(max-width:700px){.apps-page{width:calc(100% - 16px);}.apps-hero{padding:14px;}.apps-hero h1{font-size:clamp(25px,8vw,36px);}.apps-hero p{font-size:17px;}.apps-tools{padding:12px;}.apps-grid{grid-template-columns:minmax(0,1fr);}}
+
+/* ALONPC accessible illustrated theme: additive overrides */
+@media (prefers-reduced-motion: reduce) {
+  .home-page *, .alonpc-navbar *, .apps-page * {animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+}
+@media (forced-colors: active) {
+  .home-main-button,.alonpc-nav-item,.app-card {border:2px solid ButtonText;forced-color-adjust:auto;}
+}
